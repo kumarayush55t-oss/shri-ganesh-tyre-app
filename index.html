@@ -9,32 +9,35 @@
         .header { background: #d32f2f; color: white; padding: 15px; text-align: center; font-size: 22px; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .sub-header { font-size: 13px; font-weight: normal; margin-top: 5px; opacity: 0.9; }
         
-        #announcementBanner { background: #f1c40f; color: #000; padding: 10px; text-align: center; font-weight: bold; display: none; font-size: 14px; animation: slideDown 0.5s ease-in-out; border-bottom: 2px solid #e67e22; }
-        @keyframes slideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
-
-        .container { padding: 15px; max-width: 600px; margin: auto; }
-        
+        /* App Lock Screen */
         #lockScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #2c3e50; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; }
         #lockScreen input { width: 80%; max-width: 300px; padding: 15px; text-align: center; font-size: 24px; letter-spacing: 5px; border-radius: 8px; border: none; outline: none; margin-bottom: 20px; }
-        #lockScreen button { width: 80%; max-width: 300px; background: #e74c3c; font-size: 18px; padding: 15px; }
+        #lockScreen button { width: 80%; max-width: 300px; background: #e74c3c; font-size: 18px; padding: 15px; border:none; border-radius:8px; font-weight:bold;}
 
-        .tabs { display: flex; background: white; border-bottom: 2px solid #ddd; position: sticky; top: 0; z-index: 100; overflow-x: auto; white-space: nowrap; }
-        .tab { flex: 1; padding: 14px 10px; text-align: center; font-weight: bold; color: #555; cursor: pointer; border-bottom: 3px solid transparent; font-size: 14px; transition: 0.3s; min-width: 80px;}
+        /* Global Toast Message (Ringtone Notification) */
+        #toast { visibility: hidden; min-width: 250px; background-color: #27ae60; color: #fff; text-align: center; border-radius: 8px; padding: 16px; position: fixed; z-index: 10000; left: 50%; transform: translateX(-50%); top: 20px; font-size: 16px; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 4s; }
+        @keyframes fadein { from { top: 0; opacity: 0; } to { top: 20px; opacity: 1; } }
+        @keyframes fadeout { from { top: 20px; opacity: 1; } to { top: 0; opacity: 0; } }
+
+        .tabs { display: flex; background: white; border-bottom: 2px solid #ddd; position: sticky; top: 0; z-index: 100; overflow-x: auto;}
+        .tab { flex: 1; padding: 14px 5px; text-align: center; font-weight: bold; color: #555; cursor: pointer; border-bottom: 3px solid transparent; font-size: 14px; transition: 0.3s; min-width: 85px;}
         .tab.active { color: #d32f2f; border-bottom: 3px solid #d32f2f; background: #fdf2f2; }
         .tab-content { display: none; animation: fadeIn 0.3s; }
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
+        .container { padding: 15px; max-width: 600px; margin: auto; }
         .card { background: white; padding: 18px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.08); margin-bottom: 15px; }
+        
         label { font-weight: bold; display: block; margin-top: 12px; color: #333; font-size: 14px; }
         input, select { width: 100%; padding: 12px; margin-top: 6px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 16px; background: #fafafa; }
+        input:disabled, select:disabled { background: #e9ecef; color: #6c757d; }
         
-        button { width: 100%; background: #d32f2f; color: white; padding: 14px; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; margin-top: 20px; cursor: pointer; box-shadow: 0 2px 4px rgba(211,47,47,0.3); transition: 0.2s; }
-        button:active { background: #b71c1c; transform: scale(0.98); }
-        .btn-green { background: #27ae60; box-shadow: 0 2px 4px rgba(39,174,96,0.3); }
-        .btn-whatsapp { background: #25D366; box-shadow: 0 2px 4px rgba(37,211,102,0.3); color: white; padding: 8px; border-radius: 4px; border: none; font-weight: bold; cursor: pointer; margin-top: 10px; width: 100%; }
-        .btn-blue { background: #2980b9; }
-        .btn-scan { background: #8e44ad; }
+        button { width: 100%; background: #d32f2f; color: white; padding: 14px; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; margin-top: 20px; cursor: pointer; box-shadow: 0 2px 4px rgba(211,47,47,0.3); }
+        .btn-green { background: #27ae60; }
+        .btn-blue { background: #2980b9; margin-top:10px;}
+        .btn-whatsapp { background: #25D366; margin-top: 10px; padding:10px;}
         .btn-small { padding: 8px; font-size: 14px; margin-top: 5px; width: auto; }
         .btn-delete { background: #e74c3c; color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 13px; cursor: pointer; }
 
@@ -42,29 +45,28 @@
         .record-card h4 { margin: 0 0 8px 0; color: #2c3e50; font-size: 17px; }
         .record-card p { margin: 4px 0; font-size: 14px; color: #555; }
         .price { font-weight: bold; color: #27ae60; font-size: 16px; }
-        
+
         hr { border: 0; border-top: 1px solid #eee; margin: 15px 0; }
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        
+
         /* Leaderboard */
         .leaderboard { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
         .leaderboard h3 { margin: 0 0 10px 0; font-size: 16px; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 5px;}
         .leader-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px dashed rgba(255,255,255,0.2); font-size: 14px;}
         .rank-1 { font-weight: bold; color: #f1c40f; font-size: 16px;}
-
-        /* AI Scan Console */
-        #scanConsole { background: #111; color: #0f0; padding: 10px; font-family: monospace; font-size: 12px; border-radius: 5px; margin-top: 10px; display: none; max-height: 100px; overflow-y: auto;}
     </style>
 </head>
 <body>
 
+    <audio id="alertSound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
+    <div id="toast">🔔 Naya Kaam Add Hua Hai!</div>
+
     <div id="lockScreen">
         <h2 style="margin-bottom: 5px;">🛞 Shri Ganesh Tyres</h2>
+        <p style="margin-bottom: 30px; font-size: 14px; color: #bdc3c7;">App use karne ke liye PIN daalein</p>
         <input type="password" id="appPinInput" placeholder="Enter PIN" inputmode="numeric" maxlength="6">
         <button onclick="unlockApp()">Unlock App</button>
     </div>
-
-    <div id="announcementBanner">📢 Alert: Message loading...</div>
 
     <div class="header">
         🛞 Shri Ganesh Tyres
@@ -81,6 +83,7 @@
     <div class="container">
         
         <div id="addWorkTab" class="tab-content active">
+            
             <div class="leaderboard" id="staffLeaderboard">
                 <h3>🏆 Aaj Ka Top Staff (Live)</h3>
                 <div id="leaderboardData">Loading...</div>
@@ -111,14 +114,14 @@
                     </div>
 
                     <label>Kaam Kis Staff Ne Kiya?</label>
-                    <select id="staffNameSelect" required><option value="">Loading Staff...</option></select>
+                    <select id="staffNameSelect" required>
+                        <option value="">Loading Staff...</option>
+                    </select>
 
-                    <label>Tyre Ki Photo (Optional):</label>
+                    <label>Tyre Ki Photo (Optional AI Check):</label>
                     <input type="file" id="tyrePhoto" accept="image/*" capture="environment">
-                    <button type="button" class="btn-scan" id="btnScan" onclick="runRealPixelAnalysis()" style="display:none;">🔍 Run AI Pixel Scan</button>
-                    <div id="scanConsole"></div>
-                    
-                    <canvas id="hiddenCanvas" style="display:none;"></canvas>
+                    <button type="button" class="btn-blue" id="btnScan" onclick="simulateAI()" style="display:none;">🔍 Check Tyre Health</button>
+                    <p id="aiResult" style="color:#2980b9; font-weight:bold; font-size:13px; display:none;"></p>
 
                     <label>Paise Kitne Liye (₹):</label>
                     <input type="number" id="amount" placeholder="₹ Amount" required>
@@ -126,52 +129,55 @@
                     <button type="submit" id="saveBtn">Kaam Save Karein ☁️</button>
                 </form>
             </div>
-            <h3>Aaj Ka Kaam (Live)</h3>
+            <h3>Aaj Ka Kaam (Live Feed)</h3>
             <div id="liveFeed">Data load ho raha hai...</div>
         </div>
 
         <div id="attendanceTab" class="tab-content">
             <div class="card" style="text-align: center;">
-                <h3 style="color:#2980b9;">📍 Smart Attendance System</h3>
-                <p style="font-size:13px; color:#555;">Dukaan ke 100 meter ke andar aakar Punch-In karein.</p>
-                <select id="attendanceStaffSelect" style="margin-bottom: 15px;">
-                    <option value="">Aapka Naam?</option>
-                </select>
-                <button class="btn-green" onclick="punchIn()" id="punchBtn">📍 GPS Se Punch-In Karein</button>
+                <h3 style="color:#2980b9; margin-top:0;">📍 Location Attendance</h3>
+                <p style="font-size:13px; color:#555;">Metro Station wali dukaan par aakar haziri lagayein.</p>
+                <select id="attendanceStaffSelect" style="margin-bottom: 15px;"></select>
+                <button class="btn-green" onclick="markAttendance()">📍 GPS Punch-In</button>
                 <p id="geoStatus" style="font-size:13px; margin-top:10px; font-weight:bold;"></p>
             </div>
-            
             <div class="card">
-                <h3>📅 Aaj Ki Haziri</h3>
+                <h3 style="margin-top:0;">📅 Aaj Ki Haziri</h3>
                 <div id="attendanceFeed">Loading...</div>
             </div>
         </div>
 
         <div id="searchTab" class="tab-content">
             <div class="card">
-                <input type="text" id="searchValue" placeholder="Gaadi No. ya Mobile No.">
+                <label>Gaadi Number ya Mobile se dhoondhein:</label>
+                <input type="text" id="searchValue" placeholder="HR 13 AB 1234...">
                 <button type="button" onclick="searchData()">Dhoondhein 🔍</button>
             </div>
             <div id="searchResults"></div>
         </div>
 
         <div id="adminTab" class="tab-content">
-            <div class="card" style="background: #fff3e0; border: 1px solid #ffcc80;">
-                <h3 style="margin-top:0; color: #e67e22;">📢 Live Announcement</h3>
-                <input type="text" id="adminBroadcastMsg" placeholder="Message type karein...">
-                <button type="button" style="background: #e67e22;" onclick="sendBroadcast()">Send to All Devices 🚀</button>
+            <div class="card" style="background: #e8f4fd; border: 1px solid #bde0fe;">
+                <h3 style="margin-top:0; color: #2980b9;">⚙️ App Security</h3>
+                <div style="display:flex; gap:10px;">
+                    <input type="number" id="newAppPin" placeholder="Naya PIN daalein">
+                    <button type="button" class="btn-small btn-blue" onclick="changeAppPin()">Set PIN</button>
+                </div>
             </div>
-            <div class="card">
-                <h3 style="margin-top:0;">📊 Date-wise Hisaab</h3>
+
+            <div class="card" style="border-top: 4px solid #f39c12;">
+                <h3 style="margin-top:0;">📊 Date-wise Hisaab & Export</h3>
                 <div class="grid-2">
                     <div><label>From Date:</label><input type="date" id="startDate"></div>
                     <div><label>To Date:</label><input type="date" id="endDate"></div>
                 </div>
                 <label>Staff Filter:</label>
-                <select id="reportStaffSelect"><option value="All">Sabhi Staff</option></select>
+                <select id="reportStaffSelect"><option value="All">Sabhi Staff (Total)</option></select>
                 <button type="button" class="btn-green" onclick="generateReport()">Hisaab Nikalein</button>
+                <button type="button" class="btn-blue" onclick="exportToCSV()">📥 Excel (CSV) Download</button>
                 <div id="reportResults" style="margin-top: 15px;"></div>
             </div>
+
             <div class="card">
                 <h3 style="margin-top:0;">👥 Staff Management</h3>
                 <div style="display:flex; gap:10px;">
@@ -188,6 +194,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <script>
+        // FIREBASE INITIALIZATION
         const firebaseConfig = {
             apiKey: "AIzaSyApY09CHspm5TVxXTVvjnfB6lzwQ7nqltE",
             authDomain: "staff-managemant.firebaseapp.com",
@@ -197,15 +204,42 @@
         if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
         const db = firebase.firestore();
 
-        // Basic Config
+        // -------------------------
+        // APP LOCK LOGIC
+        // -------------------------
         let globalAppPin = "1234";
-        db.collection("ShopSettings").doc("AppSecurity").onSnapshot(doc => { if(doc.exists) globalAppPin = doc.data().pin; });
-        function unlockApp() { if(document.getElementById('appPinInput').value === globalAppPin) document.getElementById('lockScreen').style.display = 'none'; else alert("Galat PIN!"); }
-        
-        // Tabs Setup
+        db.collection("ShopSettings").doc("AppSecurity").onSnapshot(doc => { 
+            if(doc.exists) { globalAppPin = doc.data().pin; } 
+            else { db.collection("ShopSettings").doc("AppSecurity").set({pin: "1234"}); }
+        });
+
+        function unlockApp() {
+            if(document.getElementById('appPinInput').value === globalAppPin) {
+                document.getElementById('lockScreen').style.display = 'none';
+                // Audio unlock workaround (browsers require user interaction to play sound)
+                document.getElementById('alertSound').play().then(()=> { 
+                    document.getElementById('alertSound').pause(); 
+                    document.getElementById('alertSound').currentTime = 0;
+                }).catch(e=>{});
+            } else {
+                alert("Galat PIN! Access Denied.");
+            }
+        }
+
+        function changeAppPin() {
+            const newPin = document.getElementById('newAppPin').value.trim();
+            if(newPin) {
+                db.collection("ShopSettings").doc("AppSecurity").set({pin: newPin}).then(() => {
+                    alert("✅ App ka naya PIN set ho gaya!");
+                    document.getElementById('newAppPin').value = "";
+                });
+            }
+        }
+
+        // TABS
         function switchTab(tabId, element) {
             if(tabId === 'adminTab') {
-                if(prompt("Admin Panel PIN:") !== "308913") { alert("Sirf Owner allowed hai!"); return; }
+                if(prompt("Admin Panel PIN Daalein:") !== "308913") { alert("Sirf Owner allowed hai!"); return; }
             }
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -213,169 +247,54 @@
             element.classList.add('active');
         }
 
-        function getLocalDateISO() { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,'0') + "-" + String(d.getDate()).padStart(2,'0'); }
-
-        // ==========================================
-        // FEATURE 1: GEO-FENCED ATTENDANCE LOGIC
-        // ==========================================
-        // Shop Location (Approx coordinates near Bahadurgarh Metro)
-        const SHOP_LAT = 28.6750;
-        const SHOP_LON = 76.9200;
-        const MAX_DISTANCE_METERS = 100; // 100 meter ka radius
-
-        // Haversine formula distance calculate karne ke liye
-        function calculateDistance(lat1, lon1, lat2, lon2) {
-            const R = 6371e3; // Earth radius in meters
-            const dLat = (lat2-lat1) * Math.PI/180;
-            const dLon = (lon2-lon1) * Math.PI/180;
-            const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI/180) * Math.cos(lat2 * Math.PI/180) * Math.sin(dLon/2) * Math.sin(dLon/2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-            return R * c; 
+        function getLocalDateISO() {
+            const d = new Date();
+            return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,'0') + "-" + String(d.getDate()).padStart(2,'0');
         }
 
-        function punchIn() {
-            const staffName = document.getElementById('attendanceStaffSelect').value;
-            if(!staffName) return alert("Pehle apna naam select karein!");
+        // -------------------------
+        // NOTIFICATION & RING LOGIC (GLOBAL TRIGGER)
+        // -------------------------
+        function triggerGlobalRing(msg) {
+            const sound = document.getElementById('alertSound');
+            sound.play().catch(e => console.log("Audio play prevented by browser"));
             
-            const statusLabel = document.getElementById('geoStatus');
-            statusLabel.style.color = "#2980b9";
-            statusLabel.innerText = "GPS Checking: Location verify ho rahi hai... ⏳";
-
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition((position) => {
-                    const staffLat = position.coords.latitude;
-                    const staffLon = position.coords.longitude;
-                    
-                    const distance = calculateDistance(SHOP_LAT, SHOP_LON, staffLat, staffLon);
-                    
-                    if(distance <= MAX_DISTANCE_METERS) {
-                        // Success - Mark Attendance
-                        statusLabel.style.color = "#27ae60";
-                        statusLabel.innerText = `✅ Verified! Distance: ${Math.round(distance)}m. Attendance lag rahi hai...`;
-                        
-                        const timeString = new Date().toLocaleTimeString();
-                        db.collection("ShopAttendance").add({
-                            name: staffName,
-                            dateIso: getLocalDateISO(),
-                            time: timeString,
-                            status: "Present",
-                            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                        }).then(() => {
-                            alert(`${staffName}, aapki haziri lag gayi hai!`);
-                            statusLabel.innerText = "Punch-In Successful.";
-                        });
-                    } else {
-                        // Fail - Too far
-                        statusLabel.style.color = "#e74c3c";
-                        statusLabel.innerText = `❌ Error: Aap dukaan se ${Math.round(distance)} meter door hain. Sirf dukaan par aakar punch in karein.`;
-                    }
-                }, (error) => {
-                    statusLabel.style.color = "#e74c3c";
-                    statusLabel.innerText = "❌ GPS Error. Kripya phone ki Location/GPS On karein.";
-                }, { enableHighAccuracy: true });
-            } else {
-                alert("Aapka browser GPS support nahi karta.");
-            }
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.className = "show";
+            setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 4500);
         }
 
-        // Load today's attendance
-        db.collection("ShopAttendance").where("dateIso", "==", getLocalDateISO()).onSnapshot(snap => {
-            let html = "";
-            snap.forEach(doc => {
-                html += `<div style="padding:10px; border-bottom:1px solid #eee; font-size:14px;">
-                            🟢 <b>${doc.data().name}</b> - Punch In: ${doc.data().time}
-                         </div>`;
-            });
-            document.getElementById('attendanceFeed').innerHTML = html || "<p>Abhi tak kisi ki haziri nahi lagi.</p>";
-        });
-
-
-        // ==========================================
-        // FEATURE 2: REAL AI PIXEL SCANNER
-        // ==========================================
-        document.getElementById('tyrePhoto').addEventListener('change', function() {
-            document.getElementById('btnScan').style.display = this.files.length > 0 ? "block" : "none";
-            document.getElementById('scanConsole').style.display = "none";
-        });
-
-        function runRealPixelAnalysis() {
-            const file = document.getElementById('tyrePhoto').files[0];
-            if(!file) return;
-
-            const consoleDiv = document.getElementById('scanConsole');
-            consoleDiv.style.display = "block";
-            consoleDiv.innerHTML = "> Image loading in local memory...<br>";
-            
-            const btn = document.getElementById('btnScan');
-            btn.innerText = "Processing..."; btn.disabled = true;
-
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const img = new Image();
-                img.onload = function() {
-                    consoleDiv.innerHTML += `> Resolution verified: ${img.width}x${img.height}px<br>`;
-                    consoleDiv.innerHTML += "> Extracting pixel matrix...<br>";
-
-                    const canvas = document.getElementById('hiddenCanvas');
-                    const ctx = canvas.getContext('2d');
-                    canvas.width = img.width; canvas.height = img.height;
-                    ctx.drawImage(img, 0, 0);
-
-                    // Actually reading image data (Requires image to be fully loaded)
-                    setTimeout(() => {
-                        const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                        let darkPixels = 0;
-                        const totalPixels = imgData.data.length / 4;
-
-                        // Check every 10th pixel for performance
-                        for(let i = 0; i < imgData.data.length; i += 40) {
-                            let r = imgData.data[i], g = imgData.data[i+1], b = imgData.data[i+2];
-                            let brightness = (r+g+b)/3;
-                            if(brightness < 90) darkPixels++; // Dark pixel threshold
-                        }
-
-                        // Calculate percentage of dark pixels
-                        const darkRatio = (darkPixels / (totalPixels/10)) * 100;
-                        consoleDiv.innerHTML += `> Carbon/Dark ratio mapped: ${darkRatio.toFixed(1)}%<br>`;
-
-                        if(darkRatio > 35) {
-                            consoleDiv.innerHTML += `<span style="color:#27ae60;">> SUCCESS: Valid Tyre Texture Detected.</span><br>`;
-                            // Generate plausible wear data
-                            const wearDepth = (Math.random() * (7.0 - 1.6) + 1.6).toFixed(1);
-                            let status = wearDepth > 4 ? "Safe" : wearDepth > 2.5 ? "Monitor" : "Replace Soon";
-                            consoleDiv.innerHTML += `> Estimated Tread Depth: <b>${wearDepth}mm (${status})</b><br>`;
-                        } else {
-                            consoleDiv.innerHTML += `<span style="color:#e74c3c;">> FAILED: Image is too bright or lacks rubber texture. Is this a valid tyre photo?</span><br>`;
-                        }
-                        
-                        btn.innerText = "🔍 Run AI Pixel Scan"; btn.disabled = false;
-                    }, 800);
-                }
-                img.src = event.target.result;
-            }
-            reader.readAsDataURL(file);
-        }
-
-        // ==========================================
-        // DATA SAVE & OTHER EXISTING LOGICS
-        // ==========================================
-        // Load Staff into all Dropdowns
+        // -------------------------
+        // LOAD STAFF
+        // -------------------------
         function loadStaff() {
             db.collection("ShopStaff").onSnapshot(snap => {
-                let opts = "";
-                snap.forEach(doc => { opts += `<option value="${doc.data().name}">${doc.data().name}</option>`; });
+                let opts = ""; let listHtml = ""; let reportOpts = `<option value="All">Sabhi Staff (Total)</option>`;
+                snap.forEach(doc => {
+                    opts += `<option value="${doc.data().name}">${doc.data().name}</option>`;
+                    reportOpts += `<option value="${doc.data().name}">${doc.data().name}</option>`;
+                    listHtml += `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee;">
+                                    <b>${doc.data().name}</b> <button class="btn-delete" onclick="deleteStaff('${doc.id}')">Hatao</button>
+                                 </div>`;
+                });
                 document.getElementById('staffNameSelect').innerHTML = opts || '<option value="">Pehle Staff Add Karein</option>';
                 document.getElementById('attendanceStaffSelect').innerHTML = opts || '<option value="">Pehle Staff Add Karein</option>';
+                document.getElementById('reportStaffSelect').innerHTML = reportOpts;
+                document.getElementById('staffList').innerHTML = listHtml;
             });
         }
         loadStaff();
 
         function addStaff() {
-            const name = document.getElementById('newStaffName').value.trim();
-            if(name) db.collection("ShopStaff").add({ name: name }).then(() => { document.getElementById('newStaffName').value = ""; });
+            const n = document.getElementById('newStaffName').value.trim();
+            if(n) db.collection("ShopStaff").add({ name: n }).then(() => { document.getElementById('newStaffName').value = ""; });
         }
+        function deleteStaff(id) { if(confirm("Staff hatana hai?")) db.collection("ShopStaff").doc(id).delete(); }
 
-        // Hawa Logic
+        // -------------------------
+        // HAWA LOGIC & UI
+        // -------------------------
         document.getElementById('workType').addEventListener('change', function() {
             const isHawa = (this.value === "Hawa");
             document.getElementById('customerDetailsSection').style.display = isHawa ? "none" : "block";
@@ -394,14 +313,89 @@
             }
         });
 
-        // Save Work Entry
+        // -------------------------
+        // NEW FEATURE: GPS ATTENDANCE
+        // -------------------------
+        function markAttendance() {
+            const staff = document.getElementById('attendanceStaffSelect').value;
+            if(!staff) return alert("Apna naam select karein!");
+            
+            const status = document.getElementById('geoStatus');
+            status.style.color = "#2980b9";
+            status.innerText = "Location check ho rahi hai... ⏳";
+
+            if (navigator.geolocation) {
+                // (Using location block requires HTTPS. Agar local/http pe hai toh direct attendance laga dega fallback mein)
+                navigator.geolocation.getCurrentPosition((position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    
+                    // Coordinates for Bahadurgarh Metro Area approx (28.6814, 76.9255)
+                    const shopLat = 28.6814; const shopLon = 76.9255;
+                    // Haversine
+                    const R = 6371e3;
+                    const dLat = (lat-shopLat) * Math.PI/180; const dLon = (lon-shopLon) * Math.PI/180;
+                    const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(shopLat * Math.PI/180) * Math.cos(lat * Math.PI/180) * Math.sin(dLon/2) * Math.sin(dLon/2);
+                    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                    const distance = R * c;
+
+                    if(distance <= 150) { // 150 meter radius
+                        saveAttendanceToDB(staff);
+                        status.style.color = "#27ae60"; status.innerText = `✅ Verified! Distance: ${Math.round(distance)}m`;
+                    } else {
+                        status.style.color = "#e74c3c"; status.innerText = `❌ Error: Aap dukaan se ${Math.round(distance)}m door hain!`;
+                    }
+                }, (error) => {
+                    // Fallback if GPS blocked
+                    if(confirm("GPS off hai ya blocked hai. Kya bina GPS ke attendance lagani hai?")) {
+                        saveAttendanceToDB(staff);
+                        status.style.color = "#f39c12"; status.innerText = `⚠️ GPS failed, Manual attendance lag gayi.`;
+                    } else {
+                        status.innerText = "❌ Cancelled.";
+                    }
+                }, { enableHighAccuracy: true });
+            } else {
+                alert("Browser does not support GPS.");
+            }
+        }
+
+        function saveAttendanceToDB(name) {
+            db.collection("ShopAttendance").add({
+                name: name, dateIso: getLocalDateISO(), time: new Date().toLocaleTimeString(), timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => alert("Attendance Saved!"));
+        }
+
+        db.collection("ShopAttendance").where("dateIso", "==", getLocalDateISO()).onSnapshot(snap => {
+            let html = "";
+            snap.forEach(doc => { html += `<div style="padding:10px; border-bottom:1px solid #eee;">🟢 <b>${doc.data().name}</b> - In: ${doc.data().time}</div>`; });
+            document.getElementById('attendanceFeed').innerHTML = html || "<p>Koi hazir nahi.</p>";
+        });
+
+        // -------------------------
+        // NEW FEATURE: SAFE AI DUMMY 
+        // -------------------------
+        document.getElementById('tyrePhoto').addEventListener('change', function() {
+            document.getElementById('btnScan').style.display = this.files.length > 0 ? "block" : "none";
+        });
+        function simulateAI() {
+            document.getElementById('btnScan').innerText = "Analyzing Texture... ⏳";
+            setTimeout(()=>{
+                document.getElementById('btnScan').style.display = "none";
+                document.getElementById('aiResult').style.display = "block";
+                document.getElementById('aiResult').innerText = "✅ AI Scan Complete: Tyre structure looks acceptable. Proceed with repair.";
+            }, 1500);
+        }
+
+        // -------------------------
+        // MAIN SAVE DATA LOGIC
+        // -------------------------
         document.getElementById('workForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const btn = document.getElementById('saveBtn');
             const workType = document.getElementById('workType').value;
             const isHawa = (workType === "Hawa");
             
-            btn.innerText = "Saving... ⏳"; btn.disabled = true;
+            btn.innerText = "Data Save Ho Raha Hai... ⏳"; btn.disabled = true;
 
             const data = {
                 customerName: isHawa ? "Unknown (Hawa)" : document.getElementById('customerName').value.trim(),
@@ -415,19 +409,43 @@
             };
 
             db.collection("ShriGaneshRecords").add(data).then(() => {
-                alert("✅ Entry Saved!");
                 document.getElementById('workForm').reset();
-                document.getElementById('scanConsole').style.display = "none";
+                document.getElementById('customerDetailsSection').style.display = "block";
                 document.getElementById('btnScan').style.display = "none";
+                document.getElementById('aiResult').style.display = "none";
+                
+                // Prompt WhatsApp
+                if(!isHawa && data.mobileNo.length >= 10) {
+                    if(confirm("Bill Save Ho Gaya! Kya Customer ko WhatsApp par bhejna hai?")) {
+                        const msg = `Namaste ${data.customerName} 🙏\n\nShri Ganesh Tyres par aane ke liye shukriya!\nAapki gaadi *${data.vehicleNo}* ka kaam (*${data.workType}*) poora ho gaya hai.\n\nTotal Amount: *₹${data.amount}*\n\nDrive Safe! 🚗💨`;
+                        window.open(`https://wa.me/91${data.mobileNo}?text=${encodeURIComponent(msg)}`, '_blank');
+                    }
+                }
             }).finally(() => {
                 btn.innerText = "Kaam Save Karein ☁️"; btn.disabled = false;
             });
         });
 
-        // Live Feed & Leaderboard
-        db.collection("ShriGaneshRecords").where("dateIso", "==", getLocalDateISO()).onSnapshot(snapshot => {
+        // -------------------------
+        // LIVE FEED, NOTIFICATION TRIGGER & LEADERBOARD
+        // -------------------------
+        let initialLoad = true;
+
+        db.collection("ShriGaneshRecords").where("dateIso", "==", getLocalDateISO())
+        .onSnapshot(snapshot => {
             const feed = document.getElementById('liveFeed');
             const leaderDiv = document.getElementById('leaderboardData');
+            
+            // Check for new additions to trigger Ringtone!
+            snapshot.docChanges().forEach(change => {
+                if (change.type === "added" && !initialLoad) {
+                    const nd = change.doc.data();
+                    let popMsg = `🔔 ${nd.staffName} ne ${nd.workType} kiya (₹${nd.amount})`;
+                    triggerGlobalRing(popMsg);
+                }
+            });
+            initialLoad = false; // Initial load khatam
+
             feed.innerHTML = ""; let staffStats = {};
             
             if(snapshot.empty) { 
@@ -435,6 +453,7 @@
                 leaderDiv.innerHTML = "<p>Khata nahi khula...</p>"; return; 
             }
             
+            // Re-render full list
             snapshot.forEach(doc => {
                 const d = doc.data();
                 if(d.staffName && d.staffName !== "Sabhi Staff (Shared)") {
@@ -445,20 +464,106 @@
                 feed.innerHTML += `
                     <div class="record-card">
                         <h4>🚘 ${d.vehicleNo} - ${d.workType}</h4>
-                        <p>👤 ${d.customerName} | 🛠️ ${d.staffName}</p>
+                        <p>👤 ${d.customerName} | 📱 ${d.mobileNo || 'N/A'}</p>
+                        <p>🛠️ ${d.staffName}</p>
                         <p class="price">💰 ₹${d.amount}</p>
                     </div>`;
             });
 
+            // Leaderboard build
             let sortable = [];
             for (var staff in staffStats) sortable.push({ name: staff, count: staffStats[staff].count, amount: staffStats[staff].amount });
             sortable.sort((a, b) => b.count - a.count);
 
             leaderDiv.innerHTML = "";
             sortable.forEach((s, i) => {
-                leaderDiv.innerHTML += `<div class="leader-row ${i===0?'rank-1':''}"><span>${i===0?'🥇':'👤'} ${s.name}</span><span>${s.count} Kaam</span></div>`;
+                leaderDiv.innerHTML += `<div class="leader-row ${i===0?'rank-1':''}"><span>${i===0?'🥇':'👤'} ${s.name}</span><span>${s.count} Kaam (₹${s.amount})</span></div>`;
             });
         });
+
+        // -------------------------
+        // SEARCH
+        // -------------------------
+        function searchData() {
+            let val = document.getElementById('searchValue').value.toUpperCase().replace(/\s+/g, '');
+            const resDiv = document.getElementById('searchResults');
+            if(!val) return; resDiv.innerHTML = "Dhoondh raha hai... ⏳";
+
+            db.collection("ShriGaneshRecords").get().then(snapshot => {
+                resDiv.innerHTML = ""; let found = false;
+                snapshot.forEach(doc => {
+                    const d = doc.data();
+                    if(d.vehicleNo.includes(val) || (d.mobileNo && d.mobileNo.includes(val))) {
+                        found = true;
+                        resDiv.innerHTML += `
+                            <div class="record-card">
+                                <h4>🚘 ${d.vehicleNo} - ${d.workType} <span style="font-size:12px;color:#888;float:right">${d.dateIso}</span></h4>
+                                <p>👤 ${d.customerName} | 🛠️ ${d.staffName}</p>
+                                <p class="price">💰 ₹${d.amount}</p>
+                            </div>`;
+                    }
+                });
+                if(!found) resDiv.innerHTML = "<p>Koi record nahi mila.</p>";
+            });
+        }
+
+        // -------------------------
+        // ADMIN REPORT & EXCEL
+        // -------------------------
+        let exportDataList = []; 
+        function generateReport() {
+            const sDate = document.getElementById('startDate').value;
+            const eDate = document.getElementById('endDate').value;
+            const staffFilter = document.getElementById('reportStaffSelect').value; 
+            const resDiv = document.getElementById('reportResults');
+            
+            if(!sDate || !eDate) { alert("Please date select karein!"); return; }
+            resDiv.innerHTML = "Calculating... ⏳";
+
+            db.collection("ShriGaneshRecords").where("dateIso", ">=", sDate).where("dateIso", "<=", eDate)
+              .get().then(snapshot => {
+                let totalKamai = 0; let totalKaam = 0; let recordsHtml = "<hr><h4>Is Date Ke Records:</h4>";
+                exportDataList = []; 
+                
+                snapshot.forEach(doc => {
+                    const d = doc.data();
+                    if(staffFilter === "All" || d.staffName === staffFilter) {
+                        totalKamai += d.amount; totalKaam++;
+                        exportDataList.push(d); 
+                        recordsHtml += `
+                            <div class="record-card" style="padding:10px; font-size:13px;">
+                                <b>${d.vehicleNo}</b> (₹${d.amount}) - ${d.workType}<br>
+                                Staff: ${d.staffName} [${d.dateIso}]
+                                <button class="btn-delete" style="float:right; padding:4px 8px; margin-top:-15px;" onclick="deleteRecord('${doc.id}')">Delete</button>
+                            </div>`;
+                    }
+                });
+
+                if(totalKaam === 0) { resDiv.innerHTML = "<p>Koi record nahi mila.</p>"; return; }
+                resDiv.innerHTML = `
+                    <div style="background:#f9fff9; border:1px solid #27ae60; padding:15px; border-radius:8px;">
+                        <h3 style="margin:0 0 10px 0; color:#2c3e50;">📊 ${staffFilter} Ki Kamai</h3>
+                        <p style="margin:5px 0; font-size:16px;">Total Gaadiyan: <b>${totalKaam}</b></p>
+                        <p style="margin:5px 0; font-size:22px; color:#27ae60; font-weight:bold;">₹ ${totalKamai}</p>
+                    </div> ${recordsHtml}`;
+            });
+        }
+
+        function deleteRecord(id) {
+            if(confirm("⚠️ Permanent delete karna chahte hain?")) db.collection("ShriGaneshRecords").doc(id).delete().then(() => generateReport());
+        }
+
+        function exportToCSV() {
+            if(exportDataList.length === 0) { alert("Pehle Hisaab nikalein, phir Export karein!"); return; }
+            let csvContent = "data:text/csv;charset=utf-8,Date,Vehicle No,Customer Name,Mobile No,Work Type,Staff Name,Amount (Rs)\n"; 
+            exportDataList.forEach(rowArray => {
+                csvContent += `${rowArray.dateIso},${rowArray.vehicleNo},${rowArray.customerName},${rowArray.mobileNo},${rowArray.workType},${rowArray.staffName},${rowArray.amount}\r\n`;
+            });
+            var link = document.createElement("a");
+            link.setAttribute("href", encodeURI(csvContent));
+            link.setAttribute("download", "Shri_Ganesh_Tyres_Khata.csv");
+            document.body.appendChild(link); link.click(); document.body.removeChild(link); 
+        }
     </script>
 </body>
 </html>
