@@ -12,13 +12,7 @@
         /* App Lock Screen */
         #lockScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #2c3e50; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; }
         #lockScreen input { width: 80%; max-width: 300px; padding: 15px; text-align: center; font-size: 24px; letter-spacing: 5px; border-radius: 8px; border: none; outline: none; margin-bottom: 20px; }
-        #lockScreen button { width: 80%; max-width: 300px; background: #e74c3c; font-size: 18px; padding: 15px; border:none; border-radius:8px; font-weight:bold;}
-
-        /* Global Toast Message (Ringtone Notification) */
-        #toast { visibility: hidden; min-width: 250px; background-color: #27ae60; color: #fff; text-align: center; border-radius: 8px; padding: 16px; position: fixed; z-index: 10000; left: 50%; transform: translateX(-50%); top: 20px; font-size: 16px; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
-        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 4s; }
-        @keyframes fadein { from { top: 0; opacity: 0; } to { top: 20px; opacity: 1; } }
-        @keyframes fadeout { from { top: 20px; opacity: 1; } to { top: 0; opacity: 0; } }
+        #lockScreen button { width: 80%; max-width: 300px; background: #e74c3c; font-size: 18px; padding: 15px; border:none; border-radius:8px; font-weight:bold; cursor:pointer;}
 
         .tabs { display: flex; background: white; border-bottom: 2px solid #ddd; position: sticky; top: 0; z-index: 100; overflow-x: auto;}
         .tab { flex: 1; padding: 14px 5px; text-align: center; font-weight: bold; color: #555; cursor: pointer; border-bottom: 3px solid transparent; font-size: 14px; transition: 0.3s; min-width: 85px;}
@@ -41,7 +35,7 @@
         .btn-small { padding: 8px; font-size: 14px; margin-top: 5px; width: auto; }
         .btn-delete { background: #e74c3c; color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 13px; cursor: pointer; }
 
-        .record-card { background: #fff; padding: 15px; border-left: 5px solid #d32f2f; border-radius: 6px; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.08); }
+        .record-card { background: #fff; padding: 15px; border-left: 5px solid #d32f2f; border-radius: 6px; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.08); position: relative;}
         .record-card h4 { margin: 0 0 8px 0; color: #2c3e50; font-size: 17px; }
         .record-card p { margin: 4px 0; font-size: 14px; color: #555; }
         .price { font-weight: bold; color: #27ae60; font-size: 16px; }
@@ -50,16 +44,18 @@
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
         /* Leaderboard */
-        .leaderboard { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
+        .leaderboard { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; padding: 15px; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);}
         .leaderboard h3 { margin: 0 0 10px 0; font-size: 16px; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 5px;}
-        .leader-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px dashed rgba(255,255,255,0.2); font-size: 14px;}
-        .rank-1 { font-weight: bold; color: #f1c40f; font-size: 16px;}
+        .leader-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed rgba(255,255,255,0.2); font-size: 15px;}
+        .rank-1 { font-weight: bold; color: #f1c40f; font-size: 17px; transform: scale(1.02);}
+        
+        /* Badges */
+        .badge-sales { background: #27ae60; color: white; padding: 2px 8px; border-radius: 10px; font-size: 12px; }
     </style>
 </head>
 <body>
 
     <audio id="alertSound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
-    <div id="toast">🔔 Naya Kaam Add Hua Hai!</div>
 
     <div id="lockScreen">
         <h2 style="margin-bottom: 5px;">🛞 Shri Ganesh Tyres</h2>
@@ -70,13 +66,13 @@
 
     <div class="header">
         🛞 Shri Ganesh Tyres
-        <div class="sub-header">Near Brigadier Hoshiar Singh Metro Station</div>
+        <div class="sub-header">Pro Management Dashboard</div>
     </div>
 
     <div class="tabs">
         <div class="tab active" onclick="switchTab('addWorkTab', this)">📝 Entry</div>
-        <div class="tab" onclick="switchTab('attendanceTab', this)">📍 Attendance</div>
         <div class="tab" onclick="switchTab('searchTab', this)">🔍 Search</div>
+        <div class="tab" onclick="switchTab('growthTab', this)">📈 Growth</div>
         <div class="tab" onclick="switchTab('adminTab', this)">🔒 Admin</div>
     </div>
 
@@ -85,8 +81,8 @@
         <div id="addWorkTab" class="tab-content active">
             
             <div class="leaderboard" id="staffLeaderboard">
-                <h3>🏆 Aaj Ka Top Staff (Live)</h3>
-                <div id="leaderboardData">Loading...</div>
+                <h3>🏆 Aaj Ke Top Performers (By Sales)</h3>
+                <div id="leaderboardData">Data load ho raha hai...</div>
             </div>
 
             <div class="card">
@@ -101,6 +97,7 @@
                         <option value="New Car Tyre">New Car Tyre</option>
                         <option value="Old Tyre">Old Tyre</option>
                         <option value="Nalki (Valve)">Nalki (Valve)</option>
+                        <option value="Wheel Alignment">Wheel Alignment</option>
                         <option value="Hawa">Hawa (Air)</option>
                     </select>
 
@@ -118,11 +115,6 @@
                         <option value="">Loading Staff...</option>
                     </select>
 
-                    <label>Tyre Ki Photo (Optional AI Check):</label>
-                    <input type="file" id="tyrePhoto" accept="image/*" capture="environment">
-                    <button type="button" class="btn-blue" id="btnScan" onclick="simulateAI()" style="display:none;">🔍 Check Tyre Health</button>
-                    <p id="aiResult" style="color:#2980b9; font-weight:bold; font-size:13px; display:none;"></p>
-
                     <label>Paise Kitne Liye (₹):</label>
                     <input type="number" id="amount" placeholder="₹ Amount" required>
 
@@ -133,20 +125,6 @@
             <div id="liveFeed">Data load ho raha hai...</div>
         </div>
 
-        <div id="attendanceTab" class="tab-content">
-            <div class="card" style="text-align: center;">
-                <h3 style="color:#2980b9; margin-top:0;">📍 Location Attendance</h3>
-                <p style="font-size:13px; color:#555;">Metro Station wali dukaan par aakar haziri lagayein.</p>
-                <select id="attendanceStaffSelect" style="margin-bottom: 15px;"></select>
-                <button class="btn-green" onclick="markAttendance()">📍 GPS Punch-In</button>
-                <p id="geoStatus" style="font-size:13px; margin-top:10px; font-weight:bold;"></p>
-            </div>
-            <div class="card">
-                <h3 style="margin-top:0;">📅 Aaj Ki Haziri</h3>
-                <div id="attendanceFeed">Loading...</div>
-            </div>
-        </div>
-
         <div id="searchTab" class="tab-content">
             <div class="card">
                 <label>Gaadi Number ya Mobile se dhoondhein:</label>
@@ -154,6 +132,15 @@
                 <button type="button" onclick="searchData()">Dhoondhein 🔍</button>
             </div>
             <div id="searchResults"></div>
+        </div>
+
+        <div id="growthTab" class="tab-content">
+            <div class="card" style="background: #eafaf1; border: 1px solid #2ecc71;">
+                <h3 style="margin-top:0; color: #27ae60;">🔄 Smart Follow-Ups (Sales Booster)</h3>
+                <p style="font-size:13px; color:#555;">In customers ko visit kiye hue 30+ din ho chuke hain. Inhe WhatsApp karke dobara shop par bulayein (Alignment / Air check ke liye).</p>
+                <button class="btn-green" onclick="loadFollowUps()">List Generate Karein ⚙️</button>
+            </div>
+            <div id="followUpResults"></div>
         </div>
 
         <div id="adminTab" class="tab-content">
@@ -205,18 +192,23 @@
         const db = firebase.firestore();
 
         // -------------------------
-        // APP LOCK LOGIC
+        // APP LOCK & OS NOTIFICATION PERMISSION
         // -------------------------
         let globalAppPin = "1234";
         db.collection("ShopSettings").doc("AppSecurity").onSnapshot(doc => { 
             if(doc.exists) { globalAppPin = doc.data().pin; } 
-            else { db.collection("ShopSettings").doc("AppSecurity").set({pin: "1234"}); }
         });
 
         function unlockApp() {
             if(document.getElementById('appPinInput').value === globalAppPin) {
                 document.getElementById('lockScreen').style.display = 'none';
-                // Audio unlock workaround (browsers require user interaction to play sound)
+                
+                // Request OS-Level Push Notification Permission
+                if ("Notification" in window && Notification.permission !== "granted" && Notification.permission !== "denied") {
+                    Notification.requestPermission();
+                }
+
+                // Play silent audio to unlock browser autoplay restrictions
                 document.getElementById('alertSound').play().then(()=> { 
                     document.getElementById('alertSound').pause(); 
                     document.getElementById('alertSound').currentTime = 0;
@@ -253,16 +245,21 @@
         }
 
         // -------------------------
-        // NOTIFICATION & RING LOGIC (GLOBAL TRIGGER)
+        // TRUE OS PUSH NOTIFICATION SYSTEM
         // -------------------------
-        function triggerGlobalRing(msg) {
+        function sendTruePushNotification(title, bodyText) {
+            // Browser In-App Sound
             const sound = document.getElementById('alertSound');
-            sound.play().catch(e => console.log("Audio play prevented by browser"));
-            
-            const toast = document.getElementById('toast');
-            toast.innerText = msg;
-            toast.className = "show";
-            setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 4500);
+            sound.play().catch(e => console.log("Audio play prevented"));
+
+            // True OS Notification (Works on Lock Screen if browser is running in background)
+            if ("Notification" in window && Notification.permission === "granted") {
+                const notif = new Notification(title, {
+                    body: bodyText,
+                    icon: "https://cdn-icons-png.flaticon.com/512/3204/3204121.png", // Tyre Icon
+                    vibrate: [200, 100, 200]
+                });
+            }
         }
 
         // -------------------------
@@ -279,7 +276,6 @@
                                  </div>`;
                 });
                 document.getElementById('staffNameSelect').innerHTML = opts || '<option value="">Pehle Staff Add Karein</option>';
-                document.getElementById('attendanceStaffSelect').innerHTML = opts || '<option value="">Pehle Staff Add Karein</option>';
                 document.getElementById('reportStaffSelect').innerHTML = reportOpts;
                 document.getElementById('staffList').innerHTML = listHtml;
             });
@@ -314,79 +310,6 @@
         });
 
         // -------------------------
-        // NEW FEATURE: GPS ATTENDANCE
-        // -------------------------
-        function markAttendance() {
-            const staff = document.getElementById('attendanceStaffSelect').value;
-            if(!staff) return alert("Apna naam select karein!");
-            
-            const status = document.getElementById('geoStatus');
-            status.style.color = "#2980b9";
-            status.innerText = "Location check ho rahi hai... ⏳";
-
-            if (navigator.geolocation) {
-                // (Using location block requires HTTPS. Agar local/http pe hai toh direct attendance laga dega fallback mein)
-                navigator.geolocation.getCurrentPosition((position) => {
-                    const lat = position.coords.latitude;
-                    const lon = position.coords.longitude;
-                    
-                    // Coordinates for Bahadurgarh Metro Area approx (28.6814, 76.9255)
-                    const shopLat = 28.6814; const shopLon = 76.9255;
-                    // Haversine
-                    const R = 6371e3;
-                    const dLat = (lat-shopLat) * Math.PI/180; const dLon = (lon-shopLon) * Math.PI/180;
-                    const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(shopLat * Math.PI/180) * Math.cos(lat * Math.PI/180) * Math.sin(dLon/2) * Math.sin(dLon/2);
-                    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-                    const distance = R * c;
-
-                    if(distance <= 150) { // 150 meter radius
-                        saveAttendanceToDB(staff);
-                        status.style.color = "#27ae60"; status.innerText = `✅ Verified! Distance: ${Math.round(distance)}m`;
-                    } else {
-                        status.style.color = "#e74c3c"; status.innerText = `❌ Error: Aap dukaan se ${Math.round(distance)}m door hain!`;
-                    }
-                }, (error) => {
-                    // Fallback if GPS blocked
-                    if(confirm("GPS off hai ya blocked hai. Kya bina GPS ke attendance lagani hai?")) {
-                        saveAttendanceToDB(staff);
-                        status.style.color = "#f39c12"; status.innerText = `⚠️ GPS failed, Manual attendance lag gayi.`;
-                    } else {
-                        status.innerText = "❌ Cancelled.";
-                    }
-                }, { enableHighAccuracy: true });
-            } else {
-                alert("Browser does not support GPS.");
-            }
-        }
-
-        function saveAttendanceToDB(name) {
-            db.collection("ShopAttendance").add({
-                name: name, dateIso: getLocalDateISO(), time: new Date().toLocaleTimeString(), timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            }).then(() => alert("Attendance Saved!"));
-        }
-
-        db.collection("ShopAttendance").where("dateIso", "==", getLocalDateISO()).onSnapshot(snap => {
-            let html = "";
-            snap.forEach(doc => { html += `<div style="padding:10px; border-bottom:1px solid #eee;">🟢 <b>${doc.data().name}</b> - In: ${doc.data().time}</div>`; });
-            document.getElementById('attendanceFeed').innerHTML = html || "<p>Koi hazir nahi.</p>";
-        });
-
-        // -------------------------
-        // NEW FEATURE: SAFE AI DUMMY 
-        // -------------------------
-        document.getElementById('tyrePhoto').addEventListener('change', function() {
-            document.getElementById('btnScan').style.display = this.files.length > 0 ? "block" : "none";
-        });
-        function simulateAI() {
-            document.getElementById('btnScan').innerText = "Analyzing Texture... ⏳";
-            setTimeout(()=>{
-                document.getElementById('btnScan').style.display = "none";
-                document.getElementById('aiResult').style.display = "block";
-                document.getElementById('aiResult').innerText = "✅ AI Scan Complete: Tyre structure looks acceptable. Proceed with repair.";
-            }, 1500);
-        }
-
-        // -------------------------
         // MAIN SAVE DATA LOGIC
         // -------------------------
         document.getElementById('workForm').addEventListener('submit', function(e) {
@@ -411,8 +334,6 @@
             db.collection("ShriGaneshRecords").add(data).then(() => {
                 document.getElementById('workForm').reset();
                 document.getElementById('customerDetailsSection').style.display = "block";
-                document.getElementById('btnScan').style.display = "none";
-                document.getElementById('aiResult').style.display = "none";
                 
                 // Prompt WhatsApp
                 if(!isHawa && data.mobileNo.length >= 10) {
@@ -427,7 +348,7 @@
         });
 
         // -------------------------
-        // LIVE FEED, NOTIFICATION TRIGGER & LEADERBOARD
+        // LIVE FEED, TRUE NOTIFICATIONS & SALES LEADERBOARD
         // -------------------------
         let initialLoad = true;
 
@@ -436,15 +357,16 @@
             const feed = document.getElementById('liveFeed');
             const leaderDiv = document.getElementById('leaderboardData');
             
-            // Check for new additions to trigger Ringtone!
+            // Notification Trigger
             snapshot.docChanges().forEach(change => {
                 if (change.type === "added" && !initialLoad) {
                     const nd = change.doc.data();
-                    let popMsg = `🔔 ${nd.staffName} ne ${nd.workType} kiya (₹${nd.amount})`;
-                    triggerGlobalRing(popMsg);
+                    let title = `✅ Kaam Done: ₹${nd.amount}`;
+                    let body = `${nd.staffName} ne ${nd.workType} kiya. Gaadi: ${nd.vehicleNo}`;
+                    sendTruePushNotification(title, body);
                 }
             });
-            initialLoad = false; // Initial load khatam
+            initialLoad = false;
 
             feed.innerHTML = ""; let staffStats = {};
             
@@ -459,7 +381,7 @@
                 if(d.staffName && d.staffName !== "Sabhi Staff (Shared)") {
                     if(!staffStats[d.staffName]) staffStats[d.staffName] = { count: 0, amount: 0 };
                     staffStats[d.staffName].count += 1;
-                    staffStats[d.staffName].amount += d.amount;
+                    staffStats[d.staffName].amount += d.amount; // Add to total sales
                 }
                 feed.innerHTML += `
                     <div class="record-card">
@@ -470,16 +392,72 @@
                     </div>`;
             });
 
-            // Leaderboard build
+            // NEW LEADERBOARD LOGIC: Sorted by SALES AMOUNT (b.amount - a.amount)
             let sortable = [];
             for (var staff in staffStats) sortable.push({ name: staff, count: staffStats[staff].count, amount: staffStats[staff].amount });
-            sortable.sort((a, b) => b.count - a.count);
+            sortable.sort((a, b) => b.amount - a.amount); // Top staff is the one making most money
 
             leaderDiv.innerHTML = "";
             sortable.forEach((s, i) => {
-                leaderDiv.innerHTML += `<div class="leader-row ${i===0?'rank-1':''}"><span>${i===0?'🥇':'👤'} ${s.name}</span><span>${s.count} Kaam (₹${s.amount})</span></div>`;
+                let badge = i === 0 ? "🥇 Top Seller" : i === 1 ? "🥈 Runner up" : "👤";
+                leaderDiv.innerHTML += `
+                    <div class="leader-row ${i===0?'rank-1':''}">
+                        <span>${badge}: ${s.name}</span>
+                        <span><span class="badge-sales">₹${s.amount}</span> (${s.count} Tasks)</span>
+                    </div>`;
             });
         });
+
+        // -------------------------
+        // GROWTH TAB: SMART FOLLOW UPs
+        // -------------------------
+        function loadFollowUps() {
+            const resDiv = document.getElementById('followUpResults');
+            resDiv.innerHTML = "Database scan ho raha hai... ⏳";
+            
+            // Calculate date 30 days ago
+            let d = new Date();
+            d.setDate(d.getDate() - 30);
+            let thirtyDaysAgo = d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,'0') + "-" + String(d.getDate()).padStart(2,'0');
+
+            db.collection("ShriGaneshRecords").where("dateIso", "<", thirtyDaysAgo).get().then(snapshot => {
+                let uniqueCustomers = {};
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    if(data.mobileNo && data.mobileNo.length >= 10 && data.workType !== "Hawa") {
+                        // Keep only the most recent old record
+                        if(!uniqueCustomers[data.mobileNo] || uniqueCustomers[data.mobileNo].dateIso < data.dateIso) {
+                            uniqueCustomers[data.mobileNo] = data;
+                        }
+                    }
+                });
+
+                resDiv.innerHTML = "";
+                let count = 0;
+                for(let mob in uniqueCustomers) {
+                    count++;
+                    const cust = uniqueCustomers[mob];
+                    resDiv.innerHTML += `
+                        <div class="record-card" style="border-left-color:#27ae60;">
+                            <h4>👤 ${cust.customerName} (${cust.vehicleNo})</h4>
+                            <p>🕒 Last Visit: ${cust.dateIso}</p>
+                            <p>🛠️ Last Work: ${cust.workType}</p>
+                            <button class="btn-whatsapp" onclick="sendFollowUpWhatsApp('${cust.mobileNo}', '${cust.customerName}', '${cust.vehicleNo}')">
+                                WhatsApp Reminder Bhejein 📲
+                            </button>
+                        </div>`;
+                }
+
+                if(count === 0) {
+                    resDiv.innerHTML = "<p>Koi purana customer pending nahi hai abhi.</p>";
+                }
+            });
+        }
+
+        function sendFollowUpWhatsApp(mobile, name, vehicle) {
+            const msg = `Namaste ${name} ji 🙏\n\nHum Shri Ganesh Tyres se baat kar rahe hain. Aapko hamari shop par aaye hue kafi time ho gaya hai. \n\nAapki gaadi *${vehicle}* ki lambi life aur safety ke liye Tyre Air Check aur Alignment zaroori hai.\n\nAaj hi aakar free check-up karwayein! 🚗✨`;
+            window.open(`https://wa.me/91${mobile}?text=${encodeURIComponent(msg)}`, '_blank');
+        }
 
         // -------------------------
         // SEARCH
