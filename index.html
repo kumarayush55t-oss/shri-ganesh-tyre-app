@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Shri Ganesh Tyres - Advanced Manager</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f4f7f6; margin: 0; padding: 0; padding-bottom: 60px; }
+        .header { background: #d32f2f; color: white; padding: 15px; text-align: center; font-size: 22px; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .sub-header { font-size: 13px; font-weight: normal; margin-top: 5px; opacity: 0.9; }
+        .container { padding: 15px; max-width: 600px; margin: auto; }
+        
+        .tabs { display: flex; background: white; border-bottom: 2px solid #ddd; position: sticky; top: 0; z-index: 100; }
+        .tab { flex: 1; padding: 14px 5px; text-align: center; font-weight: bold; color: #555; cursor: pointer; border-bottom: 3px solid transparent; font-size: 14px; transition: 0.3s; }
+        .tab.active { color: #d32f2f; border-bottom: 3px solid #d32f2f; background: #fdf2f2; }
+        .tab-content { display: none; animation: fadeIn 0.3s; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .card { background: white; padding: 18px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.08); margin-bottom: 15px; }
+        label { font-weight: bold; display: block; margin-top: 12px; color: #333; font-size: 14px; }
+        input, select { width: 100%; padding: 12px; margin-top: 6px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 16px; background: #fafafa; }
+        
+        button { width: 100%; background: #d32f2f; color: white; padding: 14px; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; margin-top: 20px; cursor: pointer; box-shadow: 0 2px 4px rgba(211,47,47,0.3); }
+        button:active { background: #b71c1c; transform: scale(0.98); }
+        .btn-green { background: #27ae60; box-shadow: 0 2px 4px rgba(39,174,96,0.3); }
+        .btn-small { padding: 8px; font-size: 14px; margin-top: 5px; width: auto; }
+        .btn-delete { background: #e74c3c; color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 13px; cursor: pointer; }
+
+        .record-card { background: #fff; padding: 15px; border-left: 5px solid #d32f2f; border-radius: 6px; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.08); }
+        .record-card h4 { margin: 0 0 8px 0; color: #2c3e50; font-size: 17px; }
+        .record-card p { margin: 4px 0; font-size: 14px; color: #555; }
+        .price { font-weight: bold; color: #27ae60; font-size: 16px; }
+        .tyre-img { max-width: 100%; height: auto; border-radius: 5px; margin-top: 10px; border: 1px solid #ddd; }
+        
+        hr { border: 0; border-top: 1px solid #eee; margin: 15px 0; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        
+        .staff-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        🛞 Shri Ganesh Tyres
+        <div class="sub-header">Near Brigadier Hoshiar Singh Metro Station</div>
+    </div>
+
+    <div class="tabs">
+        <div class="tab active" onclick="switchTab('addWorkTab', this)">📝 Entry</div>
+        <div class="tab" onclick="switchTab('searchTab', this)">🔍 Search</div>
+        <div class="tab" onclick="switchTab('adminTab', this)">🔒 Admin Panel</div>
+    </div>
+
+    <div class="container">
+        
+        <div id="addWorkTab" class="tab-content active">
+            <div class="card">
+                <form id="workForm">
+                    <label>Customer Naam:</label>
+                    <input type="text" id="customerName" placeholder="Naam likhein" required>
+
+                    <label>Customer Mobile No:</label>
+                    <input type="tel" id="mobileNo" placeholder="10 digit number" maxlength="10">
+
+                    <label>Gaadi / Bike Number:</label>
+                    <input type="text" id="vehicleNo" placeholder="HR 13..." required style="text-transform: uppercase;">
+
+                    <label>Kaam Kya Hua Hai?</label>
+                    <select id="workType">
+                        <option value="Normal Puncture">Normal Puncture</option>
+                        <option value="Tube Change">Tube Change</option>
+                        <option value="Nalki (Valve)">Nalki (Valve)</option>
+                        <option value="Mushroom Patch">Mushroom Patch</option>
+                        <option value="Cut Repair">Cut Repair</option>
+                        <option value="Garam Puncture">Garam Puncture</option>
+                    </select>
+
+                    <label>Kaam Kis Staff Ne Kiya?</label>
+                    <select id="staffNameSelect" required>
+                        <option value="">Loading Staff...</option>
+                    </select>
+
+                    <label>Tyre Ki Photo (Optional):</label>
+                    <input type="file" id="tyrePhoto" accept="image/*" capture="environment">
+
+                    <label>Paise Kitne Liye (₹):</label>
+                    <input type="number" id="amount" placeholder="₹ Amount" required>
+
+                    <button type="submit" id="saveBtn">Kaam Save Karein ☁️</button>
+                </form>
+            </div>
+            <h3 style="color: #333;">Aaj Ka Kaam (Live)</h3>
+            <div id="liveFeed">Data load ho raha hai...</div>
+        </div>
+
+        <div id="searchTab" class="tab-content">
+            <div class="card">
+                <label>Gaadi Number ya Mobile No se Search Karein:</label>
+                <input type="text" id="searchValue" placeholder="Gaadi No. ya Mobile No.">
+                <button type="button" onclick="searchData()">Dhoondhein 🔍</button>
+            </div>
+            <div id="searchResults"></div>
+        </div>
+
+        <div id="adminTab" class="tab-content">
+            
+            <div class="card" style="border-top: 4px solid #f39c12;">
+                <h3 style="margin-top:0;">📊 Date-wise Hisaab</h3>
+                <div class="grid-2">
+                    <div>
+                        <label>From Date:</label>
+                        <input type="date" id="startDate">
+                    </div>
+                    <div>
+                        <label>To Date:</label>
+                        <input type="date" id="endDate">
+                    </div>
+                </div>
+                <label>Staff Filter:</label>
+                <select id="reportStaffSelect">
+                    <option value="All">Sabhi Staff (Total Sales)</option>
+                </select>
+                
+                <button type="button" class="btn-green" onclick="generateReport()">Hisaab Nikalein</button>
+                <div id="reportResults" style="margin-top: 15px;"></div>
+            </div>
+
+            <div class="card">
+                <h3 style="margin-top:0;">👥 Staff Management</h3>
+                <div style="display:flex; gap:10px;">
+                    <input type="text" id="newStaffName" placeholder="Naye Staff Ka Naam">
+                    <button type="button" class="btn-small btn-green" onclick="addStaff()">Add</button>
+                </div>
+                <hr>
+                <div id="staffList"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+
+    <script>
+        // FIREBASE CONFIGURATION
+        const firebaseConfig = {
+            apiKey: "AIzaSyApY09CHspm5TVxXTVvjnfB6lzwQ7nqltE",
+            authDomain: "staff-managemant.firebaseapp.com",
+            projectId: "staff-managemant",
+            storageBucket: "staff-managemant.firebasestorage.app",
+            messagingSenderId: "160818771446",
+            appId: "1:160818771446:web:e55f1bfc308c504efb03d7"
+        };
+
+        if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+
+        // -------------------------
+        // PIN LOCK & TAB LOGIC
+        // -------------------------
+        function switchTab(tabId, element) {
+            if(tabId === 'adminTab') {
+                const pin = prompt("Admin PIN Daalein:");
+                if(pin !== "308913") {
+                    alert("Galat PIN! Access Denied.");
+                    return;
+                }
+            }
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            element.classList.add('active');
+        }
+
+        function getLocalDateISO() {
+            const d = new Date();
+            return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,'0') + "-" + String(d.getDate()).padStart(2,'0');
+        }
+
+        // -------------------------
+        // 1. STAFF MANAGEMENT (FIXED)
+        // -------------------------
+        function loadStaff() {
+            db.collection("ShopStaff").onSnapshot(snap => {
+                let options = "";
+                let reportOptions = `<option value="All">Sabhi Staff (Total Sales)</option>`;
+                let listHtml = "";
+                
+                snap.forEach(doc => {
+                    const name = doc.data().name;
+                    options += `<option value="${name}">${name}</option>`;
+                    reportOptions += `<option value="${name}">${name}</option>`;
+                    listHtml += `
+                        <div class="staff-item">
+                            <b>${name}</b> 
+                            <button class="btn-delete" type="button" onclick="deleteStaff('${doc.id}')">Hatao</button>
+                        </div>`;
+                });
+                
+                document.getElementById('staffNameSelect').innerHTML = options || '<option value="">Pehle Staff Add Karein</option>';
+                document.getElementById('reportStaffSelect').innerHTML = reportOptions;
+                document.getElementById('staffList').innerHTML = listHtml || '<p>Koi staff add nahi hai.</p>';
+            }, error => {
+                console.error("Error loading staff:", error);
+            });
+        }
+        loadStaff(); 
+
+        function addStaff() {
+            const nameInput = document.getElementById('newStaffName');
+            const name = nameInput.value.trim();
+            if(name) {
+                db.collection("ShopStaff").add({ name: name }).then(() => {
+                    nameInput.value = "";
+                    alert(name + " add ho gaya hai!");
+                }).catch(err => alert("Error adding staff: " + err.message));
+            } else {
+                alert("Kripya staff ka naam likhein!");
+            }
+        }
+
+        function deleteStaff(id) {
+            if(confirm("Kya aap is staff ko hatana chahte hain?")) {
+                db.collection("ShopStaff").doc(id).delete();
+            }
+        }
+
+        // -------------------------
+        // 2. DATA SAVE (PHOTO FAIL-SAFE)
+        // -------------------------
+        document.getElementById('workForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('saveBtn');
+            const staffSelected = document.getElementById('staffNameSelect').value;
+            
+            if(!staffSelected) {
+                alert("Pehle Admin panel se kam se kam ek Staff add karein!");
+                return;
+            }
+
+            btn.innerText = "Data Save Ho Raha Hai... ⏳";
+            btn.style.background = "#7f8c8d";
+            btn.disabled = true;
+
+            let photoUrl = "";
+            const photoFile = document.getElementById('tyrePhoto').files[0];
+            
+            if(photoFile) {
+                try {
+                    btn.innerText = "Photo Uploading... ⏳";
+                    const storageRef = storage.ref('tyre_photos/' + Date.now() + '_' + photoFile.name);
+                    await storageRef.put(photoFile);
+                    photoUrl = await storageRef.getDownloadURL();
+                } catch(err) {
+                    console.error(err);
+                    alert("Photo upload fail hui, par form ka data save ho jayega. (Storage rules check karein)");
+                }
+            }
+
+            const data = {
+                customerName: document.getElementById('customerName').value.trim(),
+                mobileNo: document.getElementById('mobileNo').value.trim(),
+                vehicleNo: document.getElementById('vehicleNo').value.toUpperCase().replace(/\s+/g, ''),
+                workType: document.getElementById('workType').value,
+                staffName: staffSelected,
+                amount: Number(document.getElementById('amount').value),
+                photoUrl: photoUrl,
+                dateIso: getLocalDateISO(),
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            db.collection("ShriGaneshRecords").add(data).then(() => {
+                alert("✅ Entry Successfully Save Ho Gayi!");
+                document.getElementById('workForm').reset();
+            }).catch(err => {
+                alert("Error: Database permission denied. Firestore Rules Test Mode mein karein.");
+            }).finally(() => {
+                btn.innerText = "Kaam Save Karein ☁️";
+                btn.style.background = "#d32f2f";
+                btn.disabled = false;
+            });
+        });
+
+        // -------------------------
+        // 3. LIVE FEED
+        // -------------------------
+        db.collection("ShriGaneshRecords").where("dateIso", "==", getLocalDateISO())
+        .onSnapshot(snapshot => {
+            const feed = document.getElementById('liveFeed');
+            feed.innerHTML = "";
+            if (snapshot.empty) { feed.innerHTML = "<p>Aaj abhi tak koi entry nahi hui.</p>"; return; }
+            
+            snapshot.forEach(doc => {
+                const d = doc.data();
+                let imgTag = d.photoUrl ? `<img src="${d.photoUrl}" class="tyre-img">` : '';
+                feed.innerHTML += `
+                    <div class="record-card">
+                        <h4>🚘 ${d.vehicleNo} - ${d.workType}</h4>
+                        <p>👤 ${d.customerName} | 📱 ${d.mobileNo}</p>
+                        <p>🛠️ ${d.staffName}</p>
+                        ${imgTag}
+                        <p class="price" style="margin-top:8px;">💰 ₹${d.amount}</p>
+                    </div>`;
+            });
+        });
+
+        // -------------------------
+        // 4. SEARCH
+        // -------------------------
+        function searchData() {
+            let val = document.getElementById('searchValue').value.toUpperCase().replace(/\s+/g, '');
+            const resDiv = document.getElementById('searchResults');
+            if(!val) return;
+            resDiv.innerHTML = "Dhoondh raha hai... ⏳";
+
+            db.collection("ShriGaneshRecords").get().then(snapshot => {
+                resDiv.innerHTML = "";
+                let found = false;
+                snapshot.forEach(doc => {
+                    const d = doc.data();
+                    if(d.vehicleNo.includes(val) || d.mobileNo.includes(val)) {
+                        found = true;
+                        let imgTag = d.photoUrl ? `<img src="${d.photoUrl}" class="tyre-img">` : '';
+                        resDiv.innerHTML += `
+                            <div class="record-card">
+                                <h4>🚘 ${d.vehicleNo} - ${d.workType} <span style="font-size:12px;color:#888;float:right">${d.dateIso}</span></h4>
+                                <p>👤 ${d.customerName} | 📱 ${d.mobileNo}</p>
+                                <p>🛠️ ${d.staffName}</p>
+                                ${imgTag}
+                                <p class="price">💰 ₹${d.amount}</p>
+                            </div>`;
+                    }
+                });
+                if(!found) resDiv.innerHTML = "<p>Koi record nahi mila.</p>";
+            });
+        }
+
+        // -------------------------
+        // 5. ADMIN HISAAB (FILTER FIXED)
+        // -------------------------
+        function generateReport() {
+            const sDate = document.getElementById('startDate').value;
+            const eDate = document.getElementById('endDate').value;
+            const staffFilter = document.getElementById('reportStaffSelect').value; // 'All' or specific name
+            const resDiv = document.getElementById('reportResults');
+            
+            if(!sDate || !eDate) { alert("Please date select karein!"); return; }
+            resDiv.innerHTML = "Calculating... ⏳";
+
+            db.collection("ShriGaneshRecords")
+              .where("dateIso", ">=", sDate)
+              .where("dateIso", "<=", eDate)
+              .get().then(snapshot => {
+                let totalKamai = 0;
+                let totalKaam = 0;
+                let recordsHtml = "<hr><h4>Is Date Ke Records:</h4>";
+                
+                snapshot.forEach(doc => {
+                    const d = doc.data();
+                    // Yahan check kar rahe hain ki specific staff hai ya sabka dekhna hai
+                    if(staffFilter === "All" || d.staffName === staffFilter) {
+                        totalKamai += d.amount;
+                        totalKaam++;
+                        recordsHtml += `
+                            <div class="record-card" style="padding:10px; font-size:13px;">
+                                <b>${d.vehicleNo}</b> (₹${d.amount}) - ${d.staffName} [${d.dateIso}]
+                                <button class="btn-delete" style="float:right; padding:4px 8px;" onclick="deleteRecord('${doc.id}')">Delete</button>
+                                <div style="clear:both;"></div>
+                            </div>`;
+                    }
+                });
+
+                if(totalKaam === 0) {
+                    resDiv.innerHTML = "<p>Is date range aur staff ka koi record nahi hai.</p>";
+                    return;
+                }
+
+                let headingText = staffFilter === "All" ? "Dukaan Ki Total Kamai" : `${staffFilter} Ki Kamai`;
+
+                resDiv.innerHTML = `
+                    <div style="background:#f9fff9; border:1px solid #27ae60; padding:15px; border-radius:8px;">
+                        <h3 style="margin:0 0 10px 0; color:#2c3e50;">📊 ${headingText}</h3>
+                        <p style="margin:5px 0; font-size:16px;">Total Gaadiyan: <b>${totalKaam}</b></p>
+                        <hr style="border-top:1px solid #ddd; margin:10px 0;">
+                        <p style="margin:5px 0; font-size:22px; color:#27ae60; font-weight:bold;">₹ ${totalKamai}</p>
+                    </div>
+                    ${recordsHtml}
+                `;
+            });
+        }
+
+        function deleteRecord(id) {
+            if(confirm("⚠️ Kya aap is entry ko permanent delete karna chahte hain?")) {
+                db.collection("ShriGaneshRecords").doc(id).delete().then(() => {
+                    alert("Record delete ho gaya.");
+                    generateReport(); // Refresh
+                });
+            }
+        }
+    </script>
+</body>
+</html>s
