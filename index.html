@@ -2,546 +2,124 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Shri Ganesh Tyres - Pro Manager</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Shop Manager</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f4f7f6; margin: 0; padding: 0; padding-bottom: 60px; }
-        .header { background: #d32f2f; color: white; padding: 15px; text-align: center; font-size: 22px; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .sub-header { font-size: 13px; font-weight: normal; margin-top: 5px; opacity: 0.9; }
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { margin: 0; background: #f4f7f6; color: #333; }
+        .header { background: #111; color: #fff; padding: 20px; text-align: center; position: relative; }
+        .notification-bell { position: absolute; right: 20px; top: 20px; background: #e74c3c; padding: 5px 10px; border-radius: 50%; cursor: pointer; animation: blink 2s infinite; }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
         
-        /* App Lock Screen */
-        #lockScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #2c3e50; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; }
-        #lockScreen input { width: 80%; max-width: 300px; padding: 15px; text-align: center; font-size: 24px; letter-spacing: 5px; border-radius: 8px; border: none; outline: none; margin-bottom: 20px; }
-        #lockScreen button { width: 80%; max-width: 300px; background: #e74c3c; font-size: 18px; padding: 15px; border:none; border-radius:8px; font-weight:bold; cursor:pointer;}
-
-        .tabs { display: flex; background: white; border-bottom: 2px solid #ddd; position: sticky; top: 0; z-index: 100; overflow-x: auto;}
-        .tab { flex: 1; padding: 14px 5px; text-align: center; font-weight: bold; color: #555; cursor: pointer; border-bottom: 3px solid transparent; font-size: 14px; transition: 0.3s; min-width: 85px;}
-        .tab.active { color: #d32f2f; border-bottom: 3px solid #d32f2f; background: #fdf2f2; }
-        .tab-content { display: none; animation: fadeIn 0.3s; }
-        .tab-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        .container { padding: 15px; max-width: 600px; margin: auto; }
-        .card { background: white; padding: 18px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.08); margin-bottom: 15px; }
+        .container { display: flex; flex-wrap: wrap; padding: 20px; gap: 20px; justify-content: center; }
+        .card { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); flex: 1; min-width: 300px; max-width: 400px; }
         
-        label { font-weight: bold; display: block; margin-top: 12px; color: #333; font-size: 14px; }
-        input, select { width: 100%; padding: 12px; margin-top: 6px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 16px; background: #fafafa; }
-        input:disabled, select:disabled { background: #e9ecef; color: #6c757d; }
+        h3 { border-bottom: 2px solid #3498db; padding-bottom: 10px; margin-top: 0; }
         
-        button { width: 100%; background: #d32f2f; color: white; padding: 14px; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; margin-top: 20px; cursor: pointer; box-shadow: 0 2px 4px rgba(211,47,47,0.3); }
-        .btn-green { background: #27ae60; }
-        .btn-blue { background: #2980b9; margin-top:10px;}
-        .btn-whatsapp { background: #25D366; margin-top: 10px; padding:10px;}
-        .btn-small { padding: 8px; font-size: 14px; margin-top: 5px; width: auto; }
-        .btn-delete { background: #e74c3c; color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 13px; cursor: pointer; }
-
-        .record-card { background: #fff; padding: 15px; border-left: 5px solid #d32f2f; border-radius: 6px; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.08); position: relative;}
-        .record-card h4 { margin: 0 0 8px 0; color: #2c3e50; font-size: 17px; }
-        .record-card p { margin: 4px 0; font-size: 14px; color: #555; }
-        .price { font-weight: bold; color: #27ae60; font-size: 16px; }
-
-        hr { border: 0; border-top: 1px solid #eee; margin: 15px 0; }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-
-        /* Leaderboard */
-        .leaderboard { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; padding: 15px; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);}
-        .leaderboard h3 { margin: 0 0 10px 0; font-size: 16px; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 5px;}
-        .leader-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed rgba(255,255,255,0.2); font-size: 15px;}
-        .rank-1 { font-weight: bold; color: #f1c40f; font-size: 17px; transform: scale(1.02);}
+        /* Leaderboard Styles */
+        .leaderboard-item { display: flex; justify-content: space-between; padding: 10px; margin: 5px 0; background: #ecf0f1; border-radius: 5px; font-weight: bold; }
+        .top-staff { background: #f1c40f; color: #000; font-size: 1.1em; transform: scale(1.05); }
         
-        /* Badges */
-        .badge-sales { background: #27ae60; color: white; padding: 2px 8px; border-radius: 10px; font-size: 12px; }
+        /* Buttons */
+        button { width: 100%; padding: 10px; margin-top: 10px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .btn-whatsapp { background: #25D366; color: white; }
+        .btn-whatsapp:hover { background: #1ebe57; }
+        .btn-admin { background: #3498db; color: white; }
+        .btn-admin:hover { background: #2980b9; }
+        
+        input { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ccc; border-radius: 5px; }
     </style>
 </head>
 <body>
 
-    <audio id="alertSound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
-
-    <div id="lockScreen">
-        <h2 style="margin-bottom: 5px;">🛞 Shri Ganesh Tyres</h2>
-        <p style="margin-bottom: 30px; font-size: 14px; color: #bdc3c7;">App use karne ke liye PIN daalein</p>
-        <input type="password" id="appPinInput" placeholder="Enter PIN" inputmode="numeric" maxlength="6">
-        <button onclick="unlockApp()">Unlock App</button>
-    </div>
-
     <div class="header">
-        🛞 Shri Ganesh Tyres
-        <div class="sub-header">Pro Management Dashboard</div>
-    </div>
-
-    <div class="tabs">
-        <div class="tab active" onclick="switchTab('addWorkTab', this)">📝 Entry</div>
-        <div class="tab" onclick="switchTab('searchTab', this)">🔍 Search</div>
-        <div class="tab" onclick="switchTab('growthTab', this)">📈 Growth</div>
-        <div class="tab" onclick="switchTab('adminTab', this)">🔒 Admin</div>
+        <h2>🛠️ Smart Management Dashboard</h2>
+        <div class="notification-bell" onclick="showNotification()">🔔 <span id="notif-count">3</span></div>
     </div>
 
     <div class="container">
         
-        <div id="addWorkTab" class="tab-content active">
-            
-            <div class="leaderboard" id="staffLeaderboard">
-                <h3>🏆 Aaj Ke Top Performers (By Sales)</h3>
-                <div id="leaderboardData">Data load ho raha hai...</div>
-            </div>
-
-            <div class="card">
-                <form id="workForm">
-                    <label>Kaam Kya Hua Hai?</label>
-                    <select id="workType">
-                        <option value="Normal Puncture">Normal Puncture</option>
-                        <option value="Mushroom Patch">Mushroom Patch</option>
-                        <option value="Tube Change">Tube Change</option>
-                        <option value="Tyre Fitting">Tyre Fitting</option>
-                        <option value="New Bike Tyre">New Bike Tyre</option>
-                        <option value="New Car Tyre">New Car Tyre</option>
-                        <option value="Old Tyre">Old Tyre</option>
-                        <option value="Nalki (Valve)">Nalki (Valve)</option>
-                        <option value="Wheel Alignment">Wheel Alignment</option>
-                        <option value="Hawa">Hawa (Air)</option>
-                    </select>
-
-                    <div id="customerDetailsSection">
-                        <label>Customer Mobile No:</label>
-                        <input type="tel" id="mobileNo" placeholder="10 digit number" maxlength="10">
-                        <label>Customer Naam:</label>
-                        <input type="text" id="customerName" placeholder="Naam likhein" required>
-                        <label>Gaadi / Bike Number:</label>
-                        <input type="text" id="vehicleNo" placeholder="HR 13..." required style="text-transform: uppercase;">
-                    </div>
-
-                    <label>Kaam Kis Staff Ne Kiya?</label>
-                    <select id="staffNameSelect" required>
-                        <option value="">Loading Staff...</option>
-                    </select>
-
-                    <label>Paise Kitne Liye (₹):</label>
-                    <input type="number" id="amount" placeholder="₹ Amount" required>
-
-                    <button type="submit" id="saveBtn">Kaam Save Karein ☁️</button>
-                </form>
-            </div>
-            <h3>Aaj Ka Kaam (Live Feed)</h3>
-            <div id="liveFeed">Data load ho raha hai...</div>
-        </div>
-
-        <div id="searchTab" class="tab-content">
-            <div class="card">
-                <label>Gaadi Number ya Mobile se dhoondhein:</label>
-                <input type="text" id="searchValue" placeholder="HR 13 AB 1234...">
-                <button type="button" onclick="searchData()">Dhoondhein 🔍</button>
-            </div>
-            <div id="searchResults"></div>
-        </div>
-
-        <div id="growthTab" class="tab-content">
-            <div class="card" style="background: #eafaf1; border: 1px solid #2ecc71;">
-                <h3 style="margin-top:0; color: #27ae60;">🔄 Smart Follow-Ups (Sales Booster)</h3>
-                <p style="font-size:13px; color:#555;">In customers ko visit kiye hue 30+ din ho chuke hain. Inhe WhatsApp karke dobara shop par bulayein (Alignment / Air check ke liye).</p>
-                <button class="btn-green" onclick="loadFollowUps()">List Generate Karein ⚙️</button>
-            </div>
-            <div id="followUpResults"></div>
-        </div>
-
-        <div id="adminTab" class="tab-content">
-            <div class="card" style="background: #e8f4fd; border: 1px solid #bde0fe;">
-                <h3 style="margin-top:0; color: #2980b9;">⚙️ App Security</h3>
-                <div style="display:flex; gap:10px;">
-                    <input type="number" id="newAppPin" placeholder="Naya PIN daalein">
-                    <button type="button" class="btn-small btn-blue" onclick="changeAppPin()">Set PIN</button>
+        <div class="card">
+            <h3>🏆 Top Performing Staff</h3>
+            <p style="font-size: 0.9em; color: #7f8c8d;">Based on tasks completed today</p>
+            <div id="leaderboard">
                 </div>
-            </div>
-
-            <div class="card" style="border-top: 4px solid #f39c12;">
-                <h3 style="margin-top:0;">📊 Date-wise Hisaab & Export</h3>
-                <div class="grid-2">
-                    <div><label>From Date:</label><input type="date" id="startDate"></div>
-                    <div><label>To Date:</label><input type="date" id="endDate"></div>
-                </div>
-                <label>Staff Filter:</label>
-                <select id="reportStaffSelect"><option value="All">Sabhi Staff (Total)</option></select>
-                <button type="button" class="btn-green" onclick="generateReport()">Hisaab Nikalein</button>
-                <button type="button" class="btn-blue" onclick="exportToCSV()">📥 Excel (CSV) Download</button>
-                <div id="reportResults" style="margin-top: 15px;"></div>
-            </div>
-
-            <div class="card">
-                <h3 style="margin-top:0;">👥 Staff Management</h3>
-                <div style="display:flex; gap:10px;">
-                    <input type="text" id="newStaffName" placeholder="Naye Staff Ka Naam">
-                    <button type="button" class="btn-small btn-green" onclick="addStaff()">Add</button>
-                </div>
-                <hr>
-                <div id="staffList"></div>
-            </div>
         </div>
+
+        <div class="card">
+            <h3>💬 Send WhatsApp to Customer</h3>
+            <input type="text" id="custPhone" placeholder="Customer Phone (e.g., 919876543210)">
+            <input type="text" id="custMessage" placeholder="Message (e.g., Your car is ready!)">
+            <button class="btn-whatsapp" onclick="sendWhatsApp()">Send via WhatsApp API</button>
+        </div>
+
+        <div class="card">
+            <h3>👑 Admin Control Panel</h3>
+            <input type="text" id="broadcastMsg" placeholder="Type a global announcement...">
+            <button class="btn-admin" onclick="broadcastNotification()">Broadcast to All Devices</button>
+        </div>
+
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-
     <script>
-        // FIREBASE INITIALIZATION
-        const firebaseConfig = {
-            apiKey: "AIzaSyApY09CHspm5TVxXTVvjnfB6lzwQ7nqltE",
-            authDomain: "staff-managemant.firebaseapp.com",
-            projectId: "staff-managemant",
-            appId: "1:160818771446:web:e55f1bfc308c504efb03d7"
+        // 1. Staff Leaderboard Logic
+        const staffData = [
+            { name: "Rahul", score: 85 },
+            { name: "Amit", score: 120 }, // Top Staff
+            { name: "Suresh", score: 60 }
+        ];
+
+        function renderLeaderboard() {
+            // Sort staff by score descending
+            staffData.sort((a, b) => b.score - a.score);
+            const leaderboardDiv = document.getElementById('leaderboard');
+            leaderboardDiv.innerHTML = '';
+
+            staffData.forEach((staff, index) => {
+                let div = document.createElement('div');
+                div.className = `leaderboard-item ${index === 0 ? 'top-staff' : ''}`;
+                div.innerHTML = `<span>${index === 0 ? '🥇' : '👤'} ${staff.name}</span> <span>${staff.score} Pts</span>`;
+                leaderboardDiv.appendChild(div);
+            });
+        }
+
+        // 2. WhatsApp Trigger Logic
+        function sendWhatsApp() {
+            const phone = document.getElementById('custPhone').value;
+            const message = document.getElementById('custMessage').value;
+            if(!phone || !message) {
+                alert("Please enter both phone and message!");
+                return;
+            }
+            // Real application mein ye backend par hit karega (e.g., Twilio or Meta WhatsApp API)
+            // Yahan hum direct web wa.me link use kar rahe hain demo ke liye
+            const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        }
+
+        // 3. Admin Broadcast / Push Notification Logic
+        function broadcastNotification() {
+            const msg = document.getElementById('broadcastMsg').value;
+            if(!msg) return alert("Enter a message to broadcast!");
+            
+            // Real app mein ye Firebase Cloud Messaging (FCM) ya WebSockets ke through jayega
+            alert(`[Admin Action Validated] Broadcasting to all active devices: "${msg}"`);
+            
+            // Simulate receiving notification
+            setTimeout(() => {
+                showNotification(`New Admin Message: ${msg}`);
+                document.getElementById('notif-count').innerText = parseInt(document.getElementById('notif-count').innerText) + 1;
+            }, 1000);
+        }
+
+        function showNotification(msg = "You have new unread alerts!") {
+            alert(msg);
+        }
+
+        // Initialize App
+        window.onload = () => {
+            renderLeaderboard();
         };
-        if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
-        const db = firebase.firestore();
-
-        // -------------------------
-        // APP LOCK & OS NOTIFICATION PERMISSION
-        // -------------------------
-        let globalAppPin = "1234";
-        db.collection("ShopSettings").doc("AppSecurity").onSnapshot(doc => { 
-            if(doc.exists) { globalAppPin = doc.data().pin; } 
-        });
-
-        function unlockApp() {
-            if(document.getElementById('appPinInput').value === globalAppPin) {
-                document.getElementById('lockScreen').style.display = 'none';
-                
-                // Request OS-Level Push Notification Permission
-                if ("Notification" in window && Notification.permission !== "granted" && Notification.permission !== "denied") {
-                    Notification.requestPermission();
-                }
-
-                // Play silent audio to unlock browser autoplay restrictions
-                document.getElementById('alertSound').play().then(()=> { 
-                    document.getElementById('alertSound').pause(); 
-                    document.getElementById('alertSound').currentTime = 0;
-                }).catch(e=>{});
-            } else {
-                alert("Galat PIN! Access Denied.");
-            }
-        }
-
-        function changeAppPin() {
-            const newPin = document.getElementById('newAppPin').value.trim();
-            if(newPin) {
-                db.collection("ShopSettings").doc("AppSecurity").set({pin: newPin}).then(() => {
-                    alert("✅ App ka naya PIN set ho gaya!");
-                    document.getElementById('newAppPin').value = "";
-                });
-            }
-        }
-
-        // TABS
-        function switchTab(tabId, element) {
-            if(tabId === 'adminTab') {
-                if(prompt("Admin Panel PIN Daalein:") !== "308913") { alert("Sirf Owner allowed hai!"); return; }
-            }
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            element.classList.add('active');
-        }
-
-        function getLocalDateISO() {
-            const d = new Date();
-            return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,'0') + "-" + String(d.getDate()).padStart(2,'0');
-        }
-
-        // -------------------------
-        // TRUE OS PUSH NOTIFICATION SYSTEM
-        // -------------------------
-        function sendTruePushNotification(title, bodyText) {
-            // Browser In-App Sound
-            const sound = document.getElementById('alertSound');
-            sound.play().catch(e => console.log("Audio play prevented"));
-
-            // True OS Notification (Works on Lock Screen if browser is running in background)
-            if ("Notification" in window && Notification.permission === "granted") {
-                const notif = new Notification(title, {
-                    body: bodyText,
-                    icon: "https://cdn-icons-png.flaticon.com/512/3204/3204121.png", // Tyre Icon
-                    vibrate: [200, 100, 200]
-                });
-            }
-        }
-
-        // -------------------------
-        // LOAD STAFF
-        // -------------------------
-        function loadStaff() {
-            db.collection("ShopStaff").onSnapshot(snap => {
-                let opts = ""; let listHtml = ""; let reportOpts = `<option value="All">Sabhi Staff (Total)</option>`;
-                snap.forEach(doc => {
-                    opts += `<option value="${doc.data().name}">${doc.data().name}</option>`;
-                    reportOpts += `<option value="${doc.data().name}">${doc.data().name}</option>`;
-                    listHtml += `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee;">
-                                    <b>${doc.data().name}</b> <button class="btn-delete" onclick="deleteStaff('${doc.id}')">Hatao</button>
-                                 </div>`;
-                });
-                document.getElementById('staffNameSelect').innerHTML = opts || '<option value="">Pehle Staff Add Karein</option>';
-                document.getElementById('reportStaffSelect').innerHTML = reportOpts;
-                document.getElementById('staffList').innerHTML = listHtml;
-            });
-        }
-        loadStaff();
-
-        function addStaff() {
-            const n = document.getElementById('newStaffName').value.trim();
-            if(n) db.collection("ShopStaff").add({ name: n }).then(() => { document.getElementById('newStaffName').value = ""; });
-        }
-        function deleteStaff(id) { if(confirm("Staff hatana hai?")) db.collection("ShopStaff").doc(id).delete(); }
-
-        // -------------------------
-        // HAWA LOGIC & UI
-        // -------------------------
-        document.getElementById('workType').addEventListener('change', function() {
-            const isHawa = (this.value === "Hawa");
-            document.getElementById('customerDetailsSection').style.display = isHawa ? "none" : "block";
-            document.getElementById('customerName').required = !isHawa;
-            document.getElementById('vehicleNo').required = !isHawa;
-            
-            const staffSelect = document.getElementById('staffNameSelect');
-            if(isHawa) {
-                if(!Array.from(staffSelect.options).some(o => o.value === "Sabhi Staff (Shared)")) 
-                    staffSelect.innerHTML += `<option value="Sabhi Staff (Shared)">Sabhi Staff (Shared)</option>`;
-                staffSelect.value = "Sabhi Staff (Shared)";
-                staffSelect.disabled = true;
-            } else {
-                staffSelect.disabled = false;
-                if(staffSelect.value === "Sabhi Staff (Shared)") staffSelect.selectedIndex = 0;
-            }
-        });
-
-        // -------------------------
-        // MAIN SAVE DATA LOGIC
-        // -------------------------
-        document.getElementById('workForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const btn = document.getElementById('saveBtn');
-            const workType = document.getElementById('workType').value;
-            const isHawa = (workType === "Hawa");
-            
-            btn.innerText = "Data Save Ho Raha Hai... ⏳"; btn.disabled = true;
-
-            const data = {
-                customerName: isHawa ? "Unknown (Hawa)" : document.getElementById('customerName').value.trim(),
-                mobileNo: isHawa ? "" : document.getElementById('mobileNo').value.trim(),
-                vehicleNo: isHawa ? "N/A" : document.getElementById('vehicleNo').value.toUpperCase().replace(/\s+/g, ''),
-                workType: workType,
-                staffName: document.getElementById('staffNameSelect').value,
-                amount: Number(document.getElementById('amount').value),
-                dateIso: getLocalDateISO(),
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            };
-
-            db.collection("ShriGaneshRecords").add(data).then(() => {
-                document.getElementById('workForm').reset();
-                document.getElementById('customerDetailsSection').style.display = "block";
-                
-                // Prompt WhatsApp
-                if(!isHawa && data.mobileNo.length >= 10) {
-                    if(confirm("Bill Save Ho Gaya! Kya Customer ko WhatsApp par bhejna hai?")) {
-                        const msg = `Namaste ${data.customerName} 🙏\n\nShri Ganesh Tyres par aane ke liye shukriya!\nAapki gaadi *${data.vehicleNo}* ka kaam (*${data.workType}*) poora ho gaya hai.\n\nTotal Amount: *₹${data.amount}*\n\nDrive Safe! 🚗💨`;
-                        window.open(`https://wa.me/91${data.mobileNo}?text=${encodeURIComponent(msg)}`, '_blank');
-                    }
-                }
-            }).finally(() => {
-                btn.innerText = "Kaam Save Karein ☁️"; btn.disabled = false;
-            });
-        });
-
-        // -------------------------
-        // LIVE FEED, TRUE NOTIFICATIONS & SALES LEADERBOARD
-        // -------------------------
-        let initialLoad = true;
-
-        db.collection("ShriGaneshRecords").where("dateIso", "==", getLocalDateISO())
-        .onSnapshot(snapshot => {
-            const feed = document.getElementById('liveFeed');
-            const leaderDiv = document.getElementById('leaderboardData');
-            
-            // Notification Trigger
-            snapshot.docChanges().forEach(change => {
-                if (change.type === "added" && !initialLoad) {
-                    const nd = change.doc.data();
-                    let title = `✅ Kaam Done: ₹${nd.amount}`;
-                    let body = `${nd.staffName} ne ${nd.workType} kiya. Gaadi: ${nd.vehicleNo}`;
-                    sendTruePushNotification(title, body);
-                }
-            });
-            initialLoad = false;
-
-            feed.innerHTML = ""; let staffStats = {};
-            
-            if(snapshot.empty) { 
-                feed.innerHTML = "<p>Aaj koi kaam nahi hua.</p>"; 
-                leaderDiv.innerHTML = "<p>Khata nahi khula...</p>"; return; 
-            }
-            
-            // Re-render full list
-            snapshot.forEach(doc => {
-                const d = doc.data();
-                if(d.staffName && d.staffName !== "Sabhi Staff (Shared)") {
-                    if(!staffStats[d.staffName]) staffStats[d.staffName] = { count: 0, amount: 0 };
-                    staffStats[d.staffName].count += 1;
-                    staffStats[d.staffName].amount += d.amount; // Add to total sales
-                }
-                feed.innerHTML += `
-                    <div class="record-card">
-                        <h4>🚘 ${d.vehicleNo} - ${d.workType}</h4>
-                        <p>👤 ${d.customerName} | 📱 ${d.mobileNo || 'N/A'}</p>
-                        <p>🛠️ ${d.staffName}</p>
-                        <p class="price">💰 ₹${d.amount}</p>
-                    </div>`;
-            });
-
-            // NEW LEADERBOARD LOGIC: Sorted by SALES AMOUNT (b.amount - a.amount)
-            let sortable = [];
-            for (var staff in staffStats) sortable.push({ name: staff, count: staffStats[staff].count, amount: staffStats[staff].amount });
-            sortable.sort((a, b) => b.amount - a.amount); // Top staff is the one making most money
-
-            leaderDiv.innerHTML = "";
-            sortable.forEach((s, i) => {
-                let badge = i === 0 ? "🥇 Top Seller" : i === 1 ? "🥈 Runner up" : "👤";
-                leaderDiv.innerHTML += `
-                    <div class="leader-row ${i===0?'rank-1':''}">
-                        <span>${badge}: ${s.name}</span>
-                        <span><span class="badge-sales">₹${s.amount}</span> (${s.count} Tasks)</span>
-                    </div>`;
-            });
-        });
-
-        // -------------------------
-        // GROWTH TAB: SMART FOLLOW UPs
-        // -------------------------
-        function loadFollowUps() {
-            const resDiv = document.getElementById('followUpResults');
-            resDiv.innerHTML = "Database scan ho raha hai... ⏳";
-            
-            // Calculate date 30 days ago
-            let d = new Date();
-            d.setDate(d.getDate() - 30);
-            let thirtyDaysAgo = d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,'0') + "-" + String(d.getDate()).padStart(2,'0');
-
-            db.collection("ShriGaneshRecords").where("dateIso", "<", thirtyDaysAgo).get().then(snapshot => {
-                let uniqueCustomers = {};
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    if(data.mobileNo && data.mobileNo.length >= 10 && data.workType !== "Hawa") {
-                        // Keep only the most recent old record
-                        if(!uniqueCustomers[data.mobileNo] || uniqueCustomers[data.mobileNo].dateIso < data.dateIso) {
-                            uniqueCustomers[data.mobileNo] = data;
-                        }
-                    }
-                });
-
-                resDiv.innerHTML = "";
-                let count = 0;
-                for(let mob in uniqueCustomers) {
-                    count++;
-                    const cust = uniqueCustomers[mob];
-                    resDiv.innerHTML += `
-                        <div class="record-card" style="border-left-color:#27ae60;">
-                            <h4>👤 ${cust.customerName} (${cust.vehicleNo})</h4>
-                            <p>🕒 Last Visit: ${cust.dateIso}</p>
-                            <p>🛠️ Last Work: ${cust.workType}</p>
-                            <button class="btn-whatsapp" onclick="sendFollowUpWhatsApp('${cust.mobileNo}', '${cust.customerName}', '${cust.vehicleNo}')">
-                                WhatsApp Reminder Bhejein 📲
-                            </button>
-                        </div>`;
-                }
-
-                if(count === 0) {
-                    resDiv.innerHTML = "<p>Koi purana customer pending nahi hai abhi.</p>";
-                }
-            });
-        }
-
-        function sendFollowUpWhatsApp(mobile, name, vehicle) {
-            const msg = `Namaste ${name} ji 🙏\n\nHum Shri Ganesh Tyres se baat kar rahe hain. Aapko hamari shop par aaye hue kafi time ho gaya hai. \n\nAapki gaadi *${vehicle}* ki lambi life aur safety ke liye Tyre Air Check aur Alignment zaroori hai.\n\nAaj hi aakar free check-up karwayein! 🚗✨`;
-            window.open(`https://wa.me/91${mobile}?text=${encodeURIComponent(msg)}`, '_blank');
-        }
-
-        // -------------------------
-        // SEARCH
-        // -------------------------
-        function searchData() {
-            let val = document.getElementById('searchValue').value.toUpperCase().replace(/\s+/g, '');
-            const resDiv = document.getElementById('searchResults');
-            if(!val) return; resDiv.innerHTML = "Dhoondh raha hai... ⏳";
-
-            db.collection("ShriGaneshRecords").get().then(snapshot => {
-                resDiv.innerHTML = ""; let found = false;
-                snapshot.forEach(doc => {
-                    const d = doc.data();
-                    if(d.vehicleNo.includes(val) || (d.mobileNo && d.mobileNo.includes(val))) {
-                        found = true;
-                        resDiv.innerHTML += `
-                            <div class="record-card">
-                                <h4>🚘 ${d.vehicleNo} - ${d.workType} <span style="font-size:12px;color:#888;float:right">${d.dateIso}</span></h4>
-                                <p>👤 ${d.customerName} | 🛠️ ${d.staffName}</p>
-                                <p class="price">💰 ₹${d.amount}</p>
-                            </div>`;
-                    }
-                });
-                if(!found) resDiv.innerHTML = "<p>Koi record nahi mila.</p>";
-            });
-        }
-
-        // -------------------------
-        // ADMIN REPORT & EXCEL
-        // -------------------------
-        let exportDataList = []; 
-        function generateReport() {
-            const sDate = document.getElementById('startDate').value;
-            const eDate = document.getElementById('endDate').value;
-            const staffFilter = document.getElementById('reportStaffSelect').value; 
-            const resDiv = document.getElementById('reportResults');
-            
-            if(!sDate || !eDate) { alert("Please date select karein!"); return; }
-            resDiv.innerHTML = "Calculating... ⏳";
-
-            db.collection("ShriGaneshRecords").where("dateIso", ">=", sDate).where("dateIso", "<=", eDate)
-              .get().then(snapshot => {
-                let totalKamai = 0; let totalKaam = 0; let recordsHtml = "<hr><h4>Is Date Ke Records:</h4>";
-                exportDataList = []; 
-                
-                snapshot.forEach(doc => {
-                    const d = doc.data();
-                    if(staffFilter === "All" || d.staffName === staffFilter) {
-                        totalKamai += d.amount; totalKaam++;
-                        exportDataList.push(d); 
-                        recordsHtml += `
-                            <div class="record-card" style="padding:10px; font-size:13px;">
-                                <b>${d.vehicleNo}</b> (₹${d.amount}) - ${d.workType}<br>
-                                Staff: ${d.staffName} [${d.dateIso}]
-                                <button class="btn-delete" style="float:right; padding:4px 8px; margin-top:-15px;" onclick="deleteRecord('${doc.id}')">Delete</button>
-                            </div>`;
-                    }
-                });
-
-                if(totalKaam === 0) { resDiv.innerHTML = "<p>Koi record nahi mila.</p>"; return; }
-                resDiv.innerHTML = `
-                    <div style="background:#f9fff9; border:1px solid #27ae60; padding:15px; border-radius:8px;">
-                        <h3 style="margin:0 0 10px 0; color:#2c3e50;">📊 ${staffFilter} Ki Kamai</h3>
-                        <p style="margin:5px 0; font-size:16px;">Total Gaadiyan: <b>${totalKaam}</b></p>
-                        <p style="margin:5px 0; font-size:22px; color:#27ae60; font-weight:bold;">₹ ${totalKamai}</p>
-                    </div> ${recordsHtml}`;
-            });
-        }
-
-        function deleteRecord(id) {
-            if(confirm("⚠️ Permanent delete karna chahte hain?")) db.collection("ShriGaneshRecords").doc(id).delete().then(() => generateReport());
-        }
-
-        function exportToCSV() {
-            if(exportDataList.length === 0) { alert("Pehle Hisaab nikalein, phir Export karein!"); return; }
-            let csvContent = "data:text/csv;charset=utf-8,Date,Vehicle No,Customer Name,Mobile No,Work Type,Staff Name,Amount (Rs)\n"; 
-            exportDataList.forEach(rowArray => {
-                csvContent += `${rowArray.dateIso},${rowArray.vehicleNo},${rowArray.customerName},${rowArray.mobileNo},${rowArray.workType},${rowArray.staffName},${rowArray.amount}\r\n`;
-            });
-            var link = document.createElement("a");
-            link.setAttribute("href", encodeURI(csvContent));
-            link.setAttribute("download", "Shri_Ganesh_Tyres_Khata.csv");
-            document.body.appendChild(link); link.click(); document.body.removeChild(link); 
-        }
     </script>
 </body>
 </html>
