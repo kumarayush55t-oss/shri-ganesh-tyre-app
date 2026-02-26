@@ -3,13 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Shri Ganesh Tyres - Advanced Manager</title>
+    <title>Shri Ganesh Tyres - Pro Manager</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f4f7f6; margin: 0; padding: 0; padding-bottom: 60px; }
         .header { background: #d32f2f; color: white; padding: 15px; text-align: center; font-size: 22px; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .sub-header { font-size: 13px; font-weight: normal; margin-top: 5px; opacity: 0.9; }
         .container { padding: 15px; max-width: 600px; margin: auto; }
         
+        /* App Lock Screen */
+        #lockScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #2c3e50; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; }
+        #lockScreen input { width: 80%; max-width: 300px; padding: 15px; text-align: center; font-size: 24px; letter-spacing: 5px; border-radius: 8px; border: none; outline: none; margin-bottom: 20px; }
+        #lockScreen button { width: 80%; max-width: 300px; background: #e74c3c; font-size: 18px; padding: 15px; }
+
         .tabs { display: flex; background: white; border-bottom: 2px solid #ddd; position: sticky; top: 0; z-index: 100; }
         .tab { flex: 1; padding: 14px 5px; text-align: center; font-weight: bold; color: #555; cursor: pointer; border-bottom: 3px solid transparent; font-size: 14px; transition: 0.3s; }
         .tab.active { color: #d32f2f; border-bottom: 3px solid #d32f2f; background: #fdf2f2; }
@@ -20,10 +25,12 @@
         .card { background: white; padding: 18px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.08); margin-bottom: 15px; }
         label { font-weight: bold; display: block; margin-top: 12px; color: #333; font-size: 14px; }
         input, select { width: 100%; padding: 12px; margin-top: 6px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 16px; background: #fafafa; }
+        input:disabled, select:disabled { background: #e9ecef; color: #6c757d; }
         
         button { width: 100%; background: #d32f2f; color: white; padding: 14px; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; margin-top: 20px; cursor: pointer; box-shadow: 0 2px 4px rgba(211,47,47,0.3); }
         button:active { background: #b71c1c; transform: scale(0.98); }
         .btn-green { background: #27ae60; box-shadow: 0 2px 4px rgba(39,174,96,0.3); }
+        .btn-blue { background: #2980b9; box-shadow: 0 2px 4px rgba(41,128,185,0.3); margin-top: 10px; }
         .btn-small { padding: 8px; font-size: 14px; margin-top: 5px; width: auto; }
         .btn-delete { background: #e74c3c; color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 13px; cursor: pointer; }
 
@@ -35,11 +42,17 @@
         
         hr { border: 0; border-top: 1px solid #eee; margin: 15px 0; }
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        
-        .staff-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee; }
+        .loyalty-msg { font-size: 13px; margin-top: 5px; display: block; }
     </style>
 </head>
 <body>
+
+    <div id="lockScreen">
+        <h2 style="margin-bottom: 5px;">🛞 Shri Ganesh Tyres</h2>
+        <p style="margin-bottom: 30px; font-size: 14px; color: #bdc3c7;">App use karne ke liye PIN daalein</p>
+        <input type="password" id="appPinInput" placeholder="Enter PIN" inputmode="numeric" maxlength="6">
+        <button onclick="unlockApp()">Unlock App</button>
+    </div>
 
     <div class="header">
         🛞 Shri Ganesh Tyres
@@ -49,7 +62,7 @@
     <div class="tabs">
         <div class="tab active" onclick="switchTab('addWorkTab', this)">📝 Entry</div>
         <div class="tab" onclick="switchTab('searchTab', this)">🔍 Search</div>
-        <div class="tab" onclick="switchTab('adminTab', this)">🔒 Admin Panel</div>
+        <div class="tab" onclick="switchTab('adminTab', this)">🔒 Admin</div>
     </div>
 
     <div class="container">
@@ -57,11 +70,10 @@
         <div id="addWorkTab" class="tab-content active">
             <div class="card">
                 <form id="workForm">
-                    <label>Customer Naam:</label>
-                    <input type="text" id="customerName" placeholder="Naam likhein" required>
-
                     <label>Customer Mobile No:</label>
                     <input type="tel" id="mobileNo" placeholder="10 digit number" maxlength="10">
+                    <div id="loyaltyMsg" class="loyalty-msg"></div> <label>Customer Naam:</label>
+                    <input type="text" id="customerName" placeholder="Naam likhein" required>
 
                     <label>Gaadi / Bike Number:</label>
                     <input type="text" id="vehicleNo" placeholder="HR 13..." required style="text-transform: uppercase;">
@@ -70,7 +82,7 @@
                     <select id="workType">
                         <option value="Normal Puncture">Normal Puncture</option>
                         <option value="Tube Change">Tube Change</option>
-                        <option value="Nalki (Valve)">Nalki (Valve)</option>
+                        <option value="Tyre Fitting">Tyre Fitting</option> <option value="Hawa">Hawa (Air)</option> <option value="Nalki (Valve)">Nalki (Valve)</option>
                         <option value="Mushroom Patch">Mushroom Patch</option>
                         <option value="Cut Repair">Cut Repair</option>
                         <option value="Garam Puncture">Garam Puncture</option>
@@ -105,6 +117,17 @@
 
         <div id="adminTab" class="tab-content">
             
+            <div class="card" style="background: #e8f4fd; border: 1px solid #bde0fe;">
+                <h3 style="margin-top:0; color: #2980b9;">⚙️ App Security & Export</h3>
+                <label>Staff App Lock PIN Badlein:</label>
+                <div style="display:flex; gap:10px;">
+                    <input type="number" id="newAppPin" placeholder="Naya PIN daalein">
+                    <button type="button" class="btn-small btn-blue" onclick="changeAppPin()">Set PIN</button>
+                </div>
+                <hr>
+                <button type="button" class="btn-green" onclick="exportToCSV()" style="margin-top:0;">📥 Khata Excel (CSV) Mein Download Karein</button>
+            </div>
+
             <div class="card" style="border-top: 4px solid #f39c12;">
                 <h3 style="margin-top:0;">📊 Date-wise Hisaab</h3>
                 <div class="grid-2">
@@ -160,13 +183,44 @@
         const storage = firebase.storage();
 
         // -------------------------
-        // PIN LOCK & TAB LOGIC
+        // APP LOCK LOGIC
+        // -------------------------
+        let globalAppPin = "1234"; // Default
+        db.collection("ShopSettings").doc("AppSecurity").onSnapshot(doc => {
+            if(doc.exists) {
+                globalAppPin = doc.data().pin;
+            } else {
+                db.collection("ShopSettings").doc("AppSecurity").set({pin: "1234"});
+            }
+        });
+
+        function unlockApp() {
+            const enteredPin = document.getElementById('appPinInput').value;
+            if(enteredPin === globalAppPin) {
+                document.getElementById('lockScreen').style.display = 'none';
+            } else {
+                alert("Galat PIN! Access Denied.");
+            }
+        }
+
+        function changeAppPin() {
+            const newPin = document.getElementById('newAppPin').value.trim();
+            if(newPin.length > 0) {
+                db.collection("ShopSettings").doc("AppSecurity").set({pin: newPin}).then(() => {
+                    alert("✅ App ka naya PIN set ho gaya hai! Ab purana staff app nahi khol payega.");
+                    document.getElementById('newAppPin').value = "";
+                });
+            }
+        }
+
+        // -------------------------
+        // TABS & ADMIN PIN (308913)
         // -------------------------
         function switchTab(tabId, element) {
             if(tabId === 'adminTab') {
-                const pin = prompt("Admin PIN Daalein:");
-                if(pin !== "308913") {
-                    alert("Galat PIN! Access Denied.");
+                const adminPin = prompt("Admin Panel PIN Daalein:");
+                if(adminPin !== "308913") {
+                    alert("Sirf Owner allowed hai!");
                     return;
                 }
             }
@@ -182,7 +236,49 @@
         }
 
         // -------------------------
-        // 1. STAFF MANAGEMENT (FIXED)
+        // HAWA LOGIC (Automatic Staff Lock)
+        // -------------------------
+        document.getElementById('workType').addEventListener('change', function() {
+            const staffSelect = document.getElementById('staffNameSelect');
+            if(this.value === "Hawa") {
+                let exists = false;
+                for(let i=0; i<staffSelect.options.length; i++) {
+                    if(staffSelect.options[i].value === "Sabhi Staff (Shared)") exists = true;
+                }
+                if(!exists) staffSelect.innerHTML += `<option value="Sabhi Staff (Shared)">Sabhi Staff (Shared)</option>`;
+                staffSelect.value = "Sabhi Staff (Shared)";
+                staffSelect.disabled = true; // Lock kar diya
+            } else {
+                staffSelect.disabled = false; // Unlock
+                if(staffSelect.value === "Sabhi Staff (Shared)") staffSelect.selectedIndex = 0;
+            }
+        });
+
+        // -------------------------
+        // CUSTOMER LOYALTY CHECK
+        // -------------------------
+        document.getElementById('mobileNo').addEventListener('blur', function() {
+            const mob = this.value.trim();
+            const msgDiv = document.getElementById('loyaltyMsg');
+            if(mob.length >= 10) {
+                msgDiv.innerHTML = "Checking history... ⏳";
+                db.collection("ShriGaneshRecords").where("mobileNo", "==", mob).get().then(snap => {
+                    if(!snap.empty) {
+                        let count = snap.size;
+                        let lastDate = "";
+                        snap.forEach(doc => { if(doc.data().dateIso > lastDate) lastDate = doc.data().dateIso; });
+                        msgDiv.innerHTML = `<span style="color:#27ae60;">🌟 Regular Customer: Pehle <b>${count} baar</b> aa chuka hai. Last visit: ${lastDate}</span>`;
+                    } else {
+                        msgDiv.innerHTML = `<span style="color:#e67e22;">✨ Naya Customer Hai</span>`;
+                    }
+                });
+            } else {
+                msgDiv.innerHTML = "";
+            }
+        });
+
+        // -------------------------
+        // STAFF MANAGEMENT
         // -------------------------
         function loadStaff() {
             db.collection("ShopStaff").onSnapshot(snap => {
@@ -194,53 +290,38 @@
                     const name = doc.data().name;
                     options += `<option value="${name}">${name}</option>`;
                     reportOptions += `<option value="${name}">${name}</option>`;
-                    listHtml += `
-                        <div class="staff-item">
-                            <b>${name}</b> 
-                            <button class="btn-delete" type="button" onclick="deleteStaff('${doc.id}')">Hatao</button>
-                        </div>`;
+                    listHtml += `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee;">
+                                    <b>${name}</b> 
+                                    <button class="btn-delete" type="button" onclick="deleteStaff('${doc.id}')">Hatao</button>
+                                 </div>`;
                 });
                 
                 document.getElementById('staffNameSelect').innerHTML = options || '<option value="">Pehle Staff Add Karein</option>';
                 document.getElementById('reportStaffSelect').innerHTML = reportOptions;
                 document.getElementById('staffList').innerHTML = listHtml || '<p>Koi staff add nahi hai.</p>';
-            }, error => {
-                console.error("Error loading staff:", error);
             });
         }
         loadStaff(); 
 
         function addStaff() {
-            const nameInput = document.getElementById('newStaffName');
-            const name = nameInput.value.trim();
+            const name = document.getElementById('newStaffName').value.trim();
             if(name) {
-                db.collection("ShopStaff").add({ name: name }).then(() => {
-                    nameInput.value = "";
-                    alert(name + " add ho gaya hai!");
-                }).catch(err => alert("Error adding staff: " + err.message));
-            } else {
-                alert("Kripya staff ka naam likhein!");
+                db.collection("ShopStaff").add({ name: name }).then(() => { document.getElementById('newStaffName').value = ""; });
             }
         }
-
         function deleteStaff(id) {
-            if(confirm("Kya aap is staff ko hatana chahte hain?")) {
-                db.collection("ShopStaff").doc(id).delete();
-            }
+            if(confirm("Staff hatana chahte hain?")) db.collection("ShopStaff").doc(id).delete();
         }
 
         // -------------------------
-        // 2. DATA SAVE (PHOTO FAIL-SAFE)
+        // DATA SAVE 
         // -------------------------
         document.getElementById('workForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const btn = document.getElementById('saveBtn');
             const staffSelected = document.getElementById('staffNameSelect').value;
             
-            if(!staffSelected) {
-                alert("Pehle Admin panel se kam se kam ek Staff add karein!");
-                return;
-            }
+            if(!staffSelected) { alert("Pehle Admin panel se Staff add karein!"); return; }
 
             btn.innerText = "Data Save Ho Raha Hai... ⏳";
             btn.style.background = "#7f8c8d";
@@ -255,10 +336,7 @@
                     const storageRef = storage.ref('tyre_photos/' + Date.now() + '_' + photoFile.name);
                     await storageRef.put(photoFile);
                     photoUrl = await storageRef.getDownloadURL();
-                } catch(err) {
-                    console.error(err);
-                    alert("Photo upload fail hui, par form ka data save ho jayega. (Storage rules check karein)");
-                }
+                } catch(err) { console.error(err); }
             }
 
             const data = {
@@ -276,8 +354,7 @@
             db.collection("ShriGaneshRecords").add(data).then(() => {
                 alert("✅ Entry Successfully Save Ho Gayi!");
                 document.getElementById('workForm').reset();
-            }).catch(err => {
-                alert("Error: Database permission denied. Firestore Rules Test Mode mein karein.");
+                document.getElementById('loyaltyMsg').innerHTML = ""; // Reset msg
             }).finally(() => {
                 btn.innerText = "Kaam Save Karein ☁️";
                 btn.style.background = "#d32f2f";
@@ -286,7 +363,7 @@
         });
 
         // -------------------------
-        // 3. LIVE FEED
+        // LIVE FEED
         // -------------------------
         db.collection("ShriGaneshRecords").where("dateIso", "==", getLocalDateISO())
         .onSnapshot(snapshot => {
@@ -296,20 +373,18 @@
             
             snapshot.forEach(doc => {
                 const d = doc.data();
-                let imgTag = d.photoUrl ? `<img src="${d.photoUrl}" class="tyre-img">` : '';
                 feed.innerHTML += `
                     <div class="record-card">
                         <h4>🚘 ${d.vehicleNo} - ${d.workType}</h4>
                         <p>👤 ${d.customerName} | 📱 ${d.mobileNo}</p>
                         <p>🛠️ ${d.staffName}</p>
-                        ${imgTag}
                         <p class="price" style="margin-top:8px;">💰 ₹${d.amount}</p>
                     </div>`;
             });
         });
 
         // -------------------------
-        // 4. SEARCH
+        // SEARCH
         // -------------------------
         function searchData() {
             let val = document.getElementById('searchValue').value.toUpperCase().replace(/\s+/g, '');
@@ -324,13 +399,11 @@
                     const d = doc.data();
                     if(d.vehicleNo.includes(val) || d.mobileNo.includes(val)) {
                         found = true;
-                        let imgTag = d.photoUrl ? `<img src="${d.photoUrl}" class="tyre-img">` : '';
                         resDiv.innerHTML += `
                             <div class="record-card">
                                 <h4>🚘 ${d.vehicleNo} - ${d.workType} <span style="font-size:12px;color:#888;float:right">${d.dateIso}</span></h4>
                                 <p>👤 ${d.customerName} | 📱 ${d.mobileNo}</p>
                                 <p>🛠️ ${d.staffName}</p>
-                                ${imgTag}
                                 <p class="price">💰 ₹${d.amount}</p>
                             </div>`;
                     }
@@ -340,50 +413,46 @@
         }
 
         // -------------------------
-        // 5. ADMIN HISAAB (FILTER FIXED)
+        // ADMIN HISAAB
         // -------------------------
+        let exportDataList = []; // For CSV
+
         function generateReport() {
             const sDate = document.getElementById('startDate').value;
             const eDate = document.getElementById('endDate').value;
-            const staffFilter = document.getElementById('reportStaffSelect').value; // 'All' or specific name
+            const staffFilter = document.getElementById('reportStaffSelect').value; 
             const resDiv = document.getElementById('reportResults');
             
             if(!sDate || !eDate) { alert("Please date select karein!"); return; }
             resDiv.innerHTML = "Calculating... ⏳";
 
-            db.collection("ShriGaneshRecords")
-              .where("dateIso", ">=", sDate)
-              .where("dateIso", "<=", eDate)
+            db.collection("ShriGaneshRecords").where("dateIso", ">=", sDate).where("dateIso", "<=", eDate)
               .get().then(snapshot => {
                 let totalKamai = 0;
                 let totalKaam = 0;
                 let recordsHtml = "<hr><h4>Is Date Ke Records:</h4>";
+                exportDataList = []; // Clear old export data
                 
                 snapshot.forEach(doc => {
                     const d = doc.data();
-                    // Yahan check kar rahe hain ki specific staff hai ya sabka dekhna hai
                     if(staffFilter === "All" || d.staffName === staffFilter) {
                         totalKamai += d.amount;
                         totalKaam++;
+                        exportDataList.push(d); // Push for CSV
                         recordsHtml += `
                             <div class="record-card" style="padding:10px; font-size:13px;">
-                                <b>${d.vehicleNo}</b> (₹${d.amount}) - ${d.staffName} [${d.dateIso}]
-                                <button class="btn-delete" style="float:right; padding:4px 8px;" onclick="deleteRecord('${doc.id}')">Delete</button>
-                                <div style="clear:both;"></div>
+                                <b>${d.vehicleNo}</b> (₹${d.amount}) - ${d.workType}<br>
+                                Staff: ${d.staffName} [${d.dateIso}]
+                                <button class="btn-delete" style="float:right; padding:4px 8px; margin-top:-15px;" onclick="deleteRecord('${doc.id}')">Delete</button>
                             </div>`;
                     }
                 });
 
-                if(totalKaam === 0) {
-                    resDiv.innerHTML = "<p>Is date range aur staff ka koi record nahi hai.</p>";
-                    return;
-                }
-
-                let headingText = staffFilter === "All" ? "Dukaan Ki Total Kamai" : `${staffFilter} Ki Kamai`;
+                if(totalKaam === 0) { resDiv.innerHTML = "<p>Koi record nahi mila.</p>"; return; }
 
                 resDiv.innerHTML = `
                     <div style="background:#f9fff9; border:1px solid #27ae60; padding:15px; border-radius:8px;">
-                        <h3 style="margin:0 0 10px 0; color:#2c3e50;">📊 ${headingText}</h3>
+                        <h3 style="margin:0 0 10px 0; color:#2c3e50;">📊 ${staffFilter} Ki Kamai</h3>
                         <p style="margin:5px 0; font-size:16px;">Total Gaadiyan: <b>${totalKaam}</b></p>
                         <hr style="border-top:1px solid #ddd; margin:10px 0;">
                         <p style="margin:5px 0; font-size:22px; color:#27ae60; font-weight:bold;">₹ ${totalKamai}</p>
@@ -394,13 +463,36 @@
         }
 
         function deleteRecord(id) {
-            if(confirm("⚠️ Kya aap is entry ko permanent delete karna chahte hain?")) {
-                db.collection("ShriGaneshRecords").doc(id).delete().then(() => {
-                    alert("Record delete ho gaya.");
-                    generateReport(); // Refresh
-                });
+            if(confirm("⚠️ Kya aap ise permanent delete karna chahte hain?")) {
+                db.collection("ShriGaneshRecords").doc(id).delete().then(() => generateReport());
             }
+        }
+
+        // -------------------------
+        // EXPORT TO EXCEL (CSV)
+        // -------------------------
+        function exportToCSV() {
+            if(exportDataList.length === 0) {
+                alert("Pehle 'Date-wise Hisaab' section se date daal kar Hisaab nikalein, phir Export karein!");
+                return;
+            }
+            
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "Date,Vehicle No,Customer Name,Mobile No,Work Type,Staff Name,Amount (Rs)\n"; // Headers
+
+            exportDataList.forEach(function(rowArray) {
+                let row = `${rowArray.dateIso},${rowArray.vehicleNo},${rowArray.customerName},${rowArray.mobileNo},${rowArray.workType},${rowArray.staffName},${rowArray.amount}`;
+                csvContent += row + "\r\n";
+            });
+
+            var encodedUri = encodeURI(csvContent);
+            var link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "Shri_Ganesh_Tyres_Khata.csv");
+            document.body.appendChild(link); // Required for Firefox
+            link.click();
+            document.body.removeChild(link); 
         }
     </script>
 </body>
-</html>s
+</html>
