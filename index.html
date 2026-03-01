@@ -3,84 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TyreXpert - Pro Manager</title>
+    <title>TyreXpert - ERP Pro</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f7fa; color: #2c3e50; min-height: 100vh; padding-bottom: 80px; }
-        .header { background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%); color: #000000; padding: 1.5rem 1rem; text-align: center; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); position: relative; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; }
-        .app-title { font-size: 2.2rem; font-weight: 700; }
-        .app-title .red { color: #ff0000; }
-        .app-title .black { color: #000000; }
-        .notification-bell { position: absolute; right: 1.2rem; top: 1.2rem; background: #f0f0f0; color: #e74c3c; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; box-shadow: 0 2px 8px rgba(0,0,0,0.15); cursor: pointer; transition: transform 0.2s; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f4f8; color: #2c3e50; min-height: 100vh; padding-bottom: 80px; }
         
-        #lowStockAlert { margin: 1.5rem 1rem 0; background: #fff0f0; border: 2px solid #ff0000; border-radius: 12px; padding: 1rem; text-align: center; color: #ff0000; font-size: 1.3rem; font-weight: 900; animation: redGlow 1s infinite alternate; display: none; }
-        @keyframes redGlow { from { box-shadow: 0 0 10px rgba(255, 0, 0, 0.3); text-shadow: 0 0 5px rgba(255,0,0,0.3); } to { box-shadow: 0 0 25px rgba(255, 0, 0, 0.8); text-shadow: 0 0 10px rgba(255,0,0,0.8); } }
-
-        #idleTimerAlert { margin: 1rem 1rem 0; padding: 1rem; border-radius: 12px; font-size: 1.1rem; text-align: center; font-weight: 600; display: none; transition: all 0.3s ease; box-shadow: 0 3px 10px rgba(0,0,0,0.06); }
-
-        .personalized-message { margin: 1rem 1rem 0; background: white; border-radius: 16px; padding: 1.2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.08); text-align: center; }
-        .personalized-message h3 { margin-bottom: 0.8rem; color: #34495e; }
-        #personalizedText { font-size: 1.15rem; font-weight: 600; }
+        .header { background: linear-gradient(135deg, #ffffff 0%, #e0eaf5 100%); padding: 1.2rem; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.08); border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; position: relative; }
+        .app-title { font-size: 2rem; font-weight: 800; letter-spacing: -0.5px; }
+        .app-title .red { color: #e74c3c; }
         
-        .tabs { display: flex; background: white; margin: 1rem; border-radius: 12px; overflow: hidden; box-shadow: 0 3px 12px rgba(0,0,0,0.06); }
-        .tab { flex: 1; padding: 1rem; text-align: center; font-weight: 600; color: #7f8c8d; cursor: pointer; transition: all 0.3s; }
+        /* LOGIN SCREEN */
+        #loginScreen { position: fixed; inset: 0; background: linear-gradient(135deg, #1e293b, #2c3e50); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; padding: 20px; overflow-y: auto; }
+        .user-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; width: 100%; max-width: 400px; margin-top: 30px; }
+        .user-card { background: rgba(255,255,255,0.1); padding: 25px 10px; border-radius: 16px; text-align: center; cursor: pointer; transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); }
+        .user-card:hover { background: rgba(255,255,255,0.25); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .user-card h3 { font-size: 1.1rem; margin-top: 10px; letter-spacing: 0.5px; }
+        
+        /* APP UI */
+        .logout-btn { position: absolute; left: 15px; top: 1.2rem; background: #ff4757; color: white; border: none; padding: 8px 15px; border-radius: 8px; font-size: 0.85rem; font-weight: bold; cursor: pointer; box-shadow: 0 2px 8px rgba(255,71,87,0.3); }
+        .logged-user-info { text-align: center; padding: 12px; font-weight: 700; background: white; margin: 15px; border-radius: 12px; box-shadow: 0 3px 10px rgba(0,0,0,0.05); color: #2c3e50; border-left: 5px solid #27ae60; }
+        
+        /* ALERTS */
+        #lowStockAlert { margin: 15px; background: #ffeaa7; border: 2px solid #fdcb6e; border-radius: 12px; padding: 12px; text-align: center; color: #d63031; font-weight: 900; animation: pulse 1.5s infinite; display: none; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+        
+        #idleTimerAlert { margin: 15px; padding: 12px; border-radius: 12px; text-align: center; font-weight: 700; display: none; transition: 0.3s; box-shadow: 0 3px 10px rgba(0,0,0,0.05); }
+        
+        /* TABS */
+        .tabs { display: flex; background: white; margin: 15px; border-radius: 12px; overflow: hidden; box-shadow: 0 3px 15px rgba(0,0,0,0.05); }
+        .tab { flex: 1; padding: 15px 10px; text-align: center; font-weight: 700; color: #95a5a6; cursor: pointer; transition: 0.2s; font-size: 0.95rem; }
         .tab.active { background: #e74c3c; color: white; }
-        .tab-content { display: none; padding: 0 1rem 1rem; }
-        .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .card { background: white; border-radius: 16px; padding: 1.5rem; margin-bottom: 1.2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.06); }
-        label { font-weight: 600; color: #34495e; margin: 1rem 0 0.4rem; display: block; font-size: 0.95rem; }
-        input, select { width: 100%; padding: 0.9rem 1rem; border: 1px solid #dfe6e9; border-radius: 10px; font-size: 1rem; transition: all 0.25s; }
-        input:focus, select:focus { outline: none; border-color: #e74c3c; box-shadow: 0 0 0 3px rgba(231,76,60,0.12); }
-        button { width: 100%; padding: 1rem; background: #e74c3c; color: white; border: none; border-radius: 10px; font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; cursor: pointer; box-shadow: 0 3px 10px rgba(231,76,60,0.2); }
-        .btn-green { background: #27ae60; box-shadow: 0 3px 10px rgba(39,174,96,0.2); }
+        .tab-content { display: none; padding: 0 15px 15px; }
+        .tab-content.active { display: block; animation: slideUp 0.4s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        .record-card { background: white; border-radius: 12px; padding: 1.2rem; margin-bottom: 1rem; border-left: 5px solid #e74c3c; box-shadow: 0 3px 10px rgba(0,0,0,0.05); position: relative;}
-        .record-card h4 { margin: 0 0 0.8rem; font-size: 1.15rem; color: #2c3e50; }
-        .record-card p { margin: 0.4rem 0; color: #555; font-size: 0.95rem; }
-        .price { font-size: 1.2rem; font-weight: bold; color: #27ae60; margin-top: 0.6rem !important; }
-        .btn-delete { background: #c0392b; width: auto; padding: 0.4rem 0.8rem; font-size: 0.85rem; margin-top: 0.5rem; border-radius: 6px; position: absolute; bottom: 1.2rem; right: 1.2rem; }
+        /* FORMS & CARDS */
+        .card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); }
+        label { font-weight: 700; margin: 12px 0 6px; display: block; font-size: 0.9rem; color: #34495e; }
+        input, select { width: 100%; padding: 12px 15px; border: 1.5px solid #dfe6e9; border-radius: 10px; font-size: 1rem; transition: 0.3s; background: #fdfdfd; }
+        input:focus, select:focus { border-color: #3498db; outline: none; box-shadow: 0 0 0 3px rgba(52,152,219,0.1); }
+        
+        button { width: 100%; padding: 14px; background: #e74c3c; color: white; border: none; border-radius: 10px; font-weight: 700; font-size: 1.05rem; margin-top: 15px; cursor: pointer; box-shadow: 0 4px 15px rgba(231,76,60,0.3); transition: 0.2s; }
+        button:hover { transform: translateY(-2px); background: #c0392b; }
+        button:disabled { background: #bdc3c7; cursor: not-allowed; transform: none; box-shadow: none; }
+        
+        .btn-green { background: #2ecc71; box-shadow: 0 4px 15px rgba(46,204,113,0.3); }
+        .btn-green:hover { background: #27ae60; }
+        .btn-blue { background: #3498db; box-shadow: 0 4px 15px rgba(52,152,219,0.3); }
+        .btn-delete { background: #ff4757; padding: 6px 12px; font-size: 0.8rem; border-radius: 6px; float: right; width: auto; margin-top: 0; box-shadow: none; }
 
-        #lockScreen { position: fixed; inset: 0; background: linear-gradient(135deg, #2c3e50, #34495e); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; }
-        #lockScreen input { width: 85%; max-width: 320px; padding: 1.2rem; font-size: 1.8rem; letter-spacing: 0.5rem; text-align: center; border-radius: 12px; border: none; margin: 1.5rem 0; }
-        .attendance-button { margin: 1rem; background: #3498db; color: white; border: none; padding: 1rem; border-radius: 10px; font-size: 1.1rem; cursor: pointer; box-shadow: 0 3px 10px rgba(52,152,219,0.2); }
+        /* RECORD FEED */
+        .record-card { background: #ffffff; border-radius: 12px; padding: 16px; margin-bottom: 12px; border-left: 6px solid #3498db; box-shadow: 0 3px 12px rgba(0,0,0,0.05); position: relative; }
+        .record-card h4 { margin-bottom: 6px; color: #2c3e50; font-size: 1.15rem; }
+        .record-card p { font-size: 0.95rem; color: #7f8c8d; margin-bottom: 4px; }
+        .price { color: #27ae60 !important; font-weight: 800; font-size: 1.25rem; margin-top: 8px; }
         
-        .customer-history { margin-top: 1rem; background: #fdfefe; padding: 1rem; border-radius: 10px; border: 1px solid #dfe6e9; display: none; }
-        .history-success { background: #e8f8f5; border-color: #27ae60; }
-        .history-new { background: #fdf2e9; border-color: #e67e22; }
+        .customer-history { margin-top: 12px; background: #f8f9fa; padding: 12px; border-radius: 10px; border: 1.5px dashed #bdc3c7; display: none; font-size: 0.9rem; line-height: 1.5; }
     </style>
 </head>
 <body>
 
-    <div id="lockScreen">
-        <h2 style="margin-bottom: 1rem;">🛞 TyreXpert</h2>
-        <p style="margin-bottom: 1.5rem; opacity: 0.9;">PIN डालें जारी रखने के लिए</p>
-        <input type="password" id="appPinInput" placeholder="••••••" inputmode="numeric" maxlength="6">
-        <button onclick="unlockApp()" style="width: 85%; max-width: 320px;">Unlock & Start App</button>
-    </div>
-
-    <div class="header">
-        <div class="app-title"><span class="red">Tyre</span><span class="black">Xpert</span></div>
-        <div class="notification-bell" onclick="showNotification()">
-            🔔 <span class="badge" id="notif-count">0</span>
+    <div id="loginScreen">
+        <h1 style="margin-bottom: 10px; font-size: 2.5rem;">🛞 TyreXpert</h1>
+        <p style="opacity: 0.9; margin-bottom: 10px;">Select your profile to login</p>
+        <div class="user-grid" id="userList">
+            <p>Loading Staff...</p>
         </div>
     </div>
 
-    <h2 id="lowStockAlert"></h2>
-    <div id="idleTimerAlert"><span id="idleTimeText">Loading Tracker...</span></div>
-
-    <div class="personalized-message">
-        <h3>📈 आपकी सेल्स</h3>
-        <p id="personalizedText">Loading...</p>
+    <div class="header">
+        <button class="logout-btn" onclick="logout()">Logout</button>
+        <div class="app-title"><span class="red">Tyre</span>Xpert</div>
     </div>
 
-    <button class="attendance-button" onclick="markAttendanceWithGPS()" id="attBtn">Attendance Mark Karein (GPS)</button>
+    <div class="logged-user-info">Logged in as: <span id="currentUserNameDisplay" style="color: #e74c3c;">...</span></div>
+
+    <h2 id="lowStockAlert"></h2>
+    <div id="idleTimerAlert"><span id="idleTimeText">Tracking system starting...</span></div>
+
+    <button class="btn-blue" onclick="markAttendanceWithGPS()" id="attBtn" style="margin: 0 15px 15px; width: calc(100% - 30px);">📍 Attendance Mark Karein (GPS)</button>
 
     <div class="tabs">
         <div class="tab active" onclick="switchTab('addWorkTab', this)">Entry</div>
         <div class="tab" onclick="switchTab('searchTab', this)">Search</div>
         <div class="tab" onclick="switchTab('stockTab', this)">Stock</div>
-        <div class="tab" onclick="switchTab('adminTab', this)">Admin</div>
+        <div class="tab" id="adminTabHandle" style="display:none;" onclick="switchTab('adminTab', this)">Admin</div>
     </div>
 
     <div class="tab-content active" id="addWorkTab">
@@ -88,97 +95,108 @@
             <form id="workForm">
                 <label>Item / Service</label>
                 <select id="itemSelect" required></select>
-
+                
                 <label>Quantity</label>
-                <input type="number" id="quantity" min="1" required placeholder="1">
-
-                <div id="customerDetailsWrapper">
-                    <label>Customer Mobile (या)</label>
-                    <input type="tel" id="mobileNo" maxlength="10" placeholder="10 digit number" oninput="checkMobileInstantly()">
-
-                    <label>Vehicle Number (या)</label>
-                    <input type="text" id="vehicleNo" placeholder="HR26..." style="text-transform: uppercase;" onblur="checkCustomerHistory()">
-
-                    <div id="customerHistory" class="customer-history"></div>
-
-                    <label>Customer Name</label>
-                    <input type="text" id="customerName" required placeholder="Enter name">
-                </div>
-
-                <label>Staff</label>
-                <select id="staffNameSelect" required><option value="Raghav">Raghav</option></select>
-
-                <label>Amount (₹)</label>
-                <input type="number" id="amount" required placeholder="Total amount">
-
+                <input type="number" id="quantity" min="1" value="1" required>
+                
+                <label>Customer Mobile (10 digits)</label>
+                <input type="tel" id="mobileNo" maxlength="10" placeholder="e.g. 9876543210" oninput="checkMobileInstantly()">
+                
+                <label>Vehicle Number</label>
+                <input type="text" id="vehicleNo" placeholder="e.g. HR26 DK 1234" style="text-transform: uppercase;" onblur="checkCustomerHistory()">
+                
+                <div id="customerHistory" class="customer-history"></div>
+                
+                <label>Customer Name</label>
+                <input type="text" id="customerName" required placeholder="Customer ka naam">
+                
+                <label>Total Amount (₹)</label>
+                <input type="number" id="amount" required placeholder="Total Bill">
+                
                 <label>Payment Mode</label>
                 <select id="paymentMethod" required>
                     <option value="Cash">Cash</option>
                     <option value="UPI">UPI</option>
                     <option value="Card">Card</option>
-                    <option value="Other">Other</option>
+                    <option value="Udhaar">Udhaar (Khata)</option>
                 </select>
-
+                
                 <button type="submit" id="saveBtn">Save Entry</button>
             </form>
         </div>
-
-        <h3 style="padding: 1rem 0 0.8rem; text-align: center; color: #34495e;">आज की ताज़ा एंट्रीज़ (Live)</h3>
+        
+        <h3 id="feedTitle" style="padding: 10px 0; text-align: center; color: #2c3e50;">Live Entries (Today)</h3>
         <div id="liveFeed"></div>
     </div>
 
     <div class="tab-content" id="searchTab">
         <div class="card">
-            <label>Search by Vehicle No or Mobile</label>
-            <input type="text" id="searchValue" placeholder="HR26... or 98xxxxxxxx">
-            <button onclick="searchData()">Search</button>
+            <label>Search Customer History</label>
+            <input type="text" id="searchValue" placeholder="Enter Mobile No or Vehicle No" style="text-transform: uppercase;">
+            <button onclick="searchData()">Search History</button>
         </div>
         <div id="searchResults"></div>
     </div>
 
     <div class="tab-content" id="stockTab">
         <div class="card">
-            <h3>Current Stock</h3>
+            <h3 style="margin-bottom: 10px;">Current Inventory</h3>
             <div id="stockList"></div>
         </div>
     </div>
 
     <div class="tab-content" id="adminTab">
+        
         <div class="card">
-            <h3>Admin Controls</h3>
-            <label>Change App PIN</label>
-            <input type="number" id="newAppPin" placeholder="New 4-6 digit PIN">
-            <button class="btn-green" onclick="changeAppPin()">Update PIN</button>
+            <h3>🏆 Staff Performance (इस महीने)</h3>
+            <div id="leaderboardList" style="margin-top: 15px;">Loading...</div>
         </div>
+
         <div class="card">
-            <h3>Manage Inventory</h3>
+            <h3>📊 Sales Report (Date & Staff)</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
+                <div>
+                    <label style="margin-top:0;">From Date</label>
+                    <input type="date" id="repStart">
+                </div>
+                <div>
+                    <label style="margin-top:0;">To Date</label>
+                    <input type="date" id="repEnd">
+                </div>
+            </div>
+            
+            <label>Select Staff</label>
+            <select id="repStaff">
+                <option value="ALL">All Staff (पूरी दुकान)</option>
+                </select>
+            
+            <button class="btn-blue" onclick="generateReport()">Generate Report</button>
+            <div id="reportOutput" style="margin-top: 15px;"></div>
+        </div>
+
+        <div class="card">
+            <h3>👥 Staff Management</h3>
+            <input type="text" id="newStaffName" placeholder="Enter new staff name" style="margin-top:10px;">
+            <button class="btn-green" onclick="addStaff()">Add Staff</button>
+            <div id="manageStaffList" style="margin-top: 15px;"></div>
+        </div>
+        
+        <div class="card">
+            <h3>📦 Add New Item to Inventory</h3>
             <form id="itemForm">
-                <label>Item Name</label>
-                <input type="text" id="itemName" required>
-                <label>Price (₹)</label>
-                <input type="number" id="itemPrice" required>
-                <label>Initial Stock</label>
-                <input type="number" id="initialStock" required min="0">
-                <label>Low Stock Threshold</label>
-                <input type="number" id="itemThreshold" min="1">
-                <button type="submit">Add Item</button>
+                <input type="text" id="newItemName" placeholder="Item Name (e.g. MRF 100/90)" required style="margin-top:10px;">
+                <input type="number" id="newItemPrice" placeholder="Selling Price (₹)" required style="margin-top:10px;">
+                <input type="number" id="newInitialStock" placeholder="Initial Stock Qty" required style="margin-top:10px;">
+                <input type="number" id="newItemThreshold" placeholder="Low Stock Alert Level (Default: 5)" style="margin-top:10px;">
+                <button type="submit" class="btn-green">Save Item</button>
             </form>
         </div>
+        
         <div class="card">
-            <h3>Update Stock</h3>
-            <select id="stockItemSelect"></select>
-            <input type="number" id="addStockQty" placeholder="Quantity to add (+/-)">
-            <button onclick="updateStock()">Update Stock</button>
-        </div>
-        <div class="card">
-            <h3>Date-wise Report</h3>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                <div><label>From</label><input type="date" id="startDate"></div>
-                <div><label>To</label><input type="date" id="endDate"></div>
-            </div>
-            <select id="reportStaffSelect" style="margin-top:1rem;"><option value="Raghav">Raghav</option></select>
-            <button class="btn-green" onclick="generateReport()">Generate Report</button>
-            <div id="reportResults" style="margin-top: 1.5rem;"></div>
+            <h3>🔄 Update Existing Stock</h3>
+            <select id="stockItemSelect" style="margin-top:10px;"></select>
+            <input type="number" id="addStockQty" placeholder="Qty to Add (e.g. 10) or Subtract (-5)" style="margin-top:10px;">
+            <button class="btn-blue" onclick="updateStock()">Update Stock</button>
         </div>
     </div>
 
@@ -187,17 +205,8 @@
 
     <script>
         // ==========================================
-        // TELEGRAM BOT SETUP (Fixed with your Data)
+        // 1. CONFIGURATION
         // ==========================================
-        const TELEGRAM_BOT_TOKEN = "8200090038:AAEOufwLJ6niOsppIuoWE1MA8L7a4jhQiH0"; 
-        const TELEGRAM_CHAT_ID = "5172792830";     
-
-        function sendTelegramAlert(message) {
-            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${encodeURIComponent(message)}&parse_mode=HTML`;
-            fetch(url).then(res => console.log("Telegram Bhej Diya!")).catch(err => console.error("Telegram Failed:", err));
-        }
-
-        // FIREBASE SETUP
         const firebaseConfig = {
             apiKey: "AIzaSyApY09CHspm5TVxXTVvjnfB6lzwQ7nqltE",
             authDomain: "staff-managemant.firebaseapp.com",
@@ -209,484 +218,548 @@
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        let globalAppPin = "1234";
-        let lastEntryTimeMillis = null; 
-        let isGlobalLowStock = false;
-        let isInitialLoad = true;
-        let detailedLowStockMsg = ""; // NAYA: Detail wala low stock message
-
-        // SHOP LOCATION (Bahadurgarh)
+        // TELEGRAM BOT SETUP
+        const TG_TOKEN = "8200090038:AAEOufwLJ6niOsppIuoWE1MA8L7a4jhQiH0";
+        const TG_CHAT_ID = "5172792830";
+        
+        // SHOP GPS LOCATION (Bahadurgarh)
         const SHOP_LAT = 28.698147;
         const SHOP_LON = 76.918404;
 
-        // SOUND SETUP 
-        const normalSound = new Audio('https://actions.google.com/sounds/v1/cartoon/clank.ogg'); 
-        const loudAlarmSound = new Audio('https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg');
-        normalSound.volume = 0.8; loudAlarmSound.volume = 1.0;
+        // GLOBALS
+        let currentUser = null;
+        let isAdmin = false;
+        let lastEntryTime = null;
+        let isGlobalLowStock = false;
+        let detailedLowStockAlert = "";
 
-        function requestNotificationPermission() {
-            if ("Notification" in window && Notification.permission !== "granted") {
-                Notification.requestPermission();
+        // ==========================================
+        // 2. CORE UTILITIES
+        // ==========================================
+        function getToday() { return new Date().toISOString().split('T')[0]; }
+        function getTime() { return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); }
+        
+        function sendTG(msg) {
+            const url = `https://api.telegram.org/bot${TG_TOKEN}/sendMessage?chat_id=${TG_CHAT_ID}&text=${encodeURIComponent(msg)}&parse_mode=HTML`;
+            fetch(url).catch(err => console.error("TG Error:", err));
+        }
+
+        function switchTab(id, el) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById(id).classList.add('active');
+        }
+
+        // ==========================================
+        // 3. LOGIN & STAFF SYSTEM
+        // ==========================================
+        async function loadUsers() {
+            const list = document.getElementById('userList');
+            const adminList = document.getElementById('manageStaffList');
+            const repStaffSelect = document.getElementById('repStaff');
+            
+            try {
+                const snap = await db.collection('Staff').get();
+                list.innerHTML = `<div class="user-card" onclick="handleLogin('Admin')"><div style="font-size: 2.5rem;">👑</div><h3>Admin</h3></div>`;
+                adminList.innerHTML = "";
+                
+                // Repopulate Report Staff Select
+                let repOptions = `<option value="ALL">All Staff (पूरी दुकान)</option>`;
+
+                snap.forEach(doc => {
+                    const name = doc.id;
+                    list.innerHTML += `<div class="user-card" onclick="handleLogin('${name}')"><div style="font-size: 2.5rem;">👨‍🔧</div><h3>${name}</h3></div>`;
+                    repOptions += `<option value="${name}">${name}</option>`;
+                    
+                    adminList.innerHTML += `
+                        <div style="display:flex; justify-content:space-between; background:#f1f2f6; padding:10px; margin-top:5px; border-radius:8px;">
+                            <strong>${name}</strong>
+                            <button onclick="resetStaffPin('${name}')" style="background:#f39c12; padding:5px 10px; font-size:0.8rem; width:auto; margin:0;">Reset PIN</button>
+                        </div>`;
+                });
+                repStaffSelect.innerHTML = repOptions;
+
+            } catch(e) {
+                list.innerHTML = `<p style="color:red;">Error loading users. Check Internet.</p>`;
             }
         }
 
-        function pushPopupNotification(title, body) {
-            if ("Notification" in window && Notification.permission === "granted") {
-                new Notification(title, { body: body, icon: "https://cdn-icons-png.flaticon.com/512/1043/1043831.png" });
+        async function handleLogin(name) {
+            if (name === 'Admin') {
+                const pin = prompt("🔐 Admin Master PIN डालें:");
+                if (pin === '308913') {
+                    currentUser = 'Admin'; isAdmin = true; completeLogin();
+                } else alert("❌ Wrong PIN!");
+            } else {
+                const userDoc = await db.collection('Staff').doc(name).get();
+                const data = userDoc.data();
+                
+                if (!data || !data.pin) {
+                    const newPin = prompt(`👋 वेलकम ${name}!\nअपना नया 4-digit PIN सेट करें (इसे याद रखना):`);
+                    if (newPin && newPin.length >= 4) {
+                        await db.collection('Staff').doc(name).set({ pin: newPin }, { merge: true });
+                        alert("✅ PIN सेट हो गया! अब दोबारा क्लिक करके लॉगिन करें।");
+                    } else alert("❌ कम से कम 4 अंकों का PIN ज़रूरी है।");
+                } else {
+                    const pin = prompt(`🔐 ${name}, अपना PIN डालें:`);
+                    if (pin === data.pin) {
+                        currentUser = name; isAdmin = false; completeLogin();
+                    } else if(pin) alert("❌ Wrong PIN!");
+                }
             }
         }
 
-        function playNormalSound() {
-            normalSound.play().catch(e => console.log(e));
-            setTimeout(() => { normalSound.pause(); normalSound.currentTime = 0; }, 5000); 
+        function completeLogin() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('currentUserNameDisplay').textContent = currentUser;
+            
+            if (isAdmin) {
+                document.getElementById('adminTabHandle').style.display = 'block';
+                document.getElementById('feedTitle').textContent = "पूरी दुकान की आज की एंट्रीज़ (All Staff)";
+                loadLeaderboard(); // Load ranking for admin
+            } else {
+                document.getElementById('adminTabHandle').style.display = 'none';
+                document.getElementById('feedTitle').textContent = `आपकी (${currentUser}) आज की एंट्रीज़`;
+            }
+            initApp();
         }
 
-        function playLoudAlarm() {
-            loudAlarmSound.play().catch(e => console.log(e));
-            setTimeout(() => { loudAlarmSound.pause(); loudAlarmSound.currentTime = 0; }, 10000); 
+        function logout() { location.reload(); }
+
+        async function addStaff() {
+            const name = document.getElementById('newStaffName').value.trim();
+            if (name) {
+                await db.collection('Staff').doc(name).set({ created: true });
+                alert("✅ New Staff Added!");
+                document.getElementById('newStaffName').value = "";
+                loadUsers();
+            }
+        }
+        
+        async function resetStaffPin(name) {
+            if(confirm(`क्या आप वाकई ${name} का PIN हटाना चाहते हैं?`)) {
+                await db.collection('Staff').doc(name).update({ pin: firebase.firestore.FieldValue.delete() });
+                alert(`✅ ${name} का PIN हट गया है। अगली बार वो नया PIN बना सकेगा।`);
+            }
         }
 
-        db.collection("ShopSettings").doc("AppSecurity").onSnapshot(doc => {
-            if (doc.exists) globalAppPin = doc.data().pin || "1234";
+        // ==========================================
+        // 4. ADMIN REPORTS & LEADERBOARD (NEW)
+        // ==========================================
+        async function loadLeaderboard() {
+            const date = new Date();
+            // 1st day of current month
+            const firstDay = new Date(date.getFullYear(), date.getMonth(), 1).toISOString().split('T')[0];
+            
+            const snap = await db.collection("Sales").where("date", ">=", firstDay).get();
+            let totals = {};
+            
+            snap.forEach(doc => {
+                const d = doc.data();
+                if(d.staffName && d.staffName !== "Admin") {
+                    totals[d.staffName] = (totals[d.staffName] || 0) + d.amount;
+                }
+            });
+            
+            // Sort by highest amount
+            let sorted = Object.keys(totals).map(k => ({name: k, total: totals[k]})).sort((a,b) => b.total - a.total);
+            
+            let html = "";
+            const medals = ["🥇", "🥈", "🥉"];
+            sorted.forEach((s, index) => {
+                let medal = index < 3 ? medals[index] : "🏅";
+                html += `
+                <div style="display:flex; justify-content:space-between; background:#f8f9fa; padding:12px; margin-bottom:8px; border-radius:8px; border-left:4px solid #f1c40f;">
+                    <strong style="font-size:1.1rem;">${medal} ${s.name}</strong>
+                    <strong style="color:#27ae60; font-size:1.1rem;">₹${s.total}</strong>
+                </div>`;
+            });
+            
+            document.getElementById('leaderboardList').innerHTML = html || "<p style='color:#7f8c8d;'>इस महीने अभी कोई काम नहीं हुआ है।</p>";
+        }
+
+        async function generateReport() {
+            const start = document.getElementById('repStart').value;
+            const end = document.getElementById('repEnd').value;
+            const staff = document.getElementById('repStaff').value;
+            
+            if(!start || !end) return alert("❌ कृपया From और To Date सेलेक्ट करें!");
+            
+            const out = document.getElementById('reportOutput');
+            out.innerHTML = "<p style='text-align:center;'>Loading Report...</p>";
+            
+            const snap = await db.collection("Sales").where("date", ">=", start).where("date", "<=", end).get();
+            let records = [];
+            let grandTotal = 0;
+            
+            snap.forEach(doc => {
+                const d = doc.data();
+                if(staff === "ALL" || d.staffName === staff) {
+                    records.push(d);
+                    grandTotal += d.amount;
+                }
+            });
+            
+            // Sort by date newest first
+            records.sort((a,b) => new Date(b.date) - new Date(a.date));
+            
+            let html = `
+                <div style="background:#27ae60; color:white; padding:15px; border-radius:10px; text-align:center; margin-bottom:15px;">
+                    <h3 style="margin:0;">Total Sales</h3>
+                    <h2 style="margin:5px 0 0 0; font-size:1.8rem;">₹${grandTotal}</h2>
+                    <p style="margin:0; font-size:0.9rem; opacity:0.9;">Total Entries: ${records.length}</p>
+                </div>`;
+                
+            records.forEach(d => {
+                html += `
+                <div style="background:white; border:1px solid #dfe6e9; padding:12px; border-radius:8px; margin-bottom:8px;">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                        <strong>${d.date} (${d.exactTime})</strong>
+                        <strong style="color:#27ae60;">₹${d.amount}</strong>
+                    </div>
+                    <div style="font-size:0.85rem; color:#555;">
+                        Staff: <b>${d.staffName}</b><br>
+                        Item: ${d.itemName} (x${d.quantity})<br>
+                        Cust: ${d.vehicleNo !== "N/A" ? d.vehicleNo : d.mobileNo}
+                    </div>
+                </div>`;
+            });
+            
+            out.innerHTML = records.length > 0 ? html : "<p style='text-align:center; color:#e74c3c;'>इस तारीख के बीच कोई रिकॉर्ड नहीं मिला।</p>";
+        }
+
+        // ==========================================
+        // 5. GPS ATTENDANCE
+        // ==========================================
+        function markAttendanceWithGPS() {
+            const btn = document.getElementById('attBtn');
+            if(isAdmin) return alert("Admin ko attendance ki zaroorat nahi!");
+            
+            btn.disabled = true; btn.textContent = "📍 Checking Location...";
+            
+            navigator.geolocation.getCurrentPosition((pos) => {
+                const lat = pos.coords.latitude; const lon = pos.coords.longitude;
+                const dist = Math.sqrt(Math.pow(lat - SHOP_LAT, 2) + Math.pow(lon - SHOP_LON, 2)) * 111;
+                
+                if (dist <= 0.15) { 
+                    const time = getTime();
+                    db.collection("Attendance").doc(`${getToday()}_${currentUser}`).set({ time: time, staff: currentUser, date: getToday() });
+                    sendTG(`🟢 <b>अटेंडेंस (Verified)</b>\n👨‍🔧 ${currentUser} दुकान पर आ गए हैं।\n🕒 समय: ${time}`);
+                    alert("✅ Attendance Marked Successfully!");
+                } else {
+                    alert("❌ आप दुकान से बाहर हैं! कृपया दुकान पहुँच कर अटेंडेंस लगाएँ।");
+                }
+                btn.disabled = false; btn.textContent = "📍 Attendance Mark Karein (GPS)";
+            }, (err) => { 
+                alert("❌ GPS Error! Please turn ON Location and grant permission in browser settings."); 
+                btn.disabled = false; btn.textContent = "📍 Attendance Mark Karein (GPS)";
+            }, { enableHighAccuracy: true });
+        }
+
+        // ==========================================
+        // 6. CUSTOMER HISTORY & SEARCH
+        // ==========================================
+        function checkMobileInstantly() {
+            const val = document.getElementById('mobileNo').value;
+            if (val.length === 10) checkCustomerHistory(val);
+        }
+
+        async function checkCustomerHistory(val = null) {
+            const mobile = val || document.getElementById('mobileNo').value;
+            const veh = document.getElementById('vehicleNo').value.toUpperCase();
+            const box = document.getElementById('customerHistory');
+            
+            if (!mobile && !veh) { box.style.display = "none"; return; }
+
+            const snap = await db.collection("Sales").get();
+            let history = [];
+            snap.forEach(doc => {
+                const d = doc.data();
+                if ((mobile && d.mobileNo === mobile) || (veh && d.vehicleNo === veh)) history.push(d);
+            });
+
+            if (history.length > 0) {
+                history.sort((a,b) => b.timestamp - a.timestamp);
+                const last = history[0];
+                if(last.customerName && last.customerName !== "N/A") document.getElementById('customerName').value = last.customerName;
+                
+                box.style.display = "block";
+                box.style.borderColor = "#27ae60"; box.style.background = "#e8f8f5";
+                box.innerHTML = `<strong style="color:#27ae60; font-size:1rem;">✅ पुराना कस्टमर (कुल ${history.length} बार)</strong><br>
+                                 <div style="margin-top:5px;"><b>पिछली बार:</b> ${last.date} (Staff: ${last.staffName})</div>
+                                 <div><b>काम:</b> ${last.itemName} - ₹${last.amount}</div>`;
+            } else {
+                box.style.display = "block"; 
+                box.style.borderColor = "#e67e22"; box.style.background = "#fdf2e9";
+                box.innerHTML = `<strong style="color:#e67e22; font-size:1rem;">🌟 नया कस्टमर है!</strong><br>अच्छे से सर्विस दें।`;
+            }
+        }
+
+        async function searchData() {
+            const val = document.getElementById('searchValue').value.toUpperCase().trim();
+            if(!val) return;
+            
+            const resBox = document.getElementById('searchResults');
+            resBox.innerHTML = "<p style='text-align:center;'>Searching global records...</p>";
+            
+            const snap = await db.collection("Sales").get();
+            let html = "";
+            let found = 0;
+            
+            snap.forEach(doc => {
+                const d = doc.data();
+                if (d.mobileNo.includes(val) || d.vehicleNo.includes(val) || d.customerName.toUpperCase().includes(val)) {
+                    found++;
+                    html += `
+                    <div class="record-card">
+                        <h4>${d.vehicleNo} | ${d.customerName}</h4>
+                        <p>📞 ${d.mobileNo} | 📅 ${d.date} (${d.exactTime})</p>
+                        <p>👨‍🔧 अटेंड किया: <b>${d.staffName}</b></p>
+                        <p class="price">₹${d.amount} <span style="font-size:0.9rem; color:#555; font-weight:normal;">(${d.itemName} x${d.quantity})</span></p>
+                    </div>`;
+                }
+            });
+            resBox.innerHTML = found > 0 ? html : `<p style='text-align:center; color:red;'>No records found.</p>`;
+        }
+
+        // ==========================================
+        // 7. MAIN LOGIC (Submit, Feed, Alerts)
+        // ==========================================
+        function initApp() {
+            loadItems();
+            
+            db.collection("Sales").where("date", "==", getToday())
+              .onSnapshot(snap => {
+                let html = "";
+                let records = [];
+                snap.forEach(doc => {
+                    const data = doc.data();
+                    if (isAdmin || data.staffName === currentUser) {
+                        records.push({ id: doc.id, ...data });
+                    }
+                });
+
+                records.sort((a,b) => (b.timestamp ? b.timestamp.toMillis() : 0) - (a.timestamp ? a.timestamp.toMillis() : 0));
+                if (records.length > 0) lastEntryTime = records[0].timestamp ? records[0].timestamp.toMillis() : Date.now();
+
+                records.forEach(d => {
+                    let borderCol = d.staffName === currentUser ? "#27ae60" : "#3498db";
+                    html += `
+                    <div class="record-card" style="border-left-color: ${borderCol};">
+                        <h4 style="display:flex; justify-content:space-between;">
+                            <span>${d.vehicleNo !== "N/A" ? d.vehicleNo : d.mobileNo}</span>
+                            <span style="font-size:0.8rem; color:#95a5a6;">${d.exactTime}</span>
+                        </h4>
+                        <p><b>Work:</b> ${d.itemName} (Qty: ${d.quantity})</p>
+                        <p><b>Staff:</b> ${d.staffName} | <b>Cust:</b> ${d.customerName}</p>
+                        <p class="price">₹${d.amount} <span style="font-size:0.85rem; color:#7f8c8d;">(${d.paymentMethod})</span></p>
+                        ${isAdmin ? `<button class="btn-delete" onclick="deleteSale('${d.id}')">Delete</button>` : ''}
+                    </div>`;
+                });
+                document.getElementById('liveFeed').innerHTML = html || "<p style='text-align:center; padding:20px; color:#95a5a6;'>आज अभी तक कोई एंट्री नहीं हुई है।</p>";
+            });
+
+            setInterval(updateIdleUI, 60000);
+            updateIdleUI();
+        }
+
+        document.getElementById('workForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('saveBtn');
+            btn.disabled = true; btn.textContent = "Saving...";
+
+            try {
+                const itemEl = document.getElementById('itemSelect');
+                const selectedItemId = itemEl.value;
+                const qty = Number(document.getElementById('quantity').value);
+                
+                const itemDoc = await db.collection("Inventory").doc(selectedItemId).get();
+                if(itemDoc.data().stock < qty) {
+                    alert("❌ Not enough stock available!");
+                    btn.disabled = false; btn.textContent = "Save Entry"; return;
+                }
+
+                const data = {
+                    itemName: itemEl.options[itemEl.selectedIndex].text.split(' - ')[0],
+                    itemId: selectedItemId,
+                    quantity: qty,
+                    mobileNo: document.getElementById('mobileNo').value || "N/A",
+                    vehicleNo: document.getElementById('vehicleNo').value.toUpperCase() || "N/A",
+                    customerName: document.getElementById('customerName').value || "Unknown",
+                    amount: Number(document.getElementById('amount').value),
+                    paymentMethod: document.getElementById('paymentMethod').value,
+                    staffName: currentUser, 
+                    date: getToday(),
+                    exactTime: getTime(),
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                };
+
+                await db.collection("Sales").add(data);
+                await db.collection("Inventory").doc(selectedItemId).update({ stock: itemDoc.data().stock - qty });
+
+                sendTG(`🚨 <b>नई एंट्री (TyreXpert)</b>\n\n👨‍🔧 <b>स्टाफ:</b> ${currentUser}\n🚗 <b>गाड़ी/Mob:</b> ${data.vehicleNo !== "N/A" ? data.vehicleNo : data.mobileNo}\n🔧 <b>काम:</b> ${data.itemName} (Qty: ${data.quantity})\n💰 <b>अमाउंट:</b> ₹${data.amount} (${data.paymentMethod})\n🕒 <b>समय:</b> ${data.exactTime}`);
+                
+                alert("✅ Entry Saved!");
+                document.getElementById('workForm').reset();
+                document.getElementById('quantity').value = 1;
+                document.getElementById('customerHistory').style.display = "none";
+                if(isAdmin) loadLeaderboard(); // Refresh leaderboard
+                
+            } catch(err) {
+                console.error(err); alert("Error saving entry!");
+            }
+            btn.disabled = false; btn.textContent = "Save Entry";
         });
 
-        function unlockApp() {
-            const pin = document.getElementById("appPinInput").value.trim();
-            if (pin === globalAppPin) {
-                document.getElementById("lockScreen").style.display = "none";
-                requestNotificationPermission(); 
-                normalSound.play().then(() => { normalSound.pause(); }).catch(e=>{});
-                loudAlarmSound.play().then(() => { loudAlarmSound.pause(); }).catch(e=>{});
-                
-                loadPersonalizedMessage();
-                loadLowStockAlert();
-            } else alert("गलत PIN!");
-        }
-
-        function switchTab(tabId, el) {
-            if (tabId === "adminTab") {
-                const adminPin = prompt("Admin PIN डालें:");
-                if (adminPin !== "308913") return alert("केवल ओनर एक्सेस कर सकता है!");
-            }
-            document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-            document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
-            el.classList.add("active");
-            document.getElementById(tabId).classList.add("active");
-            if (tabId === "stockTab") loadItems();
-        }
-
-        function getToday() { return new Date().toISOString().split("T")[0]; }
-        function getYesterday() { const d = new Date(); d.setDate(d.getDate() - 1); return d.toISOString().split("T")[0]; }
-        function getExactTime() {
-            const d = new Date();
-            let hours = d.getHours(); let ampm = hours >= 12 ? 'PM' : 'AM';
-            hours = hours % 12 || 12; let minutes = d.getMinutes().toString().padStart(2, '0');
-            return `${hours}:${minutes} ${ampm}`;
-        }
-
-        // ==========================================
-        // SMART GEOLOCATION ATTENDANCE
-        // ==========================================
-        function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
-            var R = 6371; // Radius of the earth in km
-            var dLat = (lat2-lat1) * (Math.PI/180);
-            var dLon = (lon2-lon1) * (Math.PI/180); 
-            var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                    Math.cos(lat1 * (Math.PI/180)) * Math.cos(lat2 * (Math.PI/180)) * Math.sin(dLon/2) * Math.sin(dLon/2); 
-            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-            return R * c; // Distance in km
-        }
-
-        function markAttendanceWithGPS() {
-            const btn = document.getElementById("attBtn");
-            const staffName = document.getElementById("staffNameSelect").value;
-            
-            if (!navigator.geolocation) {
-                alert("❌ आपका फोन लोकेशन सपोर्ट नहीं करता!");
-                return;
-            }
-
-            btn.textContent = "Checking Location...";
-            btn.disabled = true;
-
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const lat = position.coords.latitude;
-                    const lon = position.coords.longitude;
-                    
-                    // Shop se distance check karega
-                    const distKm = getDistanceFromLatLonInKm(SHOP_LAT, SHOP_LON, lat, lon);
-                    
-                    btn.textContent = "Attendance Mark Karein (GPS)";
-                    btn.disabled = false;
-
-                    // 0.15 km = 150 meters (Safety margin ke liye)
-                    if (distKm <= 0.15) {
-                        const timeStr = getExactTime();
-                        
-                        // Firebase mein save karenge taki raat ki report mein aaye
-                        db.collection("Attendance").doc(getToday()).set({ time: timeStr, staff: staffName });
-
-                        const msg = `🟢 <b>अटेंडेंस (Location Verified)</b>\n\n${staffName} जी दुकान पर पहुँच गए हैं।\nसमय: ${timeStr}`;
-                        sendTelegramAlert(msg);
-                        alert("✅ अटेंडेंस लग गई!");
-                    } else {
-                        alert("❌ आप अभी दुकान पर नहीं हैं! कृपया दुकान के अंदर जाकर बटन दबाएं।");
-                    }
-                },
-                (error) => {
-                    btn.textContent = "Attendance Mark Karein (GPS)";
-                    btn.disabled = false;
-                    alert("❌ कृपया फोन की Location/GPS चालू करें और Allow दबाएं!");
-                },
-                { enableHighAccuracy: true }
-            );
-        }
-
-        // ==========================================
-        // 10 PM NIGHTLY EOD REPORT
-        // ==========================================
-        let nightReportSentFor = ""; // Taki baar-baar na bheje
-
-        function checkAndSendNightReport() {
-            const d = new Date();
-            // Theek raat 10:00 baje check karega
-            if (d.getHours() === 22 && d.getMinutes() === 0) {
-                const today = getToday();
-                if (nightReportSentFor !== today) {
-                    sendNightReport(today);
-                    nightReportSentFor = today;
-                }
-            }
-        }
-        setInterval(checkAndSendNightReport, 60000); // Har minute check karega
-
-        async function sendNightReport(todayDate) {
-            try {
-                let reportMsg = `📊 <b>दिन भर की रिपोर्ट (${todayDate})</b>\n➖➖➖➖➖➖➖➖➖➖\n\n`;
-
-                // 1. Attendance Check
-                const attSnap = await db.collection("Attendance").doc(todayDate).get();
-                if (attSnap.exists) {
-                    reportMsg += `👨‍🔧 <b>स्टाफ आया:</b> ${attSnap.data().staff} (${attSnap.data().time})\n\n`;
-                } else {
-                    reportMsg += `👨‍🔧 <b>स्टाफ अटेंडेंस:</b> आज नहीं लगी\n\n`;
-                }
-
-                // 2. Sales / Kamai
-                const salesSnap = await db.collection("Sales").where("date", "==", todayDate).get();
-                let totalAmt = 0;
-                let salesList = "";
-                let records = [];
-                
-                salesSnap.forEach(doc => records.push(doc.data()));
-                records.sort((a, b) => (a.timestamp ? a.timestamp.toMillis() : 0) - (b.timestamp ? b.timestamp.toMillis() : 0));
-
-                records.forEach(r => {
-                    totalAmt += r.amount;
-                    salesList += `🔹 ${r.exactTime} | ${r.vehicleNo !== "N/A" ? r.vehicleNo : r.mobileNo}\n      ${r.itemName} - ₹${r.amount}\n`;
-                });
-
-                reportMsg += `💰 <b>आज की कुल कमाई:</b> ₹${totalAmt}\n\n`;
-                reportMsg += `📝 <b>आज के काम की लिस्ट:</b>\n${salesList || "आज कोई काम नहीं हुआ।"}\n➖➖➖➖➖➖➖➖➖➖\n\n`;
-
-                // 3. Current Stock
-                const stockSnap = await db.collection("Inventory").get();
-                let stockList = "";
-                stockSnap.forEach(doc => {
-                    let s = doc.data();
-                    let warning = s.stock < (s.threshold || 5) ? " ⚠️(Low)" : "";
-                    stockList += `📦 ${s.name}: <b>${s.stock}</b>${warning}\n`;
-                });
-
-                reportMsg += `📋 <b>करेंट स्टॉक रिपोर्ट:</b>\n${stockList}`;
-
-                // Send Final Report
-                sendTelegramAlert(reportMsg);
-            } catch (err) {
-                console.error("Night Report Error:", err);
+        async function deleteSale(id) {
+            if (confirm("⚠️ क्या आप वाकई इस एंट्री को डिलीट करना चाहते हैं?")) {
+                await db.collection("Sales").doc(id).delete();
+                alert("✅ Deleted!");
+                loadLeaderboard();
             }
         }
 
         // ==========================================
-        // IDLE TIMER & 5 MIN ALARM
+        // 8. INVENTORY
         // ==========================================
-        function updateIdleTimer() {
-            const alertEl = document.getElementById("idleTimerAlert");
-            const textEl = document.getElementById("idleTimeText");
-            alertEl.style.display = "block";
-
-            if (!lastEntryTimeMillis) {
-                textEl.innerHTML = "🕒 आज अभी तक कोई काम शुरू नहीं हुआ है!";
-                alertEl.style.background = "#e2e3e5"; alertEl.style.color = "#383d41"; alertEl.style.borderLeft = "5px solid #6c757d";
-                return;
-            }
-
-            const diffMins = Math.floor((Date.now() - lastEntryTimeMillis) / 60000);
-            const remainingMins = diffMins % 60;
-            const diffHours = Math.floor(diffMins / 60);
-            let timeString = diffHours > 0 ? `${diffHours} घंटे ${remainingMins} मिनट` : `${diffMins} मिनट`;
-
-            if (diffMins === 0) {
-                textEl.innerHTML = `🔥 अभी-अभी काम हुआ है!`;
-                alertEl.style.background = "#d4edda"; alertEl.style.color = "#155724"; alertEl.style.borderLeft = "5px solid #28a745";
-            } else if (diffMins >= 10) {
-                textEl.innerHTML = `⚠️ दुकान में <b>${timeString}</b> से कोई काम नहीं हुआ है!`;
-                alertEl.style.background = "#fff3cd"; alertEl.style.color = "#856404"; alertEl.style.borderLeft = "5px solid #ffc107";
-            } else {
-                textEl.innerHTML = `⏳ पिछला काम <b>${timeString}</b> पहले हुआ था।`;
-                alertEl.style.background = "#f8f9fa"; alertEl.style.color = "#495057"; alertEl.style.borderLeft = "5px solid #ced4da";
-            }
-        }
-        setInterval(updateIdleTimer, 60000);
-
-        setInterval(() => {
-            let shouldAlarm = false;
-            let tgMessage = "";
-
-            if (lastEntryTimeMillis) {
-                const diffMins = Math.floor((Date.now() - lastEntryTimeMillis) / 60000);
-                if (diffMins >= 10) { 
-                    shouldAlarm = true; 
-                    tgMessage += `⏰ <b>Idle Alert:</b>\nदुकान में ${diffMins} मिनट से कोई एंट्री नहीं हुई है!\n\n`; 
-                }
-            }
-            if (isGlobalLowStock) { 
-                shouldAlarm = true; 
-                tgMessage += `⚠️ <b>RED ALERT (Stock):</b>\nकुछ सामान का स्टॉक खत्म होने वाला है:\n${detailedLowStockMsg}`; 
-            }
-
-            if (shouldAlarm) {
-                playLoudAlarm();
-                pushPopupNotification("🚨 ALERT TyreXpert", "दुकान में काफी देर से काम नहीं हुआ या स्टॉक कम है!");
-                sendTelegramAlert(tgMessage);
-            }
-        }, 300000); // 5 Minutes
-
-        async function loadLowStockAlert() {
-            try {
-                const snap = await db.collection("Inventory").get();
-                let lowItems = [];
-                let detailedItems = [];
-                
-                snap.forEach(doc => { 
-                    const item = doc.data(); 
-                    if (item.stock < (item.threshold || 5)) {
-                        lowItems.push(item.name); 
-                        detailedItems.push(`• ${item.name} (सिर्फ ${item.stock} पीस बचे हैं)`);
-                    }
-                });
-                
-                const alertEl = document.getElementById("lowStockAlert");
-                if (lowItems.length > 0) {
-                    isGlobalLowStock = true;
-                    detailedLowStockMsg = detailedItems.join("\n");
-                    alertEl.innerHTML = `⚠️ <b>RED ALERT:</b> ${lowItems.join(", ")} का स्टॉक बहुत कम है!`;
-                    alertEl.style.display = "block";
-                } else {
-                    isGlobalLowStock = false;
-                    detailedLowStockMsg = "";
-                    alertEl.style.display = "none";
-                }
-            } catch (e) { console.error(e); }
-        }
-
-        async function loadPersonalizedMessage() {
-            try {
-                const todaySnap = await db.collection("Sales").where("date", "==", getToday()).where("staffName", "==", "Raghav").get();
-                const yesterdaySnap = await db.collection("Sales").where("date", "==", getYesterday()).where("staffName", "==", "Raghav").get();
-                let todayTotal = 0, yesterdayTotal = 0;
-                todaySnap.forEach(doc => todayTotal += doc.data().amount);
-                yesterdaySnap.forEach(doc => yesterdayTotal += doc.data().amount);
-                const diff = todayTotal - yesterdayTotal;
-                let msg = diff > 0 ? `Raghav जी, आज आपकी सेल्स कल से <span style="color:#27ae60">₹${diff}</span> ज्यादा है` : 
-                          diff < 0 ? `Raghav जी, आज आपकी सेल्स कल से <span style="color:#e74c3c">₹${Math.abs(diff)}</span> कम है` : 
-                          "Raghav जी, आज आपकी सेल्स कल के बराबर है";
-                document.getElementById("personalizedText").innerHTML = msg;
-            } catch (e) { console.error(e); }
-        }
-
-        function checkMobileInstantly() {
-            const mobile = document.getElementById("mobileNo").value.trim();
-            if (mobile.length === 10) checkCustomerHistory();
-            else if (mobile.length < 10 && !document.getElementById("vehicleNo").value.trim()) {
-                document.getElementById("customerHistory").style.display = "none";
-            }
-        }
-
-        async function checkCustomerHistory() {
-            const mobile = document.getElementById("mobileNo").value.trim();
-            const vehicle = document.getElementById("vehicleNo").value.trim().toUpperCase();
-            const historyBox = document.getElementById("customerHistory");
-            if (!mobile && !vehicle) return historyBox.style.display = "none";
-
-            let query = db.collection("Sales");
-            if (mobile && mobile.length === 10) query = query.where("mobileNo", "==", mobile);
-            else if (vehicle) query = query.where("vehicleNo", "==", vehicle);
-            else return;
-
-            try {
-                const snap = await query.get();
-                historyBox.style.display = "block";
-                if (snap.empty) {
-                    historyBox.className = "customer-history history-new";
-                    historyBox.innerHTML = `<p style='color:#e67e22; font-weight:bold; font-size: 1.1rem;'>🌟 यह बिल्कुल नया कस्टमर है!</p><p style="font-size:0.9rem; color:#666; margin-top:5px;">अच्छे से बात करें और बढ़िया सर्विस दें।</p>`;
-                } else {
-                    let records = []; snap.forEach(doc => records.push(doc.data()));
-                    records.sort((a, b) => { let tA = a.timestamp ? a.timestamp.toMillis() : 0; let tB = b.timestamp ? b.timestamp.toMillis() : 0; return tB - tA; });
-                    let count = records.length; const last = records[0];
-                    if (last.customerName && last.customerName !== "N/A") document.getElementById("customerName").value = last.customerName;
-
-                    historyBox.className = "customer-history history-success";
-                    historyBox.innerHTML = `
-                        <p style='color:#27ae60; font-weight:bold; font-size: 1.1rem;'>✅ यह कस्टमर पहले आ चुका है!</p>
-                        <hr style="margin: 8px 0; border: 0.5px solid #bdc3c7;">
-                        <p>कुल विज़िट: <strong style="color:#2c3e50">${count} बार</strong></p>
-                        <p>पिछली बार: <strong style="color:#2c3e50">${last.date} (${last.exactTime || ''})</strong> को आया था।</p>
-                        <p>पिछला काम: <strong style="color:#2c3e50">${last.itemName} (₹${last.amount})</strong></p>`;
-                }
-            } catch (e) { console.error(e); }
-        }
-
         function loadItems() {
             db.collection("Inventory").onSnapshot(snap => {
-                let selectHtml = "<option value=''>Select Item</option>"; let stockHtml = ""; let addStockSelect = "<option value=''>Select Item</option>";
+                let sel = "<option value=''>Select Item</option>";
+                let list = "";
+                let lows = [];
+                
                 snap.forEach(doc => {
-                    const item = doc.data();
-                    selectHtml += `<option value="${doc.id}" data-price="${item.price}" data-stock="${item.stock}" data-threshold="${item.threshold || 5}">${item.name} - ₹${item.price} (Stock: ${item.stock})</option>`;
-                    addStockSelect += `<option value="${doc.id}">${item.name}</option>`;
-                    const isLow = item.stock < (item.threshold || 5);
-                    stockHtml += `<div class="record-card" style="${isLow ? 'border-left-color:#e74c3c; background:#fff5f5;' : ''}"><h4>${item.name}</h4><p>Price: ₹${item.price}</p><p>Stock: <strong style="${isLow ? 'color:#e74c3c;' : ''}">${item.stock}</strong></p></div>`;
+                    const i = doc.data();
+                    sel += `<option value="${doc.id}">${i.name} - ₹${i.price}</option>`;
+                    
+                    const isLow = i.stock < (i.threshold || 5);
+                    if(isLow) lows.push(`• ${i.name} (${i.stock} bache hain)`);
+                    
+                    list += `
+                    <div class="record-card" style="border-left-color: ${isLow ? '#e74c3c' : '#bdc3c7'};">
+                        <h4 style="margin:0;">${i.name}</h4>
+                        <div style="display:flex; justify-content:space-between; margin-top:5px;">
+                            <span>Price: ₹${i.price}</span>
+                            <strong style="color:${isLow ? '#e74c3c' : '#2c3e50'}; font-size:1.1rem;">Stock: ${i.stock}</strong>
+                        </div>
+                    </div>`;
                 });
-                document.getElementById("itemSelect").innerHTML = selectHtml || "<option>No items</option>";
-                document.getElementById("stockItemSelect").innerHTML = addStockSelect;
-                document.getElementById("stockList").innerHTML = stockHtml || "<p style='color:#95a5a6'>No items in stock</p>";
-            });
-        }
-        loadItems();
-
-        document.getElementById("workForm").addEventListener("submit", async e => {
-            e.preventDefault(); const btn = document.getElementById("saveBtn"); btn.disabled = true; btn.textContent = "Saving...";
-            try {
-                const itemSelect = document.getElementById("itemSelect"); const itemId = itemSelect.value; const qty = Number(document.getElementById("quantity").value); const selectedOption = itemSelect.options[itemSelect.selectedIndex]; const currentStock = Number(selectedOption.dataset.stock);
-                if (qty > currentStock) { alert("Not enough stock!"); btn.disabled = false; btn.textContent = "Save Entry"; return; }
                 
-                const data = {
-                    itemId, itemName: selectedOption.text.split(" - ")[0], quantity: qty,
-                    customerName: document.getElementById("customerName").value.trim() || "N/A", mobileNo: document.getElementById("mobileNo").value.trim() || "N/A", vehicleNo: document.getElementById("vehicleNo").value.trim().toUpperCase() || "N/A",
-                    staffName: "Raghav", amount: Number(document.getElementById("amount").value), paymentMethod: document.getElementById("paymentMethod").value,
-                    date: getToday(), exactTime: getExactTime(), timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                };
+                document.getElementById('itemSelect').innerHTML = sel;
+                document.getElementById('stockItemSelect').innerHTML = sel;
+                document.getElementById('stockList').innerHTML = list;
                 
-                await db.collection("Sales").add(data); await db.collection("Inventory").doc(itemId).update({ stock: currentStock - qty });
-                
-                // TELEGRAM PAR MESSAGE BHEJNA 
-                const alertMsg = `🚨 <b>नई एंट्री (TyreXpert)</b>\n\n<b>गाड़ी/Mob:</b> ${data.vehicleNo !== "N/A" ? data.vehicleNo : data.mobileNo}\n<b>काम:</b> ${data.itemName} (Qty: ${data.quantity})\n<b>अमाउंट:</b> ₹${data.amount} (${data.paymentMethod})\n<b>स्टाफ:</b> ${data.staffName}\n<b>समय:</b> ${data.exactTime}`;
-                sendTelegramAlert(alertMsg);
-
-                alert("Entry saved successfully!"); document.getElementById("workForm").reset(); document.getElementById("customerHistory").style.display = "none"; loadPersonalizedMessage(); loadLowStockAlert();
-            } catch (err) { console.error(err); alert("Error saving entry!"); } finally { btn.disabled = false; btn.textContent = "Save Entry"; }
-        });
-
-        window.deleteEntry = function(docId) {
-            const pin = prompt("एंट्री डिलीट करने के लिए Admin PIN डालें:");
-            if (pin !== "308913") { alert("गलत PIN! केवल ओनर (Admin) ही एंट्री डिलीट कर सकता है।"); return; }
-            if (confirm("क्या आप वाकई इस एंट्री को डिलीट करना चाहते हैं?")) {
-                db.collection("Sales").doc(docId).delete().then(() => { alert("एंट्री सफलतापूर्वक डिलीट हो गई!"); }).catch(e => alert("डिलीट करने में एरर: " + e));
-            }
-        };
-
-        db.collection("Sales").where("date", "==", getToday())
-            .onSnapshot(snap => {
-                
-                snap.docChanges().forEach(change => {
-                    if (change.type === "added" && !isInitialLoad) {
-                        const newD = change.doc.data();
-                        pushPopupNotification("🌟 नई एंट्री हुई है!", `${newD.staffName} ने ₹${newD.amount} का काम किया`);
-                        playNormalSound();
-                    }
-                });
-                isInitialLoad = false; 
-
-                let records = [];
-                snap.forEach(doc => records.push({ id: doc.id, ...doc.data() }));
-                records.sort((a, b) => { let tA = a.timestamp ? a.timestamp.toMillis() : 0; let tB = b.timestamp ? b.timestamp.toMillis() : 0; return tB - tA; });
-
-                if (records.length > 0 && records[0].timestamp) {
-                    lastEntryTimeMillis = records[0].timestamp.toMillis();
+                const alertEl = document.getElementById('lowStockAlert');
+                if(lows.length > 0) {
+                    isGlobalLowStock = true; detailedLowStockAlert = lows.join("\n");
+                    alertEl.style.display = "block"; 
+                    alertEl.innerHTML = `⚠️ RED ALERT: ${lows.length} आइटम्स का स्टॉक खत्म होने वाला है!`;
                 } else {
-                    lastEntryTimeMillis = null;
-                }
-                updateIdleTimer();
-
-                let html = "";
-                if (records.length === 0) {
-                    html = "<p style='text-align:center; color:#95a5a6; padding:1rem 0;'>आज अभी तक कोई एंट्री नहीं हुई है</p>";
-                } else {
-                    records.forEach(d => {
-                        const timeStr = d.exactTime ? `🕒 ${d.exactTime}` : "";
-                        html += `
-                        <div class="record-card">
-                            <h4>${d.vehicleNo || "N/A"} • ${d.itemName}</h4>
-                            <p>Customer: ${d.customerName} | ${d.mobileNo}</p>
-                            <p>Staff: ${d.staffName} • ${d.paymentMethod} <span style="float:right; color:#7f8c8d; font-size:0.85rem;">${timeStr}</span></p>
-                            <p class="price">₹${d.amount}  (Qty: ${d.quantity})</p>
-                            <button class="btn-delete" onclick="deleteEntry('${d.id}')">Delete</button>
-                        </div>`;
-                    });
-                }
-                document.getElementById("liveFeed").innerHTML = html;
-            });
-
-        function searchData() {
-            const val = document.getElementById("searchValue").value.trim().toUpperCase(); if (!val) return;
-            document.getElementById("searchResults").innerHTML = "<p style='text-align:center; padding:2rem 0;'>Searching...</p>";
-            db.collection("Sales").get().then(snap => {
-                let html = ""; let found = false;
-                snap.forEach(doc => {
-                    const d = doc.data();
-                    if (d.vehicleNo.toUpperCase().includes(val) || d.mobileNo.includes(val)) {
-                        found = true; 
-                        html += `
-                        <div class="record-card">
-                            <h4>${d.vehicleNo} • ${d.itemName} (${d.date} ${d.exactTime || ''})</h4>
-                            <p>${d.customerName} | ${d.mobileNo}</p>
-                            <p class="price">₹${d.amount}</p>
-                            <button class="btn-delete" onclick="deleteEntry('${doc.id}')">Delete</button>
-                        </div>`;
-                    }
-                });
-                document.getElementById("searchResults").innerHTML = found ? html : "<p style='color:#e74c3c; text-align:center;'>No records found</p>";
-            });
-        }
-        
-        function updateStock() {
-            const id = document.getElementById("stockItemSelect").value; const qty = Number(document.getElementById("addStockQty").value);
-            if (id && !isNaN(qty)) db.collection("Inventory").doc(id).get().then(doc => {
-                if (doc.exists) {
-                    const newStock = doc.data().stock + qty;
-                    if (newStock >= 0) db.collection("Inventory").doc(id).update({ stock: newStock }).then(() => { alert("Stock updated!"); document.getElementById("addStockQty").value = ""; loadLowStockAlert(); });
-                    else alert("Stock cannot be negative!");
+                    isGlobalLowStock = false; detailedLowStockAlert = "";
+                    alertEl.style.display = "none";
                 }
             });
         }
-        
-        document.getElementById("itemForm").addEventListener("submit", e => {
+
+        document.getElementById('itemForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const name = document.getElementById("itemName").value.trim(); const price = Number(document.getElementById("itemPrice").value); const stock = Number(document.getElementById("initialStock").value); const threshold = Number(document.getElementById("itemThreshold").value) || 5;
-            if (name && price > 0) db.collection("Inventory").add({ name, price, stock, threshold }).then(() => { document.getElementById("itemForm").reset(); alert("Item added!"); loadLowStockAlert(); });
+            const data = {
+                name: document.getElementById('newItemName').value,
+                price: Number(document.getElementById('newItemPrice').value),
+                stock: Number(document.getElementById('newInitialStock').value),
+                threshold: Number(document.getElementById('newItemThreshold').value) || 5
+            };
+            await db.collection("Inventory").add(data);
+            alert("✅ Item Added!"); document.getElementById('itemForm').reset();
         });
 
-        function showNotification() { alert("🔔 Alerts Active: Notifications and Sounds are enabled."); }
-        function changeAppPin() { const pin = document.getElementById("newAppPin").value.trim(); if (pin.length >= 4) db.collection("ShopSettings").doc("AppSecurity").update({ pin }).then(() => { alert("PIN updated!"); document.getElementById("newAppPin").value = ""; }); }
-        function generateReport() {
-            const start = document.getElementById("startDate").value; const end = document.getElementById("endDate").value; if (!start || !end) return alert("Dates select karen!");
-            db.collection("Sales").where("date", ">=", start).where("date", "<=", end).get().then(snap => {
-                let html = "", total = 0;
-                snap.forEach(doc => { const d = doc.data(); total += d.amount; html += `<div class="record-card"><h4>${d.vehicleNo} • ${d.itemName} (${d.date} ${d.exactTime || ''})</h4><p>${d.customerName} | ${d.mobileNo}</p><p class="price">₹${d.amount}</p></div>`; });
-                document.getElementById("reportResults").innerHTML = html + `<p class="price" style="text-align:center; font-size: 1.5rem;">Total: ₹${total}</p>`;
-            });
+        async function updateStock() {
+            const id = document.getElementById('stockItemSelect').value;
+            const qty = Number(document.getElementById('addStockQty').value);
+            if(id && qty) {
+                const doc = await db.collection("Inventory").doc(id).get();
+                const newStock = doc.data().stock + qty;
+                if(newStock >= 0) {
+                    await db.collection("Inventory").doc(id).update({ stock: newStock });
+                    alert("✅ Stock Updated!"); document.getElementById('addStockQty').value = "";
+                } else alert("❌ Stock cannot be negative.");
+            }
         }
+
+        // ==========================================
+        // 9. BACKGROUND TRIGGERS
+        // ==========================================
+        function updateIdleUI() {
+            if (!lastEntryTime) return;
+            const diff = Math.floor((Date.now() - lastEntryTime) / 60000);
+            const el = document.getElementById('idleTimerAlert');
+            const txt = document.getElementById('idleTimeText');
+            el.style.display = "block";
+            
+            if (diff >= 10) {
+                el.style.background = "#ffeaa7"; el.style.color = "#d63031";
+                txt.innerHTML = `⚠️ ध्यान दें: पिछले ${diff} मिनट से कोई काम नहीं हुआ!`;
+            } else {
+                el.style.background = "#d4edda"; el.style.color = "#27ae60";
+                txt.innerHTML = `🔥 दुकान चालू है (Last entry ${diff}m ago)`;
+            }
+        }
+
+        setInterval(() => {
+            if(!isAdmin) return; // Only trigger from Admin phone
+            
+            let shouldAlert = false;
+            let tgMsg = "";
+
+            if (lastEntryTime) {
+                const diff = Math.floor((Date.now() - lastEntryTime) / 60000);
+                if (diff >= 10 && diff % 5 === 0) { 
+                    shouldAlert = true; tgMsg += `⏰ <b>Idle Alert:</b> दुकान में ${diff} मिनट से कोई काम नहीं हुआ है!\n\n`;
+                }
+            }
+            if (isGlobalLowStock) {
+                shouldAlert = true; tgMsg += `⚠️ <b>Stock Alert:</b>\n${detailedLowStockAlert}`;
+            }
+
+            if (shouldAlert && tgMsg !== "") sendTG(tgMsg);
+        }, 60000);
+
+        let nightReportSent = false;
+        setInterval(async () => {
+            if(!isAdmin) return; // Report generator run by Admin instance only
+            const now = new Date();
+            if (now.getHours() === 22 && now.getMinutes() === 0 && !nightReportSent) {
+                nightReportSent = true;
+                
+                let msg = `🌃 <b>दिन भर की फाइनल रिपोर्ट (${getToday()})</b>\n➖➖➖➖➖➖➖➖\n\n`;
+                
+                const sales = await db.collection("Sales").where("date", "==", getToday()).get();
+                let total = 0; let list = "";
+                let arr = [];
+                sales.forEach(doc => arr.push(doc.data()));
+                arr.sort((a,b) => (a.timestamp ? a.timestamp.toMillis() : 0) - (b.timestamp ? b.timestamp.toMillis() : 0));
+                
+                arr.forEach(d => {
+                    total += d.amount;
+                    list += `🔹 ${d.exactTime} | ${d.staffName}\n      ${d.itemName} - ₹${d.amount}\n`;
+                });
+                
+                msg += `💰 <b>आज की कुल सेल:</b> ₹${total}\n\n`;
+                msg += `📝 <b>आज के काम:</b>\n${list || "आज कोई काम नहीं हुआ।"}\n➖➖➖➖➖➖➖➖\n\n`;
+                
+                const att = await db.collection("Attendance").where("date", "==", getToday()).get();
+                let attList = "";
+                att.forEach(doc => attList += `• ${doc.data().staff} (${doc.data().time})\n`);
+                msg += `👨‍🔧 <b>अटेंडेंस:</b>\n${attList || "आज किसी ने अटेंडेंस मार्क नहीं की।"}`;
+                
+                sendTG(msg);
+            }
+            if (now.getHours() === 1) nightReportSent = false; 
+        }, 60000);
+
+        // Bootstrap
+        window.onload = loadUsers;
     </script>
 </body>
 </html>
