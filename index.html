@@ -5,75 +5,132 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>TyreXpert - ERP Pro</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f4f8; color: #2c3e50; min-height: 100vh; padding-bottom: 80px; }
+        /* CSS VARIABLES FOR LIGHT/DARK MODE */
+        :root {
+            --bg-body: #f4f7f6;
+            --bg-card: #ffffff;
+            --text-main: #2c3e50;
+            --text-muted: #7f8c8d;
+            --border-col: #dfe6e9;
+            --header-bg: linear-gradient(135deg, #ffffff 0%, #e0eaf5 100%);
+            --shadow-card: 0 8px 25px rgba(0,0,0,0.04);
+            --input-bg: #fcfcfc;
+            --record-bg: #ffffff;
+            --history-bg: #f8f9fa;
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #121212;
+            --bg-card: #1e1e1e;
+            --text-main: #f5f6fa;
+            --text-muted: #b2bec3;
+            --border-col: #333333;
+            --header-bg: linear-gradient(135deg, #1e1e1e 0%, #121212 100%);
+            --shadow-card: 0 8px 25px rgba(0,0,0,0.5);
+            --input-bg: #2d2d2d;
+            --record-bg: #252525;
+            --history-bg: #2a2a2a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; transition: background-color 0.3s, color 0.3s; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg-body); color: var(--text-main); min-height: 100vh; padding-bottom: 80px; }
         
-        .header { background: linear-gradient(135deg, #ffffff 0%, #e0eaf5 100%); padding: 1.2rem; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.08); border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; position: relative; }
-        .app-title { font-size: 2rem; font-weight: 800; letter-spacing: -0.5px; }
-        .app-title .red { color: #e74c3c; }
+        /* 🌟 NEW HEADER & BRANDING 🌟 */
+        .header { background: var(--header-bg); padding: 1.2rem 1rem; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.08); border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; position: relative; display: flex; justify-content: center; align-items: center;}
+        
+        .app-title { font-size: 2.1rem; font-weight: 900; letter-spacing: -1px; text-transform: uppercase; font-style: italic; display: flex; align-items: center; gap: 5px; }
+        .app-title .brand-tyre { color: #e74c3c; text-shadow: 2px 2px 0px rgba(231,76,60,0.2); }
+        .app-title .brand-xpert { color: var(--text-main); }
+        .app-title .icon { font-size: 1.8rem; display: inline-block; animation: spinTyre 8s linear infinite; }
+        
+        @keyframes spinTyre { 100% { transform: rotate(360deg); } }
+
+        .header-btn { position: absolute; border: none; border-radius: 50%; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; backdrop-filter: blur(5px); transition: 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.1);}
+        .logout-btn { left: 15px; color: #ff4757; background: rgba(255,71,87,0.1); font-size: 1.4rem;}
+        .logout-btn:hover { background: #ff4757; color: white; transform: scale(1.05); }
+        .theme-btn { right: 15px; background: rgba(0,0,0,0.05); color: var(--text-main); }
+        .theme-btn:hover { transform: scale(1.05); }
         
         /* LOGIN SCREEN */
         #loginScreen { position: fixed; inset: 0; background: linear-gradient(135deg, #1e293b, #2c3e50); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; padding: 20px; overflow-y: auto; }
+        .login-logo { font-size: 3rem; font-weight: 900; text-transform: uppercase; font-style: italic; letter-spacing: -1px; margin-bottom: 10px; text-shadow: 0 4px 10px rgba(0,0,0,0.3); display: flex; align-items: center; gap: 8px;}
+        .login-logo .brand-tyre { color: #e74c3c; }
+        
         .user-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; width: 100%; max-width: 400px; margin-top: 30px; }
-        .user-card { background: rgba(255,255,255,0.1); padding: 25px 10px; border-radius: 16px; text-align: center; cursor: pointer; transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); }
-        .user-card:hover { background: rgba(255,255,255,0.25); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .user-card { background: rgba(255,255,255,0.05); padding: 25px 10px; border-radius: 20px; text-align: center; cursor: pointer; transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(15px); }
+        .user-card:hover { background: rgba(255,255,255,0.15); transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
         .user-card h3 { font-size: 1.1rem; margin-top: 10px; letter-spacing: 0.5px; }
         
         /* APP UI */
-        .logout-btn { position: absolute; left: 15px; top: 1.2rem; background: #ff4757; color: white; border: none; padding: 8px 15px; border-radius: 8px; font-size: 0.85rem; font-weight: bold; cursor: pointer; box-shadow: 0 2px 8px rgba(255,71,87,0.3); }
-        .logged-user-info { text-align: center; padding: 12px; font-weight: 700; background: white; margin: 15px; border-radius: 12px; box-shadow: 0 3px 10px rgba(0,0,0,0.05); color: #2c3e50; border-left: 5px solid #27ae60; }
+        .logged-user-info { text-align: center; padding: 10px; font-weight: 700; background: var(--bg-card); margin: 15px; border-radius: 12px; box-shadow: var(--shadow-card); color: var(--text-main); border-left: 5px solid #27ae60; font-size: 0.95rem;}
         
         /* ALERTS */
-        #lowStockAlert { margin: 15px; background: #ffeaa7; border: 2px solid #fdcb6e; border-radius: 12px; padding: 12px; text-align: center; color: #d63031; font-weight: 900; animation: pulse 1.5s infinite; display: none; }
+        #lowStockAlert { margin: 15px; background: rgba(231, 76, 60, 0.1); border: 2px solid #e74c3c; border-radius: 12px; padding: 12px; text-align: center; color: #e74c3c; font-weight: 900; animation: pulse 1.5s infinite; display: none; }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
         
-        #idleTimerAlert { margin: 15px; padding: 12px; border-radius: 12px; text-align: center; font-weight: 700; display: none; transition: 0.3s; box-shadow: 0 3px 10px rgba(0,0,0,0.05); }
+        #idleTimerAlert { margin: 15px; padding: 12px; border-radius: 12px; text-align: center; font-weight: 700; display: none; transition: 0.3s; box-shadow: var(--shadow-card); }
         
         /* TABS */
-        .tabs { display: flex; background: white; margin: 15px; border-radius: 12px; overflow: hidden; box-shadow: 0 3px 15px rgba(0,0,0,0.05); }
-        .tab { flex: 1; padding: 15px 10px; text-align: center; font-weight: 700; color: #95a5a6; cursor: pointer; transition: 0.2s; font-size: 0.95rem; }
+        .tabs { display: flex; background: var(--bg-card); margin: 15px; border-radius: 15px; overflow: hidden; box-shadow: var(--shadow-card); }
+        .tab { flex: 1; padding: 14px 5px; text-align: center; font-weight: 700; color: var(--text-muted); cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
         .tab.active { background: #e74c3c; color: white; }
         .tab-content { display: none; padding: 0 15px 15px; }
         .tab-content.active { display: block; animation: slideUp 0.4s ease; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
         /* FORMS & CARDS */
-        .card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); }
-        label { font-weight: 700; margin: 12px 0 6px; display: block; font-size: 0.9rem; color: #34495e; }
-        input, select { width: 100%; padding: 12px 15px; border: 1.5px solid #dfe6e9; border-radius: 10px; font-size: 1rem; transition: 0.3s; background: #fdfdfd; }
-        input:focus, select:focus { border-color: #3498db; outline: none; box-shadow: 0 0 0 3px rgba(52,152,219,0.1); }
+        .card { background: var(--bg-card); border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: var(--shadow-card); border: 1px solid var(--border-col); }
+        label { font-weight: 700; margin: 12px 0 6px; display: block; font-size: 0.9rem; color: var(--text-muted); }
+        input, select { width: 100%; padding: 14px 15px; border: 1.5px solid var(--border-col); border-radius: 12px; font-size: 1rem; transition: 0.3s; background: var(--input-bg); color: var(--text-main); outline: none;}
+        input:focus, select:focus { border-color: #3498db; box-shadow: 0 0 0 4px rgba(52,152,219,0.1); }
         
-        button { width: 100%; padding: 14px; background: #e74c3c; color: white; border: none; border-radius: 10px; font-weight: 700; font-size: 1.05rem; margin-top: 15px; cursor: pointer; box-shadow: 0 4px 15px rgba(231,76,60,0.3); transition: 0.2s; }
-        button:hover { transform: translateY(-2px); background: #c0392b; }
-        button:disabled { background: #bdc3c7; cursor: not-allowed; transform: none; box-shadow: none; }
+        button { width: 100%; padding: 15px; background: #e74c3c; color: white; border: none; border-radius: 12px; font-weight: 800; font-size: 1.05rem; margin-top: 15px; cursor: pointer; box-shadow: 0 4px 15px rgba(231,76,60,0.3); transition: 0.2s; letter-spacing: 0.5px;}
+        button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(231,76,60,0.4); }
+        button:active { transform: translateY(0); }
+        button:disabled { background: var(--text-muted); cursor: not-allowed; transform: none; box-shadow: none; }
         
         .btn-green { background: #2ecc71; box-shadow: 0 4px 15px rgba(46,204,113,0.3); }
         .btn-green:hover { background: #27ae60; }
         .btn-blue { background: #3498db; box-shadow: 0 4px 15px rgba(52,152,219,0.3); }
-        .btn-delete { background: #ff4757; padding: 6px 12px; font-size: 0.8rem; border-radius: 6px; float: right; width: auto; margin-top: 0; box-shadow: none; }
+        .btn-delete { background: #ff4757; padding: 6px 12px; font-size: 0.8rem; border-radius: 8px; float: right; width: auto; margin-top: 0; box-shadow: none; }
 
         /* RECORD FEED */
-        .record-card { background: #ffffff; border-radius: 12px; padding: 16px; margin-bottom: 12px; border-left: 6px solid #3498db; box-shadow: 0 3px 12px rgba(0,0,0,0.05); position: relative; }
-        .record-card h4 { margin-bottom: 6px; color: #2c3e50; font-size: 1.15rem; }
-        .record-card p { font-size: 0.95rem; color: #7f8c8d; margin-bottom: 4px; }
+        .record-card { background: var(--record-bg); border-radius: 15px; padding: 16px; margin-bottom: 12px; border-left: 6px solid #3498db; box-shadow: var(--shadow-card); position: relative; border-top: 1px solid var(--border-col); border-right: 1px solid var(--border-col); border-bottom: 1px solid var(--border-col);}
+        .record-card h4 { margin-bottom: 6px; color: var(--text-main); font-size: 1.15rem; }
+        .record-card p { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 4px; }
         .price { color: #27ae60 !important; font-weight: 800; font-size: 1.25rem; margin-top: 8px; }
         
-        .customer-history { margin-top: 12px; background: #f8f9fa; padding: 12px; border-radius: 10px; border: 1.5px dashed #bdc3c7; display: none; font-size: 0.9rem; line-height: 1.5; }
+        .customer-history { margin-top: 12px; background: var(--history-bg); padding: 12px; border-radius: 12px; border: 1.5px dashed var(--border-col); display: none; font-size: 0.9rem; line-height: 1.5; color: var(--text-main);}
+        
+        .staff-manage-row { display:flex; justify-content:space-between; align-items: center; background:var(--history-bg); padding:12px; margin-top:8px; border-radius:10px; border: 1px solid var(--border-col); }
+        .staff-manage-row strong { color: var(--text-main); }
+        .staff-btn-group { display: flex; gap: 8px; }
     </style>
 </head>
 <body>
 
+    <script>
+        if(localStorage.getItem('theme') === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+    </script>
+
     <div id="loginScreen">
-        <h1 style="margin-bottom: 10px; font-size: 2.5rem;">🛞 TyreXpert</h1>
-        <p style="opacity: 0.9; margin-bottom: 10px;">Select your profile to login</p>
+        <div class="login-logo">
+            <span class="brand-tyre">Tyre</span><span style="color:white;">Xpert</span> <span class="icon" style="animation: spinTyre 8s linear infinite;">🛞</span>
+        </div>
+        <p style="opacity: 0.8; margin-bottom: 20px; font-weight: 300;">Select your profile to login</p>
         <div class="user-grid" id="userList">
             <p>Loading Staff...</p>
         </div>
     </div>
 
     <div class="header">
-        <button class="logout-btn" onclick="logout()">Logout</button>
-        <div class="app-title"><span class="red">Tyre</span>Xpert</div>
+        <button class="header-btn logout-btn" onclick="logout()" title="Logout">🚪</button>
+        <div class="app-title">
+            <span class="brand-tyre">Tyre</span><span class="brand-xpert">Xpert</span> <span class="icon">🛞</span>
+        </div>
+        <button class="header-btn theme-btn" id="themeToggleBtn" onclick="toggleTheme()" title="Dark Mode">🌙</button>
     </div>
 
     <div class="logged-user-info">Logged in as: <span id="currentUserNameDisplay" style="color: #e74c3c;">...</span></div>
@@ -81,7 +138,7 @@
     <h2 id="lowStockAlert"></h2>
     <div id="idleTimerAlert"><span id="idleTimeText">Tracking system starting...</span></div>
 
-    <button class="btn-blue" onclick="markAttendanceWithGPS()" id="attBtn" style="margin: 0 15px 15px; width: calc(100% - 30px);">📍 Attendance Mark Karein (GPS)</button>
+    <button class="btn-blue" onclick="markAttendanceWithGPS()" id="attBtn" style="margin: 0 15px 15px; width: calc(100% - 30px); border-radius: 15px;">📍 Attendance Mark Karein (GPS)</button>
 
     <div class="tabs">
         <div class="tab active" onclick="switchTab('addWorkTab', this)">Entry</div>
@@ -125,7 +182,7 @@
             </form>
         </div>
         
-        <h3 id="feedTitle" style="padding: 10px 0; text-align: center; color: #2c3e50;">Live Entries (Today)</h3>
+        <h3 id="feedTitle" style="padding: 10px 0; text-align: center; color: var(--text-main); font-weight: 800;">Live Entries (Today)</h3>
         <div id="liveFeed"></div>
     </div>
 
@@ -140,21 +197,20 @@
 
     <div class="tab-content" id="stockTab">
         <div class="card">
-            <h3 style="margin-bottom: 10px;">Current Inventory</h3>
+            <h3 style="margin-bottom: 15px; color: var(--text-main);">📦 Current Inventory</h3>
             <div id="stockList"></div>
         </div>
     </div>
 
     <div class="tab-content" id="adminTab">
-        
         <div class="card">
-            <h3>🏆 Staff Performance (इस महीने)</h3>
+            <h3 style="color: var(--text-main);">🏆 Staff Performance (इस महीने)</h3>
             <div id="leaderboardList" style="margin-top: 15px;">Loading...</div>
         </div>
 
         <div class="card">
-            <h3>📊 Sales Report (Date & Staff)</h3>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
+            <h3 style="color: var(--text-main);">📊 Sales Report (Date & Staff)</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
                 <div>
                     <label style="margin-top:0;">From Date</label>
                     <input type="date" id="repStart">
@@ -168,34 +224,34 @@
             <label>Select Staff</label>
             <select id="repStaff">
                 <option value="ALL">All Staff (पूरी दुकान)</option>
-                </select>
+            </select>
             
             <button class="btn-blue" onclick="generateReport()">Generate Report</button>
             <div id="reportOutput" style="margin-top: 15px;"></div>
         </div>
 
         <div class="card">
-            <h3>👥 Staff Management</h3>
+            <h3 style="color: var(--text-main);">👥 Staff Management</h3>
             <input type="text" id="newStaffName" placeholder="Enter new staff name" style="margin-top:10px;">
             <button class="btn-green" onclick="addStaff()">Add Staff</button>
-            <div id="manageStaffList" style="margin-top: 15px;"></div>
+            <div id="manageStaffList" style="margin-top: 20px;"></div>
         </div>
         
         <div class="card">
-            <h3>📦 Add New Item to Inventory</h3>
+            <h3 style="color: var(--text-main);">📦 Add New Item</h3>
             <form id="itemForm">
                 <input type="text" id="newItemName" placeholder="Item Name (e.g. MRF 100/90)" required style="margin-top:10px;">
-                <input type="number" id="newItemPrice" placeholder="Selling Price (₹)" required style="margin-top:10px;">
-                <input type="number" id="newInitialStock" placeholder="Initial Stock Qty" required style="margin-top:10px;">
-                <input type="number" id="newItemThreshold" placeholder="Low Stock Alert Level (Default: 5)" style="margin-top:10px;">
+                <input type="number" id="newItemPrice" placeholder="Selling Price (₹)" required style="margin-top:15px;">
+                <input type="number" id="newInitialStock" placeholder="Initial Stock Qty" required style="margin-top:15px;">
+                <input type="number" id="newItemThreshold" placeholder="Low Stock Alert Level (Default: 5)" style="margin-top:15px;">
                 <button type="submit" class="btn-green">Save Item</button>
             </form>
         </div>
         
         <div class="card">
-            <h3>🔄 Update Existing Stock</h3>
+            <h3 style="color: var(--text-main);">🔄 Update Existing Stock</h3>
             <select id="stockItemSelect" style="margin-top:10px;"></select>
-            <input type="number" id="addStockQty" placeholder="Qty to Add (e.g. 10) or Subtract (-5)" style="margin-top:10px;">
+            <input type="number" id="addStockQty" placeholder="Qty to Add (e.g. 10) or Subtract (-5)" style="margin-top:15px;">
             <button class="btn-blue" onclick="updateStock()">Update Stock</button>
         </div>
     </div>
@@ -205,7 +261,28 @@
 
     <script>
         // ==========================================
-        // 1. CONFIGURATION
+        // THEME TOGGLE LOGIC
+        // ==========================================
+        const themeBtn = document.getElementById('themeToggleBtn');
+        if(localStorage.getItem('theme') === 'dark') {
+            themeBtn.textContent = '☀️';
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            if(html.getAttribute('data-theme') === 'dark') {
+                html.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                themeBtn.textContent = '🌙';
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                themeBtn.textContent = '☀️';
+            }
+        }
+
+        // ==========================================
+        // CONFIGURATION
         // ==========================================
         const firebaseConfig = {
             apiKey: "AIzaSyApY09CHspm5TVxXTVvjnfB6lzwQ7nqltE",
@@ -218,24 +295,17 @@
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // TELEGRAM BOT SETUP
         const TG_TOKEN = "8200090038:AAEOufwLJ6niOsppIuoWE1MA8L7a4jhQiH0";
         const TG_CHAT_ID = "5172792830";
-        
-        // SHOP GPS LOCATION (Bahadurgarh)
         const SHOP_LAT = 28.698147;
         const SHOP_LON = 76.918404;
 
-        // GLOBALS
         let currentUser = null;
         let isAdmin = false;
         let lastEntryTime = null;
         let isGlobalLowStock = false;
         let detailedLowStockAlert = "";
 
-        // ==========================================
-        // 2. CORE UTILITIES
-        // ==========================================
         function getToday() { return new Date().toISOString().split('T')[0]; }
         function getTime() { return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); }
         
@@ -252,7 +322,7 @@
         }
 
         // ==========================================
-        // 3. LOGIN & STAFF SYSTEM
+        // LOGIN & STAFF SYSTEM
         // ==========================================
         async function loadUsers() {
             const list = document.getElementById('userList');
@@ -261,27 +331,28 @@
             
             try {
                 const snap = await db.collection('Staff').get();
-                list.innerHTML = `<div class="user-card" onclick="handleLogin('Admin')"><div style="font-size: 2.5rem;">👑</div><h3>Admin</h3></div>`;
+                list.innerHTML = `<div class="user-card" onclick="handleLogin('Admin')"><div style="font-size: 3rem; margin-bottom:10px;">👑</div><h3>Admin</h3></div>`;
                 adminList.innerHTML = "";
-                
-                // Repopulate Report Staff Select
                 let repOptions = `<option value="ALL">All Staff (पूरी दुकान)</option>`;
 
                 snap.forEach(doc => {
                     const name = doc.id;
-                    list.innerHTML += `<div class="user-card" onclick="handleLogin('${name}')"><div style="font-size: 2.5rem;">👨‍🔧</div><h3>${name}</h3></div>`;
+                    list.innerHTML += `<div class="user-card" onclick="handleLogin('${name}')"><div style="font-size: 3rem; margin-bottom:10px;">👨‍🔧</div><h3>${name}</h3></div>`;
                     repOptions += `<option value="${name}">${name}</option>`;
                     
                     adminList.innerHTML += `
-                        <div style="display:flex; justify-content:space-between; background:#f1f2f6; padding:10px; margin-top:5px; border-radius:8px;">
+                        <div class="staff-manage-row">
                             <strong>${name}</strong>
-                            <button onclick="resetStaffPin('${name}')" style="background:#f39c12; padding:5px 10px; font-size:0.8rem; width:auto; margin:0;">Reset PIN</button>
+                            <div class="staff-btn-group">
+                                <button onclick="resetStaffPin('${name}')" style="background:#f39c12; padding:6px 10px; font-size:0.75rem; width:auto; margin:0; border-radius:6px;">Reset PIN</button>
+                                <button onclick="deleteStaff('${name}')" style="background:#ff4757; padding:6px 10px; font-size:0.75rem; width:auto; margin:0; border-radius:6px;">Delete</button>
+                            </div>
                         </div>`;
                 });
-                repStaffSelect.innerHTML = repOptions;
+                if(repStaffSelect) repStaffSelect.innerHTML = repOptions;
 
             } catch(e) {
-                list.innerHTML = `<p style="color:red;">Error loading users. Check Internet.</p>`;
+                list.innerHTML = `<p style="color:#e74c3c;">Error loading users. Check Internet.</p>`;
             }
         }
 
@@ -317,7 +388,7 @@
             if (isAdmin) {
                 document.getElementById('adminTabHandle').style.display = 'block';
                 document.getElementById('feedTitle').textContent = "पूरी दुकान की आज की एंट्रीज़ (All Staff)";
-                loadLeaderboard(); // Load ranking for admin
+                loadLeaderboard();
             } else {
                 document.getElementById('adminTabHandle').style.display = 'none';
                 document.getElementById('feedTitle').textContent = `आपकी (${currentUser}) आज की एंट्रीज़`;
@@ -340,16 +411,23 @@
         async function resetStaffPin(name) {
             if(confirm(`क्या आप वाकई ${name} का PIN हटाना चाहते हैं?`)) {
                 await db.collection('Staff').doc(name).update({ pin: firebase.firestore.FieldValue.delete() });
-                alert(`✅ ${name} का PIN हट गया है। अगली बार वो नया PIN बना सकेगा।`);
+                alert(`✅ ${name} का PIN हट गया है।`);
+            }
+        }
+
+        async function deleteStaff(name) {
+            if(confirm(`⚠️ क्या आप वाकई '${name}' को हटाना चाहते हैं? इनका लॉगिन हमेशा के लिए डिलीट हो जाएगा!`)) {
+                await db.collection('Staff').doc(name).delete();
+                alert(`✅ ${name} डिलीट हो गए हैं।`);
+                loadUsers();
             }
         }
 
         // ==========================================
-        // 4. ADMIN REPORTS & LEADERBOARD (NEW)
+        // ADMIN REPORTS & LEADERBOARD
         // ==========================================
         async function loadLeaderboard() {
             const date = new Date();
-            // 1st day of current month
             const firstDay = new Date(date.getFullYear(), date.getMonth(), 1).toISOString().split('T')[0];
             
             const snap = await db.collection("Sales").where("date", ">=", firstDay).get();
@@ -362,21 +440,19 @@
                 }
             });
             
-            // Sort by highest amount
             let sorted = Object.keys(totals).map(k => ({name: k, total: totals[k]})).sort((a,b) => b.total - a.total);
-            
             let html = "";
             const medals = ["🥇", "🥈", "🥉"];
+            
             sorted.forEach((s, index) => {
                 let medal = index < 3 ? medals[index] : "🏅";
                 html += `
-                <div style="display:flex; justify-content:space-between; background:#f8f9fa; padding:12px; margin-bottom:8px; border-radius:8px; border-left:4px solid #f1c40f;">
-                    <strong style="font-size:1.1rem;">${medal} ${s.name}</strong>
+                <div style="display:flex; justify-content:space-between; background:var(--record-bg); padding:14px; margin-bottom:10px; border-radius:10px; border-left:4px solid #f1c40f; box-shadow:var(--shadow-card);">
+                    <strong style="font-size:1.1rem; color:var(--text-main);">${medal} ${s.name}</strong>
                     <strong style="color:#27ae60; font-size:1.1rem;">₹${s.total}</strong>
                 </div>`;
             });
-            
-            document.getElementById('leaderboardList').innerHTML = html || "<p style='color:#7f8c8d;'>इस महीने अभी कोई काम नहीं हुआ है।</p>";
+            document.getElementById('leaderboardList').innerHTML = html || "<p style='color:var(--text-muted);'>इस महीने अभी कोई काम नहीं हुआ है।</p>";
         }
 
         async function generateReport() {
@@ -390,47 +466,43 @@
             out.innerHTML = "<p style='text-align:center;'>Loading Report...</p>";
             
             const snap = await db.collection("Sales").where("date", ">=", start).where("date", "<=", end).get();
-            let records = [];
-            let grandTotal = 0;
+            let records = []; let grandTotal = 0;
             
             snap.forEach(doc => {
                 const d = doc.data();
                 if(staff === "ALL" || d.staffName === staff) {
-                    records.push(d);
-                    grandTotal += d.amount;
+                    records.push(d); grandTotal += d.amount;
                 }
             });
             
-            // Sort by date newest first
             records.sort((a,b) => new Date(b.date) - new Date(a.date));
             
             let html = `
-                <div style="background:#27ae60; color:white; padding:15px; border-radius:10px; text-align:center; margin-bottom:15px;">
-                    <h3 style="margin:0;">Total Sales</h3>
-                    <h2 style="margin:5px 0 0 0; font-size:1.8rem;">₹${grandTotal}</h2>
-                    <p style="margin:0; font-size:0.9rem; opacity:0.9;">Total Entries: ${records.length}</p>
+                <div style="background:#27ae60; color:white; padding:20px; border-radius:15px; text-align:center; margin-bottom:20px; box-shadow:0 10px 20px rgba(39,174,96,0.3);">
+                    <h3 style="margin:0; font-weight:600; opacity:0.9;">Total Sales</h3>
+                    <h2 style="margin:5px 0 0 0; font-size:2.2rem;">₹${grandTotal}</h2>
+                    <p style="margin:5px 0 0 0; font-size:0.95rem; opacity:0.8;">Total Entries: ${records.length}</p>
                 </div>`;
                 
             records.forEach(d => {
                 html += `
-                <div style="background:white; border:1px solid #dfe6e9; padding:12px; border-radius:8px; margin-bottom:8px;">
-                    <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                        <strong>${d.date} (${d.exactTime})</strong>
-                        <strong style="color:#27ae60;">₹${d.amount}</strong>
+                <div style="background:var(--record-bg); border:1px solid var(--border-col); padding:15px; border-radius:12px; margin-bottom:10px;">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                        <strong style="color:var(--text-main);">${d.date} (${d.exactTime})</strong>
+                        <strong style="color:#27ae60; font-size:1.1rem;">₹${d.amount}</strong>
                     </div>
-                    <div style="font-size:0.85rem; color:#555;">
-                        Staff: <b>${d.staffName}</b><br>
+                    <div style="font-size:0.9rem; color:var(--text-muted); line-height:1.4;">
+                        Staff: <b style="color:var(--text-main);">${d.staffName}</b><br>
                         Item: ${d.itemName} (x${d.quantity})<br>
                         Cust: ${d.vehicleNo !== "N/A" ? d.vehicleNo : d.mobileNo}
                     </div>
                 </div>`;
             });
-            
             out.innerHTML = records.length > 0 ? html : "<p style='text-align:center; color:#e74c3c;'>इस तारीख के बीच कोई रिकॉर्ड नहीं मिला।</p>";
         }
 
         // ==========================================
-        // 5. GPS ATTENDANCE
+        // GPS ATTENDANCE
         // ==========================================
         function markAttendanceWithGPS() {
             const btn = document.getElementById('attBtn');
@@ -458,7 +530,7 @@
         }
 
         // ==========================================
-        // 6. CUSTOMER HISTORY & SEARCH
+        // CUSTOMER HISTORY & SEARCH
         // ==========================================
         function checkMobileInstantly() {
             const val = document.getElementById('mobileNo').value;
@@ -485,14 +557,14 @@
                 if(last.customerName && last.customerName !== "N/A") document.getElementById('customerName').value = last.customerName;
                 
                 box.style.display = "block";
-                box.style.borderColor = "#27ae60"; box.style.background = "#e8f8f5";
+                box.style.borderColor = "#27ae60"; box.style.background = "rgba(46, 204, 113, 0.1)";
                 box.innerHTML = `<strong style="color:#27ae60; font-size:1rem;">✅ पुराना कस्टमर (कुल ${history.length} बार)</strong><br>
-                                 <div style="margin-top:5px;"><b>पिछली बार:</b> ${last.date} (Staff: ${last.staffName})</div>
-                                 <div><b>काम:</b> ${last.itemName} - ₹${last.amount}</div>`;
+                                 <div style="margin-top:5px; color:var(--text-main);"><b>पिछली बार:</b> ${last.date} (Staff: ${last.staffName})</div>
+                                 <div style="color:var(--text-main);"><b>काम:</b> ${last.itemName} - ₹${last.amount}</div>`;
             } else {
                 box.style.display = "block"; 
-                box.style.borderColor = "#e67e22"; box.style.background = "#fdf2e9";
-                box.innerHTML = `<strong style="color:#e67e22; font-size:1rem;">🌟 नया कस्टमर है!</strong><br>अच्छे से सर्विस दें।`;
+                box.style.borderColor = "#e67e22"; box.style.background = "rgba(230, 126, 34, 0.1)";
+                box.innerHTML = `<strong style="color:#e67e22; font-size:1rem;">🌟 नया कस्टमर है!</strong><br><span style="color:var(--text-main);">अच्छे से सर्विस दें।</span>`;
             }
         }
 
@@ -504,8 +576,7 @@
             resBox.innerHTML = "<p style='text-align:center;'>Searching global records...</p>";
             
             const snap = await db.collection("Sales").get();
-            let html = "";
-            let found = 0;
+            let html = ""; let found = 0;
             
             snap.forEach(doc => {
                 const d = doc.data();
@@ -515,29 +586,26 @@
                     <div class="record-card">
                         <h4>${d.vehicleNo} | ${d.customerName}</h4>
                         <p>📞 ${d.mobileNo} | 📅 ${d.date} (${d.exactTime})</p>
-                        <p>👨‍🔧 अटेंड किया: <b>${d.staffName}</b></p>
-                        <p class="price">₹${d.amount} <span style="font-size:0.9rem; color:#555; font-weight:normal;">(${d.itemName} x${d.quantity})</span></p>
+                        <p>👨‍🔧 अटेंड किया: <b style="color:var(--text-main);">${d.staffName}</b></p>
+                        <p class="price">₹${d.amount} <span style="font-size:0.9rem; color:var(--text-muted); font-weight:normal;">(${d.itemName} x${d.quantity})</span></p>
                     </div>`;
                 }
             });
-            resBox.innerHTML = found > 0 ? html : `<p style='text-align:center; color:red;'>No records found.</p>`;
+            resBox.innerHTML = found > 0 ? html : `<p style='text-align:center; color:#e74c3c;'>No records found.</p>`;
         }
 
         // ==========================================
-        // 7. MAIN LOGIC (Submit, Feed, Alerts)
+        // MAIN LOGIC (Submit, Feed, Alerts)
         // ==========================================
         function initApp() {
             loadItems();
             
             db.collection("Sales").where("date", "==", getToday())
               .onSnapshot(snap => {
-                let html = "";
-                let records = [];
+                let html = ""; let records = [];
                 snap.forEach(doc => {
                     const data = doc.data();
-                    if (isAdmin || data.staffName === currentUser) {
-                        records.push({ id: doc.id, ...data });
-                    }
+                    if (isAdmin || data.staffName === currentUser) records.push({ id: doc.id, ...data });
                 });
 
                 records.sort((a,b) => (b.timestamp ? b.timestamp.toMillis() : 0) - (a.timestamp ? a.timestamp.toMillis() : 0));
@@ -549,15 +617,15 @@
                     <div class="record-card" style="border-left-color: ${borderCol};">
                         <h4 style="display:flex; justify-content:space-between;">
                             <span>${d.vehicleNo !== "N/A" ? d.vehicleNo : d.mobileNo}</span>
-                            <span style="font-size:0.8rem; color:#95a5a6;">${d.exactTime}</span>
+                            <span style="font-size:0.8rem; color:var(--text-muted);">${d.exactTime}</span>
                         </h4>
-                        <p><b>Work:</b> ${d.itemName} (Qty: ${d.quantity})</p>
-                        <p><b>Staff:</b> ${d.staffName} | <b>Cust:</b> ${d.customerName}</p>
-                        <p class="price">₹${d.amount} <span style="font-size:0.85rem; color:#7f8c8d;">(${d.paymentMethod})</span></p>
+                        <p><b>Work:</b> <span style="color:var(--text-main);">${d.itemName} (Qty: ${d.quantity})</span></p>
+                        <p><b>Staff:</b> <span style="color:var(--text-main);">${d.staffName}</span> | <b>Cust:</b> <span style="color:var(--text-main);">${d.customerName}</span></p>
+                        <p class="price">₹${d.amount} <span style="font-size:0.85rem; color:var(--text-muted);">(${d.paymentMethod})</span></p>
                         ${isAdmin ? `<button class="btn-delete" onclick="deleteSale('${d.id}')">Delete</button>` : ''}
                     </div>`;
                 });
-                document.getElementById('liveFeed').innerHTML = html || "<p style='text-align:center; padding:20px; color:#95a5a6;'>आज अभी तक कोई एंट्री नहीं हुई है।</p>";
+                document.getElementById('liveFeed').innerHTML = html || "<p style='text-align:center; padding:20px; color:var(--text-muted);'>आज अभी तक कोई एंट्री नहीं हुई है।</p>";
             });
 
             setInterval(updateIdleUI, 60000);
@@ -604,7 +672,7 @@
                 document.getElementById('workForm').reset();
                 document.getElementById('quantity').value = 1;
                 document.getElementById('customerHistory').style.display = "none";
-                if(isAdmin) loadLeaderboard(); // Refresh leaderboard
+                if(isAdmin) loadLeaderboard(); 
                 
             } catch(err) {
                 console.error(err); alert("Error saving entry!");
@@ -621,27 +689,25 @@
         }
 
         // ==========================================
-        // 8. INVENTORY
+        // INVENTORY
         // ==========================================
         function loadItems() {
             db.collection("Inventory").onSnapshot(snap => {
                 let sel = "<option value=''>Select Item</option>";
-                let list = "";
-                let lows = [];
+                let list = ""; let lows = [];
                 
                 snap.forEach(doc => {
                     const i = doc.data();
                     sel += `<option value="${doc.id}">${i.name} - ₹${i.price}</option>`;
-                    
                     const isLow = i.stock < (i.threshold || 5);
                     if(isLow) lows.push(`• ${i.name} (${i.stock} bache hain)`);
                     
                     list += `
                     <div class="record-card" style="border-left-color: ${isLow ? '#e74c3c' : '#bdc3c7'};">
-                        <h4 style="margin:0;">${i.name}</h4>
+                        <h4 style="margin:0; color:var(--text-main);">${i.name}</h4>
                         <div style="display:flex; justify-content:space-between; margin-top:5px;">
                             <span>Price: ₹${i.price}</span>
-                            <strong style="color:${isLow ? '#e74c3c' : '#2c3e50'}; font-size:1.1rem;">Stock: ${i.stock}</strong>
+                            <strong style="color:${isLow ? '#e74c3c' : 'var(--text-main)'}; font-size:1.1rem;">Stock: ${i.stock}</strong>
                         </div>
                     </div>`;
                 });
@@ -688,7 +754,7 @@
         }
 
         // ==========================================
-        // 9. BACKGROUND TRIGGERS
+        // BACKGROUND TRIGGERS
         // ==========================================
         function updateIdleUI() {
             if (!lastEntryTime) return;
@@ -698,19 +764,17 @@
             el.style.display = "block";
             
             if (diff >= 10) {
-                el.style.background = "#ffeaa7"; el.style.color = "#d63031";
+                el.style.background = "rgba(231, 76, 60, 0.1)"; el.style.color = "#e74c3c";
                 txt.innerHTML = `⚠️ ध्यान दें: पिछले ${diff} मिनट से कोई काम नहीं हुआ!`;
             } else {
-                el.style.background = "#d4edda"; el.style.color = "#27ae60";
+                el.style.background = "rgba(46, 204, 113, 0.1)"; el.style.color = "#27ae60";
                 txt.innerHTML = `🔥 दुकान चालू है (Last entry ${diff}m ago)`;
             }
         }
 
         setInterval(() => {
-            if(!isAdmin) return; // Only trigger from Admin phone
-            
-            let shouldAlert = false;
-            let tgMsg = "";
+            if(!isAdmin) return; 
+            let shouldAlert = false; let tgMsg = "";
 
             if (lastEntryTime) {
                 const diff = Math.floor((Date.now() - lastEntryTime) / 60000);
@@ -721,22 +785,19 @@
             if (isGlobalLowStock) {
                 shouldAlert = true; tgMsg += `⚠️ <b>Stock Alert:</b>\n${detailedLowStockAlert}`;
             }
-
             if (shouldAlert && tgMsg !== "") sendTG(tgMsg);
         }, 60000);
 
         let nightReportSent = false;
         setInterval(async () => {
-            if(!isAdmin) return; // Report generator run by Admin instance only
+            if(!isAdmin) return; 
             const now = new Date();
             if (now.getHours() === 22 && now.getMinutes() === 0 && !nightReportSent) {
                 nightReportSent = true;
-                
                 let msg = `🌃 <b>दिन भर की फाइनल रिपोर्ट (${getToday()})</b>\n➖➖➖➖➖➖➖➖\n\n`;
                 
                 const sales = await db.collection("Sales").where("date", "==", getToday()).get();
-                let total = 0; let list = "";
-                let arr = [];
+                let total = 0; let list = ""; let arr = [];
                 sales.forEach(doc => arr.push(doc.data()));
                 arr.sort((a,b) => (a.timestamp ? a.timestamp.toMillis() : 0) - (b.timestamp ? b.timestamp.toMillis() : 0));
                 
@@ -758,7 +819,6 @@
             if (now.getHours() === 1) nightReportSent = false; 
         }, 60000);
 
-        // Bootstrap
         window.onload = loadUsers;
     </script>
 </body>
