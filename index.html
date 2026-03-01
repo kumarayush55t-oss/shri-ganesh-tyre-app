@@ -3,270 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Shri Ganesh Tyres - Pro Manager</title>
+    <title>TyreXpert - Pro Manager</title>
     <style>
-        /* Modern Premium UI */
-        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: #eef2f5; margin: 0; padding: 0; padding-bottom: 70px; color: #333; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f7fa; color: #2c3e50; min-height: 100vh; padding-bottom: 80px; }
+        .header { background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%); color: #000000; padding: 1.5rem 1rem; text-align: center; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); position: relative; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; }
+        .app-title { font-size: 2.2rem; font-weight: 700; }
+        .app-title .red { color: #ff0000; }
+        .app-title .black { color: #000000; }
+        .notification-bell { position: absolute; right: 1.2rem; top: 1.2rem; background: #f0f0f0; color: #e74c3c; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; box-shadow: 0 2px 8px rgba(0,0,0,0.15); cursor: pointer; transition: transform 0.2s; }
+        .notification-bell:hover { transform: scale(1.1); }
+        .badge { position: absolute; top: -6px; right: -6px; background: #e74c3c; color: white; font-size: 0.7rem; font-weight: bold; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #f0f0f0; }
         
-        /* Premium Header */
-        .header { background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%); color: white; padding: 18px; text-align: center; font-size: 24px; font-weight: bold; box-shadow: 0 4px 10px rgba(211,47,47,0.3); border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; margin-bottom: 10px; }
-        .sub-header { font-size: 13px; font-weight: normal; margin-top: 5px; opacity: 0.9; }
-        
-        .container { padding: 10px 15px; max-width: 600px; margin: auto; }
-        
-        /* App Lock Screen */
-        #lockScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #1e293b, #334155); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; }
-        #lockScreen input { width: 80%; max-width: 300px; padding: 15px; text-align: center; font-size: 24px; letter-spacing: 5px; border-radius: 10px; border: none; outline: none; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        #lockScreen button { width: 80%; max-width: 300px; background: #e74c3c; font-size: 18px; padding: 15px; border-radius: 10px; font-weight: bold; border: none; color: white; box-shadow: 0 4px 15px rgba(231,76,60,0.4); }
+        #lowStockAlert { margin: 1.5rem 1rem 0; background: #fff0f0; border: 2px solid #ff0000; border-radius: 12px; padding: 1rem; text-align: center; color: #ff0000; font-size: 1.3rem; font-weight: 900; animation: redGlow 1s infinite alternate; display: none; }
+        @keyframes redGlow { from { box-shadow: 0 0 10px rgba(255, 0, 0, 0.3); text-shadow: 0 0 5px rgba(255,0,0,0.3); } to { box-shadow: 0 0 25px rgba(255, 0, 0, 0.8); text-shadow: 0 0 10px rgba(255,0,0,0.8); } }
 
-        /* Smooth Tabs */
-        .tabs { display: flex; background: white; border-radius: 10px; margin: 10px 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); overflow: hidden; position: sticky; top: 10px; z-index: 100; }
-        .tab { flex: 1; padding: 14px 5px; text-align: center; font-weight: bold; color: #7f8c8d; cursor: pointer; font-size: 15px; transition: all 0.3s ease; }
-        .tab.active { color: white; background: #d32f2f; }
+        .personalized-message { margin: 1rem 1rem 0; background: white; border-radius: 16px; padding: 1.2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.08); text-align: center; }
+        .personalized-message h3 { margin-bottom: 0.8rem; color: #34495e; }
+        #personalizedText { font-size: 1.15rem; font-weight: 600; }
         
-        .tab-content { display: none; animation: fadeIn 0.4s ease-in-out; }
-        .tab-content.active { display: block; }
+        .tabs { display: flex; background: white; margin: 1rem; border-radius: 12px; overflow: hidden; box-shadow: 0 3px 12px rgba(0,0,0,0.06); }
+        .tab { flex: 1; padding: 1rem; text-align: center; font-weight: 600; color: #7f8c8d; cursor: pointer; transition: all 0.3s; }
+        .tab.active { background: #e74c3c; color: white; }
+        .tab-content { display: none; padding: 0 1rem 1rem; }
+        .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Cards with soft shadows */
-        .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); margin-bottom: 18px; border: 1px solid #f0f0f0; }
-        label { font-weight: 600; display: block; margin-top: 15px; color: #2c3e50; font-size: 14px; }
+        .card { background: white; border-radius: 16px; padding: 1.5rem; margin-bottom: 1.2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.06); transition: transform 0.2s, box-shadow 0.2s; }
+        label { font-weight: 600; color: #34495e; margin: 1rem 0 0.4rem; display: block; font-size: 0.95rem; }
+        input, select { width: 100%; padding: 0.9rem 1rem; border: 1px solid #dfe6e9; border-radius: 10px; font-size: 1rem; transition: all 0.25s; }
+        input:focus, select:focus { outline: none; border-color: #e74c3c; box-shadow: 0 0 0 3px rgba(231,76,60,0.12); }
+        button { width: 100%; padding: 1rem; background: #e74c3c; color: white; border: none; border-radius: 10px; font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; cursor: pointer; transition: all 0.25s; box-shadow: 0 3px 10px rgba(231,76,60,0.2); }
+        button:hover:not(:disabled) { background: #c0392b; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(231,76,60,0.3); }
+        button:disabled { background: #bdc3c7; cursor: not-allowed; }
+        .btn-green { background: #27ae60; box-shadow: 0 3px 10px rgba(39,174,96,0.2); }
+        .btn-green:hover { background: #219653; }
         
-        /* 🔥 Mic inside Input Box 🔥 */
-        .input-wrapper { position: relative; display: block; margin-top: 8px; }
-        .input-wrapper input, .input-wrapper select { width: 100%; padding: 14px 45px 14px 15px; margin: 0; border: 1px solid #dcdde1; border-radius: 8px; font-size: 16px; background: #fdfdfd; box-sizing: border-box; transition: 0.3s; outline: none; }
-        .input-wrapper input:focus, select:focus { border-color: #d32f2f; box-shadow: 0 0 0 3px rgba(211,47,47,0.1); }
-        .mic-icon { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 20px; cursor: pointer; color: #7f8c8d; outline: none; transition: 0.2s; padding: 5px; }
-        .mic-icon:active { transform: translateY(-50%) scale(0.9); color: #d32f2f; }
+        .record-card { background: white; border-radius: 12px; padding: 1.2rem; margin-bottom: 1rem; border-left: 5px solid #e74c3c; box-shadow: 0 3px 10px rgba(0,0,0,0.05); }
+        .record-card h4 { margin: 0 0 0.8rem; font-size: 1.15rem; color: #2c3e50; }
+        .record-card p { margin: 0.4rem 0; color: #555; font-size: 0.95rem; }
+        .price { font-size: 1.2rem; font-weight: bold; color: #27ae60; margin-top: 0.6rem !important; }
         
-        /* Standard inputs without mic */
-        select, input[type="file"], input[type="date"], input[type="number"] { width: 100%; padding: 14px 15px; margin-top: 8px; border: 1px solid #dcdde1; border-radius: 8px; box-sizing: border-box; font-size: 16px; background: #fdfdfd; }
-        input:disabled, select:disabled { background: #e9ecef; color: #6c757d; }
+        #lockScreen { position: fixed; inset: 0; background: linear-gradient(135deg, #2c3e50, #34495e); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; }
+        #lockScreen input { width: 85%; max-width: 320px; padding: 1.2rem; font-size: 1.8rem; letter-spacing: 0.5rem; text-align: center; border-radius: 12px; border: none; margin: 1.5rem 0; }
+        .attendance-button { margin: 1rem; background: #3498db; color: white; border: none; padding: 1rem; border-radius: 10px; font-size: 1.1rem; cursor: pointer; box-shadow: 0 3px 10px rgba(52,152,219,0.2); transition: all 0.25s; }
         
-        /* Buttons */
-        button { width: 100%; background: #d32f2f; color: white; padding: 15px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; margin-top: 25px; cursor: pointer; box-shadow: 0 4px 10px rgba(211,47,47,0.2); transition: 0.3s; }
-        button:active { background: #b71c1c; transform: translateY(2px); box-shadow: none; }
-        .btn-green { background: #27ae60; box-shadow: 0 4px 10px rgba(39,174,96,0.2); }
-        .btn-blue { background: #2980b9; box-shadow: 0 4px 10px rgba(41,128,185,0.2); margin-top: 10px; }
-        .btn-whatsapp { background: #25D366; color: white; padding: 8px 12px; border: none; border-radius: 6px; font-size: 13px; margin-top: 10px; cursor: pointer; font-weight: bold; width: auto; float: left; box-shadow: 0 2px 5px rgba(37,211,102,0.3); }
-        .btn-small { padding: 10px; font-size: 14px; margin-top: 8px; width: auto; }
-        .btn-delete { background: #e74c3c; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 13px; cursor: pointer; float:right; margin-top: 10px; }
-
-        /* Record Cards */
-        .record-card { background: #fff; padding: 16px; border-left: 5px solid #d32f2f; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 3px 10px rgba(0,0,0,0.05); overflow: hidden; border: 1px solid #f0f0f0; }
-        .record-card h4 { margin: 0 0 10px 0; color: #2c3e50; font-size: 17px; display: flex; justify-content: space-between; align-items: center; }
-        .record-card p { margin: 5px 0; font-size: 14px; color: #555; }
-        .price { font-weight: bold; color: #27ae60; font-size: 18px; }
-        
-        hr { border: 0; border-top: 1px solid #e1e8ed; margin: 20px 0; }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .loyalty-msg { font-size: 13px; margin-top: 5px; display: block; font-weight: bold; }
-
-        /* 🔥 Top Staff White Text with RGB Shadow Animation 🔥 */
-        .top-staff-banner {
-            margin: 5px 15px 15px 15px;
-            padding: 20px;
-            text-align: center;
-            border-radius: 12px;
-            background: #111827; /* Dark background to make glow pop */
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            display: none; /* Shown dynamically */
-            border: 1px solid #1f2937;
-        }
-        
-        .top-staff-title {
-            color: #9ca3af;
-            font-size: 14px;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .top-staff-name {
-            color: #ffffff; /* White letters */
-            font-size: 32px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin: 0;
-            /* The RGB Light Effect on the letters */
-            animation: rgbTextGlow 4s linear infinite;
-        }
-
-        .top-staff-sales {
-            color: #10b981;
-            font-size: 18px;
-            font-weight: bold;
-            margin-top: 5px;
-        }
-
-        @keyframes rgbTextGlow {
-            0%   { text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000; }
-            16%  { text-shadow: 0 0 10px #ff7f00, 0 0 20px #ff7f00, 0 0 30px #ff7f00; }
-            33%  { text-shadow: 0 0 10px #ffff00, 0 0 20px #ffff00, 0 0 30px #ffff00; }
-            50%  { text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00; }
-            66%  { text-shadow: 0 0 10px #0000ff, 0 0 20px #0000ff, 0 0 30px #0000ff; }
-            83%  { text-shadow: 0 0 10px #4b0082, 0 0 20px #4b0082, 0 0 30px #4b0082; }
-            100% { text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000; }
-        }
+        .customer-history { margin-top: 1rem; background: #fdfefe; padding: 1rem; border-radius: 10px; border: 1px solid #dfe6e9; display: none; }
+        .history-success { background: #e8f8f5; border-color: #27ae60; }
+        .history-new { background: #fdf2e9; border-color: #e67e22; }
     </style>
 </head>
 <body>
 
     <div id="lockScreen">
-        <h2 style="margin-bottom: 5px;">🛞 Shri Ganesh Tyres</h2>
-        <p style="margin-bottom: 30px; font-size: 14px; color: #ecf0f1;">App use karne ke liye PIN daalein</p>
-        <input type="password" id="appPinInput" placeholder="Enter PIN" inputmode="numeric" maxlength="6">
-        <button onclick="unlockApp()">Unlock App</button>
+        <h2 style="margin-bottom: 1rem;">🛞 TyreXpert</h2>
+        <p style="margin-bottom: 1.5rem; opacity: 0.9;">PIN डालें जारी रखने के लिए</p>
+        <input type="password" id="appPinInput" placeholder="••••••" inputmode="numeric" maxlength="6">
+        <button onclick="unlockApp()" style="width: 85%; max-width: 320px;">Unlock</button>
     </div>
 
     <div class="header">
-        🛞 Shri Ganesh Tyres
-        <div class="sub-header">Near Brigadier Hoshiar Singh Metro Station</div>
+        <div class="app-title"><span class="red">Tyre</span><span class="black">Xpert</span></div>
+        <div class="notification-bell" onclick="showNotification()">
+            🔔 <span class="badge" id="notif-count">0</span>
+        </div>
     </div>
 
-    <div id="topStaffBanner" class="top-staff-banner">
-        <div class="top-staff-title">👑 Aaj Ka Top Staff 👑</div>
-        <div id="topStaffName" class="top-staff-name">Loading...</div>
-        <div id="topStaffSales" class="top-staff-sales">(₹0)</div>
+    <h2 id="lowStockAlert"></h2>
+
+    <div class="personalized-message">
+        <h3>📈 आपकी सेल्स</h3>
+        <p id="personalizedText">Loading...</p>
     </div>
+
+    <button class="attendance-button" onclick="markAttendance()">Attendance Mark Karein</button>
 
     <div class="tabs">
-        <div class="tab active" onclick="switchTab('addWorkTab', this)">📝 Entry</div>
-        <div class="tab" onclick="switchTab('searchTab', this)">🔍 Search</div>
-        <div class="tab" onclick="switchTab('adminTab', this)">🔒 Admin</div>
+        <div class="tab active" onclick="switchTab('addWorkTab', this)">Entry</div>
+        <div class="tab" onclick="switchTab('searchTab', this)">Search</div>
+        <div class="tab" onclick="switchTab('stockTab', this)">Stock</div>
+        <div class="tab" onclick="switchTab('adminTab', this)">Admin</div>
     </div>
 
-    <div class="container">
-        
-        <div id="addWorkTab" class="tab-content active">
-            <div class="card">
-                <form id="workForm">
-                    
-                    <label>Kaam Kya Hua Hai?</label>
-                    <select id="workType">
-                        <option value="Normal Puncture">Normal Puncture</option>
-                        <option value="Tube Change">Tube Change</option>
-                        <option value="Tyre Fitting">Tyre Fitting</option> 
-                        <option value="Hawa">Hawa (Air)</option> 
-                        <option value="Nalki (Valve)">Nalki (Valve)</option>
-                        <option value="Mushroom Patch">Mushroom Patch</option>
-                        <option value="Cut Repair">Cut Repair</option>
-                        <option value="Garam Puncture">Garam Puncture</option>
-                        <option value="New Bike Tyre">New Bike Tyre</option>
-                        <option value="New Car Tyre">New Car Tyre</option>
-                        <option value="Old Bike Tyre">Old Bike Tyre</option>
-                        <option value="Old Car Tyre">Old Car Tyre</option>
-                    </select>
+    <div class="tab-content active" id="addWorkTab">
+        <div class="card">
+            <form id="workForm">
+                <label>Item / Service</label>
+                <select id="itemSelect" required></select>
 
-                    <div id="customerDetailsWrapper">
-                        <label>Customer Mobile No:</label>
-                        <div class="input-wrapper">
-                            <input type="tel" id="mobileNo" placeholder="10 digit number" maxlength="10">
-                            <button class="mic-icon" type="button" onclick="startVoiceTyping('mobileNo', true)">🎤</button>
-                        </div>
-                        <div id="loyaltyMsg" class="loyalty-msg"></div> 
+                <label>Quantity</label>
+                <input type="number" id="quantity" min="1" required placeholder="1">
 
-                        <label>Customer Naam:</label>
-                        <div class="input-wrapper">
-                            <input type="text" id="customerName" placeholder="Naam likhein" required>
-                            <button class="mic-icon" type="button" onclick="startVoiceTyping('customerName', false)">🎤</button>
-                        </div>
+                <div id="customerDetailsWrapper">
+                    <label>Customer Mobile (या)</label>
+                    <input type="tel" id="mobileNo" maxlength="10" placeholder="10 digit number" oninput="checkMobileInstantly()">
 
-                        <label>Gaadi / Bike Number:</label>
-                        <div class="input-wrapper">
-                            <input type="text" id="vehicleNo" placeholder="HR 13..." required style="text-transform: uppercase;">
-                            <button class="mic-icon" type="button" onclick="startVoiceTyping('vehicleNo', true)">🎤</button>
-                        </div>
-                    </div>
+                    <label>Vehicle Number (या)</label>
+                    <input type="text" id="vehicleNo" placeholder="HR26..." style="text-transform: uppercase;" onblur="checkCustomerHistory()">
 
-                    <label>Kaam Kis Staff Ne Kiya?</label>
-                    <select id="staffNameSelect" required>
-                        <option value="">Loading Staff...</option>
-                    </select>
+                    <div id="customerHistory" class="customer-history"></div>
 
-                    <label>Tyre Ki Photo (Optional):</label>
-                    <input type="file" id="tyrePhoto" accept="image/*" capture="environment">
-
-                    <label>Paise Kitne Liye (₹):</label>
-                    <div class="input-wrapper">
-                        <input type="number" id="amount" placeholder="₹ Amount" required>
-                        <button class="mic-icon" type="button" onclick="startVoiceTyping('amount', true)">🎤</button>
-                    </div>
-
-                    <button type="submit" id="saveBtn">Kaam Save Karein ☁️</button>
-                </form>
-            </div>
-            <h3 style="color: #2c3e50; margin-left: 5px;">Aaj Ka Kaam (Live)</h3>
-            <div id="liveFeed">Data load ho raha hai...</div>
-        </div>
-
-        <div id="searchTab" class="tab-content">
-            <div class="card">
-                <label style="margin-top:0;">Gaadi No. ya Mobile No. se Search Karein:</label>
-                <div class="input-wrapper">
-                    <input type="text" id="searchValue" placeholder="Type here...">
-                    <button class="mic-icon" type="button" onclick="startVoiceTyping('searchValue', true)">🎤</button>
+                    <label>Customer Name</label>
+                    <input type="text" id="customerName" required placeholder="Enter name">
                 </div>
-                <button type="button" onclick="searchData()">Dhoondhein 🔍</button>
-            </div>
-            <div id="searchResults"></div>
-        </div>
 
-        <div id="adminTab" class="tab-content">
-            
-            <div class="card" style="background: #f4f9fc; border: 1px solid #d6eaf8;">
-                <h3 style="margin-top:0; color: #2980b9;">⚙️ App Security & Export</h3>
-                <label style="margin-top:0;">Staff App Lock PIN Badlein:</label>
-                <div style="display:flex; gap:10px;">
-                    <input type="number" id="newAppPin" placeholder="Naya PIN">
-                    <button type="button" class="btn-small btn-blue" onclick="changeAppPin()">Set PIN</button>
-                </div>
-                <hr style="border-top-color:#d6eaf8;">
-                <button type="button" class="btn-green" onclick="exportToCSV()" style="margin-top:0;">📥 Khata Excel (CSV) Download</button>
-            </div>
-
-            <div class="card" style="border-top: 4px solid #f39c12;">
-                <h3 style="margin-top:0;">📊 Date-wise Hisaab</h3>
-                <div class="grid-2">
-                    <div>
-                        <label style="margin-top:0;">From Date:</label>
-                        <input type="date" id="startDate">
-                    </div>
-                    <div>
-                        <label style="margin-top:0;">To Date:</label>
-                        <input type="date" id="endDate">
-                    </div>
-                </div>
-                <label>Staff Filter:</label>
-                <select id="reportStaffSelect">
-                    <option value="All">Sabhi Staff (Total Sales)</option>
+                <label>Staff</label>
+                <select id="staffNameSelect" required>
+                    <option value="Raghav">Raghav</option>
                 </select>
-                
-                <button type="button" class="btn-green" onclick="generateReport()">Hisaab Nikalein</button>
-                <div id="reportResults" style="margin-top: 20px;"></div>
-            </div>
 
-            <div class="card">
-                <h3 style="margin-top:0;">👥 Staff Management</h3>
-                <div class="input-wrapper">
-                    <input type="text" id="newStaffName" placeholder="Naye Staff Ka Naam">
-                    <button class="btn-small btn-green" style="position: absolute; right: 5px; top: 5px; margin:0;" onclick="addStaff()">Add</button>
-                </div>
-                <hr>
-                <div id="staffList"></div>
-            </div>
+                <label>Photo (optional)</label>
+                <input type="file" id="tyrePhoto" accept="image/*" capture="environment">
 
+                <label>Amount (₹)</label>
+                <input type="number" id="amount" required placeholder="Total amount">
+
+                <label>Payment Mode</label>
+                <select id="paymentMethod" required>
+                    <option value="Cash">Cash</option>
+                    <option value="UPI">UPI</option>
+                    <option value="Card">Card</option>
+                    <option value="Other">Other</option>
+                </select>
+
+                <button type="submit" id="saveBtn">Save Entry</button>
+            </form>
         </div>
 
+        <h3 style="padding: 1rem 0 0.8rem; text-align: center; color: #34495e;">आज की ताज़ा एंट्रीज़ (Live)</h3>
+        <div id="liveFeed"></div>
+    </div>
+
+    <div class="tab-content" id="searchTab">
+        <div class="card">
+            <label>Search by Vehicle No or Mobile</label>
+            <input type="text" id="searchValue" placeholder="HR26... or 98xxxxxxxx">
+            <button onclick="searchData()">Search</button>
+        </div>
+        <div id="searchResults"></div>
+    </div>
+
+    <div class="tab-content" id="stockTab">
+        <div class="card">
+            <h3>Current Stock</h3>
+            <div id="stockList"></div>
+        </div>
+    </div>
+
+    <div class="tab-content" id="adminTab">
+        <div class="card">
+            <h3>Admin Controls</h3>
+            <label>Change App PIN</label>
+            <input type="number" id="newAppPin" placeholder="New 4-6 digit PIN">
+            <button class="btn-green" onclick="changeAppPin()">Update PIN</button>
+            <hr style="margin: 1.5rem 0;">
+            <button class="btn-green" onclick="exportToCSV()">Download Khata (CSV)</button>
+        </div>
+        <div class="card">
+            <h3>Manage Inventory</h3>
+            <form id="itemForm">
+                <label>Item Name</label>
+                <input type="text" id="itemName" required placeholder="e.g. MRF Tubeless">
+                <label>Price (₹)</label>
+                <input type="number" id="itemPrice" required placeholder="Selling price">
+                <label>Initial Stock</label>
+                <input type="number" id="initialStock" required min="0" placeholder="Quantity">
+                <label>Low Stock Threshold</label>
+                <input type="number" id="itemThreshold" min="1" placeholder="Alert below this quantity">
+                <button type="submit">Add Item</button>
+            </form>
+        </div>
+        <div class="card">
+            <h3>Update Stock</h3>
+            <select id="stockItemSelect"></select>
+            <input type="number" id="addStockQty" placeholder="Quantity to add (+/-)">
+            <button onclick="updateStock()">Update Stock</button>
+        </div>
+        <div class="card">
+            <h3>Date-wise Report</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div><label>From</label><input type="date" id="startDate"></div>
+                <div><label>To</label><input type="date" id="endDate"></div>
+            </div>
+            <label style="margin-top: 1rem;">Staff Filter</label>
+            <select id="reportStaffSelect"><option value="Raghav">Raghav</option></select>
+            <button class="btn-green" onclick="generateReport()">Generate Report</button>
+            <div id="reportResults" style="margin-top: 1.5rem;"></div>
+        </div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js"></script>
 
     <script>
-        // FIREBASE CONFIGURATION
         const firebaseConfig = {
             apiKey: "AIzaSyApY09CHspm5TVxXTVvjnfB6lzwQ7nqltE",
             authDomain: "staff-managemant.firebaseapp.com",
@@ -275,430 +205,385 @@
             messagingSenderId: "160818771446",
             appId: "1:160818771446:web:e55f1bfc308c504efb03d7"
         };
-
-        if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
         const db = firebase.firestore();
         const storage = firebase.storage();
 
-        // -------------------------
-        // VOICE TYPING (MIC)
-        // -------------------------
-        function startVoiceTyping(inputId, removeSpaces) {
-            if (!('webkitSpeechRecognition' in window)) {
-                alert("Aapka phone/browser voice typing support nahi karta. Google Chrome use karein.");
-                return;
-            }
-            
-            const recognition = new webkitSpeechRecognition();
-            recognition.lang = 'hi-IN';
-            recognition.interimResults = false;
-            recognition.maxAlternatives = 1;
-
-            const inputField = document.getElementById(inputId);
-            const originalPlaceholder = inputField.placeholder;
-            inputField.placeholder = "Sun raha hoon... 🎤";
-            inputField.style.borderColor = "#e74c3c";
-
-            recognition.start();
-
-            recognition.onresult = function(event) {
-                let text = event.results[0][0].transcript;
-                if (removeSpaces) text = text.replace(/\s+/g, ''); 
-                inputField.value = text;
-                inputField.placeholder = originalPlaceholder;
-                inputField.style.borderColor = "#dcdde1";
-                if(inputId === 'mobileNo') inputField.blur();
-            };
-
-            recognition.onspeechend = function() {
-                recognition.stop();
-                inputField.placeholder = originalPlaceholder;
-                inputField.style.borderColor = "#dcdde1";
-            };
-
-            recognition.onerror = function(event) {
-                alert("Awaaz nahi aayi, wapas try karein.");
-                inputField.placeholder = originalPlaceholder;
-                inputField.style.borderColor = "#dcdde1";
-            };
-        }
-
-        // -------------------------
-        // ADMIN WHATSAPP GREETING & PAYMENT MSG
-        // -------------------------
-        function sendAdminWhatsAppMsg(mobile, name, work, amount, vehicle) {
-            if(!mobile || mobile.length < 10 || mobile === "N/A") {
-                alert("Customer ka mobile number save nahi hai.");
-                return;
-            }
-            // Greeting & Payment confirmation message
-            const msg = `Namaste ${name} Ji! 🙏\n\nShri Ganesh Tyres par aane ke liye dhanyawad.\nAapki gaadi (${vehicle}) ka kaam poora ho gaya hai.\n\n🛠️ Kaam: *${work}*\n💰 Total Bill: *₹${amount}* (Payment Receive ho gayi hai ✅)\n\nAapka din shubh ho! Phir se zaroor aiyega.\n\n📍 Shri Ganesh Tyres,\nNear Brigadier Hoshiar Singh Metro Station`;
-            const encodedMsg = encodeURIComponent(msg);
-            const url = `https://wa.me/91${mobile}?text=${encodedMsg}`;
-            window.open(url, '_blank');
-        }
-
-        // -------------------------
-        // APP LOCK LOGIC
-        // -------------------------
         let globalAppPin = "1234";
+
         db.collection("ShopSettings").doc("AppSecurity").onSnapshot(doc => {
-            if(doc.exists) globalAppPin = doc.data().pin;
-            else db.collection("ShopSettings").doc("AppSecurity").set({pin: "1234"});
+            if (doc.exists) globalAppPin = doc.data().pin || "1234";
         });
 
         function unlockApp() {
-            const enteredPin = document.getElementById('appPinInput').value;
-            if(enteredPin === globalAppPin) {
-                document.getElementById('lockScreen').style.display = 'none';
-                calculateTopStaff(); 
-            } else alert("Galat PIN! Access Denied.");
-        }
-
-        function changeAppPin() {
-            const newPin = document.getElementById('newAppPin').value.trim();
-            if(newPin.length > 0) {
-                db.collection("ShopSettings").doc("AppSecurity").set({pin: newPin}).then(() => {
-                    alert("✅ App ka naya PIN set ho gaya hai!");
-                    document.getElementById('newAppPin').value = "";
-                });
-            }
-        }
-
-        // -------------------------
-        // TABS & ADMIN PIN
-        // -------------------------
-        function switchTab(tabId, element) {
-            if(tabId === 'adminTab') {
-                const adminPin = prompt("Admin Panel PIN Daalein:");
-                if(adminPin !== "308913") { alert("Sirf Owner allowed hai!"); return; }
-            }
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            element.classList.add('active');
-        }
-
-        function getLocalDateISO() {
-            const d = new Date();
-            return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,'0') + "-" + String(d.getDate()).padStart(2,'0');
-        }
-
-        // -------------------------
-        // HAWA LOGIC (Hide Fields)
-        // -------------------------
-        document.getElementById('workType').addEventListener('change', function() {
-            const staffSelect = document.getElementById('staffNameSelect');
-            const wrapper = document.getElementById('customerDetailsWrapper');
-            const cName = document.getElementById('customerName');
-            const cVeh = document.getElementById('vehicleNo');
-            
-            if(this.value === "Hawa") {
-                wrapper.style.display = 'none';
-                cName.removeAttribute('required');
-                cVeh.removeAttribute('required');
-                
-                let exists = false;
-                for(let i=0; i<staffSelect.options.length; i++) {
-                    if(staffSelect.options[i].value === "Sabhi Staff (Shared)") exists = true;
-                }
-                if(!exists) staffSelect.innerHTML += `<option value="Sabhi Staff (Shared)">Sabhi Staff (Shared)</option>`;
-                staffSelect.value = "Sabhi Staff (Shared)";
-                staffSelect.disabled = true; 
+            const pin = document.getElementById("appPinInput").value.trim();
+            if (pin === globalAppPin) {
+                document.getElementById("lockScreen").style.display = "none";
+                loadPersonalizedMessage();
+                loadLowStockAlert();
             } else {
-                wrapper.style.display = 'block';
-                cName.setAttribute('required', 'true');
-                cVeh.setAttribute('required', 'true');
-
-                staffSelect.disabled = false;
-                if(staffSelect.value === "Sabhi Staff (Shared)") staffSelect.selectedIndex = 0;
-            }
-        });
-
-        // -------------------------
-        // CUSTOMER LOYALTY CHECK
-        // -------------------------
-        document.getElementById('mobileNo').addEventListener('blur', function() {
-            const mob = this.value.trim();
-            const msgDiv = document.getElementById('loyaltyMsg');
-            if(mob.length >= 10) {
-                msgDiv.innerHTML = "Checking history... ⏳";
-                db.collection("ShriGaneshRecords").where("mobileNo", "==", mob).get().then(snap => {
-                    if(!snap.empty) {
-                        let count = snap.size;
-                        let lastDate = "";
-                        snap.forEach(doc => { if(doc.data().dateIso > lastDate) lastDate = doc.data().dateIso; });
-                        msgDiv.innerHTML = `<span style="color:#27ae60;">🌟 Regular Customer: Pehle <b>${count} baar</b> aa chuka hai. Last visit: ${lastDate}</span>`;
-                    } else msgDiv.innerHTML = `<span style="color:#e67e22;">✨ Naya Customer Hai</span>`;
-                });
-            } else msgDiv.innerHTML = "";
-        });
-
-        // -------------------------
-        // STAFF MANAGEMENT
-        // -------------------------
-        function loadStaff() {
-            db.collection("ShopStaff").onSnapshot(snap => {
-                let options = "";
-                let reportOptions = `<option value="All">Sabhi Staff (Total Sales)</option>`;
-                let listHtml = "";
-                
-                snap.forEach(doc => {
-                    const name = doc.data().name;
-                    options += `<option value="${name}">${name}</option>`;
-                    reportOptions += `<option value="${name}">${name}</option>`;
-                    listHtml += `<div style="display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid #f0f0f0;">
-                                    <b>${name}</b> 
-                                    <button class="btn-delete" style="margin:0;" type="button" onclick="deleteStaff('${doc.id}')">Hatao</button>
-                                 </div>`;
-                });
-                
-                document.getElementById('staffNameSelect').innerHTML = options || '<option value="">Pehle Staff Add Karein</option>';
-                document.getElementById('reportStaffSelect').innerHTML = reportOptions;
-                document.getElementById('staffList').innerHTML = listHtml || '<p style="color:#7f8c8d;">Koi staff add nahi hai.</p>';
-            });
-        }
-        loadStaff(); 
-
-        function addStaff() {
-            const name = document.getElementById('newStaffName').value.trim();
-            if(name) {
-                db.collection("ShopStaff").add({ name: name }).then(() => { document.getElementById('newStaffName').value = ""; });
+                alert("गलत PIN!");
             }
         }
-        function deleteStaff(id) {
-            if(confirm("Staff hatana chahte hain?")) db.collection("ShopStaff").doc(id).delete();
+
+        function switchTab(tabId, el) {
+            if (tabId === "adminTab") {
+                const adminPin = prompt("Admin PIN डालें:");
+                if (adminPin !== "308913") return alert("केवल ओनर एक्सेस कर सकता है!");
+            }
+            document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+            document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+            el.classList.add("active");
+            document.getElementById(tabId).classList.add("active");
+            if (tabId === "stockTab") loadItems();
         }
 
-        // -------------------------
-        // TOP STAFF CALCULATOR
-        // -------------------------
-        function calculateTopStaff() {
-            db.collection("ShriGaneshRecords").where("dateIso", "==", getLocalDateISO()).get().then(snap => {
-                let staffSales = {};
+        function getToday() {
+            return new Date().toISOString().split("T")[0];
+        }
+        function getYesterday() {
+            const d = new Date(); d.setDate(d.getDate() - 1);
+            return d.toISOString().split("T")[0];
+        }
+        
+        function getExactTime() {
+            const d = new Date();
+            let hours = d.getHours();
+            let ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12;
+            let minutes = d.getMinutes().toString().padStart(2, '0');
+            return `${hours}:${minutes} ${ampm}`;
+        }
+
+        async function loadPersonalizedMessage() {
+            try {
+                const todaySnap = await db.collection("Sales").where("date", "==", getToday()).where("staffName", "==", "Raghav").get();
+                const yesterdaySnap = await db.collection("Sales").where("date", "==", getYesterday()).where("staffName", "==", "Raghav").get();
+                let todayTotal = 0, yesterdayTotal = 0;
+                todaySnap.forEach(doc => todayTotal += doc.data().amount);
+                yesterdaySnap.forEach(doc => yesterdayTotal += doc.data().amount);
+                const diff = todayTotal - yesterdayTotal;
+                let msg = diff > 0 ? `Raghav जी, आज आपकी सेल्स कल से <span style="color:#27ae60">₹${diff}</span> ज्यादा है` : 
+                          diff < 0 ? `Raghav जी, आज आपकी सेल्स कल से <span style="color:#e74c3c">₹${Math.abs(diff)}</span> कम है` : 
+                          "Raghav जी, आज आपकी सेल्स कल के बराबर है";
+                document.getElementById("personalizedText").innerHTML = msg;
+            } catch (e) { console.error(e); }
+        }
+
+        async function loadLowStockAlert() {
+            try {
+                const snap = await db.collection("Inventory").get();
+                let lowItems = [];
                 snap.forEach(doc => {
-                    const d = doc.data();
-                    if(d.staffName && d.staffName !== "Sabhi Staff (Shared)") {
-                        if(!staffSales[d.staffName]) staffSales[d.staffName] = 0;
-                        staffSales[d.staffName] += d.amount;
-                    }
+                    const item = doc.data();
+                    if (item.stock < (item.threshold || 5)) lowItems.push(item.name);
                 });
-
-                let topName = "";
-                let maxSales = 0;
-                for(let staff in staffSales) {
-                    if(staffSales[staff] > maxSales) { maxSales = staffSales[staff]; topName = staff; }
-                }
-
-                const banner = document.getElementById('topStaffBanner');
-                if(topName !== "") {
-                    document.getElementById('topStaffName').innerText = topName;
-                    document.getElementById('topStaffSales').innerText = `(₹${maxSales})`;
-                    banner.style.display = 'block';
+                const alertEl = document.getElementById("lowStockAlert");
+                if (lowItems.length > 0) {
+                    alertEl.innerHTML = `⚠️ <b>RED ALERT:</b> ${lowItems.join(", ")} का स्टॉक बहुत कम है!`;
+                    alertEl.style.display = "block";
                 } else {
-                    banner.style.display = 'none';
+                    alertEl.style.display = "none";
                 }
-            });
+            } catch (e) { console.error(e); }
         }
 
-        // -------------------------
-        // DATA SAVE 
-        // -------------------------
-        document.getElementById('workForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const btn = document.getElementById('saveBtn');
-            const staffSelected = document.getElementById('staffNameSelect').value;
-            const workTypeVal = document.getElementById('workType').value;
-            
-            if(!staffSelected) { alert("Pehle Admin panel se Staff add karein!"); return; }
-
-            btn.innerText = "Data Save Ho Raha Hai... ⏳";
-            btn.style.background = "#7f8c8d";
-            btn.disabled = true;
-
-            let photoUrl = "";
-            const photoFile = document.getElementById('tyrePhoto').files[0];
-            
-            if(photoFile) {
-                try {
-                    btn.innerText = "Photo Uploading... ⏳";
-                    const storageRef = storage.ref('tyre_photos/' + Date.now() + '_' + photoFile.name);
-                    await storageRef.put(photoFile);
-                    photoUrl = await storageRef.getDownloadURL();
-                } catch(err) { console.error(err); }
-            }
-
-            let finalName = document.getElementById('customerName').value.trim() || "N/A";
-            let finalMobile = document.getElementById('mobileNo').value.trim() || "N/A";
-            let finalVehicle = document.getElementById('vehicleNo').value.toUpperCase().replace(/\s+/g, '') || "N/A";
-
-            const data = {
-                customerName: finalName,
-                mobileNo: finalMobile,
-                vehicleNo: finalVehicle,
-                workType: workTypeVal,
-                staffName: staffSelected,
-                amount: Number(document.getElementById('amount').value),
-                photoUrl: photoUrl,
-                dateIso: getLocalDateISO(),
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            };
-
-            db.collection("ShriGaneshRecords").add(data).then(() => {
-                alert("✅ Entry Successfully Save Ho Gayi!");
-                document.getElementById('workForm').reset();
-                document.getElementById('loyaltyMsg').innerHTML = ""; 
-                document.getElementById('customerDetailsWrapper').style.display = 'block';
-                document.getElementById('staffNameSelect').disabled = false;
-                calculateTopStaff(); 
-            }).finally(() => {
-                btn.innerText = "Kaam Save Karein ☁️";
-                btn.style.background = "#d32f2f";
-                btn.disabled = false;
-            });
-        });
-
-        // -------------------------
-        // LIVE FEED
-        // -------------------------
-        db.collection("ShriGaneshRecords").where("dateIso", "==", getLocalDateISO())
-        .onSnapshot(snapshot => {
-            const feed = document.getElementById('liveFeed');
-            feed.innerHTML = "";
-            if (snapshot.empty) { feed.innerHTML = "<p style='color:#7f8c8d; text-align:center;'>Aaj abhi tak koi entry nahi hui.</p>"; return; }
-            
-            snapshot.forEach(doc => {
-                const d = doc.data();
-                feed.innerHTML += `
-                    <div class="record-card">
-                        <h4>🚘 ${d.vehicleNo} - ${d.workType}</h4>
-                        <p>👤 ${d.customerName} | 📱 ${d.mobileNo}</p>
-                        <p>🛠️ ${d.staffName}</p>
-                        <p class="price" style="margin-top:8px;">💰 ₹${d.amount}</p>
-                    </div>`;
-            });
-        });
-
-        // -------------------------
-        // SEARCH
-        // -------------------------
-        function searchData() {
-            let val = document.getElementById('searchValue').value.toUpperCase().replace(/\s+/g, '');
-            const resDiv = document.getElementById('searchResults');
-            if(!val) return;
-            resDiv.innerHTML = "Dhoondh raha hai... ⏳";
-
-            db.collection("ShriGaneshRecords").get().then(snapshot => {
-                resDiv.innerHTML = "";
-                let found = false;
-                snapshot.forEach(doc => {
-                    const d = doc.data();
-                    if(d.vehicleNo.includes(val) || d.mobileNo.includes(val)) {
-                        found = true;
-                        resDiv.innerHTML += `
-                            <div class="record-card">
-                                <h4>🚘 ${d.vehicleNo} - ${d.workType} <span style="font-size:12px;color:#888;font-weight:normal;">${d.dateIso}</span></h4>
-                                <p>👤 ${d.customerName} | 📱 ${d.mobileNo}</p>
-                                <p>🛠️ ${d.staffName}</p>
-                                <p class="price">💰 ₹${d.amount}</p>
-                            </div>`;
-                    }
-                });
-                if(!found) resDiv.innerHTML = "<p style='color:#e74c3c;'>Koi record nahi mila.</p>";
-            });
-        }
-
-        // -------------------------
-        // ADMIN HISAAB
-        // -------------------------
-        let exportDataList = [];
-
-        function generateReport() {
-            const sDate = document.getElementById('startDate').value;
-            const eDate = document.getElementById('endDate').value;
-            const staffFilter = document.getElementById('reportStaffSelect').value; 
-            const resDiv = document.getElementById('reportResults');
-            
-            if(!sDate || !eDate) { alert("Please date select karein!"); return; }
-            resDiv.innerHTML = "Calculating... ⏳";
-
-            db.collection("ShriGaneshRecords").where("dateIso", ">=", sDate).where("dateIso", "<=", eDate)
-              .get().then(snapshot => {
-                let totalKamai = 0;
-                let totalKaam = 0;
-                let recordsHtml = "<hr><h4>Is Date Ke Records:</h4>";
-                exportDataList = []; 
-                
-                snapshot.forEach(doc => {
-                    const d = doc.data();
-                    if(staffFilter === "All" || d.staffName === staffFilter) {
-                        totalKamai += d.amount;
-                        totalKaam++;
-                        exportDataList.push(d);
-                        
-                        // New Admin WhatsApp Button with Greeting and Payment Confirmed logic
-                        recordsHtml += `
-                            <div class="record-card" style="padding:15px; font-size:14px;">
-                                <b>${d.vehicleNo}</b> (₹${d.amount}) - ${d.workType}<br>
-                                <span style="color:#7f8c8d;">👤 ${d.customerName} | 🛠️ ${d.staffName} [${d.dateIso}]</span><br>
-                                
-                                <div style="margin-top:10px; display:flex; justify-content:space-between; align-items:center;">
-                                    <button class="btn-whatsapp" style="margin:0;" onclick="sendAdminWhatsAppMsg('${d.mobileNo}', '${d.customerName}', '${d.workType}', '${d.amount}', '${d.vehicleNo}')">
-                                        💬 Send Receipt
-                                    </button>
-                                    <button class="btn-delete" style="margin:0;" onclick="deleteRecord('${doc.id}')">Delete</button>
-                                </div>
-                            </div>`;
-                    }
-                });
-
-                if(totalKaam === 0) { resDiv.innerHTML = "<p>Koi record nahi mila.</p>"; return; }
-
-                resDiv.innerHTML = `
-                    <div style="background:#f0fbf4; border:1px solid #27ae60; padding:18px; border-radius:10px; box-shadow:0 4px 10px rgba(39,174,96,0.1);">
-                        <h3 style="margin:0 0 10px 0; color:#2c3e50;">📊 ${staffFilter} Ki Kamai</h3>
-                        <p style="margin:5px 0; font-size:16px;">Total Gaadiyan: <b>${totalKaam}</b></p>
-                        <hr style="border-top:1px solid #dcdde1; margin:10px 0;">
-                        <p style="margin:5px 0; font-size:26px; color:#27ae60; font-weight:900;">₹ ${totalKamai}</p>
-                    </div>
-                    ${recordsHtml}
-                `;
-            });
-        }
-
-        function deleteRecord(id) {
-            if(confirm("⚠️ Kya aap ise permanent delete karna chahte hain?")) {
-                db.collection("ShriGaneshRecords").doc(id).delete().then(() => {
-                    generateReport();
-                    calculateTopStaff();
-                });
+        function markAttendance() {
+            const staffName = document.getElementById("staffNameSelect").value;
+            if (staffName) {
+                const d = new Date();
+                let hours = d.getHours() % 12 || 12;
+                let minutes = d.getMinutes();
+                const msg = `${staffName} जी, मैं दुकान पर पहुँच गया हूँ ${hours} बज कर ${minutes} मिनट पर।`;
+                const encodedMsg = encodeURIComponent(msg);
+                window.open(`https://wa.me/919068749268?text=${encodedMsg}`, "_blank");
+                window.open(`https://wa.me/919896249268?text=${encodedMsg}`, "_blank");
             }
         }
 
-        // -------------------------
-        // EXPORT TO EXCEL (CSV)
-        // -------------------------
-        function exportToCSV() {
-            if(exportDataList.length === 0) {
-                alert("Pehle 'Date-wise Hisaab' section se date daal kar Hisaab nikalein, phir Export karein!");
+        // 10 Number type hote hi check karega
+        function checkMobileInstantly() {
+            const mobile = document.getElementById("mobileNo").value.trim();
+            if (mobile.length === 10) {
+                checkCustomerHistory();
+            } else if (mobile.length < 10 && !document.getElementById("vehicleNo").value.trim()) {
+                document.getElementById("customerHistory").style.display = "none";
+            }
+        }
+
+        async function checkCustomerHistory() {
+            const mobile = document.getElementById("mobileNo").value.trim();
+            const vehicle = document.getElementById("vehicleNo").value.trim().toUpperCase();
+            const historyBox = document.getElementById("customerHistory");
+
+            if (!mobile && !vehicle) {
+                historyBox.style.display = "none";
                 return;
             }
-            
-            let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "Date,Vehicle No,Customer Name,Mobile No,Work Type,Staff Name,Amount (Rs)\n";
 
-            exportDataList.forEach(function(rowArray) {
-                let row = `${rowArray.dateIso},${rowArray.vehicleNo},${rowArray.customerName},${rowArray.mobileNo},${rowArray.workType},${rowArray.staffName},${rowArray.amount}`;
-                csvContent += row + "\r\n";
+            let query = db.collection("Sales");
+            if (mobile && mobile.length === 10) {
+                query = query.where("mobileNo", "==", mobile);
+            } else if (vehicle) {
+                query = query.where("vehicleNo", "==", vehicle);
+            } else {
+                return; // 10 se kam no ho toh kuch na kare jab tak gaadi no na ho
+            }
+
+            try {
+                // Remove orderBy here to avoid Missing Index Error
+                const snap = await query.get();
+                historyBox.style.display = "block";
+
+                if (snap.empty) {
+                    historyBox.className = "customer-history history-new";
+                    historyBox.innerHTML = `
+                        <p style='color:#e67e22; font-weight:bold; font-size: 1.1rem;'>🌟 यह बिल्कुल नया कस्टमर है!</p>
+                        <p style="font-size:0.9rem; color:#666; margin-top:5px;">अच्छे से बात करें और बढ़िया सर्विस दें।</p>
+                    `;
+                } else {
+                    let records = [];
+                    snap.forEach(doc => records.push(doc.data()));
+                    
+                    // Code mein sort kar rahe hain taki latest entry upar rahe
+                    records.sort((a, b) => {
+                        let tA = a.timestamp ? a.timestamp.toMillis() : 0;
+                        let tB = b.timestamp ? b.timestamp.toMillis() : 0;
+                        return tB - tA;
+                    });
+
+                    let count = records.length;
+                    const last = records[0]; // Latest record
+                    
+                    if (last.customerName && last.customerName !== "N/A") {
+                        document.getElementById("customerName").value = last.customerName;
+                    }
+
+                    historyBox.className = "customer-history history-success";
+                    historyBox.innerHTML = `
+                        <p style='color:#27ae60; font-weight:bold; font-size: 1.1rem;'>✅ यह कस्टमर पहले आ चुका है!</p>
+                        <hr style="margin: 8px 0; border: 0.5px solid #bdc3c7;">
+                        <p>कुल विज़िट: <strong style="color:#2c3e50">${count} बार</strong></p>
+                        <p>पिछली बार: <strong style="color:#2c3e50">${last.date} (${last.exactTime || ''})</strong> को आया था।</p>
+                        <p>पिछला काम: <strong style="color:#2c3e50">${last.itemName} (₹${last.amount})</strong></p>
+                    `;
+                }
+            } catch (e) {
+                console.error("Error fetching history:", e);
+            }
+        }
+
+        function loadItems() {
+            db.collection("Inventory").onSnapshot(snap => {
+                let selectHtml = "<option value=''>Select Item</option>";
+                let stockHtml = "";
+                let addStockSelect = "<option value=''>Select Item</option>";
+                snap.forEach(doc => {
+                    const item = doc.data();
+                    selectHtml += `<option value="${doc.id}" data-price="${item.price}" data-stock="${item.stock}" data-threshold="${item.threshold || 5}">${item.name} - ₹${item.price} (Stock: ${item.stock})</option>`;
+                    addStockSelect += `<option value="${doc.id}">${item.name}</option>`;
+                    const isLow = item.stock < (item.threshold || 5);
+                    stockHtml += `
+                        <div class="record-card" style="${isLow ? 'border-left-color:#e74c3c; background:#fff5f5;' : ''}">
+                            <h4>${item.name}</h4>
+                            <p>Price: ₹${item.price}</p>
+                            <p>Stock: <strong style="${isLow ? 'color:#e74c3c;' : ''}">${item.stock}</strong> (Threshold: ${item.threshold || 5})</p>
+                        </div>`;
+                });
+                document.getElementById("itemSelect").innerHTML = selectHtml || "<option>No items</option>";
+                document.getElementById("stockItemSelect").innerHTML = addStockSelect;
+                document.getElementById("stockList").innerHTML = stockHtml || "<p style='color:#95a5a6'>No items in stock</p>";
+            });
+        }
+        loadItems();
+
+        document.getElementById("itemForm").addEventListener("submit", e => {
+            e.preventDefault();
+            const name = document.getElementById("itemName").value.trim();
+            const price = Number(document.getElementById("itemPrice").value);
+            const stock = Number(document.getElementById("initialStock").value);
+            const threshold = Number(document.getElementById("itemThreshold").value) || 5;
+            if (name && price > 0) {
+                db.collection("Inventory").add({ name, price, stock, threshold }).then(() => {
+                    document.getElementById("itemForm").reset();
+                    alert("Item added!");
+                    loadLowStockAlert();
+                });
+            }
+        });
+
+        function updateStock() {
+            const id = document.getElementById("stockItemSelect").value;
+            const qty = Number(document.getElementById("addStockQty").value);
+            if (id && !isNaN(qty)) {
+                db.collection("Inventory").doc(id).get().then(doc => {
+                    if (doc.exists) {
+                        const newStock = doc.data().stock + qty;
+                        if (newStock >= 0) {
+                            db.collection("Inventory").doc(id).update({ stock: newStock }).then(() => {
+                                alert("Stock updated!");
+                                document.getElementById("addStockQty").value = "";
+                                loadLowStockAlert();
+                            });
+                        } else alert("Stock cannot be negative!");
+                    }
+                });
+            }
+        }
+
+        document.getElementById("workForm").addEventListener("submit", async e => {
+            e.preventDefault();
+            const btn = document.getElementById("saveBtn");
+            btn.disabled = true;
+            btn.textContent = "Saving...";
+
+            try {
+                const itemSelect = document.getElementById("itemSelect");
+                const itemId = itemSelect.value;
+                const qty = Number(document.getElementById("quantity").value);
+                const selectedOption = itemSelect.options[itemSelect.selectedIndex];
+                const currentStock = Number(selectedOption.dataset.stock);
+
+                if (qty > currentStock) {
+                    alert("Not enough stock!");
+                    btn.disabled = false;
+                    btn.textContent = "Save Entry";
+                    return;
+                }
+
+                let photoUrl = "";
+                const file = document.getElementById("tyrePhoto").files[0];
+                if (file) {
+                    const ref = storage.ref("photos/" + Date.now() + "_" + file.name);
+                    await ref.put(file);
+                    photoUrl = await ref.getDownloadURL();
+                }
+
+                const data = {
+                    itemId,
+                    itemName: selectedOption.text.split(" - ")[0],
+                    quantity: qty,
+                    customerName: document.getElementById("customerName").value.trim() || "N/A",
+                    mobileNo: document.getElementById("mobileNo").value.trim() || "N/A",
+                    vehicleNo: document.getElementById("vehicleNo").value.trim().toUpperCase() || "N/A",
+                    staffName: "Raghav",
+                    amount: Number(document.getElementById("amount").value),
+                    paymentMethod: document.getElementById("paymentMethod").value,
+                    photoUrl,
+                    date: getToday(),
+                    exactTime: getExactTime(),
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                };
+
+                await db.collection("Sales").add(data);
+                await db.collection("Inventory").doc(itemId).update({ stock: currentStock - qty });
+
+                if (data.mobileNo !== "N/A" && data.mobileNo.length >= 10) {
+                    const msg = `नमस्ते ${data.customerName} जी!\n\nTyreXpert से आपका काम पूरा हो गया।\nVehicle: ${data.vehicleNo}\nKaam: ${data.itemName} × ${data.quantity}\nTotal: ₹${data.amount} (${data.paymentMethod})\n\nधन्यवाद!`;
+                    window.open(`https://wa.me/91${data.mobileNo}?text=${encodeURIComponent(msg)}`, "_blank");
+                }
+
+                alert("Entry saved successfully!");
+                document.getElementById("workForm").reset();
+                document.getElementById("customerHistory").style.display = "none";
+                loadPersonalizedMessage();
+                loadLowStockAlert();
+            } catch (err) {
+                console.error(err);
+                alert("Error saving entry!");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "Save Entry";
+            }
+        });
+
+        // FIXED: Live Feed sorting done in client side to prevent Index Error
+        db.collection("Sales").where("date", "==", getToday())
+            .onSnapshot(snap => {
+                let records = [];
+                snap.forEach(doc => records.push({ id: doc.id, ...doc.data() }));
+                
+                // Nayi entry sabse upar laane ke liye sort
+                records.sort((a, b) => {
+                    let tA = a.timestamp ? a.timestamp.toMillis() : 0;
+                    let tB = b.timestamp ? b.timestamp.toMillis() : 0;
+                    return tB - tA;
+                });
+
+                let html = "";
+                if (records.length === 0) {
+                    html = "<p style='text-align:center; color:#95a5a6; padding:1rem 0;'>आज अभी तक कोई एंट्री नहीं हुई है</p>";
+                } else {
+                    records.forEach(d => {
+                        const timeStr = d.exactTime ? `🕒 ${d.exactTime}` : "";
+                        html += `
+                            <div class="record-card">
+                                <h4>${d.vehicleNo || "N/A"} • ${d.itemName}</h4>
+                                <p>Customer: ${d.customerName} | ${d.mobileNo}</p>
+                                <p>Staff: ${d.staffName} • ${d.paymentMethod} <span style="float:right; color:#7f8c8d; font-size:0.85rem;">${timeStr}</span></p>
+                                <p class="price">₹${d.amount}  (Qty: ${d.quantity})</p>
+                            </div>`;
+                    });
+                }
+                document.getElementById("liveFeed").innerHTML = html;
             });
 
-            var encodedUri = encodeURI(csvContent);
-            var link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "Shri_Ganesh_Tyres_Khata.csv");
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link); 
+        function searchData() {
+            const val = document.getElementById("searchValue").value.trim().toUpperCase();
+            if (!val) return;
+            const res = document.getElementById("searchResults");
+            res.innerHTML = "<p style='text-align:center; padding:2rem 0;'>Searching...</p>";
+            db.collection("Sales").get().then(snap => {
+                let html = "";
+                let found = false;
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    if (d.vehicleNo.toUpperCase().includes(val) || d.mobileNo.includes(val)) {
+                        found = true;
+                        html += `
+                            <div class="record-card">
+                                <h4>${d.vehicleNo} • ${d.itemName} (${d.date} ${d.exactTime || ''})</h4>
+                                <p>${d.customerName} | ${d.mobileNo}</p>
+                                <p>Staff: ${d.staffName}</p>
+                                <p class="price">₹${d.amount}</p>
+                            </div>`;
+                    }
+                });
+                res.innerHTML = found ? html : "<p style='color:#e74c3c; text-align:center;'>No records found</p>";
+            });
+        }
+
+        function showNotification() { alert("New updates & alerts list feature coming soon!"); }
+        function changeAppPin() {
+            const pin = document.getElementById("newAppPin").value.trim();
+            if (pin.length >= 4) {
+                db.collection("ShopSettings").doc("AppSecurity").update({ pin }).then(() => {
+                    alert("PIN updated!");
+                    document.getElementById("newAppPin").value = "";
+                });
+            }
+        }
+        function exportToCSV() { alert("CSV export feature will be active soon."); }
+        function generateReport() {
+            const start = document.getElementById("startDate").value;
+            const end = document.getElementById("endDate").value;
+            if (!start || !end) return alert("Dates select karen!");
+            db.collection("Sales").where("date", ">=", start).where("date", "<=", end).get().then(snap => {
+                let html = "", total = 0;
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    total += d.amount;
+                    html += `
+                        <div class="record-card">
+                            <h4>${d.vehicleNo} • ${d.itemName} (${d.date} ${d.exactTime || ''})</h4>
+                            <p>${d.customerName} | ${d.mobileNo}</p>
+                            <p class="price">₹${d.amount}</p>
+                        </div>`;
+                });
+                document.getElementById("reportResults").innerHTML = html + `<p class="price" style="text-align:center; font-size: 1.5rem;">Total: ₹${total}</p>`;
+            });
         }
     </script>
 </body>
