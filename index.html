@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>TyreXpert - Pro Manager</title>
     <style>
-        /* CSS WAHI SAME HAI JO PEHLE THA */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f7fa; color: #2c3e50; min-height: 100vh; padding-bottom: 80px; }
         .header { background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%); color: #000000; padding: 1.5rem 1rem; text-align: center; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); position: relative; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; }
@@ -40,8 +39,6 @@
         .record-card h4 { margin: 0 0 0.8rem; font-size: 1.15rem; color: #2c3e50; }
         .record-card p { margin: 0.4rem 0; color: #555; font-size: 0.95rem; }
         .price { font-size: 1.2rem; font-weight: bold; color: #27ae60; margin-top: 0.6rem !important; }
-        
-        /* DELETE BUTTON STYLE */
         .btn-delete { background: #c0392b; width: auto; padding: 0.4rem 0.8rem; font-size: 0.85rem; margin-top: 0.5rem; border-radius: 6px; position: absolute; bottom: 1.2rem; right: 1.2rem; }
 
         #lockScreen { position: fixed; inset: 0; background: linear-gradient(135deg, #2c3e50, #34495e); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; }
@@ -70,10 +67,7 @@
     </div>
 
     <h2 id="lowStockAlert"></h2>
-
-    <div id="idleTimerAlert">
-        <span id="idleTimeText">Loading Tracker...</span>
-    </div>
+    <div id="idleTimerAlert"><span id="idleTimeText">Loading Tracker...</span></div>
 
     <div class="personalized-message">
         <h3>📈 आपकी सेल्स</h3>
@@ -112,9 +106,7 @@
                 </div>
 
                 <label>Staff</label>
-                <select id="staffNameSelect" required>
-                    <option value="Raghav">Raghav</option>
-                </select>
+                <select id="staffNameSelect" required><option value="Raghav">Raghav</option></select>
 
                 <label>Amount (₹)</label>
                 <input type="number" id="amount" required placeholder="Total amount">
@@ -194,6 +186,18 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <script>
+        // ==========================================
+        // TELEGRAM BOT SETUP (Ayush Anand)
+        // ==========================================
+        const TELEGRAM_BOT_TOKEN = "8200090038:AAEOufwLJ6niOsppIuoWE1MA8L7a4jhQiH0"; 
+        const TELEGRAM_CHAT_ID = "5172792830";     
+
+        function sendTelegramAlert(message) {
+            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${encodeURIComponent(message)}&parse_mode=HTML`;
+            fetch(url).then(res => console.log("Telegram Bhej Diya!")).catch(err => console.error("Telegram Failed:", err));
+        }
+
+        // FIREBASE SETUP
         const firebaseConfig = {
             apiKey: "AIzaSyApY09CHspm5TVxXTVvjnfB6lzwQ7nqltE",
             authDomain: "staff-managemant.firebaseapp.com",
@@ -205,19 +209,16 @@
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // VARIABLES
         let globalAppPin = "1234";
         let lastEntryTimeMillis = null; 
         let isGlobalLowStock = false;
         let isInitialLoad = true;
 
-        // SOUND SETUP (Google's generic notification sounds)
+        // SOUND SETUP 
         const normalSound = new Audio('https://actions.google.com/sounds/v1/cartoon/clank.ogg'); 
         const loudAlarmSound = new Audio('https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg');
-        normalSound.volume = 0.8;
-        loudAlarmSound.volume = 1.0;
+        normalSound.volume = 0.8; loudAlarmSound.volume = 1.0;
 
-        // REQUEST BROWSER NOTIFICATION PERMISSION
         function requestNotificationPermission() {
             if ("Notification" in window && Notification.permission !== "granted") {
                 Notification.requestPermission();
@@ -230,28 +231,25 @@
             }
         }
 
-        // PLAY SOUND FUNCTIONS
         function playNormalSound() {
-            normalSound.play().catch(e => console.log("Audio play blocked by browser:", e));
-            setTimeout(() => { normalSound.pause(); normalSound.currentTime = 0; }, 5000); // 5 Seconds
+            normalSound.play().catch(e => console.log(e));
+            setTimeout(() => { normalSound.pause(); normalSound.currentTime = 0; }, 5000); 
         }
 
         function playLoudAlarm() {
-            loudAlarmSound.play().catch(e => console.log("Audio play blocked by browser:", e));
-            setTimeout(() => { loudAlarmSound.pause(); loudAlarmSound.currentTime = 0; }, 10000); // 10 Seconds
+            loudAlarmSound.play().catch(e => console.log(e));
+            setTimeout(() => { loudAlarmSound.pause(); loudAlarmSound.currentTime = 0; }, 10000); 
         }
 
         db.collection("ShopSettings").doc("AppSecurity").onSnapshot(doc => {
             if (doc.exists) globalAppPin = doc.data().pin || "1234";
         });
 
-        // APP UNLOCK & INIT
         function unlockApp() {
             const pin = document.getElementById("appPinInput").value.trim();
             if (pin === globalAppPin) {
                 document.getElementById("lockScreen").style.display = "none";
-                requestNotificationPermission(); // Mangega notification permission
-                // Dummy play to bypass Chrome's autoplay policy
+                requestNotificationPermission(); 
                 normalSound.play().then(() => { normalSound.pause(); }).catch(e=>{});
                 loudAlarmSound.play().then(() => { loudAlarmSound.pause(); }).catch(e=>{});
                 
@@ -281,7 +279,6 @@
             return `${hours}:${minutes} ${ampm}`;
         }
 
-        // IDLE TIMER (Runs every 1 minute for text update)
         function updateIdleTimer() {
             const alertEl = document.getElementById("idleTimerAlert");
             const textEl = document.getElementById("idleTimeText");
@@ -311,22 +308,29 @@
         }
         setInterval(updateIdleTimer, 60000);
 
-        // NAYA FEATURE: 5-MIN CRITICAL ALARM TRIGGER
+        // 5-MIN CRITICAL ALARM & TELEGRAM ALERT TRIGGER
         setInterval(() => {
             let shouldAlarm = false;
-            let reason = "";
+            let tgMessage = "";
 
             if (lastEntryTimeMillis) {
                 const diffMins = Math.floor((Date.now() - lastEntryTimeMillis) / 60000);
-                if (diffMins >= 10) { shouldAlarm = true; reason = `दुकान में ${diffMins} मिनट से कोई एंट्री नहीं हुई है!`; }
+                if (diffMins >= 10) { 
+                    shouldAlarm = true; 
+                    tgMessage += `⏰ <b>Idle Alert:</b>\nदुकान में ${diffMins} मिनट से कोई एंट्री नहीं हुई है!\n\n`; 
+                }
             }
-            if (isGlobalLowStock) { shouldAlarm = true; reason += " कुछ सामान का स्टॉक खत्म होने वाला है!"; }
+            if (isGlobalLowStock) { 
+                shouldAlarm = true; 
+                tgMessage += `⚠️ <b>RED ALERT (Stock):</b>\nकुछ सामान का स्टॉक खत्म होने वाला है!`; 
+            }
 
             if (shouldAlarm) {
                 playLoudAlarm();
-                pushPopupNotification("🚨 ALERT TyreXpert", reason);
+                pushPopupNotification("🚨 ALERT TyreXpert", "दुकान में काफी देर से काम नहीं हुआ या स्टॉक कम है!");
+                sendTelegramAlert(tgMessage);
             }
-        }, 300000); // 300,000 ms = 5 Minutes
+        }, 300000); 
 
         async function loadLowStockAlert() {
             try {
@@ -361,12 +365,20 @@
             } catch (e) { console.error(e); }
         }
 
+        // ATTENDANCE TELEGRAM PAR (WhatsApp ki jagah)
         function markAttendance() {
             const staffName = document.getElementById("staffNameSelect").value;
             if (staffName) {
-                const d = new Date(); let hours = d.getHours() % 12 || 12; let minutes = d.getMinutes();
-                const msg = `${staffName} जी, मैं दुकान पर पहुँच गया हूँ ${hours} बज कर ${minutes} मिनट पर।`;
-                window.open(`https://wa.me/919068749268?text=${encodeURIComponent(msg)}`, "_blank");
+                const d = new Date(); 
+                let hours = d.getHours(); let ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12 || 12; 
+                let minutes = d.getMinutes().toString().padStart(2, '0');
+                const timeStr = `${hours}:${minutes} ${ampm}`;
+                
+                const msg = `🟢 <b>अटेंडेंस (TyreXpert)</b>\n\n${staffName} जी दुकान पर पहुँच गए हैं।\nसमय: ${timeStr}`;
+                sendTelegramAlert(msg);
+                
+                alert("अटेंडेंस भेज दी गई है!");
             }
         }
 
@@ -444,37 +456,33 @@
                 
                 await db.collection("Sales").add(data); await db.collection("Inventory").doc(itemId).update({ stock: currentStock - qty });
                 
+                // TELEGRAM PAR MESSAGE BHEJNA 
+                const alertMsg = `🚨 <b>नई एंट्री (TyreXpert)</b>\n\n<b>गाड़ी/Mob:</b> ${data.vehicleNo !== "N/A" ? data.vehicleNo : data.mobileNo}\n<b>काम:</b> ${data.itemName} (Qty: ${data.quantity})\n<b>अमाउंट:</b> ₹${data.amount} (${data.paymentMethod})\n<b>स्टाफ:</b> ${data.staffName}\n<b>समय:</b> ${data.exactTime}`;
+                sendTelegramAlert(alertMsg);
+
                 alert("Entry saved successfully!"); document.getElementById("workForm").reset(); document.getElementById("customerHistory").style.display = "none"; loadPersonalizedMessage(); loadLowStockAlert();
             } catch (err) { console.error(err); alert("Error saving entry!"); } finally { btn.disabled = false; btn.textContent = "Save Entry"; }
         });
 
-        // NAYA FEATURE: DELETE ENTRY LOGIC (Admin Protected)
         window.deleteEntry = function(docId) {
             const pin = prompt("एंट्री डिलीट करने के लिए Admin PIN डालें:");
-            if (pin !== "308913") {
-                alert("गलत PIN! केवल ओनर (Admin) ही एंट्री डिलीट कर सकता है।");
-                return;
-            }
+            if (pin !== "308913") { alert("गलत PIN! केवल ओनर (Admin) ही एंट्री डिलीट कर सकता है।"); return; }
             if (confirm("क्या आप वाकई इस एंट्री को डिलीट करना चाहते हैं?")) {
-                db.collection("Sales").doc(docId).delete().then(() => {
-                    alert("एंट्री सफलतापूर्वक डिलीट हो गई!");
-                }).catch(e => alert("डिलीट करने में एरर: " + e));
+                db.collection("Sales").doc(docId).delete().then(() => { alert("एंट्री सफलतापूर्वक डिलीट हो गई!"); }).catch(e => alert("डिलीट करने में एरर: " + e));
             }
         };
 
-        // LIVE FEED & NEW ENTRY DETECTION
         db.collection("Sales").where("date", "==", getToday())
             .onSnapshot(snap => {
                 
-                // NAYA FEATURE: Detect New Entries and play sound/push notification
                 snap.docChanges().forEach(change => {
                     if (change.type === "added" && !isInitialLoad) {
                         const newD = change.doc.data();
-                        pushPopupNotification("🌟 नई एंट्री हुई है!", `${newD.staffName} ने ₹${newD.amount} का काम किया (${newD.itemName})`);
+                        pushPopupNotification("🌟 नई एंट्री हुई है!", `${newD.staffName} ने ₹${newD.amount} का काम किया`);
                         playNormalSound();
                     }
                 });
-                isInitialLoad = false; // Initial load khatam
+                isInitialLoad = false; 
 
                 let records = [];
                 snap.forEach(doc => records.push({ id: doc.id, ...doc.data() }));
@@ -493,7 +501,6 @@
                 } else {
                     records.forEach(d => {
                         const timeStr = d.exactTime ? `🕒 ${d.exactTime}` : "";
-                        // Added Delete Button Here
                         html += `
                         <div class="record-card">
                             <h4>${d.vehicleNo || "N/A"} • ${d.itemName}</h4>
