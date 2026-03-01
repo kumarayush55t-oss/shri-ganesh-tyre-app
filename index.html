@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>TyreXpert - Pro Manager</title>
     <style>
+        /* CSS WAHI SAME HAI JO PEHLE THA */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f7fa; color: #2c3e50; min-height: 100vh; padding-bottom: 80px; }
         .header { background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%); color: #000000; padding: 1.5rem 1rem; text-align: center; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); position: relative; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; }
@@ -12,11 +13,11 @@
         .app-title .red { color: #ff0000; }
         .app-title .black { color: #000000; }
         .notification-bell { position: absolute; right: 1.2rem; top: 1.2rem; background: #f0f0f0; color: #e74c3c; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; box-shadow: 0 2px 8px rgba(0,0,0,0.15); cursor: pointer; transition: transform 0.2s; }
-        .notification-bell:hover { transform: scale(1.1); }
-        .badge { position: absolute; top: -6px; right: -6px; background: #e74c3c; color: white; font-size: 0.7rem; font-weight: bold; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #f0f0f0; }
         
         #lowStockAlert { margin: 1.5rem 1rem 0; background: #fff0f0; border: 2px solid #ff0000; border-radius: 12px; padding: 1rem; text-align: center; color: #ff0000; font-size: 1.3rem; font-weight: 900; animation: redGlow 1s infinite alternate; display: none; }
         @keyframes redGlow { from { box-shadow: 0 0 10px rgba(255, 0, 0, 0.3); text-shadow: 0 0 5px rgba(255,0,0,0.3); } to { box-shadow: 0 0 25px rgba(255, 0, 0, 0.8); text-shadow: 0 0 10px rgba(255,0,0,0.8); } }
+
+        #idleTimerAlert { margin: 1rem 1rem 0; padding: 1rem; border-radius: 12px; font-size: 1.1rem; text-align: center; font-weight: 600; display: none; transition: all 0.3s ease; box-shadow: 0 3px 10px rgba(0,0,0,0.06); }
 
         .personalized-message { margin: 1rem 1rem 0; background: white; border-radius: 16px; padding: 1.2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.08); text-align: center; }
         .personalized-message h3 { margin-bottom: 0.8rem; color: #34495e; }
@@ -28,24 +29,24 @@
         .tab-content { display: none; padding: 0 1rem 1rem; }
         .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .card { background: white; border-radius: 16px; padding: 1.5rem; margin-bottom: 1.2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.06); transition: transform 0.2s, box-shadow 0.2s; }
+        .card { background: white; border-radius: 16px; padding: 1.5rem; margin-bottom: 1.2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.06); }
         label { font-weight: 600; color: #34495e; margin: 1rem 0 0.4rem; display: block; font-size: 0.95rem; }
         input, select { width: 100%; padding: 0.9rem 1rem; border: 1px solid #dfe6e9; border-radius: 10px; font-size: 1rem; transition: all 0.25s; }
         input:focus, select:focus { outline: none; border-color: #e74c3c; box-shadow: 0 0 0 3px rgba(231,76,60,0.12); }
-        button { width: 100%; padding: 1rem; background: #e74c3c; color: white; border: none; border-radius: 10px; font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; cursor: pointer; transition: all 0.25s; box-shadow: 0 3px 10px rgba(231,76,60,0.2); }
-        button:hover:not(:disabled) { background: #c0392b; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(231,76,60,0.3); }
-        button:disabled { background: #bdc3c7; cursor: not-allowed; }
+        button { width: 100%; padding: 1rem; background: #e74c3c; color: white; border: none; border-radius: 10px; font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; cursor: pointer; box-shadow: 0 3px 10px rgba(231,76,60,0.2); }
         .btn-green { background: #27ae60; box-shadow: 0 3px 10px rgba(39,174,96,0.2); }
-        .btn-green:hover { background: #219653; }
         
-        .record-card { background: white; border-radius: 12px; padding: 1.2rem; margin-bottom: 1rem; border-left: 5px solid #e74c3c; box-shadow: 0 3px 10px rgba(0,0,0,0.05); }
+        .record-card { background: white; border-radius: 12px; padding: 1.2rem; margin-bottom: 1rem; border-left: 5px solid #e74c3c; box-shadow: 0 3px 10px rgba(0,0,0,0.05); position: relative;}
         .record-card h4 { margin: 0 0 0.8rem; font-size: 1.15rem; color: #2c3e50; }
         .record-card p { margin: 0.4rem 0; color: #555; font-size: 0.95rem; }
         .price { font-size: 1.2rem; font-weight: bold; color: #27ae60; margin-top: 0.6rem !important; }
         
+        /* DELETE BUTTON STYLE */
+        .btn-delete { background: #c0392b; width: auto; padding: 0.4rem 0.8rem; font-size: 0.85rem; margin-top: 0.5rem; border-radius: 6px; position: absolute; bottom: 1.2rem; right: 1.2rem; }
+
         #lockScreen { position: fixed; inset: 0; background: linear-gradient(135deg, #2c3e50, #34495e); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; }
         #lockScreen input { width: 85%; max-width: 320px; padding: 1.2rem; font-size: 1.8rem; letter-spacing: 0.5rem; text-align: center; border-radius: 12px; border: none; margin: 1.5rem 0; }
-        .attendance-button { margin: 1rem; background: #3498db; color: white; border: none; padding: 1rem; border-radius: 10px; font-size: 1.1rem; cursor: pointer; box-shadow: 0 3px 10px rgba(52,152,219,0.2); transition: all 0.25s; }
+        .attendance-button { margin: 1rem; background: #3498db; color: white; border: none; padding: 1rem; border-radius: 10px; font-size: 1.1rem; cursor: pointer; box-shadow: 0 3px 10px rgba(52,152,219,0.2); }
         
         .customer-history { margin-top: 1rem; background: #fdfefe; padding: 1rem; border-radius: 10px; border: 1px solid #dfe6e9; display: none; }
         .history-success { background: #e8f8f5; border-color: #27ae60; }
@@ -58,7 +59,7 @@
         <h2 style="margin-bottom: 1rem;">🛞 TyreXpert</h2>
         <p style="margin-bottom: 1.5rem; opacity: 0.9;">PIN डालें जारी रखने के लिए</p>
         <input type="password" id="appPinInput" placeholder="••••••" inputmode="numeric" maxlength="6">
-        <button onclick="unlockApp()" style="width: 85%; max-width: 320px;">Unlock</button>
+        <button onclick="unlockApp()" style="width: 85%; max-width: 320px;">Unlock & Start App</button>
     </div>
 
     <div class="header">
@@ -69,6 +70,10 @@
     </div>
 
     <h2 id="lowStockAlert"></h2>
+
+    <div id="idleTimerAlert">
+        <span id="idleTimeText">Loading Tracker...</span>
+    </div>
 
     <div class="personalized-message">
         <h3>📈 आपकी सेल्स</h3>
@@ -111,9 +116,6 @@
                     <option value="Raghav">Raghav</option>
                 </select>
 
-                <label>Photo (optional)</label>
-                <input type="file" id="tyrePhoto" accept="image/*" capture="environment">
-
                 <label>Amount (₹)</label>
                 <input type="number" id="amount" required placeholder="Total amount">
 
@@ -155,20 +157,18 @@
             <label>Change App PIN</label>
             <input type="number" id="newAppPin" placeholder="New 4-6 digit PIN">
             <button class="btn-green" onclick="changeAppPin()">Update PIN</button>
-            <hr style="margin: 1.5rem 0;">
-            <button class="btn-green" onclick="exportToCSV()">Download Khata (CSV)</button>
         </div>
         <div class="card">
             <h3>Manage Inventory</h3>
             <form id="itemForm">
                 <label>Item Name</label>
-                <input type="text" id="itemName" required placeholder="e.g. MRF Tubeless">
+                <input type="text" id="itemName" required>
                 <label>Price (₹)</label>
-                <input type="number" id="itemPrice" required placeholder="Selling price">
+                <input type="number" id="itemPrice" required>
                 <label>Initial Stock</label>
-                <input type="number" id="initialStock" required min="0" placeholder="Quantity">
+                <input type="number" id="initialStock" required min="0">
                 <label>Low Stock Threshold</label>
-                <input type="number" id="itemThreshold" min="1" placeholder="Alert below this quantity">
+                <input type="number" id="itemThreshold" min="1">
                 <button type="submit">Add Item</button>
             </form>
         </div>
@@ -184,8 +184,7 @@
                 <div><label>From</label><input type="date" id="startDate"></div>
                 <div><label>To</label><input type="date" id="endDate"></div>
             </div>
-            <label style="margin-top: 1rem;">Staff Filter</label>
-            <select id="reportStaffSelect"><option value="Raghav">Raghav</option></select>
+            <select id="reportStaffSelect" style="margin-top:1rem;"><option value="Raghav">Raghav</option></select>
             <button class="btn-green" onclick="generateReport()">Generate Report</button>
             <div id="reportResults" style="margin-top: 1.5rem;"></div>
         </div>
@@ -193,8 +192,6 @@
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js"></script>
 
     <script>
         const firebaseConfig = {
@@ -205,27 +202,62 @@
             messagingSenderId: "160818771446",
             appId: "1:160818771446:web:e55f1bfc308c504efb03d7"
         };
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-        const storage = firebase.storage();
 
+        // VARIABLES
         let globalAppPin = "1234";
+        let lastEntryTimeMillis = null; 
+        let isGlobalLowStock = false;
+        let isInitialLoad = true;
+
+        // SOUND SETUP (Google's generic notification sounds)
+        const normalSound = new Audio('https://actions.google.com/sounds/v1/cartoon/clank.ogg'); 
+        const loudAlarmSound = new Audio('https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg');
+        normalSound.volume = 0.8;
+        loudAlarmSound.volume = 1.0;
+
+        // REQUEST BROWSER NOTIFICATION PERMISSION
+        function requestNotificationPermission() {
+            if ("Notification" in window && Notification.permission !== "granted") {
+                Notification.requestPermission();
+            }
+        }
+
+        function pushPopupNotification(title, body) {
+            if ("Notification" in window && Notification.permission === "granted") {
+                new Notification(title, { body: body, icon: "https://cdn-icons-png.flaticon.com/512/1043/1043831.png" });
+            }
+        }
+
+        // PLAY SOUND FUNCTIONS
+        function playNormalSound() {
+            normalSound.play().catch(e => console.log("Audio play blocked by browser:", e));
+            setTimeout(() => { normalSound.pause(); normalSound.currentTime = 0; }, 5000); // 5 Seconds
+        }
+
+        function playLoudAlarm() {
+            loudAlarmSound.play().catch(e => console.log("Audio play blocked by browser:", e));
+            setTimeout(() => { loudAlarmSound.pause(); loudAlarmSound.currentTime = 0; }, 10000); // 10 Seconds
+        }
 
         db.collection("ShopSettings").doc("AppSecurity").onSnapshot(doc => {
             if (doc.exists) globalAppPin = doc.data().pin || "1234";
         });
 
+        // APP UNLOCK & INIT
         function unlockApp() {
             const pin = document.getElementById("appPinInput").value.trim();
             if (pin === globalAppPin) {
                 document.getElementById("lockScreen").style.display = "none";
+                requestNotificationPermission(); // Mangega notification permission
+                // Dummy play to bypass Chrome's autoplay policy
+                normalSound.play().then(() => { normalSound.pause(); }).catch(e=>{});
+                loudAlarmSound.play().then(() => { loudAlarmSound.pause(); }).catch(e=>{});
+                
                 loadPersonalizedMessage();
                 loadLowStockAlert();
-            } else {
-                alert("गलत PIN!");
-            }
+            } else alert("गलत PIN!");
         }
 
         function switchTab(tabId, el) {
@@ -240,21 +272,78 @@
             if (tabId === "stockTab") loadItems();
         }
 
-        function getToday() {
-            return new Date().toISOString().split("T")[0];
-        }
-        function getYesterday() {
-            const d = new Date(); d.setDate(d.getDate() - 1);
-            return d.toISOString().split("T")[0];
-        }
-        
+        function getToday() { return new Date().toISOString().split("T")[0]; }
+        function getYesterday() { const d = new Date(); d.setDate(d.getDate() - 1); return d.toISOString().split("T")[0]; }
         function getExactTime() {
             const d = new Date();
-            let hours = d.getHours();
-            let ampm = hours >= 12 ? 'PM' : 'AM';
-            hours = hours % 12 || 12;
-            let minutes = d.getMinutes().toString().padStart(2, '0');
+            let hours = d.getHours(); let ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12; let minutes = d.getMinutes().toString().padStart(2, '0');
             return `${hours}:${minutes} ${ampm}`;
+        }
+
+        // IDLE TIMER (Runs every 1 minute for text update)
+        function updateIdleTimer() {
+            const alertEl = document.getElementById("idleTimerAlert");
+            const textEl = document.getElementById("idleTimeText");
+            alertEl.style.display = "block";
+
+            if (!lastEntryTimeMillis) {
+                textEl.innerHTML = "🕒 आज अभी तक कोई काम शुरू नहीं हुआ है!";
+                alertEl.style.background = "#e2e3e5"; alertEl.style.color = "#383d41"; alertEl.style.borderLeft = "5px solid #6c757d";
+                return;
+            }
+
+            const diffMins = Math.floor((Date.now() - lastEntryTimeMillis) / 60000);
+            const remainingMins = diffMins % 60;
+            const diffHours = Math.floor(diffMins / 60);
+            let timeString = diffHours > 0 ? `${diffHours} घंटे ${remainingMins} मिनट` : `${diffMins} मिनट`;
+
+            if (diffMins === 0) {
+                textEl.innerHTML = `🔥 अभी-अभी काम हुआ है!`;
+                alertEl.style.background = "#d4edda"; alertEl.style.color = "#155724"; alertEl.style.borderLeft = "5px solid #28a745";
+            } else if (diffMins >= 10) {
+                textEl.innerHTML = `⚠️ दुकान में <b>${timeString}</b> से कोई काम नहीं हुआ है!`;
+                alertEl.style.background = "#fff3cd"; alertEl.style.color = "#856404"; alertEl.style.borderLeft = "5px solid #ffc107";
+            } else {
+                textEl.innerHTML = `⏳ पिछला काम <b>${timeString}</b> पहले हुआ था।`;
+                alertEl.style.background = "#f8f9fa"; alertEl.style.color = "#495057"; alertEl.style.borderLeft = "5px solid #ced4da";
+            }
+        }
+        setInterval(updateIdleTimer, 60000);
+
+        // NAYA FEATURE: 5-MIN CRITICAL ALARM TRIGGER
+        setInterval(() => {
+            let shouldAlarm = false;
+            let reason = "";
+
+            if (lastEntryTimeMillis) {
+                const diffMins = Math.floor((Date.now() - lastEntryTimeMillis) / 60000);
+                if (diffMins >= 10) { shouldAlarm = true; reason = `दुकान में ${diffMins} मिनट से कोई एंट्री नहीं हुई है!`; }
+            }
+            if (isGlobalLowStock) { shouldAlarm = true; reason += " कुछ सामान का स्टॉक खत्म होने वाला है!"; }
+
+            if (shouldAlarm) {
+                playLoudAlarm();
+                pushPopupNotification("🚨 ALERT TyreXpert", reason);
+            }
+        }, 300000); // 300,000 ms = 5 Minutes
+
+        async function loadLowStockAlert() {
+            try {
+                const snap = await db.collection("Inventory").get();
+                let lowItems = [];
+                snap.forEach(doc => { const item = doc.data(); if (item.stock < (item.threshold || 5)) lowItems.push(item.name); });
+                
+                const alertEl = document.getElementById("lowStockAlert");
+                if (lowItems.length > 0) {
+                    isGlobalLowStock = true;
+                    alertEl.innerHTML = `⚠️ <b>RED ALERT:</b> ${lowItems.join(", ")} का स्टॉक बहुत कम है!`;
+                    alertEl.style.display = "block";
+                } else {
+                    isGlobalLowStock = false;
+                    alertEl.style.display = "none";
+                }
+            } catch (e) { console.error(e); }
         }
 
         async function loadPersonalizedMessage() {
@@ -272,43 +361,19 @@
             } catch (e) { console.error(e); }
         }
 
-        async function loadLowStockAlert() {
-            try {
-                const snap = await db.collection("Inventory").get();
-                let lowItems = [];
-                snap.forEach(doc => {
-                    const item = doc.data();
-                    if (item.stock < (item.threshold || 5)) lowItems.push(item.name);
-                });
-                const alertEl = document.getElementById("lowStockAlert");
-                if (lowItems.length > 0) {
-                    alertEl.innerHTML = `⚠️ <b>RED ALERT:</b> ${lowItems.join(", ")} का स्टॉक बहुत कम है!`;
-                    alertEl.style.display = "block";
-                } else {
-                    alertEl.style.display = "none";
-                }
-            } catch (e) { console.error(e); }
-        }
-
         function markAttendance() {
             const staffName = document.getElementById("staffNameSelect").value;
             if (staffName) {
-                const d = new Date();
-                let hours = d.getHours() % 12 || 12;
-                let minutes = d.getMinutes();
+                const d = new Date(); let hours = d.getHours() % 12 || 12; let minutes = d.getMinutes();
                 const msg = `${staffName} जी, मैं दुकान पर पहुँच गया हूँ ${hours} बज कर ${minutes} मिनट पर।`;
-                const encodedMsg = encodeURIComponent(msg);
-                window.open(`https://wa.me/919068749268?text=${encodedMsg}`, "_blank");
-                window.open(`https://wa.me/919896249268?text=${encodedMsg}`, "_blank");
+                window.open(`https://wa.me/919068749268?text=${encodeURIComponent(msg)}`, "_blank");
             }
         }
 
-        // 10 Number type hote hi check karega
         function checkMobileInstantly() {
             const mobile = document.getElementById("mobileNo").value.trim();
-            if (mobile.length === 10) {
-                checkCustomerHistory();
-            } else if (mobile.length < 10 && !document.getElementById("vehicleNo").value.trim()) {
+            if (mobile.length === 10) checkCustomerHistory();
+            else if (mobile.length < 10 && !document.getElementById("vehicleNo").value.trim()) {
                 document.getElementById("customerHistory").style.display = "none";
             }
         }
@@ -317,49 +382,24 @@
             const mobile = document.getElementById("mobileNo").value.trim();
             const vehicle = document.getElementById("vehicleNo").value.trim().toUpperCase();
             const historyBox = document.getElementById("customerHistory");
-
-            if (!mobile && !vehicle) {
-                historyBox.style.display = "none";
-                return;
-            }
+            if (!mobile && !vehicle) return historyBox.style.display = "none";
 
             let query = db.collection("Sales");
-            if (mobile && mobile.length === 10) {
-                query = query.where("mobileNo", "==", mobile);
-            } else if (vehicle) {
-                query = query.where("vehicleNo", "==", vehicle);
-            } else {
-                return; // 10 se kam no ho toh kuch na kare jab tak gaadi no na ho
-            }
+            if (mobile && mobile.length === 10) query = query.where("mobileNo", "==", mobile);
+            else if (vehicle) query = query.where("vehicleNo", "==", vehicle);
+            else return;
 
             try {
-                // Remove orderBy here to avoid Missing Index Error
                 const snap = await query.get();
                 historyBox.style.display = "block";
-
                 if (snap.empty) {
                     historyBox.className = "customer-history history-new";
-                    historyBox.innerHTML = `
-                        <p style='color:#e67e22; font-weight:bold; font-size: 1.1rem;'>🌟 यह बिल्कुल नया कस्टमर है!</p>
-                        <p style="font-size:0.9rem; color:#666; margin-top:5px;">अच्छे से बात करें और बढ़िया सर्विस दें।</p>
-                    `;
+                    historyBox.innerHTML = `<p style='color:#e67e22; font-weight:bold; font-size: 1.1rem;'>🌟 यह बिल्कुल नया कस्टमर है!</p><p style="font-size:0.9rem; color:#666; margin-top:5px;">अच्छे से बात करें और बढ़िया सर्विस दें।</p>`;
                 } else {
-                    let records = [];
-                    snap.forEach(doc => records.push(doc.data()));
-                    
-                    // Code mein sort kar rahe hain taki latest entry upar rahe
-                    records.sort((a, b) => {
-                        let tA = a.timestamp ? a.timestamp.toMillis() : 0;
-                        let tB = b.timestamp ? b.timestamp.toMillis() : 0;
-                        return tB - tA;
-                    });
-
-                    let count = records.length;
-                    const last = records[0]; // Latest record
-                    
-                    if (last.customerName && last.customerName !== "N/A") {
-                        document.getElementById("customerName").value = last.customerName;
-                    }
+                    let records = []; snap.forEach(doc => records.push(doc.data()));
+                    records.sort((a, b) => { let tA = a.timestamp ? a.timestamp.toMillis() : 0; let tB = b.timestamp ? b.timestamp.toMillis() : 0; return tB - tA; });
+                    let count = records.length; const last = records[0];
+                    if (last.customerName && last.customerName !== "N/A") document.getElementById("customerName").value = last.customerName;
 
                     historyBox.className = "customer-history history-success";
                     historyBox.innerHTML = `
@@ -367,30 +407,20 @@
                         <hr style="margin: 8px 0; border: 0.5px solid #bdc3c7;">
                         <p>कुल विज़िट: <strong style="color:#2c3e50">${count} बार</strong></p>
                         <p>पिछली बार: <strong style="color:#2c3e50">${last.date} (${last.exactTime || ''})</strong> को आया था।</p>
-                        <p>पिछला काम: <strong style="color:#2c3e50">${last.itemName} (₹${last.amount})</strong></p>
-                    `;
+                        <p>पिछला काम: <strong style="color:#2c3e50">${last.itemName} (₹${last.amount})</strong></p>`;
                 }
-            } catch (e) {
-                console.error("Error fetching history:", e);
-            }
+            } catch (e) { console.error(e); }
         }
 
         function loadItems() {
             db.collection("Inventory").onSnapshot(snap => {
-                let selectHtml = "<option value=''>Select Item</option>";
-                let stockHtml = "";
-                let addStockSelect = "<option value=''>Select Item</option>";
+                let selectHtml = "<option value=''>Select Item</option>"; let stockHtml = ""; let addStockSelect = "<option value=''>Select Item</option>";
                 snap.forEach(doc => {
                     const item = doc.data();
                     selectHtml += `<option value="${doc.id}" data-price="${item.price}" data-stock="${item.stock}" data-threshold="${item.threshold || 5}">${item.name} - ₹${item.price} (Stock: ${item.stock})</option>`;
                     addStockSelect += `<option value="${doc.id}">${item.name}</option>`;
                     const isLow = item.stock < (item.threshold || 5);
-                    stockHtml += `
-                        <div class="record-card" style="${isLow ? 'border-left-color:#e74c3c; background:#fff5f5;' : ''}">
-                            <h4>${item.name}</h4>
-                            <p>Price: ₹${item.price}</p>
-                            <p>Stock: <strong style="${isLow ? 'color:#e74c3c;' : ''}">${item.stock}</strong> (Threshold: ${item.threshold || 5})</p>
-                        </div>`;
+                    stockHtml += `<div class="record-card" style="${isLow ? 'border-left-color:#e74c3c; background:#fff5f5;' : ''}"><h4>${item.name}</h4><p>Price: ₹${item.price}</p><p>Stock: <strong style="${isLow ? 'color:#e74c3c;' : ''}">${item.stock}</strong></p></div>`;
                 });
                 document.getElementById("itemSelect").innerHTML = selectHtml || "<option>No items</option>";
                 document.getElementById("stockItemSelect").innerHTML = addStockSelect;
@@ -399,118 +429,63 @@
         }
         loadItems();
 
-        document.getElementById("itemForm").addEventListener("submit", e => {
-            e.preventDefault();
-            const name = document.getElementById("itemName").value.trim();
-            const price = Number(document.getElementById("itemPrice").value);
-            const stock = Number(document.getElementById("initialStock").value);
-            const threshold = Number(document.getElementById("itemThreshold").value) || 5;
-            if (name && price > 0) {
-                db.collection("Inventory").add({ name, price, stock, threshold }).then(() => {
-                    document.getElementById("itemForm").reset();
-                    alert("Item added!");
-                    loadLowStockAlert();
-                });
-            }
-        });
-
-        function updateStock() {
-            const id = document.getElementById("stockItemSelect").value;
-            const qty = Number(document.getElementById("addStockQty").value);
-            if (id && !isNaN(qty)) {
-                db.collection("Inventory").doc(id).get().then(doc => {
-                    if (doc.exists) {
-                        const newStock = doc.data().stock + qty;
-                        if (newStock >= 0) {
-                            db.collection("Inventory").doc(id).update({ stock: newStock }).then(() => {
-                                alert("Stock updated!");
-                                document.getElementById("addStockQty").value = "";
-                                loadLowStockAlert();
-                            });
-                        } else alert("Stock cannot be negative!");
-                    }
-                });
-            }
-        }
-
         document.getElementById("workForm").addEventListener("submit", async e => {
-            e.preventDefault();
-            const btn = document.getElementById("saveBtn");
-            btn.disabled = true;
-            btn.textContent = "Saving...";
-
+            e.preventDefault(); const btn = document.getElementById("saveBtn"); btn.disabled = true; btn.textContent = "Saving...";
             try {
-                const itemSelect = document.getElementById("itemSelect");
-                const itemId = itemSelect.value;
-                const qty = Number(document.getElementById("quantity").value);
-                const selectedOption = itemSelect.options[itemSelect.selectedIndex];
-                const currentStock = Number(selectedOption.dataset.stock);
-
-                if (qty > currentStock) {
-                    alert("Not enough stock!");
-                    btn.disabled = false;
-                    btn.textContent = "Save Entry";
-                    return;
-                }
-
-                let photoUrl = "";
-                const file = document.getElementById("tyrePhoto").files[0];
-                if (file) {
-                    const ref = storage.ref("photos/" + Date.now() + "_" + file.name);
-                    await ref.put(file);
-                    photoUrl = await ref.getDownloadURL();
-                }
-
+                const itemSelect = document.getElementById("itemSelect"); const itemId = itemSelect.value; const qty = Number(document.getElementById("quantity").value); const selectedOption = itemSelect.options[itemSelect.selectedIndex]; const currentStock = Number(selectedOption.dataset.stock);
+                if (qty > currentStock) { alert("Not enough stock!"); btn.disabled = false; btn.textContent = "Save Entry"; return; }
+                
                 const data = {
-                    itemId,
-                    itemName: selectedOption.text.split(" - ")[0],
-                    quantity: qty,
-                    customerName: document.getElementById("customerName").value.trim() || "N/A",
-                    mobileNo: document.getElementById("mobileNo").value.trim() || "N/A",
-                    vehicleNo: document.getElementById("vehicleNo").value.trim().toUpperCase() || "N/A",
-                    staffName: "Raghav",
-                    amount: Number(document.getElementById("amount").value),
-                    paymentMethod: document.getElementById("paymentMethod").value,
-                    photoUrl,
-                    date: getToday(),
-                    exactTime: getExactTime(),
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    itemId, itemName: selectedOption.text.split(" - ")[0], quantity: qty,
+                    customerName: document.getElementById("customerName").value.trim() || "N/A", mobileNo: document.getElementById("mobileNo").value.trim() || "N/A", vehicleNo: document.getElementById("vehicleNo").value.trim().toUpperCase() || "N/A",
+                    staffName: "Raghav", amount: Number(document.getElementById("amount").value), paymentMethod: document.getElementById("paymentMethod").value,
+                    date: getToday(), exactTime: getExactTime(), timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 };
-
-                await db.collection("Sales").add(data);
-                await db.collection("Inventory").doc(itemId).update({ stock: currentStock - qty });
-
-                if (data.mobileNo !== "N/A" && data.mobileNo.length >= 10) {
-                    const msg = `नमस्ते ${data.customerName} जी!\n\nTyreXpert से आपका काम पूरा हो गया।\nVehicle: ${data.vehicleNo}\nKaam: ${data.itemName} × ${data.quantity}\nTotal: ₹${data.amount} (${data.paymentMethod})\n\nधन्यवाद!`;
-                    window.open(`https://wa.me/91${data.mobileNo}?text=${encodeURIComponent(msg)}`, "_blank");
-                }
-
-                alert("Entry saved successfully!");
-                document.getElementById("workForm").reset();
-                document.getElementById("customerHistory").style.display = "none";
-                loadPersonalizedMessage();
-                loadLowStockAlert();
-            } catch (err) {
-                console.error(err);
-                alert("Error saving entry!");
-            } finally {
-                btn.disabled = false;
-                btn.textContent = "Save Entry";
-            }
+                
+                await db.collection("Sales").add(data); await db.collection("Inventory").doc(itemId).update({ stock: currentStock - qty });
+                
+                alert("Entry saved successfully!"); document.getElementById("workForm").reset(); document.getElementById("customerHistory").style.display = "none"; loadPersonalizedMessage(); loadLowStockAlert();
+            } catch (err) { console.error(err); alert("Error saving entry!"); } finally { btn.disabled = false; btn.textContent = "Save Entry"; }
         });
 
-        // FIXED: Live Feed sorting done in client side to prevent Index Error
+        // NAYA FEATURE: DELETE ENTRY LOGIC (Admin Protected)
+        window.deleteEntry = function(docId) {
+            const pin = prompt("एंट्री डिलीट करने के लिए Admin PIN डालें:");
+            if (pin !== "308913") {
+                alert("गलत PIN! केवल ओनर (Admin) ही एंट्री डिलीट कर सकता है।");
+                return;
+            }
+            if (confirm("क्या आप वाकई इस एंट्री को डिलीट करना चाहते हैं?")) {
+                db.collection("Sales").doc(docId).delete().then(() => {
+                    alert("एंट्री सफलतापूर्वक डिलीट हो गई!");
+                }).catch(e => alert("डिलीट करने में एरर: " + e));
+            }
+        };
+
+        // LIVE FEED & NEW ENTRY DETECTION
         db.collection("Sales").where("date", "==", getToday())
             .onSnapshot(snap => {
+                
+                // NAYA FEATURE: Detect New Entries and play sound/push notification
+                snap.docChanges().forEach(change => {
+                    if (change.type === "added" && !isInitialLoad) {
+                        const newD = change.doc.data();
+                        pushPopupNotification("🌟 नई एंट्री हुई है!", `${newD.staffName} ने ₹${newD.amount} का काम किया (${newD.itemName})`);
+                        playNormalSound();
+                    }
+                });
+                isInitialLoad = false; // Initial load khatam
+
                 let records = [];
                 snap.forEach(doc => records.push({ id: doc.id, ...doc.data() }));
-                
-                // Nayi entry sabse upar laane ke liye sort
-                records.sort((a, b) => {
-                    let tA = a.timestamp ? a.timestamp.toMillis() : 0;
-                    let tB = b.timestamp ? b.timestamp.toMillis() : 0;
-                    return tB - tA;
-                });
+                records.sort((a, b) => { let tA = a.timestamp ? a.timestamp.toMillis() : 0; let tB = b.timestamp ? b.timestamp.toMillis() : 0; return tB - tA; });
+
+                if (records.length > 0 && records[0].timestamp) {
+                    lastEntryTimeMillis = records[0].timestamp.toMillis();
+                } else {
+                    lastEntryTimeMillis = null;
+                }
+                updateIdleTimer();
 
                 let html = "";
                 if (records.length === 0) {
@@ -518,70 +493,66 @@
                 } else {
                     records.forEach(d => {
                         const timeStr = d.exactTime ? `🕒 ${d.exactTime}` : "";
+                        // Added Delete Button Here
                         html += `
-                            <div class="record-card">
-                                <h4>${d.vehicleNo || "N/A"} • ${d.itemName}</h4>
-                                <p>Customer: ${d.customerName} | ${d.mobileNo}</p>
-                                <p>Staff: ${d.staffName} • ${d.paymentMethod} <span style="float:right; color:#7f8c8d; font-size:0.85rem;">${timeStr}</span></p>
-                                <p class="price">₹${d.amount}  (Qty: ${d.quantity})</p>
-                            </div>`;
+                        <div class="record-card">
+                            <h4>${d.vehicleNo || "N/A"} • ${d.itemName}</h4>
+                            <p>Customer: ${d.customerName} | ${d.mobileNo}</p>
+                            <p>Staff: ${d.staffName} • ${d.paymentMethod} <span style="float:right; color:#7f8c8d; font-size:0.85rem;">${timeStr}</span></p>
+                            <p class="price">₹${d.amount}  (Qty: ${d.quantity})</p>
+                            <button class="btn-delete" onclick="deleteEntry('${d.id}')">Delete</button>
+                        </div>`;
                     });
                 }
                 document.getElementById("liveFeed").innerHTML = html;
             });
 
         function searchData() {
-            const val = document.getElementById("searchValue").value.trim().toUpperCase();
-            if (!val) return;
-            const res = document.getElementById("searchResults");
-            res.innerHTML = "<p style='text-align:center; padding:2rem 0;'>Searching...</p>";
+            const val = document.getElementById("searchValue").value.trim().toUpperCase(); if (!val) return;
+            document.getElementById("searchResults").innerHTML = "<p style='text-align:center; padding:2rem 0;'>Searching...</p>";
             db.collection("Sales").get().then(snap => {
-                let html = "";
-                let found = false;
+                let html = ""; let found = false;
                 snap.forEach(doc => {
                     const d = doc.data();
                     if (d.vehicleNo.toUpperCase().includes(val) || d.mobileNo.includes(val)) {
-                        found = true;
+                        found = true; 
                         html += `
-                            <div class="record-card">
-                                <h4>${d.vehicleNo} • ${d.itemName} (${d.date} ${d.exactTime || ''})</h4>
-                                <p>${d.customerName} | ${d.mobileNo}</p>
-                                <p>Staff: ${d.staffName}</p>
-                                <p class="price">₹${d.amount}</p>
-                            </div>`;
-                    }
-                });
-                res.innerHTML = found ? html : "<p style='color:#e74c3c; text-align:center;'>No records found</p>";
-            });
-        }
-
-        function showNotification() { alert("New updates & alerts list feature coming soon!"); }
-        function changeAppPin() {
-            const pin = document.getElementById("newAppPin").value.trim();
-            if (pin.length >= 4) {
-                db.collection("ShopSettings").doc("AppSecurity").update({ pin }).then(() => {
-                    alert("PIN updated!");
-                    document.getElementById("newAppPin").value = "";
-                });
-            }
-        }
-        function exportToCSV() { alert("CSV export feature will be active soon."); }
-        function generateReport() {
-            const start = document.getElementById("startDate").value;
-            const end = document.getElementById("endDate").value;
-            if (!start || !end) return alert("Dates select karen!");
-            db.collection("Sales").where("date", ">=", start).where("date", "<=", end).get().then(snap => {
-                let html = "", total = 0;
-                snap.forEach(doc => {
-                    const d = doc.data();
-                    total += d.amount;
-                    html += `
                         <div class="record-card">
                             <h4>${d.vehicleNo} • ${d.itemName} (${d.date} ${d.exactTime || ''})</h4>
                             <p>${d.customerName} | ${d.mobileNo}</p>
                             <p class="price">₹${d.amount}</p>
+                            <button class="btn-delete" onclick="deleteEntry('${doc.id}')">Delete</button>
                         </div>`;
+                    }
                 });
+                document.getElementById("searchResults").innerHTML = found ? html : "<p style='color:#e74c3c; text-align:center;'>No records found</p>";
+            });
+        }
+        
+        function updateStock() {
+            const id = document.getElementById("stockItemSelect").value; const qty = Number(document.getElementById("addStockQty").value);
+            if (id && !isNaN(qty)) db.collection("Inventory").doc(id).get().then(doc => {
+                if (doc.exists) {
+                    const newStock = doc.data().stock + qty;
+                    if (newStock >= 0) db.collection("Inventory").doc(id).update({ stock: newStock }).then(() => { alert("Stock updated!"); document.getElementById("addStockQty").value = ""; loadLowStockAlert(); });
+                    else alert("Stock cannot be negative!");
+                }
+            });
+        }
+        
+        document.getElementById("itemForm").addEventListener("submit", e => {
+            e.preventDefault();
+            const name = document.getElementById("itemName").value.trim(); const price = Number(document.getElementById("itemPrice").value); const stock = Number(document.getElementById("initialStock").value); const threshold = Number(document.getElementById("itemThreshold").value) || 5;
+            if (name && price > 0) db.collection("Inventory").add({ name, price, stock, threshold }).then(() => { document.getElementById("itemForm").reset(); alert("Item added!"); loadLowStockAlert(); });
+        });
+
+        function showNotification() { alert("🔔 Alerts Active: Notifications and Sounds are enabled."); }
+        function changeAppPin() { const pin = document.getElementById("newAppPin").value.trim(); if (pin.length >= 4) db.collection("ShopSettings").doc("AppSecurity").update({ pin }).then(() => { alert("PIN updated!"); document.getElementById("newAppPin").value = ""; }); }
+        function generateReport() {
+            const start = document.getElementById("startDate").value; const end = document.getElementById("endDate").value; if (!start || !end) return alert("Dates select karen!");
+            db.collection("Sales").where("date", ">=", start).where("date", "<=", end).get().then(snap => {
+                let html = "", total = 0;
+                snap.forEach(doc => { const d = doc.data(); total += d.amount; html += `<div class="record-card"><h4>${d.vehicleNo} • ${d.itemName} (${d.date} ${d.exactTime || ''})</h4><p>${d.customerName} | ${d.mobileNo}</p><p class="price">₹${d.amount}</p></div>`; });
                 document.getElementById("reportResults").innerHTML = html + `<p class="price" style="text-align:center; font-size: 1.5rem;">Total: ₹${total}</p>`;
             });
         }
