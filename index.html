@@ -74,7 +74,7 @@
         <p id="personalizedText">Loading...</p>
     </div>
 
-    <button class="attendance-button" onclick="markAttendance()">Attendance Mark Karein</button>
+    <button class="attendance-button" onclick="markAttendanceWithGPS()" id="attBtn">Attendance Mark Karein (GPS)</button>
 
     <div class="tabs">
         <div class="tab active" onclick="switchTab('addWorkTab', this)">Entry</div>
@@ -187,7 +187,7 @@
 
     <script>
         // ==========================================
-        // TELEGRAM BOT SETUP (Ayush Anand)
+        // TELEGRAM BOT SETUP (Fixed with your Data)
         // ==========================================
         const TELEGRAM_BOT_TOKEN = "8200090038:AAEOufwLJ6niOsppIuoWE1MA8L7a4jhQiH0"; 
         const TELEGRAM_CHAT_ID = "5172792830";     
@@ -213,6 +213,11 @@
         let lastEntryTimeMillis = null; 
         let isGlobalLowStock = false;
         let isInitialLoad = true;
+        let detailedLowStockMsg = ""; // NAYA: Detail wala low stock message
+
+        // SHOP LOCATION (Bahadurgarh)
+        const SHOP_LAT = 28.698147;
+        const SHOP_LON = 76.918404;
 
         // SOUND SETUP 
         const normalSound = new Audio('https://actions.google.com/sounds/v1/cartoon/clank.ogg'); 
@@ -279,6 +284,133 @@
             return `${hours}:${minutes} ${ampm}`;
         }
 
+        // ==========================================
+        // SMART GEOLOCATION ATTENDANCE
+        // ==========================================
+        function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+            var R = 6371; // Radius of the earth in km
+            var dLat = (lat2-lat1) * (Math.PI/180);
+            var dLon = (lon2-lon1) * (Math.PI/180); 
+            var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                    Math.cos(lat1 * (Math.PI/180)) * Math.cos(lat2 * (Math.PI/180)) * Math.sin(dLon/2) * Math.sin(dLon/2); 
+            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+            return R * c; // Distance in km
+        }
+
+        function markAttendanceWithGPS() {
+            const btn = document.getElementById("attBtn");
+            const staffName = document.getElementById("staffNameSelect").value;
+            
+            if (!navigator.geolocation) {
+                alert("❌ आपका फोन लोकेशन सपोर्ट नहीं करता!");
+                return;
+            }
+
+            btn.textContent = "Checking Location...";
+            btn.disabled = true;
+
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    
+                    // Shop se distance check karega
+                    const distKm = getDistanceFromLatLonInKm(SHOP_LAT, SHOP_LON, lat, lon);
+                    
+                    btn.textContent = "Attendance Mark Karein (GPS)";
+                    btn.disabled = false;
+
+                    // 0.15 km = 150 meters (Safety margin ke liye)
+                    if (distKm <= 0.15) {
+                        const timeStr = getExactTime();
+                        
+                        // Firebase mein save karenge taki raat ki report mein aaye
+                        db.collection("Attendance").doc(getToday()).set({ time: timeStr, staff: staffName });
+
+                        const msg = `🟢 <b>अटेंडेंस (Location Verified)</b>\n\n${staffName} जी दुकान पर पहुँच गए हैं।\nसमय: ${timeStr}`;
+                        sendTelegramAlert(msg);
+                        alert("✅ अटेंडेंस लग गई!");
+                    } else {
+                        alert("❌ आप अभी दुकान पर नहीं हैं! कृपया दुकान के अंदर जाकर बटन दबाएं।");
+                    }
+                },
+                (error) => {
+                    btn.textContent = "Attendance Mark Karein (GPS)";
+                    btn.disabled = false;
+                    alert("❌ कृपया फोन की Location/GPS चालू करें और Allow दबाएं!");
+                },
+                { enableHighAccuracy: true }
+            );
+        }
+
+        // ==========================================
+        // 10 PM NIGHTLY EOD REPORT
+        // ==========================================
+        let nightReportSentFor = ""; // Taki baar-baar na bheje
+
+        function checkAndSendNightReport() {
+            const d = new Date();
+            // Theek raat 10:00 baje check karega
+            if (d.getHours() === 22 && d.getMinutes() === 0) {
+                const today = getToday();
+                if (nightReportSentFor !== today) {
+                    sendNightReport(today);
+                    nightReportSentFor = today;
+                }
+            }
+        }
+        setInterval(checkAndSendNightReport, 60000); // Har minute check karega
+
+        async function sendNightReport(todayDate) {
+            try {
+                let reportMsg = `📊 <b>दिन भर की रिपोर्ट (${todayDate})</b>\n➖➖➖➖➖➖➖➖➖➖\n\n`;
+
+                // 1. Attendance Check
+                const attSnap = await db.collection("Attendance").doc(todayDate).get();
+                if (attSnap.exists) {
+                    reportMsg += `👨‍🔧 <b>स्टाफ आया:</b> ${attSnap.data().staff} (${attSnap.data().time})\n\n`;
+                } else {
+                    reportMsg += `👨‍🔧 <b>स्टाफ अटेंडेंस:</b> आज नहीं लगी\n\n`;
+                }
+
+                // 2. Sales / Kamai
+                const salesSnap = await db.collection("Sales").where("date", "==", todayDate).get();
+                let totalAmt = 0;
+                let salesList = "";
+                let records = [];
+                
+                salesSnap.forEach(doc => records.push(doc.data()));
+                records.sort((a, b) => (a.timestamp ? a.timestamp.toMillis() : 0) - (b.timestamp ? b.timestamp.toMillis() : 0));
+
+                records.forEach(r => {
+                    totalAmt += r.amount;
+                    salesList += `🔹 ${r.exactTime} | ${r.vehicleNo !== "N/A" ? r.vehicleNo : r.mobileNo}\n      ${r.itemName} - ₹${r.amount}\n`;
+                });
+
+                reportMsg += `💰 <b>आज की कुल कमाई:</b> ₹${totalAmt}\n\n`;
+                reportMsg += `📝 <b>आज के काम की लिस्ट:</b>\n${salesList || "आज कोई काम नहीं हुआ।"}\n➖➖➖➖➖➖➖➖➖➖\n\n`;
+
+                // 3. Current Stock
+                const stockSnap = await db.collection("Inventory").get();
+                let stockList = "";
+                stockSnap.forEach(doc => {
+                    let s = doc.data();
+                    let warning = s.stock < (s.threshold || 5) ? " ⚠️(Low)" : "";
+                    stockList += `📦 ${s.name}: <b>${s.stock}</b>${warning}\n`;
+                });
+
+                reportMsg += `📋 <b>करेंट स्टॉक रिपोर्ट:</b>\n${stockList}`;
+
+                // Send Final Report
+                sendTelegramAlert(reportMsg);
+            } catch (err) {
+                console.error("Night Report Error:", err);
+            }
+        }
+
+        // ==========================================
+        // IDLE TIMER & 5 MIN ALARM
+        // ==========================================
         function updateIdleTimer() {
             const alertEl = document.getElementById("idleTimerAlert");
             const textEl = document.getElementById("idleTimeText");
@@ -308,7 +440,6 @@
         }
         setInterval(updateIdleTimer, 60000);
 
-        // 5-MIN CRITICAL ALARM & TELEGRAM ALERT TRIGGER
         setInterval(() => {
             let shouldAlarm = false;
             let tgMessage = "";
@@ -322,7 +453,7 @@
             }
             if (isGlobalLowStock) { 
                 shouldAlarm = true; 
-                tgMessage += `⚠️ <b>RED ALERT (Stock):</b>\nकुछ सामान का स्टॉक खत्म होने वाला है!`; 
+                tgMessage += `⚠️ <b>RED ALERT (Stock):</b>\nकुछ सामान का स्टॉक खत्म होने वाला है:\n${detailedLowStockMsg}`; 
             }
 
             if (shouldAlarm) {
@@ -330,21 +461,31 @@
                 pushPopupNotification("🚨 ALERT TyreXpert", "दुकान में काफी देर से काम नहीं हुआ या स्टॉक कम है!");
                 sendTelegramAlert(tgMessage);
             }
-        }, 300000); 
+        }, 300000); // 5 Minutes
 
         async function loadLowStockAlert() {
             try {
                 const snap = await db.collection("Inventory").get();
                 let lowItems = [];
-                snap.forEach(doc => { const item = doc.data(); if (item.stock < (item.threshold || 5)) lowItems.push(item.name); });
+                let detailedItems = [];
+                
+                snap.forEach(doc => { 
+                    const item = doc.data(); 
+                    if (item.stock < (item.threshold || 5)) {
+                        lowItems.push(item.name); 
+                        detailedItems.push(`• ${item.name} (सिर्फ ${item.stock} पीस बचे हैं)`);
+                    }
+                });
                 
                 const alertEl = document.getElementById("lowStockAlert");
                 if (lowItems.length > 0) {
                     isGlobalLowStock = true;
+                    detailedLowStockMsg = detailedItems.join("\n");
                     alertEl.innerHTML = `⚠️ <b>RED ALERT:</b> ${lowItems.join(", ")} का स्टॉक बहुत कम है!`;
                     alertEl.style.display = "block";
                 } else {
                     isGlobalLowStock = false;
+                    detailedLowStockMsg = "";
                     alertEl.style.display = "none";
                 }
             } catch (e) { console.error(e); }
@@ -363,23 +504,6 @@
                           "Raghav जी, आज आपकी सेल्स कल के बराबर है";
                 document.getElementById("personalizedText").innerHTML = msg;
             } catch (e) { console.error(e); }
-        }
-
-        // ATTENDANCE TELEGRAM PAR (WhatsApp ki jagah)
-        function markAttendance() {
-            const staffName = document.getElementById("staffNameSelect").value;
-            if (staffName) {
-                const d = new Date(); 
-                let hours = d.getHours(); let ampm = hours >= 12 ? 'PM' : 'AM';
-                hours = hours % 12 || 12; 
-                let minutes = d.getMinutes().toString().padStart(2, '0');
-                const timeStr = `${hours}:${minutes} ${ampm}`;
-                
-                const msg = `🟢 <b>अटेंडेंस (TyreXpert)</b>\n\n${staffName} जी दुकान पर पहुँच गए हैं।\nसमय: ${timeStr}`;
-                sendTelegramAlert(msg);
-                
-                alert("अटेंडेंस भेज दी गई है!");
-            }
         }
 
         function checkMobileInstantly() {
