@@ -35,7 +35,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; transition: background-color 0.3s, color 0.3s; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg-body); color: var(--text-main); min-height: 100vh; padding-bottom: 80px; }
         
-        /* 🌟 NEW HEADER & BRANDING 🌟 */
+        /* 🌟 HEADER & BRANDING 🌟 */
         .header { background: var(--header-bg); padding: 1.2rem 1rem; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.08); border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; position: relative; display: flex; justify-content: center; align-items: center;}
         
         .app-title { font-size: 2.1rem; font-weight: 900; letter-spacing: -1px; text-transform: uppercase; font-style: italic; display: flex; align-items: center; gap: 5px; }
@@ -65,11 +65,18 @@
         .logged-user-info { text-align: center; padding: 10px; font-weight: 700; background: var(--bg-card); margin: 15px; border-radius: 12px; box-shadow: var(--shadow-card); color: var(--text-main); border-left: 5px solid #27ae60; font-size: 0.95rem;}
         
         /* ALERTS */
+        .ai-banner { margin: 15px; background: rgba(241, 196, 15, 0.15); border: 2px solid #f39c12; border-radius: 12px; padding: 12px; text-align: center; color: #d35400; font-weight: 800; display: none; }
         #lowStockAlert { margin: 15px; background: rgba(231, 76, 60, 0.1); border: 2px solid #e74c3c; border-radius: 12px; padding: 12px; text-align: center; color: #e74c3c; font-weight: 900; animation: pulse 1.5s infinite; display: none; }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
         
         #idleTimerAlert { margin: 15px; padding: 12px; border-radius: 12px; text-align: center; font-weight: 700; display: none; transition: 0.3s; box-shadow: var(--shadow-card); }
         
+        /* AI VOICE BOX */
+        .voice-box { background: rgba(52, 152, 219, 0.1); border: 2px dashed #3498db; border-radius: 15px; padding: 15px; margin-bottom: 20px; text-align: center; }
+        .voice-box h4 { margin-bottom: 8px; color: #2980b9; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .voice-box p { font-size: 0.9rem; color: var(--text-muted); font-weight: bold; }
+        .mic-dot { height: 10px; width: 10px; background-color: #e74c3c; border-radius: 50%; display: inline-block; animation: pulse 1.5s infinite; }
+
         /* TABS */
         .tabs { display: flex; background: var(--bg-card); margin: 15px; border-radius: 15px; overflow: hidden; box-shadow: var(--shadow-card); }
         .tab { flex: 1; padding: 14px 5px; text-align: center; font-weight: 700; color: var(--text-muted); cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
@@ -135,6 +142,8 @@
 
     <div class="logged-user-info">Logged in as: <span id="currentUserNameDisplay" style="color: #e74c3c;">...</span></div>
 
+    <div id="aiWeatherAlert" class="ai-banner"></div>
+
     <h2 id="lowStockAlert"></h2>
     <div id="idleTimerAlert"><span id="idleTimeText">Tracking system starting...</span></div>
 
@@ -148,6 +157,12 @@
     </div>
 
     <div class="tab-content active" id="addWorkTab">
+        
+        <div class="voice-box" id="smartEarBox" style="display:none;">
+            <h4><span class="mic-dot"></span> AI Smart Ear Active</h4>
+            <p id="voice-log">Bol kar entry karein (e.g. "Ek puncture banaya")</p>
+        </div>
+
         <div class="card">
             <form id="workForm">
                 <label>Item / Service</label>
@@ -282,7 +297,7 @@
         }
 
         // ==========================================
-        // CONFIGURATION
+        // FIREBASE CONFIGURATION
         // ==========================================
         const firebaseConfig = {
             apiKey: "AIzaSyApY09CHspm5TVxXTVvjnfB6lzwQ7nqltE",
@@ -392,8 +407,11 @@
             } else {
                 document.getElementById('adminTabHandle').style.display = 'none';
                 document.getElementById('feedTitle').textContent = `आपकी (${currentUser}) आज की एंट्रीज़`;
+                document.getElementById('smartEarBox').style.display = 'block'; // Show Voice Engine for Staff
+                initSmartEar(); // Start AI Voice Listening
             }
             initApp();
+            runWeatherAI(); // Start Weather AI Predictive Engine
         }
 
         function logout() { location.reload(); }
@@ -421,6 +439,81 @@
                 alert(`✅ ${name} डिलीट हो गए हैं।`);
                 loadUsers();
             }
+        }
+
+        // ==========================================
+        // 🚀 AI FEATURE 1: SMART EAR (VOICE ENGINE)
+        // ==========================================
+        function initSmartEar() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) {
+                document.getElementById('voice-log').innerHTML = "⚠️ Voice engine not supported. Use Google Chrome.";
+                return;
+            }
+            const recognition = new SpeechRecognition();
+            recognition.continuous = true;
+            recognition.lang = 'hi-IN'; // Understands Hindi & Hinglish
+            
+            recognition.onresult = async (event) => {
+                const transcript = event.results[event.results.length - 1][0].transcript.toLowerCase();
+                document.getElementById('voice-log').innerHTML = `<strong>Heard:</strong> "${transcript}"`;
+                await processVoiceCommand(transcript);
+            };
+            
+            recognition.onend = () => { if(currentUser && !isAdmin) recognition.start(); }; // Keep listening
+            recognition.start();
+        }
+
+        async function processVoiceCommand(command) {
+            if(command.includes("puncture") || command.includes("puncher")) {
+                let qty = 1;
+                if(command.includes("do") || command.includes("2")) qty = 2;
+                if(command.includes("teen") || command.includes("3")) qty = 3;
+                
+                const amt = qty * 100; // Assuming ₹100 per puncture
+                
+                const data = {
+                    itemName: "Puncture (AI Voice Entry)",
+                    itemId: "voice_puncture",
+                    quantity: qty,
+                    mobileNo: "N/A",
+                    vehicleNo: "N/A",
+                    customerName: "Walk-in (Voice)",
+                    amount: amt,
+                    paymentMethod: "Cash",
+                    staffName: currentUser,
+                    date: getToday(),
+                    exactTime: getTime(),
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                await db.collection("Sales").add(data);
+                sendTG(`🎙️ <b>AI Voice Entry</b>\n👨‍🔧 ${currentUser} ne aawaz se ${qty} Puncture ki entry save ki.`);
+                document.getElementById('voice-log').innerHTML += `<br><span style="color:#27ae60;">✅ Puncture Saved Automatically!</span>`;
+            }
+        }
+
+        // ==========================================
+        // 🚀 AI FEATURE 2: WEATHER FORECASTING
+        // ==========================================
+        async function runWeatherAI() {
+            const apiKey = "YOUR_OPENWEATHERMAP_API_KEY"; // PUT YOUR OPENWEATHER API KEY HERE
+            const city = "Bahadurgarh,IN";
+            
+            if(apiKey === "YOUR_OPENWEATHERMAP_API_KEY") return; // Skip if no key added yet
+            
+            try {
+                const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
+                const data = await res.json();
+                const temp = data.main.temp;
+                
+                const alertBox = document.getElementById("aiWeatherAlert");
+                
+                if (temp > 35) { 
+                    alertBox.style.display = "block";
+                    alertBox.innerHTML = `⚠️ <b>AI Forecast Alert:</b> Current temp is ${temp}°C. High risk of tyre bursts today. Check patches and tubes stock immediately!`;
+                }
+            } catch (error) { console.log("Weather forecasting model offline."); }
         }
 
         // ==========================================
