@@ -162,7 +162,7 @@
         <!-- AI SMART EAR BOX -->
         <div class="voice-box" id="smartEarBox" style="display:none;">
             <h4><span class="mic-dot"></span> AI Smart Ear Active</h4>
-            <p id="voice-log">Bol kar entry karein (e.g. "Ek panchar banaya" ya "Hawa check")</p>
+            <p id="voice-log">Bol kar entry karein (e.g. "Ek puncture banaya" ya "Hawa check")</p>
         </div>
 
         <div class="card">
@@ -388,7 +388,7 @@
                     if (newPin && newPin.length >= 4) {
                         await db.collection('Staff').doc(name).set({ pin: newPin }, { merge: true });
                         alert("✅ PIN सेट हो गया! अब दोबारा क्लिक करके लॉगिन करें।");
-                    } else alert("❌ कम सेানো 4 अंकों का PIN ज़रूरी है।");
+                    } else alert("❌ कम से कम 4 अंकों का PIN ज़रूरी है।");
                 } else {
                     const pin = prompt(`🔐 ${name}, अपना PIN डालें:`);
                     if (pin === data.pin) {
@@ -448,8 +448,10 @@
         // ==========================================
         function initSmartEar() {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const logBox = document.getElementById('voice-log');
+
             if (!SpeechRecognition) {
-                document.getElementById('voice-log').innerHTML = "⚠️ Voice engine not supported. Use Google Chrome.";
+                logBox.innerHTML = "<span style='color:#e74c3c;'>⚠️ Voice engine not supported. Use Google Chrome.</span>";
                 return;
             }
             const recognition = new SpeechRecognition();
@@ -458,11 +460,23 @@
             
             recognition.onresult = async (event) => {
                 const transcript = event.results[event.results.length - 1][0].transcript.toLowerCase();
-                document.getElementById('voice-log').innerHTML = `<strong>Aawaz suni:</strong> "${transcript}"`;
+                logBox.innerHTML = `<strong>Aawaz suni:</strong> "${transcript}"`;
                 await processVoiceCommand(transcript);
             };
+
+            recognition.onerror = (event) => {
+                if(event.error === 'not-allowed') {
+                    logBox.innerHTML = "<span style='color:#e74c3c;'>⚠️ Microphone Access Denied! Please Allow Microphone.</span>";
+                } else {
+                    logBox.innerHTML = `<span style='color:#e74c3c;'>⚠️ Mic Error: ${event.error}</span>`;
+                }
+            }
             
-            recognition.onend = () => { if(currentUser && !isAdmin) recognition.start(); }; 
+            recognition.onend = () => { 
+                if(currentUser && !isAdmin) {
+                    try { recognition.start(); } catch(e) {} 
+                } 
+            }; 
             recognition.start();
         }
 
@@ -473,28 +487,28 @@
                 let amount = 0;
                 let matched = false;
 
-                // Keyword Matching
-                if (command.includes("puncture") || command.includes("puncher") || command.includes("panchar") || command.includes("pancher")) {
+                // Keyword Matching (Added Devanagari Hindi words)
+                if (command.includes("puncture") || command.includes("puncher") || command.includes("panchar") || command.includes("pancher") || command.includes("पंचर") || command.includes("पेंचर")) {
                     itemName = "Puncture";
                     amount = 100;
                     matched = true;
-                } else if (command.includes("hawa") || command.includes("air") || command.includes("check")) {
+                } else if (command.includes("hawa") || command.includes("air") || command.includes("check") || command.includes("हवा")) {
                     itemName = "Hawa Check";
                     amount = 10;
                     matched = true;
-                } else if (command.includes("tube") || command.includes("tyre")) {
+                } else if (command.includes("tube") || command.includes("tyre") || command.includes("ट्यूब") || command.includes("टायर")) {
                     itemName = "Tube / Tyre Work";
                     amount = 250;
                     matched = true;
                 }
 
-                // Agar koi keyword nahi mila toh cancel
+                // Agar koi keyword nahi mila toh cancel (Ignore random chatter)
                 if (!matched) return;
 
-                // Quantity Parsing (Hinglish numbers)
-                if (command.includes("do") || command.includes("2")) qty = 2;
-                if (command.includes("teen") || command.includes("3") || command.includes("tin")) qty = 3;
-                if (command.includes("char") || command.includes("4")) qty = 4;
+                // Quantity Parsing (Hinglish + Hindi numbers)
+                if (command.includes("do") || command.includes("2") || command.includes("दो")) qty = 2;
+                if (command.includes("teen") || command.includes("3") || command.includes("tin") || command.includes("तीन")) qty = 3;
+                if (command.includes("char") || command.includes("4") || command.includes("चार")) qty = 4;
 
                 const finalAmount = qty * amount;
 
@@ -527,7 +541,7 @@
         // 🚀 AI FEATURE 2: WEATHER FORECASTING (DEMO MODE ENABLED)
         // ==========================================
         async function runWeatherAI() {
-            const apiKey = "YOUR_OPENWEATHERMAP_API_KEY"; 
+            const apiKey = "YOUR_OPENWEATHERMAP_API_KEY"; // PUT YOUR OPENWEATHER API KEY HERE
             const city = "Bahadurgarh,IN";
             const alertBox = document.getElementById("aiWeatherAlert");
             
