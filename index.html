@@ -142,6 +142,7 @@
 
     <div class="logged-user-info">Logged in as: <span id="currentUserNameDisplay" style="color: #e74c3c;">...</span></div>
 
+    <!-- AI WEATHER ALERT BANNER -->
     <div id="aiWeatherAlert" class="ai-banner"></div>
 
     <h2 id="lowStockAlert"></h2>
@@ -158,9 +159,10 @@
 
     <div class="tab-content active" id="addWorkTab">
         
+        <!-- AI SMART EAR BOX -->
         <div class="voice-box" id="smartEarBox" style="display:none;">
             <h4><span class="mic-dot"></span> AI Smart Ear Active</h4>
-            <p id="voice-log">Bol kar entry karein (e.g. "Ek puncture banaya")</p>
+            <p id="voice-log">Bol kar entry karein (e.g. "Ek panchar banaya" ya "Hawa check")</p>
         </div>
 
         <div class="card">
@@ -386,7 +388,7 @@
                     if (newPin && newPin.length >= 4) {
                         await db.collection('Staff').doc(name).set({ pin: newPin }, { merge: true });
                         alert("✅ PIN सेट हो गया! अब दोबारा क्लिक करके लॉगिन करें।");
-                    } else alert("❌ कम से कम 4 अंकों का PIN ज़रूरी है।");
+                    } else alert("❌ कम सेানো 4 अंकों का PIN ज़रूरी है।");
                 } else {
                     const pin = prompt(`🔐 ${name}, अपना PIN डालें:`);
                     if (pin === data.pin) {
@@ -407,11 +409,11 @@
             } else {
                 document.getElementById('adminTabHandle').style.display = 'none';
                 document.getElementById('feedTitle').textContent = `आपकी (${currentUser}) आज की एंट्रीज़`;
-                document.getElementById('smartEarBox').style.display = 'block'; // Show Voice Engine for Staff
-                initSmartEar(); // Start AI Voice Listening
+                document.getElementById('smartEarBox').style.display = 'block'; 
+                initSmartEar(); // START VOICE ENGINE
             }
             initApp();
-            runWeatherAI(); // Start Weather AI Predictive Engine
+            runWeatherAI(); // START WEATHER ENGINE
         }
 
         function logout() { location.reload(); }
@@ -442,7 +444,7 @@
         }
 
         // ==========================================
-        // 🚀 AI FEATURE 1: SMART EAR (VOICE ENGINE)
+        // 🚀 AI FEATURE 1: SMART EAR (HINDI/HINGLISH UPDATE)
         // ==========================================
         function initSmartEar() {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -452,34 +454,58 @@
             }
             const recognition = new SpeechRecognition();
             recognition.continuous = true;
-            recognition.lang = 'hi-IN'; // Understands Hindi & Hinglish
+            recognition.lang = 'hi-IN'; // Indian Hindi/Hinglish Support
             
             recognition.onresult = async (event) => {
                 const transcript = event.results[event.results.length - 1][0].transcript.toLowerCase();
-                document.getElementById('voice-log').innerHTML = `<strong>Heard:</strong> "${transcript}"`;
+                document.getElementById('voice-log').innerHTML = `<strong>Aawaz suni:</strong> "${transcript}"`;
                 await processVoiceCommand(transcript);
             };
             
-            recognition.onend = () => { if(currentUser && !isAdmin) recognition.start(); }; // Keep listening
+            recognition.onend = () => { if(currentUser && !isAdmin) recognition.start(); }; 
             recognition.start();
         }
 
         async function processVoiceCommand(command) {
-            if(command.includes("puncture") || command.includes("puncher")) {
+            try {
                 let qty = 1;
-                if(command.includes("do") || command.includes("2")) qty = 2;
-                if(command.includes("teen") || command.includes("3")) qty = 3;
-                
-                const amt = qty * 100; // Assuming ₹100 per puncture
-                
+                let itemName = "Unknown Voice Entry";
+                let amount = 0;
+                let matched = false;
+
+                // Keyword Matching
+                if (command.includes("puncture") || command.includes("puncher") || command.includes("panchar") || command.includes("pancher")) {
+                    itemName = "Puncture";
+                    amount = 100;
+                    matched = true;
+                } else if (command.includes("hawa") || command.includes("air") || command.includes("check")) {
+                    itemName = "Hawa Check";
+                    amount = 10;
+                    matched = true;
+                } else if (command.includes("tube") || command.includes("tyre")) {
+                    itemName = "Tube / Tyre Work";
+                    amount = 250;
+                    matched = true;
+                }
+
+                // Agar koi keyword nahi mila toh cancel
+                if (!matched) return;
+
+                // Quantity Parsing (Hinglish numbers)
+                if (command.includes("do") || command.includes("2")) qty = 2;
+                if (command.includes("teen") || command.includes("3") || command.includes("tin")) qty = 3;
+                if (command.includes("char") || command.includes("4")) qty = 4;
+
+                const finalAmount = qty * amount;
+
                 const data = {
-                    itemName: "Puncture (AI Voice Entry)",
-                    itemId: "voice_puncture",
+                    itemName: itemName + " (Voice AI)",
+                    itemId: "voice_entry",
                     quantity: qty,
                     mobileNo: "N/A",
                     vehicleNo: "N/A",
-                    customerName: "Walk-in (Voice)",
-                    amount: amt,
+                    customerName: "Walk-in (Mic)",
+                    amount: finalAmount,
                     paymentMethod: "Cash",
                     staffName: currentUser,
                     date: getToday(),
@@ -488,32 +514,41 @@
                 };
                 
                 await db.collection("Sales").add(data);
-                sendTG(`🎙️ <b>AI Voice Entry</b>\n👨‍🔧 ${currentUser} ne aawaz se ${qty} Puncture ki entry save ki.`);
-                document.getElementById('voice-log').innerHTML += `<br><span style="color:#27ae60;">✅ Puncture Saved Automatically!</span>`;
+                sendTG(`🎙️ <b>AI Voice Entry</b>\n👨‍🔧 ${currentUser} ne bol kar entry ki:\n🛠️ ${qty}x ${itemName} (₹${finalAmount})`);
+                
+                document.getElementById('voice-log').innerHTML += `<br><span style="color:#27ae60;">✅ <b>Entry Done:</b> ${qty} ${itemName} (₹${finalAmount})</span>`;
+                
+            } catch (err) {
+                console.error("Voice Engine Error:", err);
             }
         }
 
         // ==========================================
-        // 🚀 AI FEATURE 2: WEATHER FORECASTING
+        // 🚀 AI FEATURE 2: WEATHER FORECASTING (DEMO MODE ENABLED)
         // ==========================================
         async function runWeatherAI() {
-            const apiKey = "YOUR_OPENWEATHERMAP_API_KEY"; // PUT YOUR OPENWEATHER API KEY HERE
+            const apiKey = "YOUR_OPENWEATHERMAP_API_KEY"; 
             const city = "Bahadurgarh,IN";
+            const alertBox = document.getElementById("aiWeatherAlert");
             
-            if(apiKey === "YOUR_OPENWEATHERMAP_API_KEY") return; // Skip if no key added yet
+            // Demo Mode: Agar API key nahi hai toh bhi user ko alert dikhega
+            if(apiKey === "YOUR_OPENWEATHERMAP_API_KEY") {
+                alertBox.style.display = "block";
+                alertBox.innerHTML = `🌤️ <b>AI Forecast (Demo):</b> Bahadurgarh ka temp 38°C hai. Garmi se purane tyre phatne ka risk zyada hai. Tube aur patches ka stock full rakhein. <br><small style="color:#7f8c8d; font-weight:normal;">(Live data ke liye API key daalein)</small>`;
+                return; 
+            }
             
+            // Live Mode
             try {
                 const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
                 const data = await res.json();
                 const temp = data.main.temp;
                 
-                const alertBox = document.getElementById("aiWeatherAlert");
-                
                 if (temp > 35) { 
                     alertBox.style.display = "block";
                     alertBox.innerHTML = `⚠️ <b>AI Forecast Alert:</b> Current temp is ${temp}°C. High risk of tyre bursts today. Check patches and tubes stock immediately!`;
                 }
-            } catch (error) { console.log("Weather forecasting model offline."); }
+            } catch (error) { console.log("Weather AI Engine offline."); }
         }
 
         // ==========================================
