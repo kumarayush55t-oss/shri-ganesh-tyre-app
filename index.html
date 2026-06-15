@@ -2,47 +2,51 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TyreXpert Pro AI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TyreXpert Stock AI</title>
     <style>
-        :root { --primary: #2c3e50; --accent: #e74c3c; --bg: #ecf0f1; --success: #27ae60; --card: #ffffff; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: var(--bg); color: var(--primary); padding-bottom: 50px; }
+        :root { --primary: #1e272e; --accent: #ff3f34; --bg: #f2f2f2; --success: #0be881; --card: #ffffff; --text: #485460; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: var(--bg); color: var(--primary); padding-bottom: 60px; }
         
+        /* Headers & Layout */
         header { background: var(--primary); color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .logo { font-size: 1.5rem; font-weight: 900; font-style: italic; }
         .logo span { color: var(--accent); }
-        .admin-btn { background: var(--accent); color: white; border: none; padding: 5px 15px; border-radius: 5px; font-weight: bold; cursor: pointer; }
+        .admin-btn { background: var(--accent); color: white; border: none; padding: 6px 12px; border-radius: 5px; font-weight: bold; cursor: pointer; }
+        .container { max-width: 600px; margin: 15px auto; padding: 0 15px; }
+        .card { background: var(--card); padding: 20px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         
-        .container { max-width: 800px; margin: 20px auto; padding: 0 15px; }
-        .card { background: var(--card); padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        /* Inputs & Buttons */
+        input, select, button { width: 100%; padding: 14px; margin-bottom: 12px; border-radius: 8px; border: 1px solid #d2dae2; font-size: 1rem; }
+        button { background: var(--primary); color: white; border: none; font-weight: bold; cursor: pointer; font-size: 1.1rem; }
+        .btn-green { background: var(--success); color: #1e272e; }
+        .btn-red { background: var(--accent); color: white; }
         
-        input, select, button { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #bdc3c7; font-size: 1rem; }
-        button { background: var(--primary); color: white; border: none; font-weight: bold; cursor: pointer; }
-        button:hover { opacity: 0.9; }
-        .btn-green { background: var(--success); }
-        .btn-red { background: var(--accent); }
-        
-        /* Assistant Bar */
-        .assistant-bar { display: flex; gap: 10px; }
-        .assistant-bar input { flex-grow: 1; margin: 0; border: 2px solid var(--accent); }
-        .mic-btn { width: 50px; background: var(--accent); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; margin: 0; cursor: pointer; }
-        .ai-reply { background: #e8f8f5; border-left: 4px solid var(--success); padding: 10px; margin-top: 10px; display: none; font-weight: bold; color: #16a085; }
+        /* Assistant UI */
+        .assistant-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; color: #0fb9b1; }
+        .assistant-header img { width: 40px; height: 40px; border-radius: 50%; background: #0fb9b1; padding: 5px; }
+        .search-box { display: flex; gap: 8px; }
+        .search-box input { flex-grow: 1; margin: 0; border: 2px solid #0fb9b1; border-radius: 25px; padding-left: 20px; }
+        .mic-btn { width: 50px; border-radius: 50%; background: #0fb9b1; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin: 0; padding: 0; }
+        .ai-response { background: #e8f8f5; border-left: 4px solid #0fb9b1; padding: 15px; border-radius: 8px; margin-top: 15px; display: none; font-weight: 600; color: #1e272e; line-height: 1.5; }
         
         /* Stock List */
-        .stock-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #eee; }
-        .stock-info h4 { margin-bottom: 5px; }
-        .stock-info p { font-size: 0.85rem; color: #7f8c8d; }
-        .stock-qty { font-size: 1.5rem; font-weight: bold; }
-        .qty-low { color: var(--accent); animation: pulse 1s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        .stock-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-radius: 10px; background: #f8f9fa; border: 1px solid #eee; margin-bottom: 10px; }
+        .stock-info h4 { margin-bottom: 5px; color: var(--primary); font-size: 1.1rem; }
+        .stock-info p { font-size: 0.85rem; color: var(--text); }
+        .stock-qty { font-size: 1.8rem; font-weight: 900; background: var(--success); color: #1e272e; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 10px; }
+        
+        /* Red Glow Animation for Low Stock */
+        .qty-low { background: #ff7675; color: white; box-shadow: 0 0 15px #ff7675; animation: pulseRed 1.5s infinite; }
+        @keyframes pulseRed { 0% { box-shadow: 0 0 10px #ff7675; } 50% { box-shadow: 0 0 25px #d63031; } 100% { box-shadow: 0 0 10px #ff7675; } }
 
         /* Overlays */
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--primary); z-index: 1000; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; }
-        .overlay-card { background: white; padding: 30px; border-radius: 15px; width: 100%; max-width: 400px; text-align: center; }
+        .overlay-card { background: white; padding: 30px; border-radius: 15px; width: 100%; max-width: 350px; text-align: center; }
         
-        /* Admin Section */
-        #admin-panel { display: none; background: #fff3e0; border: 2px solid #f39c12; }
+        #admin-panel { display: none; background: #ffeaa7; border: 2px solid #fdcb6e; }
+        .admin-section { background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px; text-align: left; }
     </style>
 </head>
 <body>
@@ -50,90 +54,135 @@
     <div id="auth-screen" class="overlay">
         <div class="overlay-card">
             <h1 class="logo">Tyre<span>Xpert</span></h1>
-            <p style="margin: 10px 0 20px;">Enter App Password to Access</p>
-            <input type="password" id="app-pass" placeholder="Enter PIN">
-            <button onclick="checkAppPassword()">Enter App</button>
+            <p style="margin: 10px 0 20px; color: #7f8c8d;">Enter App Password</p>
+            <input type="password" id="app-pass" placeholder="PIN Daalein">
+            <button onclick="checkAppPassword()">Login</button>
         </div>
     </div>
 
     <div id="shop-screen" class="overlay" style="display: none;">
         <div class="overlay-card">
-            <h2>Dukaan Select Karein</h2>
-            <p style="margin: 10px 0 20px;">Aap abhi kis shop par hain?</p>
+            <h2>🏢 Shop Select Karein</h2>
+            <p style="margin: 10px 0 20px; color: #7f8c8d;">Aap abhi kahan hain?</p>
             <button class="btn-green" onclick="selectShop('Petrol Pump')">⛽ Petrol Pump</button>
-            <button class="btn-green" style="background:#2980b9;" onclick="selectShop('Khusboo Parking')">🅿️ Khusboo Parking</button>
+            <button style="background:#0984e3;" onclick="selectShop('Khusboo Parking')">🅿️ Khusboo Parking</button>
         </div>
     </div>
 
     <div id="main-app" style="display: none;">
         <header>
             <div class="logo">Tyre<span>Xpert</span></div>
-            <div id="shop-name" style="font-weight: bold; opacity: 0.8;"></div>
-            <button class="admin-btn" onclick="promptAdmin()">Admin Lock</button>
+            <div id="shop-name-display" style="font-weight: bold; opacity: 0.9;"></div>
+            <button class="admin-btn" id="adminLockBtn" onclick="toggleAdmin()">Admin Lock</button>
         </header>
 
         <div class="container">
-            <div class="card">
-                <h3>🤖 AI Tyre Assistant</h3>
-                <p style="font-size: 0.85rem; margin-bottom: 10px;">Type karein ya Mic dabayein...</p>
-                <div class="assistant-bar">
-                    <input type="text" id="searchInput" placeholder="e.g., 155/80 R13 tube..." oninput="searchStock()">
-                    <button class="mic-btn" onclick="startMic()">🎤</button>
+            
+            <div class="card" style="border: 2px solid #0fb9b1;">
+                <div class="assistant-header">
+                    <div style="font-size: 2.5rem;">🤖</div>
+                    <div>
+                        <h3 style="margin:0;">Xpert Assistant</h3>
+                        <p style="font-size:0.8rem; margin:0;">Tyre/Tube details pucho</p>
+                    </div>
                 </div>
-                <div id="ai-reply" class="ai-reply"></div>
+                <div class="search-box">
+                    <input type="text" id="aiInput" placeholder="e.g., '155/80 R13' ya 'Splendor tube'..." oninput="askAI()">
+                    <button class="mic-btn" onclick="startVoiceAI()">🎤</button>
+                </div>
+                <div id="ai-reply" class="ai-response"></div>
             </div>
 
             <div id="admin-panel" class="card">
-                <h3>👑 Admin Controls</h3>
+                <h3 style="margin-bottom: 15px;">👑 Admin Control Center</h3>
                 
-                <h4 style="margin-top: 15px;">🔄 Inter-Shop Transfer</h4>
-                <div style="display: flex; gap: 5px;">
-                    <select id="transferItem"></select>
-                    <input type="number" id="transferQty" placeholder="Qty" style="width: 80px;">
+                <div class="admin-section">
+                    <h4>➕ Naya Maal Add Karein</h4>
+                    <input type="text" id="newItemName" placeholder="Item Name (e.g., MRF 145/80 R12)">
+                    <select id="newItemType">
+                        <option value="Tyre">Tyre</option>
+                        <option value="Tube">Tube</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="number" id="qtyPP" placeholder="Petrol Pump Qty">
+                        <input type="number" id="qtyKP" placeholder="Khusboo P. Qty">
+                    </div>
+                    <button class="btn-green" onclick="addNewItem()">Add to Stock</button>
                 </div>
-                <select id="transferDirection">
-                    <option value="P2K">Petrol Pump -> Khusboo Parking</option>
-                    <option value="K2P">Khusboo Parking -> Petrol Pump</option>
-                </select>
-                <button class="btn-green" onclick="transferStock()">Transfer Maal</button>
 
-                <h4 style="margin-top: 15px;">📦 Low Stock Auto-Order</h4>
-                <button onclick="whatsappSupplier()" style="background:#25D366; color:white;">Bhejo WhatsApp Order</button>
-                
-                <h4 style="margin-top: 15px;">🕵️ Mismatch Radar</h4>
-                <button class="btn-red" onclick="checkMismatch()">Check Silent Leaks</button>
+                <div class="admin-section">
+                    <h4>🔄 Maal Transfer</h4>
+                    <select id="transferItem"></select>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="number" id="transferQty" placeholder="Quantity">
+                        <select id="transferDir">
+                            <option value="P2K">Petrol -> Khusboo</option>
+                            <option value="K2P">Khusboo -> Petrol</option>
+                        </select>
+                    </div>
+                    <button style="background: #0984e3;" onclick="transferStock()">Transfer Karein</button>
+                </div>
+
+                <div class="admin-section">
+                    <h4>⚙️ Passwords Settings</h4>
+                    <input type="password" id="newAppPass" placeholder="Naya App Password">
+                    <input type="password" id="newAdminPass" placeholder="Naya Admin Password">
+                    <button class="btn-red" onclick="changePasswords()">Update Passwords</button>
+                </div>
             </div>
 
             <div class="card">
-                <h3 style="margin-bottom: 15px;">📦 Current Stock (<span id="display-shop"></span>)</h3>
+                <h3 style="margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">📦 Live Stock (<span id="shop-badge"></span>)</h3>
                 <div id="stock-list"></div>
             </div>
         </div>
     </div>
 
     <script>
-        // --- 1. KNOWLEDGE BASE & DATABASE ---
-        // Default Master Inventory with Alternatives (Knowledge Base)
-        const defaultInventory = [
-            { id: "T1", name: "MRF 155/80 R13 (Alto/Swift)", type: "Tyre", stock_pp: 0, stock_kp: 4, min: 5, alt: ["165/70 R13", "145/80 R13"] },
-            { id: "T2", name: "Apollo 165/70 R13", type: "Tyre", stock_pp: 6, stock_kp: 2, min: 4, alt: ["155/80 R13"] },
-            { id: "TB1", name: "3.00-18 Tube (Splendor)", type: "Tube", stock_pp: 3, stock_kp: 10, min: 5, alt: ["2.75-18 Tube"] },
-            { id: "TB2", name: "14-Inch Heavy Tube", type: "Tube", stock_pp: 12, stock_kp: 5, min: 10, alt: ["14-Inch Normal Tube"] }
-        ];
-
-        let inventory = JSON.parse(localStorage.getItem('tyreDB')) || defaultInventory;
+        // ==========================================
+        // 1. DATA & KNOWLEDGE BASE
+        // ==========================================
+        // App Settings
+        let settings = JSON.parse(localStorage.getItem('tx_settings')) || { appPin: "308913", adminPin: "12345" };
         let currentShop = "";
         let isAdmin = false;
 
+        // Tyre & Tube Knowledge Base (Internet Data)
+        const tyreKnowledge = {
+            "155/80 R13": { vehicles: "Alto K10, WagonR, Celerio", alts: ["165/70 R13 (Mota)", "145/80 R13 (Patla)"] },
+            "165/70 R14": { vehicles: "Swift, Swift Dzire", alts: ["185/65 R14 (Upgrade)", "175/65 R14"] },
+            "145/80 R12": { vehicles: "Alto 800, Omni", alts: ["155/65 R12"] },
+            "195/55 R16": { vehicles: "Baleno, i20, Nexon", alts: ["185/60 R16"] },
+            "3.00-18": { vehicles: "Splendor (Peeche), CD Deluxe", alts: ["90/90-18", "2.75-18"] },
+            "2.75-18": { vehicles: "Splendor (Aage), Passion", alts: ["80/100-18"] },
+            "90/90-12": { vehicles: "Activa, Jupiter, Access", alts: ["100/80-12", "90/100-10 (Different Rim)"] }
+        };
+
+        // Default Inventory (If nothing is added yet)
+        let defaultInv = [
+            { id: 1, name: "MRF 155/80 R13 (Swift/Alto)", type: "Tyre", pp: 2, kp: 0 },
+            { id: 2, name: "CEAT 3.00-18 Tube", type: "Tube", pp: 10, kp: 4 },
+            { id: 3, name: "Apollo 165/70 R14", type: "Tyre", pp: 0, kp: 3 },
+            { id: 4, name: "14-inch Heavy Tube", type: "Tube", pp: 4, kp: 8 }
+        ];
+
+        let inventory = JSON.parse(localStorage.getItem('tx_inventory')) || defaultInv;
+
         function saveDB() {
-            localStorage.setItem('tyreDB', JSON.stringify(inventory));
+            localStorage.setItem('tx_inventory', JSON.stringify(inventory));
+            localStorage.setItem('tx_settings', JSON.stringify(settings));
             renderStock();
+            populateDropdown();
         }
 
-        // --- 2. AUTHENTICATION & SHOP SELECT ---
+        // ==========================================
+        // 2. AUTHENTICATION
+        // ==========================================
         function checkAppPassword() {
             const pass = document.getElementById('app-pass').value;
-            if(pass === "308913" || pass === "1") { // '1' is for quick testing
+            // Agar password khali set kiya hai (disable), toh bina pass khul jayega
+            if(settings.appPin === "" || pass === settings.appPin) {
                 document.getElementById('auth-screen').style.display = 'none';
                 document.getElementById('shop-screen').style.display = 'flex';
             } else {
@@ -141,173 +190,221 @@
             }
         }
 
-        function selectShop(shopName) {
-            currentShop = shopName;
+        function selectShop(shop) {
+            currentShop = shop;
             document.getElementById('shop-screen').style.display = 'none';
             document.getElementById('main-app').style.display = 'block';
-            document.getElementById('shop-name').innerText = shopName;
-            document.getElementById('display-shop').innerText = shopName;
-            renderStock();
-            populateTransferDropdown();
+            document.getElementById('shop-name-display').innerText = shop;
+            document.getElementById('shop-badge').innerText = shop;
+            saveDB(); // Renders everything
         }
 
-        function promptAdmin() {
+        function toggleAdmin() {
             if(isAdmin) {
                 isAdmin = false;
                 document.getElementById('admin-panel').style.display = 'none';
-                alert("🔒 Admin mode locked. Aap ab Staff Mode mein hain.");
-                return;
-            }
-            const pass = prompt("Enter Admin Password (12345):");
-            if(pass === "12345" || pass === "1") {
-                isAdmin = true;
-                document.getElementById('admin-panel').style.display = 'block';
-                alert("🔓 Admin mode Unlocked!");
+                document.getElementById('adminLockBtn').innerText = "Admin Lock";
+                document.getElementById('adminLockBtn').style.background = "var(--accent)";
+                renderStock();
+                alert("🔒 Admin Panel Locked! Staff mode active.");
             } else {
-                alert("❌ Galat Admin Password!");
+                const pass = prompt("Admin PIN Daalein:");
+                if(settings.adminPin === "" || pass === settings.adminPin) {
+                    isAdmin = true;
+                    document.getElementById('admin-panel').style.display = 'block';
+                    document.getElementById('adminLockBtn').innerText = "Lock Admin";
+                    document.getElementById('adminLockBtn').style.background = "#0984e3";
+                    renderStock();
+                    alert("🔓 Admin Panel Unlocked!");
+                } else {
+                    alert("❌ Galat Admin PIN!");
+                }
             }
         }
 
-        // --- 3. CORE LOGIC (RENDER & SEARCH) ---
-        function renderStock(filterText = "") {
-            const listDiv = document.getElementById('stock-list');
-            listDiv.innerHTML = "";
-            let lowStockAlerts = [];
+        // ==========================================
+        // 3. AI ASSISTANT (The Core Engine)
+        // ==========================================
+        function askAI() {
+            const query = document.getElementById('aiInput').value.toLowerCase();
+            const replyBox = document.getElementById('ai-reply');
+            
+            // Render filtered stock list below
+            renderStock(query);
 
-            inventory.forEach(item => {
-                let stock = currentShop === 'Petrol Pump' ? item.stock_pp : item.stock_kp;
+            if(query.length < 2) { replyBox.style.display = "none"; return; }
+
+            let msg = "";
+            let matchFound = false;
+
+            // 1. Check Inventory Match
+            let invMatch = inventory.find(i => i.name.toLowerCase().includes(query));
+            if(invMatch) {
+                matchFound = true;
+                let myStock = currentShop === 'Petrol Pump' ? invMatch.pp : invMatch.kp;
+                let otherStock = currentShop === 'Petrol Pump' ? invMatch.kp : invMatch.pp;
+                let otherShopName = currentShop === 'Petrol Pump' ? 'Khusboo Parking' : 'Petrol Pump';
+
+                msg += `<b>${invMatch.name}</b><br>`;
+                msg += `👉 Yahan (${currentShop}): <b>${myStock} Piece</b><br>`;
                 
-                // Low Stock Detection
-                if(stock < item.min) lowStockAlerts.push(item.name);
+                if(myStock === 0 && otherStock > 0) {
+                    msg += `<span style="color:#d35400;">⚠️ Yahan khatam hai, par <b>${otherShopName} par ${otherStock} piece</b> rakhe hain!</span><br>`;
+                }
+            }
 
-                // Search Filter
-                if(filterText && !item.name.toLowerCase().includes(filterText.toLowerCase())) return;
+            // 2. Check Knowledge Base for Alternatives & Vehicle info
+            for (let key in tyreKnowledge) {
+                if(key.toLowerCase().includes(query) || query.includes(key.toLowerCase())) {
+                    matchFound = true;
+                    let info = tyreKnowledge[key];
+                    msg += `<hr style="margin: 10px 0; border: 0.5px solid #0fb9b1;">`;
+                    msg += `🚙 <b>Gaadiyan:</b> ${info.vehicles}<br>`;
+                    msg += `💡 <b>Alternatives (Uski jagah):</b> Aap <b>${info.alts.join(", ")}</b> laga sakte hain.`;
+                }
+            }
 
-                let isLow = stock < item.min ? "qty-low" : "";
-                
-                listDiv.innerHTML += `
+            if(matchFound) {
+                replyBox.innerHTML = msg;
+                replyBox.style.display = "block";
+            } else {
+                replyBox.innerHTML = `🧐 "${query}" ka data nahi mila. Sahi size type karein.`;
+                replyBox.style.display = "block";
+            }
+        }
+
+        function startVoiceAI() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if(!SpeechRecognition) { alert("Aapka browser Voice mic support nahi karta (Chrome use karein)."); return; }
+            
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'hi-IN';
+            const input = document.getElementById('aiInput');
+            input.placeholder = "Sunaai de raha hai... Boliye!";
+            
+            recognition.onresult = (event) => {
+                input.value = event.results[0][0].transcript;
+                askAI();
+                input.placeholder = "e.g., '155/80 R13' ya 'Splendor tube'...";
+            };
+            recognition.start();
+        }
+
+        // ==========================================
+        // 4. STOCK RENDER & RED GLOW ALERT
+        // ==========================================
+        function renderStock(filter = "") {
+            const list = document.getElementById('stock-list');
+            list.innerHTML = "";
+            let lowCount = 0;
+
+            inventory.forEach((item, index) => {
+                if(filter && !item.name.toLowerCase().includes(filter)) return;
+
+                let stock = currentShop === 'Petrol Pump' ? item.pp : item.kp;
+                let isLow = stock < 5 ? "qty-low" : ""; // RED GLOW logic
+                if(stock < 5) lowCount++;
+
+                // If Admin, show buttons to minus/add stock
+                let adminControls = "";
+                if(isAdmin) {
+                    adminControls = `
+                        <div style="margin-top: 10px; display:flex; gap:5px;">
+                            <button onclick="changeQty(${index}, -1)" style="padding: 5px; background: #ff7675; margin:0;">➖ Bika</button>
+                            <button onclick="changeQty(${index}, 1)" style="padding: 5px; background: #74b9ff; margin:0;">➕ Aaya</button>
+                        </div>
+                    `;
+                }
+
+                list.innerHTML += `
                     <div class="stock-item">
-                        <div class="stock-info">
+                        <div class="stock-info" style="flex-grow: 1;">
                             <h4>${item.name}</h4>
-                            <p>Rack: ${item.type === 'Tyre' ? 'Neeche Wale Rack' : 'Upar Shelf'} | Min Alert: ${item.min}</p>
+                            <p>Type: ${item.type}</p>
+                            ${adminControls}
                         </div>
                         <div class="stock-qty ${isLow}">${stock}</div>
                     </div>
                 `;
             });
 
-            // Auto-Alert logic on top
-            if(!filterText && lowStockAlerts.length > 0 && isAdmin) {
-                // Telegram code can go here
-                console.log("Low Stock Telegram Alert:", lowStockAlerts);
+            // Telegram Alert Mock
+            if(lowCount > 0 && !filter) {
+                console.log("Telegram Alert: " + lowCount + " items are low on stock!");
             }
         }
 
-        // --- 4. AI ASSISTANT KNOWLEDGE BASE ---
-        function searchStock() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            renderStock(query);
+        // ==========================================
+        // 5. ADMIN CONTROLS
+        // ==========================================
+        function populateDropdown() {
+            const sel = document.getElementById('transferItem');
+            if(!sel) return;
+            sel.innerHTML = inventory.map(i => `<option value="${i.id}">${i.name}</option>`).join('');
+        }
+
+        function addNewItem() {
+            let name = document.getElementById('newItemName').value;
+            let type = document.getElementById('newItemType').value;
+            let pp = parseInt(document.getElementById('qtyPP').value) || 0;
+            let kp = parseInt(document.getElementById('qtyKP').value) || 0;
+
+            if(!name) return alert("Item ka naam zaruri hai!");
             
-            const aiReply = document.getElementById('ai-reply');
-            aiReply.style.display = "none";
-
-            if(query.length < 3) return;
-
-            // Magic AI Logic: Find if the searched item is out of stock
-            let searchedItem = inventory.find(i => i.name.toLowerCase().includes(query));
+            inventory.push({ id: Date.now(), name, type, pp, kp });
+            alert("✅ Naya Maal Stock mein add ho gaya!");
             
-            if(searchedItem) {
-                let stock = currentShop === 'Petrol Pump' ? searchedItem.stock_pp : searchedItem.stock_kp;
-                let otherShop = currentShop === 'Petrol Pump' ? searchedItem.stock_kp : searchedItem.stock_pp;
-                let otherShopName = currentShop === 'Petrol Pump' ? 'Khusboo Parking' : 'Petrol Pump';
+            document.getElementById('newItemName').value = "";
+            document.getElementById('qtyPP').value = "";
+            document.getElementById('qtyKP').value = "";
+            saveDB();
+        }
 
-                if(stock === 0) {
-                    let msg = `⚠️ ${searchedItem.name} aapki dukaan par khatam hai.`;
-                    
-                    // 1. Check other shop
-                    if(otherShop > 0) {
-                        msg += `<br>👉 Lekin <b>${otherShopName}</b> par <b>${otherShop} piece</b> pade hain!`;
-                    }
-                    
-                    // 2. Check Alternatives (Knowledge Base)
-                    if(searchedItem.alt.length > 0) {
-                        msg += `<br>💡 <b>Customer ko wapas mat bhejo!</b> Iski jagah aap <b>${searchedItem.alt.join(" ya ")}</b> laga sakte ho. Unka stock check karo.`;
-                    }
-                    
-                    aiReply.innerHTML = msg;
-                    aiReply.style.display = "block";
-                }
+        function changeQty(index, amount) {
+            if(currentShop === 'Petrol Pump') {
+                inventory[index].pp += amount;
+                if(inventory[index].pp < 0) inventory[index].pp = 0;
+            } else {
+                inventory[index].kp += amount;
+                if(inventory[index].kp < 0) inventory[index].kp = 0;
             }
-        }
-
-        // Voice Recognition Module
-        function startMic() {
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if(!SpeechRecognition) { alert("Mic is browser mein support nahi karta."); return; }
-            
-            const recognition = new SpeechRecognition();
-            recognition.lang = 'hi-IN';
-            document.getElementById('searchInput').placeholder = "Sun raha hoon... Boliye!";
-            
-            recognition.onresult = (event) => {
-                const text = event.results[0][0].transcript;
-                document.getElementById('searchInput').value = text;
-                searchStock();
-            };
-            recognition.start();
-        }
-
-        // --- 5. ADMIN TOOLS (Transfer, WA Order, Mismatch) ---
-        function populateTransferDropdown() {
-            const select = document.getElementById('transferItem');
-            select.innerHTML = inventory.map(i => `<option value="${i.id}">${i.name}</option>`).join('');
+            saveDB();
         }
 
         function transferStock() {
-            if(!isAdmin) return;
-            const itemId = document.getElementById('transferItem').value;
-            const qty = parseInt(document.getElementById('transferQty').value);
-            const dir = document.getElementById('transferDirection').value;
+            let id = parseInt(document.getElementById('transferItem').value);
+            let qty = parseInt(document.getElementById('transferQty').value);
+            let dir = document.getElementById('transferDir').value;
 
-            if(!qty || qty <= 0) return alert("Sahi Quantity daalein!");
+            if(!qty || qty <= 0) return alert("Quantity sahi daalein!");
 
-            let itemIndex = inventory.findIndex(i => i.id === itemId);
+            let itemIndex = inventory.findIndex(i => i.id === id);
             
             if(dir === "P2K") {
-                if(inventory[itemIndex].stock_pp < qty) return alert("Petrol Pump par itna maal nahi hai!");
-                inventory[itemIndex].stock_pp -= qty;
-                inventory[itemIndex].stock_kp += qty;
+                if(inventory[itemIndex].pp < qty) return alert("Petrol pump par itna stock nahi hai!");
+                inventory[itemIndex].pp -= qty;
+                inventory[itemIndex].kp += qty;
             } else {
-                if(inventory[itemIndex].stock_kp < qty) return alert("Khusboo Parking par itna maal nahi hai!");
-                inventory[itemIndex].stock_kp -= qty;
-                inventory[itemIndex].stock_pp += qty;
+                if(inventory[itemIndex].kp < qty) return alert("Khusboo Parking par itna stock nahi hai!");
+                inventory[itemIndex].kp -= qty;
+                inventory[itemIndex].pp += qty;
             }
-
+            alert("✅ Maal Transfer done!");
+            document.getElementById('transferQty').value = "";
             saveDB();
-            alert("✅ Maal Transfer Ho Gaya!");
         }
 
-        function whatsappSupplier() {
-            // Find items below minimum threshold
-            let orderList = inventory.filter(i => (i.stock_pp + i.stock_kp) < i.min);
-            if(orderList.length === 0) return alert("Sabhi items ka stock full hai!");
-
-            let msg = "Namaste Bhai,\nMujhe in items ki requirement hai (TyreXpert):\n\n";
-            orderList.forEach(i => {
-                let required = i.min - (i.stock_pp + i.stock_kp) + 10; // Order 10 extra
-                msg += `- ${i.name}: ${required} Piece\n`;
-            });
-            msg += "\nJaldi bhejwa dijiye.";
-
-            // supplier ka number yahan daalein
-            const phone = "919999999999"; 
-            const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
-            window.open(url, '_blank');
-        }
-
-        function checkMismatch() {
-            // Dummy logic: Usually compares Daily Sales array with actual input.
-            alert("🕵️ Radar Active: Puraane Godown stock aur aaj ki entry match ho rahi hai... Koi silent leak detect nahi hua.");
+        function changePasswords() {
+            let newApp = document.getElementById('newAppPass').value;
+            let newAdmin = document.getElementById('newAdminPass').value;
+            
+            if(newApp !== "") settings.appPin = newApp;
+            if(newAdmin !== "") settings.adminPin = newAdmin;
+            
+            alert("✅ Passwords updated! (Khali chhodne par password disable ho jayega)");
+            document.getElementById('newAppPass').value = "";
+            document.getElementById('newAdminPass').value = "";
+            saveDB();
         }
 
     </script>
