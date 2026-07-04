@@ -52,7 +52,7 @@
         .search-container input { margin: 0; border: 2px solid var(--blue); border-radius: 25px; padding-left: 20px; }
         .mic-btn { width: 55px; border-radius: 50%; background: var(--blue); color: white; border: none; font-size: 1.5rem; display: flex; justify-content: center; align-items: center; cursor: pointer; }
 
-        .smart-alert { background: #ffeaa7; border-left: 5px solid #fdcb6e; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; color: #d35400; display: none; }
+        .smart-alert { background: #ffeaa7; border-left: 5px solid #fdcb6e; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; color: #d35400; display: none; line-height: 1.5; }
 
         .stock-item { background: white; padding: 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-left: 4px solid var(--dark); }
         .qty-box { background: var(--bg); padding: 10px 15px; border-radius: 8px; font-size: 1.5rem; font-weight: 900; text-align: center; min-width: 60px; }
@@ -69,6 +69,7 @@
 </head>
 <body>
 
+    <!-- 1. LOGIN SCREEN -->
     <div id="auth-screen" class="screen">
         <div class="auth-box">
             <h1 class="logo" style="font-size: 2.5rem;">Tyre<span>Xpert</span></h1>
@@ -78,6 +79,7 @@
         </div>
     </div>
 
+    <!-- 2. DASHBOARD / SHOP SELECT -->
     <div id="dashboard-screen" class="screen hidden">
         <div class="top-bar" style="border-radius: 10px; margin-bottom: 20px;">
             <div class="logo">Tyre<span>Xpert</span></div>
@@ -102,6 +104,7 @@
         <button class="btn btn-blue" onclick="openShop('Khusboo Parking')">🅿️ Khusboo Parking</button>
     </div>
 
+    <!-- 3. INVENTORY SCREEN -->
     <div id="inventory-screen" class="screen hidden">
         <div class="top-bar" style="border-radius: 10px; margin-bottom: 20px;">
             <button onclick="goBack()" style="width:auto; padding:5px 10px; margin:0; border:none; border-radius:5px; background:white; color:black; font-weight:bold;">🔙 Back</button>
@@ -109,26 +112,40 @@
             <div class="admin-icon" onclick="openAdminAuth()">👑</div>
         </div>
 
+        <!-- Low Stock Alert Box -->
         <div id="low-stock-box" class="glow-red-heading hidden">
             ⚠️ Khatam Hone Wala Maal (Qty < 5)
             <div id="low-stock-list" style="font-weight: normal; margin-top: 10px; text-align: left; font-size: 0.9rem;"></div>
         </div>
 
+        <!-- Search & Mic -->
         <div class="search-container">
-            <input type="text" id="searchInput" placeholder="Search tyre, tube..." oninput="handleSearch()">
+            <input type="text" id="searchInput" placeholder="Search product..." oninput="handleSearch()">
             <button class="mic-btn" onclick="startMic()">🎤</button>
         </div>
 
+        <!-- Smart Assistant Alert -->
         <div id="smart-alert" class="smart-alert"></div>
 
+        <!-- Full Stock List -->
         <h3 style="margin-bottom: 10px;">📦 Saara Stock</h3>
         <div id="stock-list-container"></div>
     </div>
 
+    <!-- 4. ADMIN PANEL (MODAL) -->
     <div id="admin-modal">
         <button class="close-admin" onclick="closeAdmin()">❌ Close Admin Panel</button>
         <h2 style="text-align: center; margin-bottom: 20px; color: var(--blue);">Admin Control Center</h2>
 
+        <!-- Delete Product -->
+        <div class="admin-section" style="border-color: var(--red); background: #ffefef;">
+            <h3 style="color: var(--red); border-bottom-color: var(--red);">🗑️ Product Delete Karein</h3>
+            <p style="font-size: 0.85rem; margin-bottom: 10px; color: #555;">Galat add hua maal yahan se delete karein.</p>
+            <select id="deleteItemSelect"></select>
+            <button class="btn btn-red" onclick="deleteProduct()">Hamesha ke liye Delete Karein</button>
+        </div>
+
+        <!-- Defect Claim -->
         <div class="admin-section">
             <h3>🛑 Defect Claim</h3>
             <select id="defectItem"></select>
@@ -137,20 +154,22 @@
                 <option value="Khusboo Parking">Khusboo Parking se minus</option>
             </select>
             <input type="number" id="defectQty" placeholder="Kitne piece defect hain?">
-            <button class="btn btn-red" onclick="claimDefect()">Defect mein daalo (Minus Stock)</button>
+            <button class="btn btn-dark" onclick="claimDefect()">Defect mein daalo (Minus Stock)</button>
         </div>
 
+        <!-- Add New Product -->
         <div class="admin-section">
             <h3>➕ Naya Product Add Karo</h3>
             <input type="text" id="newName" placeholder="Product Name (e.g. 155/80 R13 CEAT)">
-            <input type="text" id="newAlts" placeholder="Alternatives (e.g. 165/70 R13) - comma se alag karein">
+            <input type="text" id="newAlts" placeholder="Alternatives (optional) - comma se alag karein">
             <div style="display: flex; gap:10px;">
                 <input type="number" id="newPP" placeholder="Petrol Pump Qty">
                 <input type="number" id="newKP" placeholder="Khusboo P. Qty">
             </div>
-            <button class="btn btn-dark" onclick="addProduct()">Add to System</button>
+            <button class="btn btn-blue" onclick="addProduct()">Add to System</button>
         </div>
 
+        <!-- Transfer Stock -->
         <div class="admin-section">
             <h3>🔄 Dukaan Transfer</h3>
             <select id="transferItem"></select>
@@ -159,9 +178,10 @@
                 <option value="K2P">Khusboo Parking ➡️ Petrol Pump</option>
             </select>
             <input type="number" id="transferQty" placeholder="Quantity">
-            <button class="btn btn-blue" onclick="transferStock()">Transfer Maal</button>
+            <button class="btn btn-green" onclick="transferStock()">Transfer Maal</button>
         </div>
 
+        <!-- Update Leaderboard -->
         <div class="admin-section">
             <h3>🏆 Update Staff Rank</h3>
             <p style="font-size:0.8rem; margin-bottom:5px;">Rank 1 (Champion)</p>
@@ -171,47 +191,41 @@
             <p style="font-size:0.8rem; margin-top:10px; margin-bottom:5px;">Rank 2</p>
             <input type="text" id="r2Name" placeholder="Rank 2 Name">
             <input type="text" id="r2Pic" placeholder="Rank 2 Photo URL (Link)">
-            <button class="btn btn-green" onclick="updateLeaderboard()">Update Leaderboard</button>
+            <button class="btn btn-dark" onclick="updateLeaderboard()">Update Leaderboard</button>
         </div>
 
+        <!-- Change Passwords -->
         <div class="admin-section">
             <h3>🔑 Passwords Change</h3>
             <input type="text" id="chgAppPass" placeholder="Naya App Password">
             <input type="text" id="chgAdminPass" placeholder="Naya Admin Password">
-            <button class="btn btn-dark" onclick="updatePasswords()">Save Passwords</button>
+            <button class="btn btn-blue" onclick="updatePasswords()">Save Passwords</button>
         </div>
     </div>
 
     <script>
         // ==========================================
-        // 1. DATABASE SETUP (LocalStorage)
+        // 1. DATABASE SETUP (Empty Initial State)
         // ==========================================
         
-        let settings = JSON.parse(localStorage.getItem('tyre_set')) || { appPin: "1234", adminPin: "1234" };
-        let leaderboard = JSON.parse(localStorage.getItem('tyre_ldr')) || {
+        let settings = JSON.parse(localStorage.getItem('tx_set_v3')) || { appPin: "308913", adminPin: "12345" };
+        let leaderboard = JSON.parse(localStorage.getItem('tx_ldr_v3')) || {
             r1: { name: "Iliyas", img: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png" },
             r2: { name: "Raghav", img: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png" }
         };
         
-        let defaultInv = [
-            { id: 1, name: "155/80 R13 MRF (Alto/Swift)", pp: 2, kp: 0, alts: ["165/70 R13", "145/80 R13"] },
-            { id: 2, name: "165/70 R13 Apollo", pp: 6, kp: 3, alts: ["155/80 R13"] },
-            { id: 3, name: "3.00-18 Tube (Splendor)", pp: 0, kp: 5, alts: ["2.75-18", "90/90-18"] },
-            { id: 4, name: "14-Inch Heavy Tube", pp: 10, kp: 12, alts: ["14-Inch Normal"] },
-            { id: 5, name: "195/55 R16 (Baleno)", pp: 1, kp: 1, alts: ["185/60 R16"] }
-        ];
-        
-        let inventory = JSON.parse(localStorage.getItem('tyre_inv')) || defaultInv;
-        let defects = JSON.parse(localStorage.getItem('tyre_def')) || [];
+        let defaultInv = [];
+        let inventory = JSON.parse(localStorage.getItem('tx_inv_v3')) || defaultInv;
+        let defects = JSON.parse(localStorage.getItem('tx_def_v3')) || [];
 
         let currentShop = "";
         let isAdminLoggedIn = false;
 
         function saveData() {
-            localStorage.setItem('tyre_set', JSON.stringify(settings));
-            localStorage.setItem('tyre_ldr', JSON.stringify(leaderboard));
-            localStorage.setItem('tyre_inv', JSON.stringify(inventory));
-            localStorage.setItem('tyre_def', JSON.stringify(defects));
+            localStorage.setItem('tx_set_v3', JSON.stringify(settings));
+            localStorage.setItem('tx_ldr_v3', JSON.stringify(leaderboard));
+            localStorage.setItem('tx_inv_v3', JSON.stringify(inventory));
+            localStorage.setItem('tx_def_v3', JSON.stringify(defects));
         }
 
         // ==========================================
@@ -239,8 +253,8 @@
             document.getElementById('dashboard-screen').classList.add('hidden');
             document.getElementById('inventory-screen').classList.remove('hidden');
             document.getElementById('shop-title').innerText = shop;
-            isAdminLoggedIn = false; // Reset admin on shop change
-            document.getElementById('searchInput').value = ""; // Clear search
+            isAdminLoggedIn = false; 
+            document.getElementById('searchInput').value = ""; 
             document.getElementById('smart-alert').style.display = "none";
             renderInventory();
         }
@@ -257,7 +271,7 @@
                 populateAdminDropdowns();
                 fillAdminSettings();
                 document.getElementById('admin-modal').style.display = "block";
-                renderInventory(); // Rerender to show +/- buttons if on inv screen
+                renderInventory(); 
             } else if(pin) {
                 alert("❌ Galat Admin Password!");
             }
@@ -266,7 +280,7 @@
         function closeAdmin() {
             isAdminLoggedIn = false;
             document.getElementById('admin-modal').style.display = "none";
-            renderInventory(); // Rerender to hide +/- buttons
+            renderInventory(); 
         }
 
         // ==========================================
@@ -282,19 +296,25 @@
             lowList.innerHTML = "";
             let lowCount = 0;
 
+            if (inventory.length === 0) {
+                listContainer.innerHTML = "<p style='text-align:center; color:#7f8c8d;'>Stock empty hai. Admin panel se maal add karein.</p>";
+            }
+
             inventory.forEach((item, index) => {
-                let qty = currentShop === 'Petrol Pump' ? item.pp : item.kp;
+                let myQty = currentShop === 'Petrol Pump' ? item.pp : item.kp;
+                let otherQty = currentShop === 'Petrol Pump' ? item.kp : item.pp;
+                let otherShopName = currentShop === 'Petrol Pump' ? 'Khusboo Parking' : 'Petrol Pump';
                 
-                // 1. Populate Low Stock Header (Only if no search filter is active)
-                if(qty > 0 && qty < 5 && !filterText) {
+                // Low Stock Header
+                if(myQty > 0 && myQty < 5 && !filterText) {
                     lowCount++;
-                    lowList.innerHTML += `• ${item.name} <b>(${qty} bache hain)</b><br>`;
+                    lowList.innerHTML += `• ${item.name} <b>(${myQty} piece)</b><br>`;
                 }
 
-                // 2. Search Filter
+                // Search Filter
                 if(filterText && !item.name.toLowerCase().includes(filterText.toLowerCase())) return;
 
-                // 3. Render Item
+                // Admin Controls
                 let adminBtns = isAdminLoggedIn ? `
                     <div class="admin-controls">
                         <button class="btn-red" onclick="updateQty(${index}, -1)">➖ Minus</button>
@@ -302,14 +322,26 @@
                     </div>
                 ` : "";
 
+                let altText = (item.alts && item.alts.length > 0) ? item.alts.join(", ") : "Koi nahi";
+
+                // NEW: OTHER SHOP AVAILABILITY ALERT (Inside the item list itself)
+                let otherShopAlert = "";
+                if (myQty === 0 && otherQty > 0) {
+                    otherShopAlert = `
+                    <div style="background: #e8f8f5; color: #0fb9b1; padding: 5px 10px; border-radius: 5px; font-size: 0.85rem; font-weight: bold; margin-top: 5px; border-left: 3px solid #0fb9b1;">
+                        👉 Yahan khatam hai, par ${otherShopName} par ${otherQty} piece hain!
+                    </div>`;
+                }
+
                 listContainer.innerHTML += `
                     <div class="stock-item">
                         <div style="flex-grow:1;">
                             <h4>${item.name}</h4>
-                            <p>Alternatives: ${item.alts.join(", ") || "N/A"}</p>
+                            <p style="font-size:0.8rem; color:#7f8c8d;">Alternatives: ${altText}</p>
+                            ${otherShopAlert}
                             ${adminBtns}
                         </div>
-                        <div class="qty-box" style="color: ${qty < 5 ? 'red' : 'inherit'};">${qty}</div>
+                        <div class="qty-box" style="color: ${myQty < 5 ? 'red' : 'inherit'};">${myQty}</div>
                     </div>
                 `;
             });
@@ -331,7 +363,6 @@
 
             if(query.length < 2) return;
 
-            // SMART ASSISTANT LOGIC
             let exactMatch = inventory.find(i => i.name.toLowerCase().includes(query));
             
             if(exactMatch) {
@@ -348,7 +379,7 @@
                         msg += `<br>❌ Dono dukaan par khatam hai.`;
                     }
 
-                    if(exactMatch.alts.length > 0) {
+                    if(exactMatch.alts && exactMatch.alts.length > 0) {
                         msg += `<br><br>💡 <b>Alternative (Iski jagah laga do):</b><br>`;
                         exactMatch.alts.forEach(altName => {
                             let altItem = inventory.find(i => i.name.toLowerCase().includes(altName.toLowerCase()));
@@ -379,19 +410,20 @@
             recognition.onresult = (e) => {
                 input.value = e.results[0][0].transcript;
                 handleSearch();
-                input.placeholder = "Search tyre, tube...";
+                input.placeholder = "Search product...";
             };
             recognition.start();
         }
 
         // ==========================================
-        // 4. ADMIN ACTIONS
+        // 4. ADMIN ACTIONS 
         // ==========================================
 
         function populateAdminDropdowns() {
             let options = inventory.map(i => `<option value="${i.id}">${i.name}</option>`).join("");
-            document.getElementById('defectItem').innerHTML = options;
-            document.getElementById('transferItem').innerHTML = options;
+            document.getElementById('defectItem').innerHTML = options || "<option value=''>Pehle stock add karein</option>";
+            document.getElementById('transferItem').innerHTML = options || "<option value=''>Pehle stock add karein</option>";
+            document.getElementById('deleteItemSelect').innerHTML = options || "<option value=''>Pehle stock add karein</option>";
         }
 
         function fillAdminSettings() {
@@ -415,9 +447,27 @@
             renderInventory(document.getElementById('searchInput').value);
         }
 
+        function deleteProduct() {
+            let id = parseInt(document.getElementById('deleteItemSelect').value);
+            if(!id) return alert("Product select karein!");
+            
+            let itemIndex = inventory.findIndex(i => i.id === id);
+            if(itemIndex === -1) return;
+            
+            let confirmDelete = confirm(`⚠️ DHYAN DEIN!\nKya aap sach mein '${inventory[itemIndex].name}' ko hamesha ke liye delete karna chahte hain?`);
+            if(confirmDelete) {
+                inventory.splice(itemIndex, 1);
+                saveData();
+                populateAdminDropdowns();
+                renderInventory(document.getElementById('searchInput').value);
+                alert("✅ Product hamesha ke liye delete ho gaya!");
+            }
+        }
+
         function addProduct() {
             let name = document.getElementById('newName').value;
-            let alts = document.getElementById('newAlts').value.split(',').map(s => s.trim()).filter(s => s);
+            let altsString = document.getElementById('newAlts').value;
+            let alts = altsString ? altsString.split(',').map(s => s.trim()).filter(s => s) : [];
             let pp = parseInt(document.getElementById('newPP').value) || 0;
             let kp = parseInt(document.getElementById('newKP').value) || 0;
 
@@ -426,6 +476,7 @@
             inventory.push({ id: Date.now(), name, pp, kp, alts });
             saveData();
             populateAdminDropdowns();
+            renderInventory(document.getElementById('searchInput').value);
             alert("✅ Naya Product Add ho gaya!");
             
             document.getElementById('newName').value = "";
@@ -436,6 +487,8 @@
 
         function claimDefect() {
             let id = parseInt(document.getElementById('defectItem').value);
+            if(!id) return alert("Item select karein!");
+            
             let shop = document.getElementById('defectShop').value;
             let qty = parseInt(document.getElementById('defectQty').value);
 
@@ -453,12 +506,15 @@
 
             defects.push({ id: item.id, name: item.name, shop: shop, qty: qty, date: new Date().toLocaleDateString() });
             saveData();
+            renderInventory(document.getElementById('searchInput').value);
             alert("✅ Defect claim log ho gaya aur stock minus ho gaya!");
             document.getElementById('defectQty').value = "";
         }
 
         function transferStock() {
             let id = parseInt(document.getElementById('transferItem').value);
+            if(!id) return alert("Item select karein!");
+            
             let dir = document.getElementById('transferDir').value;
             let qty = parseInt(document.getElementById('transferQty').value);
 
@@ -475,6 +531,7 @@
                 item.pp += qty;
             }
             saveData();
+            renderInventory(document.getElementById('searchInput').value);
             alert("✅ Transfer Success!");
             document.getElementById('transferQty').value = "";
         }
