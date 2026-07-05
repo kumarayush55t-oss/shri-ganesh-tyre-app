@@ -1,30 +1,4 @@
-White screen (blank screen) dikhne ka sabse bada aur main kaaran yeh hai ki aapne Firebase Console mein **Realtime Database** ko create ya activate nahi kiya hai, ya fir aapke database ka URL sahi nahi hai.
-Jab JavaScript Firebase Database se connect karne ki koshish karta hai aur use database nahi milta, toh code crash ho jata hai aur screen bilkul white dikhne lagti hai.
-Is problem ko theek karne ke liye niche diye gaye steps ko dhyan se follow karein:
-### Step 1: Firebase Console mein Realtime Database Create Karein
- 1. Apne **Firebase Console** par jayein.
- 2. Left side menu mein **Build** ke andar **Realtime Database** par click karein.
- 3. **Create Database** par click karein.
- 4. Database ki location select karein (Aap *United States (us-central1)* ya koi bhi paas ki location chun sakte hain).
- 5. **Rules** tab mein aane par, abhi ke liye **Test Mode** select kar lein (taaki aapka code bina authentication ke chal sake).
-   * *Yaad rakhein:* Test mode mein rules ".read": true aur ".write": true hote hain.
-### Step 2: Database URL Code mein Check Karein
-Realtime Database create karne ke baad, aapko ek URL milega (jaise: https://your-project-id-default-rtdb.firebaseio.com/).
-Upar diye gaye code mein maine is line ko add kiya tha:
-```javascript
-databaseURL: "https://staff-managemant-default-rtdb.firebaseio.com",
 
-```
-Agar aapke Realtime Database ka URL isse alag hai, toh code mein databaseURL ke aage apna sahi URL copy karke paste karein.
-### Step 3: Browser Ka Console Error Check Karein (Aasani se samajhne ke liye)
-Agar upar ke steps ke baad bhi screen white dikhe, toh yeh pata karne ke liye ki problem kahan hai:
- 1. Apne computer/phone ke browser mein page ko kholein.
- 2. Keyboard par **F12** dabayein ya fir screen par right-click karke **Inspect** par click karein.
- 3. Wahan **Console** tab par click karein.
- 4. Console mein jo bhi **Red Color (Lal rang)** ka error dikh raha hai, use padhein. Wahan likha hoga ki kis line par code ruk raha hai.
-### Sahi Tarike Se Chalane Ka Complete Code:
-Aap ek baar fir se is poore code ko copy karke save karein aur dhyan rakhein ki aapka internet connection on ho (kyunki Firebase ke CDN links load hone ke liye internet jaroori hai):
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
