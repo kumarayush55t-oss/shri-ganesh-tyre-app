@@ -1,3 +1,30 @@
+White screen (blank screen) dikhne ka sabse bada aur main kaaran yeh hai ki aapne Firebase Console mein **Realtime Database** ko create ya activate nahi kiya hai, ya fir aapke database ka URL sahi nahi hai.
+Jab JavaScript Firebase Database se connect karne ki koshish karta hai aur use database nahi milta, toh code crash ho jata hai aur screen bilkul white dikhne lagti hai.
+Is problem ko theek karne ke liye niche diye gaye steps ko dhyan se follow karein:
+### Step 1: Firebase Console mein Realtime Database Create Karein
+ 1. Apne **Firebase Console** par jayein.
+ 2. Left side menu mein **Build** ke andar **Realtime Database** par click karein.
+ 3. **Create Database** par click karein.
+ 4. Database ki location select karein (Aap *United States (us-central1)* ya koi bhi paas ki location chun sakte hain).
+ 5. **Rules** tab mein aane par, abhi ke liye **Test Mode** select kar lein (taaki aapka code bina authentication ke chal sake).
+   * *Yaad rakhein:* Test mode mein rules ".read": true aur ".write": true hote hain.
+### Step 2: Database URL Code mein Check Karein
+Realtime Database create karne ke baad, aapko ek URL milega (jaise: https://your-project-id-default-rtdb.firebaseio.com/).
+Upar diye gaye code mein maine is line ko add kiya tha:
+```javascript
+databaseURL: "https://staff-managemant-default-rtdb.firebaseio.com",
+
+```
+Agar aapke Realtime Database ka URL isse alag hai, toh code mein databaseURL ke aage apna sahi URL copy karke paste karein.
+### Step 3: Browser Ka Console Error Check Karein (Aasani se samajhne ke liye)
+Agar upar ke steps ke baad bhi screen white dikhe, toh yeh pata karne ke liye ki problem kahan hai:
+ 1. Apne computer/phone ke browser mein page ko kholein.
+ 2. Keyboard par **F12** dabayein ya fir screen par right-click karke **Inspect** par click karein.
+ 3. Wahan **Console** tab par click karein.
+ 4. Console mein jo bhi **Red Color (Lal rang)** ka error dikh raha hai, use padhein. Wahan likha hoga ki kis line par code ruk raha hai.
+### Sahi Tarike Se Chalane Ka Complete Code:
+Aap ek baar fir se is poore code ko copy karke save karein aur dhyan rakhein ki aapka internet connection on ho (kyunki Firebase ke CDN links load hone ke liye internet jaroori hai):
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,11 +32,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>TyreXpert Stock Master</title>
     <style>
-        :root { --dark: #1e272e; --red: #ff3f34; --green: #0be881; --blue: #0984e3; --bg: #f5f6fa; --card: #ffffff; }
+        :root { 
+            --dark: #1e272e; 
+            --red: #ff3f34; 
+            --green: #0be881; 
+            --blue: #0984e3; 
+            --bg: #f5f6fa; 
+            --card: #ffffff; 
+        }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background: var(--bg); color: var(--dark); }
-
-        /* General Classes */
         .hidden { display: none !important; }
         .btn { width: 100%; padding: 15px; margin-bottom: 10px; border: none; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; color: white; }
         .btn-blue { background: var(--blue); }
@@ -17,49 +49,31 @@
         .btn-red { background: var(--red); }
         .btn-dark { background: var(--dark); }
         input, select { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #d2dae2; border-radius: 8px; font-size: 1rem; outline: none; }
-        
-        /* Headers */
         .top-bar { background: var(--dark); color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .logo { font-size: 1.5rem; font-weight: 900; font-style: italic; }
         .logo span { color: var(--red); }
         .admin-icon { font-size: 1.5rem; cursor: pointer; background: #fff; border-radius: 50%; padding: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.2); }
-
-        /* Screens */
         .screen { padding: 20px; max-width: 600px; margin: 0 auto; min-height: 100vh; }
-        
-        /* Auth Screen */
         #auth-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; background: var(--dark); color: white; }
         .auth-box { background: white; color: var(--dark); padding: 30px; border-radius: 15px; width: 90%; max-width: 400px; text-align: center; }
-
-        /* Leaderboard & Dashboard */
         .leaderboard { display: flex; justify-content: center; align-items: flex-end; gap: 20px; margin-bottom: 30px; padding: 20px; background: white; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .staff-card { text-align: center; }
         .staff-img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #d2dae2; }
-        
-        /* Rank 1 Celebration Animation */
         .rank-1 .staff-img { width: 110px; height: 110px; border: 4px solid #f1c40f; box-shadow: 0 0 20px #f1c40f; animation: celebrate 2s infinite alternate; }
         .rank-1 .badge { font-size: 2rem; display: block; margin-bottom: -15px; z-index: 10; position: relative; animation: bounce 1s infinite alternate; }
         .rank-2 .badge { font-size: 1.5rem; display: block; margin-bottom: -10px; z-index: 10; position: relative; }
-        
         @keyframes celebrate { 0% { transform: scale(1); box-shadow: 0 0 10px #f1c40f; } 100% { transform: scale(1.05); box-shadow: 0 0 30px #f39c12; } }
         @keyframes bounce { 0% { transform: translateY(0); } 100% { transform: translateY(-10px); } }
-
-        /* Inventory Screen */
         .glow-red-heading { background: #ff7675; color: white; padding: 15px; border-radius: 10px; margin-bottom: 20px; font-weight: 900; text-align: center; box-shadow: 0 0 15px #ff7675; animation: redGlow 1s infinite alternate; border: 2px solid #d63031; }
         @keyframes redGlow { 0% { box-shadow: 0 0 10px #ff7675; } 100% { box-shadow: 0 0 25px #d63031; } }
-
         .search-container { display: flex; gap: 10px; margin-bottom: 20px; }
         .search-container input { margin: 0; border: 2px solid var(--blue); border-radius: 25px; padding-left: 20px; }
         .mic-btn { width: 55px; border-radius: 50%; background: var(--blue); color: white; border: none; font-size: 1.5rem; display: flex; justify-content: center; align-items: center; cursor: pointer; }
-
         .smart-alert { background: #ffeaa7; border-left: 5px solid #fdcb6e; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; color: #d35400; display: none; line-height: 1.5; }
-
         .stock-item { background: white; padding: 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-left: 4px solid var(--dark); }
         .qty-box { background: var(--bg); padding: 10px 15px; border-radius: 8px; font-size: 1.5rem; font-weight: 900; text-align: center; min-width: 60px; }
         .admin-controls { display: flex; gap: 5px; margin-top: 10px; }
         .admin-controls button { padding: 5px 10px; font-size: 0.9rem; margin: 0; width: auto; flex-grow: 1; }
-
-        /* Admin Modal */
         #admin-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 2000; overflow-y: auto; padding: 20px; display: none; }
         .admin-section { background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #d2dae2; }
         .admin-section h3 { margin-bottom: 15px; color: var(--dark); border-bottom: 2px solid #d2dae2; padding-bottom: 5px; }
@@ -68,24 +82,22 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, set, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        // Firebase Configuration (Aapka Address)
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyApY09CHspm5TVxXTVvjnfB6lzwQ7nqltE",
             authDomain: "staff-managemant.firebaseapp.com",
-            databaseURL: "https://staff-managemant-default-rtdb.firebaseio.com", // Aapke real-time db ka link
+            databaseURL: "https://staff-managemant-default-rtdb.firebaseio.com", // Kripya check karein agar aapka URL alag hai
             projectId: "staff-managemant",
             storageBucket: "staff-managemant.firebasestorage.app",
             messagingSenderID: "160818771446",
             appId: "1:160818771446:web:e55f1bfc308c504efb03d7"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // Global Variables
         let settings = { appPin: "308913", adminPin: "12345" };
         let leaderboard = {
             r1: { name: "Iliyas", img: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png" },
@@ -95,16 +107,11 @@
         let currentShop = "";
         let isAdminLoggedIn = false;
 
-        // ==========================================
-        // REALTIME DATABASE SYNC (Sabhi phones par data automatic update hoga)
-        // ==========================================
-        
-        // Listen for Settings changes
+        // Listeners for data synchronization
         onValue(ref(db, 'settings'), (snapshot) => {
             if(snapshot.exists()) { settings = snapshot.val(); }
         });
 
-        // Listen for Leaderboard changes
         onValue(ref(db, 'leaderboard'), (snapshot) => {
             if(snapshot.exists()) {
                 leaderboard = snapshot.val();
@@ -112,16 +119,12 @@
             }
         });
 
-        // Listen for Inventory changes
         onValue(ref(db, 'inventory'), (snapshot) => {
             inventory = snapshot.exists() ? snapshot.val() : [];
             renderInventory(document.getElementById('searchInput').value.toLowerCase().trim());
             populateAdminDropdowns();
         });
 
-        // ==========================================
-        // AUTH & NAVIGATION FUNCTIONS
-        // ==========================================
         window.login = function() {
             let pin = document.getElementById('appPinInput').value;
             if (pin === settings.appPin || settings.appPin === "") {
@@ -129,7 +132,7 @@
                 document.getElementById('dashboard-screen').classList.remove('hidden');
                 renderLeaderboard();
             } else { alert("❌ Galat Password"); }
-        }
+        };
 
         function renderLeaderboard() {
             document.getElementById('rank1-name').innerText = leaderboard.r1.name;
@@ -147,12 +150,12 @@
             document.getElementById('searchInput').value = ""; 
             document.getElementById('smart-alert').style.display = "none";
             renderInventory();
-        }
+        };
 
         window.goBack = function() {
             document.getElementById('inventory-screen').classList.add('hidden');
             document.getElementById('dashboard-screen').classList.remove('hidden');
-        }
+        };
 
         window.openAdminAuth = function() {
             let pin = prompt("Admin Password Daalein:");
@@ -165,41 +168,39 @@
             } else if(pin) {
                 alert("❌ Galat Admin Password!");
             }
-        }
+        };
 
         window.closeAdmin = function() {
             isAdminLoggedIn = false;
             document.getElementById('admin-modal').style.display = "none";
             renderInventory(); 
-        }
+        };
 
-        // ==========================================
-        // RENDER INVENTORY
-        // ==========================================
         function renderInventory(filterText = "") {
             const listContainer = document.getElementById('stock-list-container');
             const lowBox = document.getElementById('low-stock-box');
             const lowList = document.getElementById('low-stock-list');
             
+            if(!listContainer) return;
             listContainer.innerHTML = "";
-            lowList.innerHTML = "";
+            if(lowList) lowList.innerHTML = "";
             let lowCount = 0;
 
             if (!inventory || inventory.length === 0) {
                 listContainer.innerHTML = "<p style='text-align:center; color:#7f8c8d;'>Stock empty hai. Admin panel se maal add karein.</p>";
-                lowBox.classList.add('hidden');
+                if(lowBox) lowBox.classList.add('hidden');
                 return;
             }
 
             inventory.forEach((item, index) => {
-                if(!item) return; // safeguard delete item spaces
+                if(!item) return;
                 let myQty = currentShop === 'Petrol Pump' ? parseInt(item.pp || 0) : parseInt(item.kp || 0);
                 let otherQty = currentShop === 'Petrol Pump' ? parseInt(item.kp || 0) : parseInt(item.pp || 0);
                 let otherShopName = currentShop === 'Petrol Pump' ? 'Khusboo Parking' : 'Petrol Pump';
                 
                 if(myQty > 0 && myQty < 5 && !filterText) {
                     lowCount++;
-                    lowList.innerHTML += `• ${item.name} <b>(${myQty} piece)</b><br>`;
+                    if(lowList) lowList.innerHTML += `• ${item.name} <b>(${myQty} piece)</b><br>`;
                 }
 
                 if(filterText && !item.name.toLowerCase().includes(filterText.toLowerCase())) return;
@@ -234,20 +235,18 @@
                 `;
             });
 
-            if(lowCount > 0 && !filterText) {
-                lowBox.classList.remove('hidden');
-            } else {
-                lowBox.classList.add('hidden');
+            if(lowBox) {
+                if(lowCount > 0 && !filterText) { lowBox.classList.remove('hidden'); } 
+                else { lowBox.classList.add('hidden'); }
             }
         }
 
         window.handleSearch = function() {
             let query = document.getElementById('searchInput').value.toLowerCase().trim();
             renderInventory(query);
-            
             const alertBox = document.getElementById('smart-alert');
+            if(!alertBox) return;
             alertBox.style.display = "none";
-
             if(query.length < 2) return;
 
             let exactMatch = inventory.find(i => i && i.name.toLowerCase().includes(query));
@@ -255,18 +254,13 @@
                 let myQty = currentShop === 'Petrol Pump' ? exactMatch.pp : exactMatch.kp;
                 let otherQty = currentShop === 'Petrol Pump' ? exactMatch.kp : exactMatch.pp;
                 let otherShop = currentShop === 'Petrol Pump' ? 'Khusboo Parking' : 'Petrol Pump';
-
                 if(myQty === 0 && otherQty > 0) {
                     alertBox.innerHTML = `⚠️ <b>${exactMatch.name}</b> yahan khatam hai!<br>👉 Lekin <b>${otherShop} par ${otherQty} piece hain!</b>`;
                     alertBox.style.display = "block";
                 }
             }
-        }
+        };
 
-        // ==========================================
-        // ADMIN PANELS OPERATIONS WITH FIREBASE 
-        // ==========================================
-        
         window.updateQty = function(index, change) {
             let item = inventory[index];
             if(currentShop === 'Petrol Pump') {
@@ -275,7 +269,7 @@
                 item.kp = Math.max(0, parseInt(item.kp || 0) + change);
             }
             set(ref(db, 'inventory/' + index), item);
-        }
+        };
 
         window.addProduct = function() {
             let name = document.getElementById('newName').value.trim();
@@ -287,7 +281,6 @@
 
             let alts = altsInput ? altsInput.split(',').map(s => s.trim()) : [];
             let newItem = { name: name, alts: alts, pp: ppQty, kp: kpQty };
-            
             let newIndex = inventory ? inventory.length : 0;
             set(ref(db, 'inventory/' + newIndex), newItem).then(() => {
                 alert("📦 Naya product add ho gaya!");
@@ -296,7 +289,7 @@
                 document.getElementById('newPP').value = "";
                 document.getElementById('newKP').value = "";
             });
-        }
+        };
 
         window.deleteProduct = function() {
             let index = document.getElementById('deleteItemSelect').value;
@@ -305,51 +298,43 @@
                 inventory.splice(index, 1);
                 set(ref(db, 'inventory'), inventory).then(() => { alert("🗑️ Product deleted!"); });
             }
-        }
+        };
 
         window.claimDefect = function() {
             let index = document.getElementById('defectItem').value;
             let shop = document.getElementById('defectShop').value;
             let qty = parseInt(document.getElementById('defectQty').value) || 0;
-
             if(index === "" || qty <= 0) { alert("Sahi Details Daalein!"); return; }
 
             let item = inventory[index];
-            if(shop === "Petrol Pump") {
-                item.pp = Math.max(0, parseInt(item.pp || 0) - qty);
-            } else {
-                item.kp = Math.max(0, parseInt(item.kp || 0) - qty);
-            }
+            if(shop === "Petrol Pump") { item.pp = Math.max(0, parseInt(item.pp || 0) - qty); } 
+            else { item.kp = Math.max(0, parseInt(item.kp || 0) - qty); }
 
             set(ref(db, 'inventory/' + index), item).then(() => {
                 alert("🛑 Defect Registered and Stock Updated!");
                 document.getElementById('defectQty').value = "";
             });
-        }
+        };
 
         window.transferStock = function() {
             let index = document.getElementById('transferItem').value;
             let dir = document.getElementById('transferDir').value;
             let qty = parseInt(document.getElementById('transferQty').value) || 0;
-
             if(index === "" || qty <= 0) { alert("Sahi Quantity Daalein!"); return; }
 
             let item = inventory[index];
             if(dir === "P2K") {
                 if(item.pp < qty) { alert("Petrol Pump par itna maal nahi hai!"); return; }
-                item.pp = parseInt(item.pp) - qty;
-                item.kp = parseInt(item.kp) + qty;
+                item.pp = parseInt(item.pp) - qty; item.kp = parseInt(item.kp) + qty;
             } else {
                 if(item.kp < qty) { alert("Khusboo Parking par itna maal nahi hai!"); return; }
-                item.kp = parseInt(item.kp) - qty;
-                item.pp = parseInt(item.pp) + qty;
+                item.kp = parseInt(item.kp) - qty; item.pp = parseInt(item.pp) + qty;
             }
-
             set(ref(db, 'inventory/' + index), item).then(() => {
                 alert("🔄 Maal transfer successfully done!");
                 document.getElementById('transferQty').value = "";
             });
-        }
+        };
 
         window.updateLeaderboard = function() {
             let r1n = document.getElementById('r1Name').value.trim();
@@ -363,26 +348,162 @@
             if(r2p) leaderboard.r2.img = r2p;
 
             set(ref(db, 'leaderboard'), leaderboard).then(() => { alert("🏆 Leaderboard Updated!"); });
-        }
+        };
 
         window.updatePasswords = function() {
             let appP = document.getElementById('chgAppPass').value.trim();
             let admP = document.getElementById('chgAdminPass').value.trim();
-
             if(appP) settings.appPin = appP;
             if(admP) settings.adminPin = admP;
-
             set(ref(db, 'settings'), settings).then(() => { alert("🔑 Passwords Successfully updated on Firebase!"); });
-        }
+        };
 
         function populateAdminDropdowns() {
             const delSel = document.getElementById('deleteItemSelect');
             const defSel = document.getElementById('defectItem');
             const traSel = document.getElementById('transferItem');
-
+            if(!delSel || !defSel || !traSel) return;
             delSel.innerHTML = ""; defSel.innerHTML = ""; traSel.innerHTML = "";
 
             inventory.forEach((item, index) => {
                 if(!item) return;
                 let opt = `<option value="${index}">${item.name}</option>`;
-                delSel.innerHTML += opt
+                delSel.innerHTML += opt; defSel.innerHTML += opt; traSel.innerHTML += opt;
+            });
+        }
+
+        function fillAdminSettings() {
+            document.getElementById('r1Name').placeholder = leaderboard.r1.name;
+            document.getElementById('r2Name').placeholder = leaderboard.r2.name;
+            document.getElementById('chgAppPass').placeholder = "Current: " + settings.appPin;
+            document.getElementById('chgAdminPass').placeholder = "Current: " + settings.adminPin;
+        }
+
+        window.startMic = function() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                const recognition = new SpeechRecognition();
+                recognition.lang = 'en-IN'; recognition.start();
+                document.getElementById('searchInput').placeholder = "🎙️ Listening...";
+                recognition.onresult = function(event) {
+                    let text = event.results[0][0].transcript;
+                    document.getElementById('searchInput').value = text;
+                    document.getElementById('searchInput').placeholder = "Search product...";
+                    window.handleSearch();
+                };
+                recognition.onerror = function() {
+                    document.getElementById('searchInput').placeholder = "Search product...";
+                    alert("🎙️ Awaaz samajh nahi aayi, firse try karein.");
+                };
+            } else { alert("Aapka browser voice typing support nahi karta."); }
+        };
+    </script>
+</head>
+<body>
+    <div id="auth-screen" class="screen">
+        <div class="auth-box">
+            <h1 class="logo" style="font-size: 2.5rem;">Tyre<span>Xpert</span></h1>
+            <p style="margin: 10px 0 20px; font-weight: bold;">App Lock</p>
+            <input type="password" id="appPinInput" placeholder="Password Daalein">
+            <button class="btn btn-dark" onclick="login()">Enter App</button>
+        </div>
+    </div>
+
+    <div id="dashboard-screen" class="screen hidden">
+        <div class="top-bar" style="border-radius: 10px; margin-bottom: 20px;">
+            <div class="logo">Tyre<span>Xpert</span></div>
+            <div class="admin-icon" onclick="openAdminAuth()">👑</div>
+        </div>
+        <div class="leaderboard">
+            <div class="staff-card rank-2">
+                <span class="badge">🥈</span>
+                <img id="rank2-img" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="staff-img">
+                <h4 id="rank2-name" style="margin-top:10px;">Staff 2</h4>
+            </div>
+            <div class="staff-card rank-1">
+                <span class="badge">🏆</span>
+                <img id="rank1-img" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="staff-img">
+                <h3 id="rank1-name" style="margin-top:10px; color: #d35400;">Staff 1</h3>
+            </div>
+        </div>
+        <h2 style="text-align: center; margin-bottom: 20px;">Kahan ka stock dekhna hai?</h2>
+        <button class="btn btn-dark" onclick="openShop('Petrol Pump')">⛽ Petrol Pump</button>
+        <button class="btn btn-blue" onclick="openShop('Khusboo Parking')">🅿️ Khusboo Parking</button>
+    </div>
+
+    <div id="inventory-screen" class="screen hidden">
+        <div class="top-bar" style="border-radius: 10px; margin-bottom: 20px;">
+            <button onclick="goBack()" style="width:auto; padding:5px 10px; margin:0; border:none; border-radius:5px; background:white; color:black; font-weight:bold;">🔙 Back</button>
+            <h3 id="shop-title">Shop Name</h3>
+            <div class="admin-icon" onclick="openAdminAuth()">👑</div>
+        </div>
+        <div id="low-stock-box" class="glow-red-heading hidden">
+            ⚠️ Khatam Hone Wala Maal (Qty < 5)
+            <div id="low-stock-list" style="font-weight: normal; margin-top: 10px; text-align: left; font-size: 0.9rem;"></div>
+        </div>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search product..." oninput="handleSearch()">
+            <button class="mic-btn" onclick="startMic()">🎤</button>
+        </div>
+        <div id="smart-alert" class="smart-alert"></div>
+        <h3 style="margin-bottom: 10px;">📦 Saara Stock</h3>
+        <div id="stock-list-container"></div>
+    </div>
+
+    <div id="admin-modal">
+        <button class="close-admin" onclick="closeAdmin()">❌ Close Admin Panel</button>
+        <h2 style="text-align: center; margin-bottom: 20px; color: var(--blue);">Admin Control Center</h2>
+        <div class="admin-section" style="border-color: var(--red); background: #ffefef;">
+            <h3 style="color: var(--red); border-bottom-color: var(--red);">🗑️ Product Delete Karein</h3>
+            <select id="deleteItemSelect"></select>
+            <button class="btn btn-red" onclick="deleteProduct()">Hamesha ke liye Delete Karein</button>
+        </div>
+        <div class="admin-section">
+            <h3>🛑 Defect Claim</h3>
+            <select id="defectItem"></select>
+            <select id="defectShop">
+                <option value="Petrol Pump">Petrol Pump se minus</option>
+                <option value="Khusboo Parking">Khusboo Parking se minus</option>
+            </select>
+            <input type="number" id="defectQty" placeholder="Kitne piece defect hain?">
+            <button class="btn btn-dark" onclick="claimDefect()">Defect mein daalo (Minus Stock)</button>
+        </div>
+        <div class="admin-section">
+            <h3>➕ Naya Product Add Karo</h3>
+            <input type="text" id="newName" placeholder="Product Name (e.g. 155/80 R13 CEAT)">
+            <input type="text" id="newAlts" placeholder="Alternatives (optional)">
+            <div style="display: flex; gap:10px;">
+                <input type="number" id="newPP" placeholder="Petrol Pump Qty">
+                <input type="number" id="newKP" placeholder="Khusboo P. Qty">
+            </div>
+            <button class="btn btn-blue" onclick="addProduct()">Add to System</button>
+        </div>
+        <div class="admin-section">
+            <h3>🔄 Dukaan Transfer</h3>
+            <select id="transferItem"></select>
+            <select id="transferDir">
+                <option value="P2K">Petrol Pump ➡️ Khusboo Parking</option>
+                <option value="K2P">Khusboo Parking ➡️ Petrol Pump</option>
+            </select>
+            <input type="number" id="transferQty" placeholder="Quantity">
+            <button class="btn btn-green" onclick="transferStock()">Transfer Maal</button>
+        </div>
+        <div class="admin-section">
+            <h3>🏆 Update Staff Rank</h3>
+            <input type="text" id="r1Name" placeholder="Rank 1 Name">
+            <input type="text" id="r1Pic" placeholder="Rank 1 Photo URL">
+            <input type="text" id="r2Name" placeholder="Rank 2 Name">
+            <input type="text" id="r2Pic" placeholder="Rank 2 Photo URL">
+            <button class="btn btn-dark" onclick="updateLeaderboard()">Update Leaderboard</button>
+        </div>
+        <div class="admin-section">
+            <h3>🔑 Passwords Change</h3>
+            <input type="text" id="chgAppPass" placeholder="Naya App Password">
+            <input type="text" id="chgAdminPass" placeholder="Naya Admin Password">
+            <button class="btn btn-blue" onclick="updatePasswords()">Save Passwords</button>
+        </div>
+    </div>
+</body>
+</html>
+
+```
