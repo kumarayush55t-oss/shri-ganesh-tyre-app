@@ -1,5 +1,5 @@
         
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,15 +10,12 @@
             --dark: #1e272e; --red: #e63946; --green: #2ecc71; --blue: #3498db; 
             --bg: #fafafa; --card: #ffffff; --orange: #e67e22; --light-red: #ffeaea;
             --shadow: 0 4px 15px rgba(0,0,0,0.08); --shadow-hover: 0 8px 25px rgba(0,0,0,0.15);
+            --deepseek: #4f46e5; --claude: #d97706; --gemini: #4285f4; --llama: #0891b2; --qwen: #7c3aed;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
         body { background: var(--bg); color: var(--dark); }
         .hidden { display: none !important; }
-        .btn { 
-            width: 100%; padding: 15px; margin-bottom: 10px; border: none; border-radius: 10px; 
-            font-weight: 700; font-size: 1rem; cursor: pointer; color: white; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            box-shadow: var(--shadow); position: relative; overflow: hidden;
-        }
+        .btn { width: 100%; padding: 15px; margin-bottom: 10px; border: none; border-radius: 10px; font-weight: 700; font-size: 1rem; cursor: pointer; color: white; transition: all 0.3s; box-shadow: var(--shadow); }
         .btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
         .btn:active { transform: scale(0.96); }
         .btn-blue { background: var(--blue); }
@@ -39,7 +36,7 @@
         
         .screen { padding: 20px; max-width: 600px; margin: 0 auto; min-height: 100vh; animation: fadeIn 0.4s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .auth-box { background: white; padding: 35px 25px; border-radius: 20px; text-align: center; margin-top: 40px; box-shadow: var(--shadow); animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .auth-box { background: white; padding: 35px 25px; border-radius: 20px; text-align: center; margin-top: 40px; box-shadow: var(--shadow); animation: popIn 0.5s ease; }
         @keyframes popIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
         
         .leaderboard { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-bottom: 20px; background: white; padding: 20px; border-radius: 15px; box-shadow: var(--shadow); }
@@ -51,12 +48,10 @@
         
         .search-container { display: flex; gap: 10px; margin-bottom: 20px; position: relative; }
         .search-container input { margin: 0; border: 2px solid #e8e8e8; border-radius: 25px; padding-left: 20px; }
-        .search-container input:focus { border-color: var(--red); }
         .mic-btn { width: 50px; height: 50px; border-radius: 50%; background: var(--red); color: white; border: none; font-size: 1.3rem; cursor: pointer; flex-shrink: 0; }
-        .mic-btn:hover { transform: scale(1.05); }
         
         .suggestions-box { position: absolute; top: 58px; left: 0; right: 0; background: white; border: 2px solid var(--red); border-radius: 12px; max-height: 250px; overflow-y: auto; z-index: 100; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
-        .suggestion-item { padding: 12px 15px; cursor: pointer; border-bottom: 1px solid #f5f5f5; display: flex; justify-content: space-between; transition: all 0.2s; }
+        .suggestion-item { padding: 12px 15px; cursor: pointer; border-bottom: 1px solid #f5f5f5; display: flex; justify-content: space-between; }
         .suggestion-item:hover { background: var(--light-red); }
         
         .glow-red-heading { background: linear-gradient(135deg, #e63946, #ff6b6b); color: white; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-weight: 900; text-align: center; animation: redGlow 1.5s infinite alternate; }
@@ -67,7 +62,7 @@
         .stock-item:hover { transform: translateX(3px); box-shadow: var(--shadow-hover); }
         .qty-box { background: var(--light-red); padding: 10px 18px; border-radius: 10px; font-size: 1.5rem; font-weight: 900; text-align: center; min-width: 70px; color: var(--red); }
         .qty-controls { display: flex; align-items: center; gap: 8px; }
-        .qty-btn { width: 38px; height: 38px; border-radius: 50%; border: none; font-size: 1.2rem; font-weight: bold; cursor: pointer; color: white; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+        .qty-btn { width: 38px; height: 38px; border-radius: 50%; border: none; font-size: 1.2rem; font-weight: bold; cursor: pointer; color: white; display: flex; align-items: center; justify-content: center; }
         .qty-plus { background: var(--green); }
         .qty-minus { background: var(--red); }
         .qty-btn:active { transform: scale(0.85); }
@@ -77,15 +72,35 @@
         .staff-delete-btn { background: var(--red); color: white; border: none; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; }
         .selected-product-info { background: var(--light-red); padding: 12px 15px; border-radius: 10px; margin-bottom: 10px; display: none; border: 2px solid var(--red); }
 
-        /* AI Chatbot - Fixed */
+        /* Chatbot */
         .chatbot-float-btn { position: fixed; bottom: 25px; right: 25px; width: 65px; height: 65px; border-radius: 50%; background: linear-gradient(135deg, #e63946, #ff6b6b); border: 3px solid white; color: white; font-size: 2rem; cursor: pointer; box-shadow: 0 8px 30px rgba(230,57,70,0.5); z-index: 1500; animation: botBounce 2s infinite; display: flex; align-items: center; justify-content: center; }
         @keyframes botBounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         
-        #chatbot-modal { position: fixed; bottom: 100px; right: 25px; width: 400px; max-width: 94vw; height: 560px; max-height: 68vh; background: white; border-radius: 20px; box-shadow: 0 25px 60px rgba(0,0,0,0.35); z-index: 1600; display: none; flex-direction: column; overflow: hidden; }
-        .chatbot-header { background: linear-gradient(135deg, #e63946, #c0392b); color: white; padding: 15px 18px; display: flex; justify-content: space-between; align-items: center; }
-        .chatbot-header-left { display: flex; align-items: center; gap: 10px; }
-        .chatbot-avatar { width: 38px; height: 38px; border-radius: 50%; background: white; color: var(--red); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: bold; }
-        .api-badge { font-size: 0.6rem; background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 10px; }
+        #chatbot-modal { position: fixed; bottom: 100px; right: 25px; width: 420px; max-width: 94vw; height: 600px; max-height: 70vh; background: white; border-radius: 20px; box-shadow: 0 25px 60px rgba(0,0,0,0.35); z-index: 1600; display: none; flex-direction: column; overflow: hidden; }
+        .chatbot-header { background: linear-gradient(135deg, #1a1a2e, #2d2d44); color: white; padding: 12px 15px; }
+        .chatbot-header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .chatbot-title { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 0.9rem; }
+        .online-dot { width: 8px; height: 8px; background: #0be881; border-radius: 50%; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+        
+        /* Model selector chips */
+        .model-chips { display: flex; gap: 6px; overflow-x: auto; padding: 4px 0; scrollbar-width: none; -ms-overflow-style: none; }
+        .model-chips::-webkit-scrollbar { display: none; }
+        .model-chip {
+            padding: 5px 10px; border-radius: 14px; font-size: 0.7rem; font-weight: 700; cursor: pointer;
+            white-space: nowrap; border: 2px solid transparent; transition: all 0.2s; opacity: 0.7;
+            display: flex; align-items: center; gap: 4px;
+        }
+        .model-chip:hover { opacity: 1; transform: scale(1.05); }
+        .model-chip.active { opacity: 1; border-color: white; box-shadow: 0 0 10px currentColor; }
+        .chip-gpt { background: #10a37f; color: white; }
+        .chip-claude { background: #d97706; color: white; }
+        .chip-gemini { background: #4285f4; color: white; }
+        .chip-deepseek { background: #4f46e5; color: white; }
+        .chip-llama { background: #0891b2; color: white; }
+        .chip-qwen { background: #7c3aed; color: white; }
+        .chip-dot { width: 6px; height: 6px; border-radius: 50%; background: white; }
+        
         .chatbot-body { flex: 1; overflow-y: auto; padding: 15px; background: #fefefe; display: flex; flex-direction: column; gap: 8px; }
         .chat-msg { max-width: 85%; padding: 10px 14px; border-radius: 16px; font-size: 0.85rem; line-height: 1.5; animation: msgPop 0.3s ease; }
         @keyframes msgPop { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
@@ -104,12 +119,13 @@
         .voice-btn.active { animation: voicePulse 0.5s infinite; background: #ff0000; }
         @keyframes voicePulse { 0%,100% { box-shadow: 0 0 10px red; } 50% { box-shadow: 0 0 30px red; } }
         .quick-replies { display: flex; flex-wrap: wrap; gap: 6px; padding: 4px 0; }
-        .quick-reply-btn { background: var(--light-red); color: var(--red); border: 1px solid var(--red); padding: 7px 14px; border-radius: 18px; font-size: 0.75rem; cursor: pointer; font-weight: 600; transition: all 0.2s; white-space: nowrap; }
+        .quick-reply-btn { background: var(--light-red); color: var(--red); border: 1px solid var(--red); padding: 7px 14px; border-radius: 18px; font-size: 0.75rem; cursor: pointer; font-weight: 600; white-space: nowrap; }
         .quick-reply-btn:active { background: var(--red); color: white; }
 
         @media (max-width: 480px) {
-            #chatbot-modal { width: 96vw; right: 2vw; bottom: 90px; height: 60vh; }
+            #chatbot-modal { width: 96vw; right: 2vw; bottom: 90px; height: 65vh; }
             .chatbot-float-btn { bottom: 20px; right: 20px; width: 58px; height: 58px; font-size: 1.6rem; }
+            .model-chip { font-size: 0.65rem; padding: 4px 8px; }
         }
     </style>
 </head>
@@ -175,19 +191,50 @@
     <div class="admin-section"><h3>🔑 पासवर्ड</h3><input type="text" id="chgAppPass" placeholder="नया ऐप"><input type="text" id="chgAdminPass" placeholder="नया एडमिन"><button class="btn btn-outline" onclick="updatePasswords()">सेव</button></div>
 </div>
 
-<!-- AI CHATBOT - Fixed with Mic + API badge -->
-<button class="chatbot-float-btn" onclick="toggleChatbot()" title="AI Assistant">🤖</button>
+<!-- AI CHATBOT -->
+<button class="chatbot-float-btn" onclick="toggleChatbot()">🤖</button>
 <div id="chatbot-modal">
     <div class="chatbot-header">
-        <div class="chatbot-header-left">
-            <div class="chatbot-avatar">🤖</div>
-            <div>
-                <div style="font-weight:700;font-size:0.95rem;">TyreXpert AI</div>
-                <div style="font-size:0.65rem;opacity:0.8;">GPT-4o Mini ⚡ | Salesman Mode</div>
+        <div class="chatbot-header-top">
+            <div class="chatbot-title">
+                <span class="online-dot"></span>
+                <span>TyreXpert AI Salesman</span>
             </div>
+            <button onclick="toggleChatbot()" style="background:none;border:none;color:white;font-size:1.3rem;cursor:pointer;">✕</button>
         </div>
-        <span class="api-badge">🔗 API Active</span>
-        <button onclick="toggleChatbot()" style="background:none;border:none;color:white;font-size:1.3rem;cursor:pointer;">✕</button>
+        <!-- ALL AI MODELS -->
+        <div class="model-chips">
+            <span class="model-chip chip-gpt active" onclick="switchModel('openai/gpt-4o-mini', this)" data-model="openai/gpt-4o-mini">
+                <span class="chip-dot"></span> GPT-4o Mini
+            </span>
+            <span class="model-chip chip-gpt" onclick="switchModel('openai/gpt-4o', this)" data-model="openai/gpt-4o">
+                <span class="chip-dot"></span> GPT-4o
+            </span>
+            <span class="model-chip chip-claude" onclick="switchModel('anthropic/claude-3.5-haiku', this)" data-model="anthropic/claude-3.5-haiku">
+                <span class="chip-dot"></span> Claude 3.5
+            </span>
+            <span class="model-chip chip-claude" onclick="switchModel('anthropic/claude-3-opus', this)" data-model="anthropic/claude-3-opus">
+                <span class="chip-dot"></span> Claude Opus
+            </span>
+            <span class="model-chip chip-gemini" onclick="switchModel('google/gemini-2.0-flash-001', this)" data-model="google/gemini-2.0-flash-001">
+                <span class="chip-dot"></span> Gemini Flash
+            </span>
+            <span class="model-chip chip-gemini" onclick="switchModel('google/gemini-pro', this)" data-model="google/gemini-pro">
+                <span class="chip-dot"></span> Gemini Pro
+            </span>
+            <span class="model-chip chip-deepseek" onclick="switchModel('deepseek/deepseek-chat', this)" data-model="deepseek/deepseek-chat">
+                <span class="chip-dot"></span> DeepSeek V3
+            </span>
+            <span class="model-chip chip-deepseek" onclick="switchModel('deepseek/deepseek-r1', this)" data-model="deepseek/deepseek-r1">
+                <span class="chip-dot"></span> DeepSeek R1
+            </span>
+            <span class="model-chip chip-llama" onclick="switchModel('meta-llama/llama-3.3-70b-instruct', this)" data-model="meta-llama/llama-3.3-70b-instruct">
+                <span class="chip-dot"></span> Llama 3.3
+            </span>
+            <span class="model-chip chip-qwen" onclick="switchModel('qwen/qwen-2.5-72b-instruct', this)" data-model="qwen/qwen-2.5-72b-instruct">
+                <span class="chip-dot"></span> Qwen 2.5
+            </span>
+        </div>
     </div>
     <div class="chatbot-body" id="chatbotBody">
         <div class="chat-typing" id="chatTyping"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>
@@ -208,6 +255,7 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 const OPENROUTER_KEY = "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";
+let currentModel = "openai/gpt-4o-mini";
 let chatHistory = [];
 let isChatListening = false;
 
@@ -241,27 +289,24 @@ window.onload = () => {
 window.capturePhoto = function(e) { let f=e.target.files[0],r=new FileReader();r.onload=(ev)=>{let i=new Image();i.onload=()=>{let c=document.createElement('canvas');c.width=150;c.height=(150*i.height)/i.width;c.getContext('2d').drawImage(i,0,0,c.width,c.height);window.tempPhotoBase64=c.toDataURL('image/jpeg',0.6);document.getElementById('previewImg').src=window.tempPhotoBase64;document.getElementById('previewImg').style.display="block";};i.src=ev.target.result;};if(f)r.readAsDataURL(f);};
 window.saveProfile = () => { let n=document.getElementById('obName').value.trim(),p=document.getElementById('obPhone').value.trim();if(!n||!p||!window.tempPhotoBase64){alert("सब भरें!");return;}window.myStaffId="staff_"+Date.now();localStorage.setItem("tx_staff_id",window.myStaffId);set(ref(db,'staffList/'+window.myStaffId),{name:n,phone:p,img:window.tempPhotoBase64,score:0}).then(()=>{document.getElementById('onboarding-screen').classList.add('hidden');document.getElementById('auth-screen').classList.remove('hidden');}); };
 window.login = () => { if(document.getElementById('appPinInput').value===window.settings.appPin){document.getElementById('auth-screen').classList.add('hidden');document.getElementById('dashboard-screen').classList.remove('hidden');} else alert("❌ गलत पासवर्ड"); };
-window.directAdminLogin = () => { let p=prompt("एडमिन पासवर्ड:");if(p==="1234"){window.isAdminLoggedIn=true;document.getElementById('onboarding-screen').classList.add('hidden');document.getElementById('auth-screen').classList.add('hidden');document.getElementById('dashboard-screen').classList.remove('hidden');populateAdminStaffList();populateAdminDropdowns();document.getElementById('admin-modal').style.display="block";renderInventory();}else if(p)alert("❌ गलत एडमिन पासवर्ड!"); };
+window.directAdminLogin = () => { let p=prompt("एडमिन पासवर्ड:");if(p==="1234"){window.isAdminLoggedIn=true;document.getElementById('onboarding-screen').classList.add('hidden');document.getElementById('auth-screen').classList.add('hidden');document.getElementById('dashboard-screen').classList.remove('hidden');populateAdminStaffList();populateAdminDropdowns();document.getElementById('admin-modal').style.display="block";renderInventory();}else if(p)alert("❌ गलत! Pass: 1234"); };
 
 function getDistance(lat1,lon1,lat2,lon2){const R=6371e3;const φ1=lat1*Math.PI/180,φ2=lat2*Math.PI/180;const Δφ=(lat2-lat1)*Math.PI/180,Δλ=(lon2-lon1)*Math.PI/180;const a=Math.sin(Δφ/2)**2+Math.cos(φ1)*Math.cos(φ2)*Math.sin(Δλ/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));}
 window.punchIn = () => {
-    if(!navigator.geolocation){alert("GPS नहीं है!");return;}
+    if(!navigator.geolocation){alert("GPS नहीं!");return;}
     alert("📍 लोकेशन चेक हो रही है...");
     navigator.geolocation.getCurrentPosition((pos)=>{
-        let lat=pos.coords.latitude, lng=pos.coords.longitude;
-        let dPP=getDistance(lat,lng,SHOPS.PP.lat,SHOPS.PP.lng), dKP=getDistance(lat,lng,SHOPS.KP.lat,SHOPS.KP.lng);
+        let dPP=getDistance(pos.coords.latitude,pos.coords.longitude,SHOPS.PP.lat,SHOPS.PP.lng), dKP=getDistance(pos.coords.latitude,pos.coords.longitude,SHOPS.KP.lat,SHOPS.KP.lng);
         let shop=""; if(dPP<=150)shop=SHOPS.PP.name; else if(dKP<=150)shop=SHOPS.KP.name;
         if(shop){
             let myData=window.staffList[window.myStaffId]||{name:"Staff"};
             let t=new Date().toLocaleTimeString('hi-IN',{hour:'2-digit',minute:'2-digit'});
-            set(ref(db,'attendanceLog/'+Date.now()),{staff:myData.name,shop,time:t,timestamp:Date.now()}).then(()=>{
-                alert(`✅ हाजिरी लग गई - ${shop} (${t})`);
-            });
-        } else alert("❌ आप किसी दुकान के 150m दायरे में नहीं हैं!");
-    },(err)=>{alert("GPS Error: "+err.message);},{enableHighAccuracy:true});
+            set(ref(db,'attendanceLog/'+Date.now()),{staff:myData.name,shop,time:t,timestamp:Date.now()}).then(()=>alert(`✅ ${shop} (${t})`));
+        } else alert("❌ 150m दायरे में नहीं!");
+    },(err)=>{alert("GPS Error");},{enableHighAccuracy:true});
 };
 
-function renderLeaderboard(){let c=document.getElementById('leaderboard-container');if(!c)return;c.innerHTML="";Object.entries(window.staffList).map(([id,d])=>({id,...d})).sort((a,b)=>b.score-a.score).forEach((s,idx)=>{c.innerHTML+=`<div class="staff-card ${idx===0?'rank-1':''}"><span class="badge">${idx===0?'🏆 #1':'⭐ '+(idx+1)}</span><img src="${s.img}" class="staff-img"><h4>${s.name}</h4><p style="font-size:0.8rem;">${s.score} pts</p></div>`;});}
+function renderLeaderboard(){let c=document.getElementById('leaderboard-container');if(!c)return;c.innerHTML="";Object.entries(window.staffList).map(([id,d])=>({id,...d})).sort((a,b)=>b.score-a.score).forEach((s,idx)=>{c.innerHTML+=`<div class="staff-card ${idx===0?'rank-1':''}"><span class="badge">${idx===0?'🏆 #1':'⭐ '+(idx+1)}</span><img src="${s.img}" class="staff-img"><h4>${s.name}</h4><p>${s.score} pts</p></div>`;});}
 window.openShop=(s)=>{window.currentShop=s;document.getElementById('dashboard-screen').classList.add('hidden');document.getElementById('inventory-screen').classList.remove('hidden');document.getElementById('shop-title').innerText=s==="Petrol Pump"?"पेट्रोल पंप":"खुशबू पार्किंग";document.getElementById('searchInput').value="";document.getElementById('suggestionsBox').style.display='none';renderInventory();};
 window.goBack=()=>{document.getElementById('inventory-screen').classList.add('hidden');document.getElementById('dashboard-screen').classList.remove('hidden');};
 function sanitizeString(s){if(!s)return"";let c=s.replace(/[\s\.\-]/g,'').toLowerCase();if(c==="318")c="30018";return c;}
@@ -290,14 +335,24 @@ function renderInventory(f=""){
 
 window.handleSearch=()=>showSuggestions();
 
-// ============ 🤖 AI CHATBOT (Salesman + Full Knowledge) ============
+// ============ 🤖 AI CHATBOT WITH ALL MODELS ============
+
+// ✅ Model switcher
+window.switchModel = function(model, el) {
+    currentModel = model;
+    document.querySelectorAll('.model-chip').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    let modelName = el.textContent.trim();
+    addBotMsg(`🔄 Model changed to: **${modelName}**`);
+    speakText(`Model ${modelName} select kiya gaya`);
+};
 
 async function callAI(msg) {
     let stockCtx=""; Object.entries(window.inventory).forEach(([k,i])=>stockCtx+=`${i.name}: PP=${i.pp||0}, KP=${i.kp||0}, Sold=${i.sold||0}\n`);
     let staffCtx=""; Object.entries(window.staffList).forEach(([id,s])=>staffCtx+=`${s.name} (Score:${s.score})\n`);
     let attendanceCtx=""; Object.entries(attendanceLogs).slice(-5).forEach(([ts,log])=>attendanceCtx+=`${log.staff} - ${log.shop} - ${log.time}\n`);
     
-    let prompt = `You are a TYRE SHOP SALESMAN AI. Your PRIMARY GOAL: SELL products and increase shop revenue.
+    let prompt = `You are a TYRE SHOP SALESMAN AI. PRIMARY GOAL: SELL products.
 
 SHOP DATA:
 - Branches: Petrol Pump (PP) & Khusboo Parking (KP)
@@ -306,22 +361,22 @@ SHOP DATA:
 - RECENT ATTENDANCE: ${attendanceCtx||"None"}
 
 RULES:
-1. Reply in Hinglish (casual Hindi+English, friendly salesman tone)
-2. Keep 2-4 lines MAX
-3. ALWAYS try to sell something - upsell, cross-sell
-4. If customer asks problem → give solution AND suggest buying from us
-5. Mention current stock when relevant
-6. If attendance asked → share recent logs
-7. Sound like a helpful shopkeeper who wants to make a sale
+1. Reply in Hinglish (casual Hindi+English, friendly)
+2. 2-4 lines MAX
+3. ALWAYS try to sell something
+4. Problem → solution + suggest buying
+5. Mention stock when relevant
+6. Attendance query → show recent logs
+7. Be a helpful shopkeeper
 
 Customer: ${msg}
-Salesman (Hinglish, short, sales-push):`;
+Salesman (Hinglish, short):`;
 
     try {
         let res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
             method:"POST",
             headers:{"Authorization":`Bearer ${OPENROUTER_KEY}`,"Content-Type":"application/json","HTTP-Referer":"https://tyrexpert.app","X-Title":"TyreXpert"},
-            body:JSON.stringify({model:"openai/gpt-4o-mini",messages:[{role:"system",content:prompt},{role:"user",content:msg}],temperature:0.8,max_tokens:150})
+            body:JSON.stringify({model:currentModel,messages:[{role:"system",content:prompt},{role:"user",content:msg}],temperature:0.8,max_tokens:150})
         });
         let d = await res.json();
         return d.choices?.[0]?.message?.content || getLocalReply(msg);
@@ -330,49 +385,25 @@ Salesman (Hinglish, short, sales-push):`;
 
 function getLocalReply(msg) {
     let q = msg.toLowerCase();
-    
-    // Stock queries
     for(let [k,i] of Object.entries(window.inventory)) {
-        if(sanitizeString(q).includes(sanitizeString(i.name))) {
-            let pp=i.pp||0, kp=i.kp||0;
-            return `📦 ${i.name}: PP=${pp}, KP=${kp} pieces.\n${pp<3||kp<3?'⚠️ Kam stock! Turant order karo aur customer ko alternative becho!':'✅ Stock OK. Customer ko recommend karo!'}\n${i.alts?.length?'🔄 Alt: '+i.alts.join(', '):''}`;
-        }
+        if(sanitizeString(q).includes(sanitizeString(i.name))) return `📦 ${i.name}: PP=${i.pp||0}, KP=${i.kp||0} pieces.\n${(i.pp||0)<3||(i.kp||0)<3?'⚠️ Kam stock! Order karo aur becho!':'✅ Stock OK. Recommend karo!'}`;
     }
-    if(q.includes("stock")||q.includes("कम")||q.includes("kitna")) {
+    if(q.includes("stock")||q.includes("कम")) {
         let low=Object.entries(window.inventory).filter(([k,i])=>(i.pp||0)<5||(i.kp||0)<5);
-        if(low.length===0) return "✅ Sab stock theek hai! Aaj sales pe focus karo - customers ko bulavo!";
-        return `⚠️ Kam stock:\n${low.map(([k,i])=>`${i.name} (PP:${i.pp||0}, KP:${i.kp||0})`).join('\n')}\n\nTurant order karo! Customer ko alternative suggest karo!`;
+        return low.length?`⚠️ Kam:\n${low.map(([k,i])=>`${i.name} (PP:${i.pp||0}, KP:${i.kp||0})`).join('\n')}\nOrder karo!`:"✅ Sab theek! Sales pe focus karo!";
     }
-    
-    // Attendance queries
-    if(q.includes("attendance")||q.includes("hajri")||q.includes("हाजिरी")||q.includes("kaun aya")||q.includes("kon aya")) {
-        let logs = Object.entries(attendanceLogs);
-        if(logs.length===0) return "👥 Aaj abhi tak kisi ne hajri nahi lagayi. Jaake staff ko bolo hajri lagaye!";
-        let recent = logs.slice(-5).reverse();
-        return `👥 Recent Attendance:\n${recent.map(([ts,l])=>`• ${l.staff} → ${l.shop} (${l.time})`).join('\n')}\n\nSabko kaam pe lagao - sales badhao!`;
+    if(q.includes("attendance")||q.includes("hajri")||q.includes("हाजिरी")||q.includes("kaun aya")) {
+        let logs=Object.entries(attendanceLogs).slice(-5).reverse();
+        return logs.length?`👥 Recent:\n${logs.map(([ts,l])=>`• ${l.staff} → ${l.shop} (${l.time})`).join('\n')}`:"👥 Aaj kisi ne hajri nahi lagayi!";
     }
-    
-    // Sales queries
-    if(q.includes("sell")||q.includes("bikri")||q.includes("sales")||q.includes("becho")) {
-        return "💰 Sales badhane ke 3 tips:\n1. Customer ko alternative tyre suggest karo\n2. Combo offer do (tyre+tube+fitting)\n3. Free alignment ka bolkar bulavo\n\nAaj target: 10 tyres!";
-    }
-    
-    // Problems
-    if(q.includes("rim")||q.includes("leak")||q.includes("रिम")||q.includes("हवा")) return "🔧 Rim leak? Valve pin Rs 20 mein badlo. Lekin tubeless tyre lena safe rahega - hamare paas CEAT ka stock hai! Aaj hi lagwa do?";
-    if(q.includes("puncture")||q.includes("पंचर")) return "🛠️ Puncture? Tubeless Rs 50-100. 5+ hain to naya tyre becho - customer ko safety ka bolkar samjhao! Hamare paas naya stock ready hai!";
-    if(q.includes("side cut")||q.includes("cut")) return "⚠️ Side cut repair nahi hoti! Naya tyre hi lagega. Customer ko samjhao safety ka. Hamare paas 3.00-18, 100/90-17 sab available hain!";
-    if(q.includes("bulge")||q.includes("उभार")) return "⚠️ Bulge = tyre burst risk! Turant naya tyre becho. Customer ko mat jaane do bina tyre badle!";
-    
-    // Vehicle queries
-    if(q.includes("i20")) return "🚗 i20 ke liye 195/55 R16 best hai! CEAT ya Apollo - dono available. Aaj lagwao, alignment free! PP mein aao.";
-    if(q.includes("swift")) return "🚗 Swift: 165/80 R14 ya 185/70 R14. Tubeless best rahega. Stock mein hai - aaj hi customer ko bulao!";
-    if(q.includes("pulsar")) return "🏍️ Pulsar: Front 90/90-17, Rear 120/80-17. Dono tubeless. MRF best rahega. Customer ko tubeless ke benefits batao!";
-    if(q.includes("splendor")) return "🏍️ Splendor: 2.75-18 ya 80/100-18. Tube type. CEAT ka stock hai PP mein. Customer ko tube ke saath combo do!";
-    
-    // Tips
-    if(q.includes("tip")||q.includes("pressure")||q.includes("देखभाल")) return "💡 Tips: 1. Har 15 din pressure check 2. 5000km pe rotation 3. 6 mahine alignment. Customer ko bhi ye batao - wapas aayega!";
-    
-    return "🤔 Main salesman hoon! Puchho:\n📦 Stock kitna hai?\n👥 Aaj kaun aya?\n💰 Sales kaise badhaye?\n🔧 Koi problem?";
+    if(q.includes("sell")||q.includes("sales")||q.includes("बिक्री")) return "💰 Tips: 1. Alternative suggest karo 2. Combo offer (tyre+tube) 3. Free alignment ka bolkar bulavo!";
+    if(q.includes("rim")||q.includes("leak")||q.includes("हवा")) return "🔧 Rim leak? Valve pin Rs 20. Tubeless tyre better - hamare paas CEAT stock hai! Aaj lagwao?";
+    if(q.includes("puncture")) return "🛠️ Puncture Rs 50-100. 5+ hain to naya tyre becho! Customer ko safety samjhao!";
+    if(q.includes("side cut")) return "⚠️ Side cut = naya tyre! Customer ko mat jaane do bina badle!";
+    if(q.includes("i20")) return "🚗 i20: 195/55 R16 best! CEAT/Apollo available. Aaj lagwao, alignment free!";
+    if(q.includes("swift")) return "🚗 Swift: 165/80 R14 ya 185/70 R14. Tubeless best. Stock mein hai!";
+    if(q.includes("pulsar")) return "🏍️ Pulsar: F 90/90-17, R 120/80-17. MRF recommended!";
+    return "🤔 Puchho: 📦 Stock? 👥 Attendance? 💰 Sales? 🔧 Problem?";
 }
 
 function speakText(text) {
@@ -387,8 +418,8 @@ window.toggleChatbot = () => {
     if(m.style.display==='flex'){m.style.display='none';}else{
         m.style.display='flex';document.getElementById('chatbotInput').focus();
         if(chatHistory.length===0){
-            let w="👋 Namaste! Main TyreXpert Salesman hoon. Batao:\n\n📦 Stock dekhna?\n👥 Aaj kaun aya?\n💰 Sales tip?\n🔧 Koi problem?";
-            addBotMsg(w);speakText(w);addQR(["📦 Stock","👥 Attendance","💰 Sales tip","🔧 Rim leak"]);
+            let w="👋 Namaste! Main TyreXpert Salesman hoon. ⬆️ Model select karo!\n\nPuchho:\n📦 Stock?\n👥 Aaj kaun aya?\n💰 Sales tip?\n🔧 Koi problem?";
+            addBotMsg(w);speakText(w);addQR(["📦 Stock","👥 Attendance","💰 Sales","🔧 Rim leak"]);
         }
     }
 };
@@ -404,11 +435,9 @@ window.sendChatMsg = async () => {
     document.getElementById('chatbotBody').scrollTop=document.getElementById('chatbotBody').scrollHeight;
 };
 
-// ✅ VOICE INPUT FOR CHATBOT
 window.startChatVoice = () => {
-    if(!('webkitSpeechRecognition' in window)&&!('SpeechRecognition' in window)){alert("❌ Voice support nahi!");return;}
-    const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-    const recog=new SR();recog.lang='hi-IN';
+    if(!('webkitSpeechRecognition' in window)&&!('SpeechRecognition' in window)){alert("❌ Voice nahi!");return;}
+    const SR=window.SpeechRecognition||window.webkitSpeechRecognition;const recog=new SR();recog.lang='hi-IN';
     let btn=document.getElementById('chatVoiceBtn');
     if(isChatListening){recog.stop();btn.classList.remove('active');isChatListening=false;return;}
     recog.start();btn.classList.add('active');isChatListening=true;
@@ -423,31 +452,23 @@ function addBotMsg(t){document.getElementById('chatbotBody').innerHTML+=`<div cl
 function addQR(r){let h='<div class="quick-replies">';r.forEach(x=>h+=`<button class="quick-reply-btn" onclick="qrClick('${x}')">${x}</button>`);h+='</div>';document.getElementById('chatbotBody').innerHTML+=h;}
 window.qrClick=(t)=>{document.getElementById('chatbotInput').value=t;sendChatMsg();};
 
-// Admin functions
+// Admin
 window.showAdminSuggestions=()=>{let i=document.getElementById('adminSearchInput'),b=document.getElementById('adminSuggestionsBox'),q=sanitizeString(i.value);if(!q||q.length<1){b.style.display='none';document.getElementById('selectedProductInfo').style.display='none';window.selectedProductKey=null;return;}let m=Object.entries(window.inventory).filter(([k,v])=>sanitizeString(v.name).includes(q));if(m.length===0){b.style.display='none';return;}b.innerHTML="";m.forEach(([k,v])=>b.innerHTML+=`<div class="suggestion-item" onclick="selectAdminProduct('${k}')"><span>${v.name}</span><span style="color:var(--red);font-weight:bold;">PP:${v.pp||0}|KP:${v.kp||0}</span></div>`);b.style.display='block';};
 window.selectAdminProduct=(k)=>{window.selectedProductKey=k;let i=window.inventory[k];document.getElementById('adminSearchInput').value=i.name;document.getElementById('adminSuggestionsBox').style.display='none';document.getElementById('selectedProductInfo').style.display='block';document.getElementById('selectedProductInfo').innerHTML=`<strong>📦 ${i.name}</strong><br><div style="display:flex;gap:15px;margin-top:10px;"><div style="flex:1;"><small>⛽ PP</small><div class="qty-controls"><button class="qty-btn qty-minus" onclick="adminAdj('pp',-1)">−</button><span id="appq" style="padding:8px;font-weight:bold;">${i.pp||0}</span><button class="qty-btn qty-plus" onclick="adminAdj('pp',1)">+</button></div></div><div style="flex:1;"><small>🅿️ KP</small><div class="qty-controls"><button class="qty-btn qty-minus" onclick="adminAdj('kp',-1)">−</button><span id="akpq" style="padding:8px;font-weight:bold;">${i.kp||0}</span><button class="qty-btn qty-plus" onclick="adminAdj('kp',1)">+</button></div></div></div>`;};
 window.adminAdj=(s,c)=>{if(!window.selectedProductKey)return;let i=window.inventory[window.selectedProductKey];if(s==='pp'){i.pp=Math.max(0,parseInt(i.pp||0)+c);document.getElementById('appq').innerText=i.pp;}else{i.kp=Math.max(0,parseInt(i.kp||0)+c);document.getElementById('akpq').innerText=i.kp;}if(c<0)i.sold=(i.sold||0)+Math.abs(c);set(ref(db,'inventory/'+window.selectedProductKey),i);};
-window.addProduct=()=>{let n=document.getElementById('newProductName').value.trim();if(!n){alert("नाम डालें!");return;}let a=document.getElementById('newProductAlts').value.trim().split(',').map(s=>s.trim()).filter(s=>s);set(ref(db,'inventory/prod_'+Date.now()),{name:n,alts:a,pp:parseInt(document.getElementById('newProductPP').value)||0,kp:parseInt(document.getElementById('newProductKP').value)||0,sold:0}).then(()=>{alert("✅");['newProductName','newProductAlts','newProductPP','newProductKP'].forEach(id=>document.getElementById(id).value="");});};
+window.addProduct=()=>{let n=document.getElementById('newProductName').value.trim();if(!n){alert("नाम!");return;}let a=document.getElementById('newProductAlts').value.trim().split(',').map(s=>s.trim()).filter(s=>s);set(ref(db,'inventory/prod_'+Date.now()),{name:n,alts:a,pp:parseInt(document.getElementById('newProductPP').value)||0,kp:parseInt(document.getElementById('newProductKP').value)||0,sold:0}).then(()=>{alert("✅");['newProductName','newProductAlts','newProductPP','newProductKP'].forEach(id=>document.getElementById(id).value="");});};
 window.deleteProduct=()=>{let k=document.getElementById('deleteItemSelect').value;if(!k)return;if(confirm("हटाएं?"))remove(ref(db,'inventory/'+k)).then(()=>alert("🗑️"));};
 window.deleteStaff=(id)=>{let s=window.staffList[id];if(!s)return;if(confirm(`${s.name} हटाएं?`))remove(ref(db,'staffList/'+id)).then(()=>alert("🗑️"));};
-window.sendWhatsAppAlert=()=>{let low=Object.entries(window.inventory).filter(([k,i])=>(i.pp||0)<5||(i.kp||0)<5);if(low.length===0){alert("✅ सब ठीक!");return;}let d=window.staffList[window.myStaffId]||{name:"Staff",phone:""};window.open(`https://wa.me/919068749268?text=${encodeURIComponent(`⚠️ कम स्टॉक\n${d.name}\n\n${low.map(([k,i])=>`- ${i.name} (PP:${i.pp||0}, KP:${i.kp||0})`).join("\n")}`)}`,'_blank');};
-window.openAdminAuth=()=>{let p=prompt("एडमिन पासवर्ड:");if(p==="1234"){window.isAdminLoggedIn=true;populateAdminStaffList();populateAdminDropdowns();document.getElementById('admin-modal').style.display="block";renderInventory();}else if(p)alert("❌ गलत! Pass: 1234");};
+window.sendWhatsAppAlert=()=>{let low=Object.entries(window.inventory).filter(([k,i])=>(i.pp||0)<5||(i.kp||0)<5);if(low.length===0){alert("✅");return;}let d=window.staffList[window.myStaffId]||{name:"Staff",phone:""};window.open(`https://wa.me/919068749268?text=${encodeURIComponent(`⚠️ कम स्टॉक\n${d.name}\n\n${low.map(([k,i])=>`- ${i.name} (PP:${i.pp||0}, KP:${i.kp||0})`).join("\n")}`)}`,'_blank');};
+window.openAdminAuth=()=>{let p=prompt("एडमिन पासवर्ड:");if(p==="1234"){window.isAdminLoggedIn=true;populateAdminStaffList();populateAdminDropdowns();document.getElementById('admin-modal').style.display="block";renderInventory();}else if(p)alert("❌ Pass: 1234");};
 window.closeAdmin=()=>{window.isAdminLoggedIn=false;document.getElementById('admin-modal').style.display="none";window.selectedProductKey=null;renderInventory();};
 function populateAdminStaffList(){let s=document.getElementById('adminStaffSelect'),d=document.getElementById('staffDeleteList');if(!s)return;s.innerHTML="";if(d)d.innerHTML="";Object.entries(window.staffList).forEach(([id,x])=>{s.innerHTML+=`<option value="${id}">${x.name} - ${x.phone} (${x.score})</option>`;if(d)d.innerHTML+=`<div style="display:flex;justify-content:space-between;padding:8px;background:white;margin-bottom:5px;border-radius:8px;"><span>👤 ${x.name} | ${x.score} pts</span><button class="staff-delete-btn" onclick="deleteStaff('${id}')">🗑️</button></div>`;});}
 window.updateStaffScore=()=>{let id=document.getElementById('adminStaffSelect').value,pts=parseInt(document.getElementById('newScoreInput').value);if(!id||isNaN(pts))return;update(ref(db,'staffList/'+id),{score:pts}).then(()=>{alert("✅");document.getElementById('newScoreInput').value="";});};
-window.transferStock=()=>{let k=document.getElementById('transferItem').value,d=document.getElementById('transferDir').value,q=parseInt(document.getElementById('transferQty').value)||0;if(!k||q<=0)return;let i=window.inventory[k];if(d==="P2K"){if((i.pp||0)<q){alert("PP में नहीं!");return;}i.pp-=q;i.kp=(i.kp||0)+q;}else{if((i.kp||0)<q){alert("KP में नहीं!");return;}i.kp-=q;i.pp=(i.pp||0)+q;}set(ref(db,'inventory/'+k),i).then(()=>{alert("🔄");document.getElementById('transferQty').value="";});};
+window.transferStock=()=>{let k=document.getElementById('transferItem').value,d=document.getElementById('transferDir').value,q=parseInt(document.getElementById('transferQty').value)||0;if(!k||q<=0)return;let i=window.inventory[k];if(d==="P2K"){if((i.pp||0)<q){alert("PP नहीं!");return;}i.pp-=q;i.kp=(i.kp||0)+q;}else{if((i.kp||0)<q){alert("KP नहीं!");return;}i.kp-=q;i.pp=(i.pp||0)+q;}set(ref(db,'inventory/'+k),i).then(()=>{alert("🔄");document.getElementById('transferQty').value="";});};
 window.claimDefect=()=>{let k=document.getElementById('defectItem').value,s=document.getElementById('defectShop').value,q=parseInt(document.getElementById('defectQty').value)||0;if(!k||q<=0)return;let i=window.inventory[k];if(s==="Petrol Pump")i.pp=Math.max(0,(i.pp||0)-q);else i.kp=Math.max(0,(i.kp||0)-q);i.sold=(i.sold||0)+q;set(ref(db,'inventory/'+k),i).then(()=>{alert("🛑");document.getElementById('defectQty').value="";});};
 window.updatePasswords=()=>{let a=document.getElementById('chgAppPass').value.trim(),b=document.getElementById('chgAdminPass').value.trim();if(a)window.settings.appPin=a;if(b)window.settings.adminPin=b;set(ref(db,'settings'),window.settings).then(()=>alert("🔑"));};
 function populateAdminDropdowns(){['deleteItemSelect','defectItem','transferItem'].forEach(id=>{let s=document.getElementById(id);if(!s)return;s.innerHTML=id==='deleteItemSelect'?"<option value=''>-- चुनें --</option>":"";Object.entries(window.inventory).forEach(([k,i])=>s.innerHTML+=`<option value="${k}">${i.name} (PP:${i.pp||0}, KP:${i.kp||0})</option>`);});}
-
-// Voice search for inventory
-window.startMic = () => {
-    if(!('webkitSpeechRecognition' in window)&&!('SpeechRecognition' in window)){alert("❌ Voice नहीं");return;}
-    let r=new(window.SpeechRecognition||window.webkitSpeechRecognition)();r.lang='hi-IN';r.start();
-    document.querySelector('.mic-btn').style.background='#c0392b';
-    r.onresult=(e)=>{let t=e.results[0][0].transcript;document.getElementById('searchInput').value=t;document.getElementById('suggestionsBox').style.display='none';renderInventory(t);document.querySelector('.mic-btn').style.background='var(--red)';};
-    r.onerror=()=>{document.querySelector('.mic-btn').style.background='var(--red)';};
-};
+window.startMic = () => { if(!('webkitSpeechRecognition' in window)){alert("❌ Voice नहीं");return;}let r=new(window.SpeechRecognition||window.webkitSpeechRecognition)();r.lang='hi-IN';r.start();document.querySelector('.mic-btn').style.background='#c0392b';r.onresult=(e)=>{document.getElementById('searchInput').value=e.results[0][0].transcript;document.getElementById('suggestionsBox').style.display='none';renderInventory(e.results[0][0].transcript);document.querySelector('.mic-btn').style.background='var(--red)';};r.onerror=()=>{document.querySelector('.mic-btn').style.background='var(--red)';};};
 </script>
 </body>
 </html>
