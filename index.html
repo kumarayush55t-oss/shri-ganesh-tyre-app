@@ -5,70 +5,108 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>TyreXpert Smart Master</title>
     <style>
-        :root { --dark: #1e272e; --red: #ff3f34; --green: #0be881; --blue: #0984e3; --bg: #f5f6fa; --card: #ffffff; --orange: #e67e22; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background: var(--bg); color: var(--dark); transition: 0.3s; }
+        :root { 
+            --dark: #1e272e; --red: #e63946; --green: #2ecc71; --blue: #3498db; 
+            --bg: #fafafa; --card: #ffffff; --orange: #e67e22; --light-red: #ffeaea;
+            --shadow: 0 4px 15px rgba(0,0,0,0.08); --shadow-hover: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background: var(--bg); color: var(--dark); }
         .hidden { display: none !important; }
-        .btn { width: 100%; padding: 15px; margin-bottom: 10px; border: none; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; color: white; transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .btn:active { transform: scale(0.98); }
+        .btn { 
+            width: 100%; padding: 15px; margin-bottom: 10px; border: none; border-radius: 10px; 
+            font-weight: 700; font-size: 1rem; cursor: pointer; color: white; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            box-shadow: var(--shadow); position: relative; overflow: hidden;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+        .btn:active { transform: scale(0.96); }
+        .btn::after { content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; border-radius: 50%; background: rgba(255,255,255,0.3); transition: all 0.5s; transform: translate(-50%, -50%); }
+        .btn:active::after { width: 300px; height: 300px; }
         .btn-blue { background: var(--blue); }
-        .btn-green { background: var(--green); color: var(--dark); }
+        .btn-green { background: var(--green); color: white; }
         .btn-red { background: var(--red); }
         .btn-dark { background: var(--dark); }
-        .btn-orange { background: var(--orange); }
-        .btn-outline { background: transparent; border: 2px solid var(--dark); color: var(--dark); }
-        .btn-sm { padding: 10px 15px; font-size: 0.9rem; width: auto; display: inline-block; }
-        input, select { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #d2dae2; border-radius: 8px; font-size: 1rem; outline: none; }
+        .btn-outline { background: transparent; border: 2px solid var(--red); color: var(--red); }
+        .btn-sm { padding: 10px 15px; font-size: 0.85rem; width: auto; display: inline-block; }
         
-        .top-bar { background: var(--dark); color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        input, select { width: 100%; padding: 14px 16px; margin-bottom: 12px; border: 2px solid #e8e8e8; border-radius: 10px; font-size: 1rem; outline: none; transition: all 0.3s; background: white; }
+        input:focus, select:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(230,57,70,0.1); }
+        
+        .top-bar { background: white; color: var(--dark); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 15px rgba(0,0,0,0.06); border-bottom: 3px solid var(--red); position: sticky; top: 0; z-index: 10; }
         .logo { font-size: 1.5rem; font-weight: 900; font-style: italic; }
         .logo span { color: var(--red); }
-        .icon-btn { font-size: 1.5rem; cursor: pointer; background: #fff; border-radius: 50%; padding: 5px; margin-left: 10px; display: inline-block; box-shadow: 0 0 10px rgba(0,0,0,0.2); }
+        .icon-btn { font-size: 1.3rem; cursor: pointer; background: var(--light-red); border-radius: 50%; padding: 8px; margin-left: 8px; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; transition: all 0.3s; color: var(--red); }
+        .icon-btn:hover { background: var(--red); color: white; transform: rotate(10deg); }
         
-        .screen { padding: 20px; max-width: 600px; margin: 0 auto; min-height: 100vh; }
-        .auth-box { background: white; padding: 30px; border-radius: 15px; text-align: center; margin-top: 50px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .screen { padding: 20px; max-width: 600px; margin: 0 auto; min-height: 100vh; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .auth-box { background: white; padding: 35px 25px; border-radius: 20px; text-align: center; margin-top: 40px; box-shadow: var(--shadow); animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes popIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
         
-        .leaderboard { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-bottom: 20px; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .staff-card { text-align: center; min-width: 90px; position: relative; }
-        .staff-img { width: 75px; height: 75px; border-radius: 50%; object-fit: cover; border: 3px solid #d2dae2; background: #f1f2f6; }
-        .rank-1 .staff-img { border: 4px solid #f1c40f; box-shadow: 0 0 15px #f1c40f; }
-        .badge { display: block; margin-bottom: -10px; z-index: 10; position: relative; font-size: 0.8rem; font-weight: bold; background: white; border-radius: 10px; padding: 2px 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .leaderboard { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-bottom: 20px; background: white; padding: 20px; border-radius: 15px; box-shadow: var(--shadow); }
+        .staff-card { text-align: center; min-width: 85px; position: relative; transition: transform 0.3s; }
+        .staff-card:hover { transform: translateY(-5px); }
+        .staff-img { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 3px solid #f0f0f0; background: #fafafa; transition: all 0.3s; }
+        .rank-1 .staff-img { border: 4px solid #f1c40f; box-shadow: 0 0 20px rgba(241,196,15,0.4); animation: glow 2s infinite; }
+        @keyframes glow { 0%,100% { box-shadow: 0 0 10px rgba(241,196,15,0.3); } 50% { box-shadow: 0 0 25px rgba(241,196,15,0.7); } }
         
         .search-container { display: flex; gap: 10px; margin-bottom: 20px; position: relative; }
-        .search-container input { margin: 0; border: 2px solid var(--blue); border-radius: 25px; padding-left: 20px; }
-        .mic-btn { width: 55px; border-radius: 50%; background: var(--blue); color: white; border: none; font-size: 1.5rem; cursor: pointer; }
+        .search-container input { margin: 0; border: 2px solid #e8e8e8; border-radius: 25px; padding-left: 20px; transition: all 0.3s; }
+        .search-container input:focus { border-color: var(--red); }
+        .mic-btn { width: 50px; height: 50px; border-radius: 50%; background: var(--red); color: white; border: none; font-size: 1.3rem; cursor: pointer; flex-shrink: 0; transition: all 0.3s; }
+        .mic-btn:hover { transform: scale(1.05); }
         
-        /* Suggestions Dropdown */
-        .suggestions-box { position: absolute; top: 55px; left: 0; right: 0; background: white; border: 2px solid var(--blue); border-radius: 10px; max-height: 250px; overflow-y: auto; z-index: 100; display: none; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-        .suggestion-item { padding: 12px 15px; cursor: pointer; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
-        .suggestion-item:hover { background: #e8f4fd; }
-        .suggestion-item:last-child { border-bottom: none; }
-        .suggestion-qty { font-weight: bold; color: var(--blue); font-size: 0.9rem; }
+        .suggestions-box { position: absolute; top: 58px; left: 0; right: 0; background: white; border: 2px solid var(--red); border-radius: 12px; max-height: 250px; overflow-y: auto; z-index: 100; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+        .suggestion-item { padding: 12px 15px; cursor: pointer; border-bottom: 1px solid #f5f5f5; display: flex; justify-content: space-between; transition: all 0.2s; }
+        .suggestion-item:hover { background: var(--light-red); }
         
-        .glow-red-heading { background: #ff7675; color: white; padding: 15px; border-radius: 10px; margin-bottom: 20px; font-weight: 900; text-align: center; box-shadow: 0 0 15px #ff7675; animation: redGlow 1s infinite alternate; border: 2px solid #d63031; }
-        @keyframes redGlow { 0% { box-shadow: 0 0 10px #ff7675; } 100% { box-shadow: 0 0 25px #d63031; } }
+        .glow-red-heading { background: linear-gradient(135deg, #e63946, #ff6b6b); color: white; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-weight: 900; text-align: center; animation: redGlow 1.5s infinite alternate; }
+        @keyframes redGlow { 0% { box-shadow: 0 0 10px rgba(230,57,70,0.4); } 100% { box-shadow: 0 0 30px rgba(230,57,70,0.8); } }
 
-        .stock-item { background: white; padding: 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-left: 4px solid var(--dark); position: relative; }
-        .qty-box { background: var(--bg); padding: 10px 15px; border-radius: 8px; font-size: 1.5rem; font-weight: 900; text-align: center; min-width: 70px; }
-        
+        .stock-item { background: white; padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; box-shadow: var(--shadow); border-left: 5px solid var(--red); position: relative; transition: all 0.3s; animation: slideIn 0.4s ease; }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+        .stock-item:hover { transform: translateX(3px); box-shadow: var(--shadow-hover); }
+        .qty-box { background: var(--light-red); padding: 10px 18px; border-radius: 10px; font-size: 1.5rem; font-weight: 900; text-align: center; min-width: 70px; color: var(--red); }
         .qty-controls { display: flex; align-items: center; gap: 8px; }
-        .qty-btn { width: 40px; height: 40px; border-radius: 50%; border: none; font-size: 1.3rem; font-weight: bold; cursor: pointer; color: white; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
-        .qty-btn:active { transform: scale(0.9); }
+        .qty-btn { width: 38px; height: 38px; border-radius: 50%; border: none; font-size: 1.2rem; font-weight: bold; cursor: pointer; color: white; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
         .qty-plus { background: var(--green); }
         .qty-minus { background: var(--red); }
-        .qty-btn.disabled { background: #ccc; cursor: not-allowed; pointer-events: none; }
-        
-        .bestseller-tag { position: absolute; top: -10px; right: -10px; font-size: 1.5rem; background: white; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .qty-btn:active { transform: scale(0.85); }
 
         #admin-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 2000; overflow-y: auto; padding: 20px; display: none; }
-        .admin-section { background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #d2dae2; }
+        .admin-section { background: #fafafa; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #f0f0f0; transition: all 0.3s; }
+        .admin-section:hover { box-shadow: var(--shadow); }
+        .staff-delete-btn { background: var(--red); color: white; border: none; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; transition: all 0.2s; }
+        .staff-delete-btn:hover { transform: scale(1.05); }
+        .selected-product-info { background: var(--light-red); padding: 12px 15px; border-radius: 10px; margin-bottom: 10px; display: none; border: 2px solid var(--red); }
+
+        /* AI Chatbot */
+        .chatbot-float-btn { position: fixed; bottom: 25px; right: 25px; width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #e63946, #ff6b6b); border: 3px solid white; color: white; font-size: 1.8rem; cursor: pointer; box-shadow: 0 8px 25px rgba(230,57,70,0.4); z-index: 1500; animation: botBounce 2s infinite; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
+        .chatbot-float-btn:hover { transform: scale(1.1); }
+        @keyframes botBounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
         
-        .staff-delete-btn { background: var(--red); color: white; border: none; padding: 5px 12px; border-radius: 5px; cursor: pointer; font-size: 0.8rem; margin-left: 10px; }
-        
-        .selected-product-info { background: #e8f4fd; padding: 10px 15px; border-radius: 8px; margin-bottom: 10px; display: none; border: 2px solid var(--blue); }
-        .quick-qty-row { display: flex; gap: 10px; align-items: center; }
-        .quick-qty-row button { width: 45px; height: 45px; border-radius: 50%; border: none; font-size: 1.5rem; font-weight: bold; cursor: pointer; color: white; }
-        .quick-qty-row input { width: 80px; text-align: center; font-size: 1.3rem; font-weight: bold; margin: 0; }
+        #chatbot-modal { position: fixed; bottom: 95px; right: 25px; width: 380px; max-width: 92vw; height: 520px; max-height: 65vh; background: white; border-radius: 18px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); z-index: 1600; display: none; flex-direction: column; overflow: hidden; }
+        .chatbot-header { background: linear-gradient(135deg, #e63946, #c0392b); color: white; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 0.95rem; }
+        .chatbot-body { flex: 1; overflow-y: auto; padding: 12px; background: #fefefe; display: flex; flex-direction: column; gap: 8px; }
+        .chat-msg { max-width: 85%; padding: 10px 14px; border-radius: 16px; font-size: 0.85rem; line-height: 1.5; animation: msgPop 0.3s ease; }
+        @keyframes msgPop { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        .bot-msg { background: #f5f5f5; align-self: flex-start; border-bottom-left-radius: 4px; }
+        .user-msg { background: var(--red); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+        .chat-typing { display: none; align-self: flex-start; background: #f5f5f5; padding: 12px 16px; border-radius: 16px; gap: 4px; }
+        .typing-dot { width: 7px; height: 7px; background: #ccc; border-radius: 50%; animation: typeBounce 1.3s infinite; display: inline-block; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; } .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typeBounce { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-6px); } }
+        .chatbot-input-area { padding: 10px 14px; background: white; display: flex; gap: 8px; border-top: 1px solid #eee; align-items: center; }
+        .chatbot-input-area input { flex: 1; border: 2px solid #f0f0f0; border-radius: 20px; padding: 10px 16px; font-size: 0.85rem; margin: 0; }
+        .chatbot-input-area button { width: 38px; height: 38px; border-radius: 50%; background: var(--red); border: none; color: white; font-size: 1.1rem; cursor: pointer; flex-shrink: 0; }
+        .quick-replies { display: flex; flex-wrap: wrap; gap: 6px; padding: 4px 0; }
+        .quick-reply-btn { background: var(--light-red); color: var(--red); border: none; padding: 7px 12px; border-radius: 16px; font-size: 0.75rem; cursor: pointer; font-weight: 600; transition: all 0.2s; }
+        .quick-reply-btn:active { background: var(--red); color: white; }
+
+        @media (max-width: 480px) {
+            #chatbot-modal { width: 95vw; right: 2.5vw; }
+            .chatbot-float-btn { bottom: 15px; right: 15px; width: 55px; height: 55px; font-size: 1.5rem; }
+        }
     </style>
 
     <script type="module">
@@ -87,840 +125,242 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
-        window.dbRef = db;
 
-        window.settings = { appPin: "308913", adminPin: "12345" };
-        window.staffList = {};
-        window.inventory = {};
-        window.currentShop = "";
-        window.isAdminLoggedIn = false;
-        window.myStaffId = localStorage.getItem("tx_staff_id") || null;
-        window.selectedProductKey = null;
-        let lastAttendanceTime = 0;
+        // ✅ OPENROUTER API
+        const OPENROUTER_KEY = "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";
+        let chatHistory = [];
 
-        const SHOPS = {
-            PP: { name: "Petrol Pump", lat: 28.7005, lng: 76.9304 },
-            KP: { name: "Khusboo Parking", lat: 28.7013, lng: 76.9121 }
-        };
+        window.settings = { appPin: "308913", adminPin: "1234" };
+        window.staffList = {}; window.inventory = {}; window.currentShop = "";
+        window.isAdminLoggedIn = false; window.myStaffId = localStorage.getItem("tx_staff_id") || null;
+        window.selectedProductKey = null; let lastAttendanceTime = 0;
 
-        onValue(ref(db, 'settings'), (s) => { if(s.exists()) window.settings = s.val(); });
-        
-        onValue(ref(db, 'staffList'), (s) => { 
-            window.staffList = s.val() || {}; 
-            renderLeaderboard(); 
-            populateAdminStaffList(); 
-        });
-        
-        onValue(ref(db, 'inventory'), (s) => { 
-            window.inventory = s.val() || {}; 
-            let searchVal = document.getElementById('searchInput') ? document.getElementById('searchInput').value : "";
-            renderInventory(searchVal);
-            populateAdminDropdowns();
-            if(document.getElementById('adminSearchInput')) {
-                showAdminSuggestions();
-            }
-        });
+        const SHOPS = { PP: { name: "Petrol Pump", lat: 28.7005, lng: 76.9304 }, KP: { name: "Khusboo Parking", lat: 28.7013, lng: 76.9121 } };
 
+        onValue(ref(db, 'settings'), (s) => { if(s.exists()) { let d = s.val(); if(d.adminPin === "12345") d.adminPin = "1234"; window.settings = d; } });
+        onValue(ref(db, 'staffList'), (s) => { window.staffList = s.val() || {}; renderLeaderboard(); populateAdminStaffList(); });
+        onValue(ref(db, 'inventory'), (s) => { window.inventory = s.val() || {}; renderInventory(document.getElementById('searchInput')?.value||""); populateAdminDropdowns(); });
         onValue(ref(db, 'attendanceLog'), (s) => {
             let logs = s.val();
             if(logs) {
-                let keys = Object.keys(logs);
-                let latestKey = keys[keys.length - 1];
-                let latestLog = logs[latestKey];
-                
-                if(Date.now() - latestLog.timestamp < 15000 && latestLog.timestamp > lastAttendanceTime) {
-                    lastAttendanceTime = latestLog.timestamp;
-                    let notificationText = `🔔 हाजिरी अलर्ट: ${latestLog.staff} ने ${latestLog.shop} पर हाजिरी लगाई है। (समय: ${latestLog.time})`;
-                    if (Notification.permission === "granted") new Notification("TyreXpert Update", { body: notificationText });
-                    alert(notificationText);
+                let keys = Object.keys(logs), latest = logs[keys[keys.length-1]];
+                if(Date.now() - latest.timestamp < 15000 && latest.timestamp > lastAttendanceTime) {
+                    lastAttendanceTime = latest.timestamp;
+                    alert(`🔔 ${latest.staff} ने ${latest.shop} पर हाजिरी लगाई (${latest.time})`);
                 }
             }
         });
 
         window.onload = () => {
-            if(!window.myStaffId) {
-                document.getElementById('onboarding-screen').classList.remove('hidden');
-                document.getElementById('auth-screen').classList.add('hidden');
-            } else {
-                document.getElementById('auth-screen').classList.remove('hidden');
-                document.getElementById('onboarding-screen').classList.add('hidden');
-            }
+            if(!window.myStaffId) { document.getElementById('onboarding-screen').classList.remove('hidden'); document.getElementById('auth-screen').classList.add('hidden'); }
+            else { document.getElementById('auth-screen').classList.remove('hidden'); document.getElementById('onboarding-screen').classList.add('hidden'); }
         };
 
         window.capturePhoto = function(e) {
-            let file = e.target.files[0];
-            let reader = new FileReader();
-            reader.onload = (event) => {
-                let img = new Image();
-                img.onload = () => {
-                    let canvas = document.createElement('canvas');
-                    canvas.width = 150; canvas.height = (150 * img.height) / img.width;
-                    let ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    window.tempPhotoBase64 = canvas.toDataURL('image/jpeg', 0.6);
-                    document.getElementById('previewImg').src = window.tempPhotoBase64;
-                    document.getElementById('previewImg').style.display = "block";
-                };
-                img.src = event.target.result;
-            };
-            if(file) reader.readAsDataURL(file);
+            let f=e.target.files[0],r=new FileReader();r.onload=(ev)=>{let i=new Image();i.onload=()=>{let c=document.createElement('canvas');c.width=150;c.height=(150*i.height)/i.width;c.getContext('2d').drawImage(i,0,0,c.width,c.height);window.tempPhotoBase64=c.toDataURL('image/jpeg',0.6);document.getElementById('previewImg').src=window.tempPhotoBase64;document.getElementById('previewImg').style.display="block";};i.src=ev.target.result;};if(f)r.readAsDataURL(f);};
+        window.saveProfile = () => {
+            let n=document.getElementById('obName').value.trim(),p=document.getElementById('obPhone').value.trim();
+            if(!n||!p||!window.tempPhotoBase64){alert("सब भरें!");return;}
+            window.myStaffId="staff_"+Date.now();localStorage.setItem("tx_staff_id",window.myStaffId);
+            set(ref(db,'staffList/'+window.myStaffId),{name:n,phone:p,img:window.tempPhotoBase64,score:0}).then(()=>{document.getElementById('onboarding-screen').classList.add('hidden');document.getElementById('auth-screen').classList.remove('hidden');});
         };
+        window.login = () => { if(document.getElementById('appPinInput').value===window.settings.appPin){document.getElementById('auth-screen').classList.add('hidden');document.getElementById('dashboard-screen').classList.remove('hidden');} else alert("❌ गलत"); };
+        window.directAdminLogin = () => { let p=prompt("एडमिन पासवर्ड:");if(p==="1234"){window.isAdminLoggedIn=true;document.getElementById('onboarding-screen').classList.add('hidden');document.getElementById('auth-screen').classList.add('hidden');document.getElementById('dashboard-screen').classList.remove('hidden');populateAdminStaffList();populateAdminDropdowns();document.getElementById('admin-modal').style.display="block";renderInventory();}else if(p)alert("❌"); };
 
-        window.saveProfile = function() {
-            let name = document.getElementById('obName').value.trim();
-            let phone = document.getElementById('obPhone').value.trim();
-            if(!name || !phone || !window.tempPhotoBase64) {
-                alert("कृपया अपना नाम, मोबाइल नंबर और फोटो डालें!"); return;
-            }
-            window.myStaffId = "staff_" + Date.now();
-            localStorage.setItem("tx_staff_id", window.myStaffId);
-            
-            set(ref(db, 'staffList/' + window.myStaffId), { name, phone, img: window.tempPhotoBase64, score: 0 }).then(() => {
-                document.getElementById('onboarding-screen').classList.add('hidden');
-                document.getElementById('auth-screen').classList.remove('hidden');
-            });
-        };
-
-        window.login = () => {
-            let pin = document.getElementById('appPinInput').value;
-            if(pin === window.settings.appPin) {
-                document.getElementById('auth-screen').classList.add('hidden');
-                document.getElementById('dashboard-screen').classList.remove('hidden');
-                if(Notification.permission !== "granted" && Notification.permission !== "denied") {
-                    Notification.requestPermission();
-                }
-            } else alert("❌ गलत पासवर्ड (Wrong Password)");
-        };
-
-        window.directAdminLogin = () => {
-            let pin = prompt("एडमिन पासवर्ड दर्ज करें:");
-            if(pin === window.settings.adminPin) {
-                window.isAdminLoggedIn = true;
-                document.getElementById('onboarding-screen').classList.add('hidden');
-                document.getElementById('auth-screen').classList.add('hidden');
-                document.getElementById('dashboard-screen').classList.remove('hidden');
-                populateAdminStaffList();
-                populateAdminDropdowns();
-                document.getElementById('admin-modal').style.display = "block";
-                renderInventory();
-            } else if(pin) alert("❌ गलत एडमिन पासवर्ड!");
-        };
-
-        function getDistance(lat1, lon1, lat2, lon2) {
-            const R = 6371e3;
-            const φ1 = lat1 * Math.PI/180, φ2 = lat2 * Math.PI/180;
-            const Δφ = (lat2-lat1) * Math.PI/180, Δλ = (lon2-lon1) * Math.PI/180;
-            const a = Math.sin(Δφ/2)*Math.sin(Δφ/2) + Math.cos(φ1)*Math.cos(φ2)*Math.sin(Δλ/2)*Math.sin(Δλ/2);
-            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-        }
-
+        function getDistance(lat1,lon1,lat2,lon2){const R=6371e3;const φ1=lat1*Math.PI/180,φ2=lat2*Math.PI/180;const Δφ=(lat2-lat1)*Math.PI/180,Δλ=(lon2-lon1)*Math.PI/180;const a=Math.sin(Δφ/2)**2+Math.cos(φ1)*Math.cos(φ2)*Math.sin(Δλ/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));}
         window.punchIn = () => {
-            if(!navigator.geolocation) { alert("आपके फोन में GPS सपोर्ट नहीं है।"); return; }
-            alert("📍 आपकी लोकेशन चेक हो रही है, कृपया प्रतीक्षा करें...");
-            
-            navigator.geolocation.getCurrentPosition(
-                (pos) => {
-                    let lat = pos.coords.latitude, lng = pos.coords.longitude;
-                    let distPP = getDistance(lat, lng, SHOPS.PP.lat, SHOPS.PP.lng);
-                    let distKP = getDistance(lat, lng, SHOPS.KP.lat, SHOPS.KP.lng);
-                    
-                    let shopName = "";
-                    if(distPP <= 150) shopName = SHOPS.PP.name;
-                    else if(distKP <= 150) shopName = SHOPS.KP.name;
-                    
-                    if(shopName !== "") {
-                        let myData = window.staffList[window.myStaffId] || {name: "Admin/Staff"};
-                        let exactTime = new Date().toLocaleTimeString('hi-IN', { hour: '2-digit', minute: '2-digit' });
-                        let ts = Date.now();
-                        set(ref(db, 'attendanceLog/' + ts), { staff: myData.name, shop: shopName, time: exactTime, timestamp: ts });
-                    } else {
-                        alert("❌ आप किसी दुकान के दायरे (150m) में नहीं हैं!");
-                    }
-                },
-                (err) => { alert("Error: " + err.message); },
-                { enableHighAccuracy: true }
-            );
+            if(!navigator.geolocation){alert("GPS नहीं");return;}
+            alert("📍 चेक हो रहा...");
+            navigator.geolocation.getCurrentPosition((pos)=>{
+                let dPP=getDistance(pos.coords.latitude,pos.coords.longitude,SHOPS.PP.lat,SHOPS.PP.lng),dKP=getDistance(pos.coords.latitude,pos.coords.longitude,SHOPS.KP.lat,SHOPS.KP.lng);
+                let shop="";if(dPP<=150)shop=SHOPS.PP.name;else if(dKP<=150)shop=SHOPS.KP.name;
+                if(shop){let d=window.staffList[window.myStaffId]||{name:"Staff"};set(ref(db,'attendanceLog/'+Date.now()),{staff:d.name,shop,time:new Date().toLocaleTimeString('hi-IN',{hour:'2-digit',minute:'2-digit'}),timestamp:Date.now()});alert("✅ "+shop);}
+                else alert("❌ दायरे में नहीं!");
+            },(err)=>{alert(err.message);},{enableHighAccuracy:true});
         };
 
-        function renderLeaderboard() {
-            let cont = document.getElementById('leaderboard-container');
-            if(!cont) return; cont.innerHTML = "";
-            let staffArr = Object.entries(window.staffList).map(([id, d]) => ({id, ...d})).sort((a,b) => b.score - a.score);
-            
-            staffArr.forEach((s, idx) => {
-                let isTop = idx === 0;
-                let rankLabel = isTop ? '🏆 नंबर 1' : `⭐ Rank ${idx+1}`;
-                cont.innerHTML += `
-                    <div class="staff-card ${isTop ? 'rank-1' : ''}">
-                        <span class="badge" style="color: ${isTop ? '#d35400' : '#333'}">${rankLabel}</span>
-                        <img src="${s.img}" class="staff-img">
-                        <h4>${s.name}</h4>
-                        <p style="font-size:0.8rem; font-weight:bold;">${s.score} पॉइंट्स</p>
-                    </div>`;
+        function renderLeaderboard(){let c=document.getElementById('leaderboard-container');if(!c)return;c.innerHTML="";Object.entries(window.staffList).map(([id,d])=>({id,...d})).sort((a,b)=>b.score-a.score).forEach((s,idx)=>{c.innerHTML+=`<div class="staff-card ${idx===0?'rank-1':''}"><span class="badge">${idx===0?'🏆 #1':'⭐ '+(idx+1)}</span><img src="${s.img}" class="staff-img"><h4>${s.name}</h4><p>${s.score} pts</p></div>`;});}
+        window.openShop=(s)=>{window.currentShop=s;document.getElementById('dashboard-screen').classList.add('hidden');document.getElementById('inventory-screen').classList.remove('hidden');document.getElementById('shop-title').innerText=s==="Petrol Pump"?"पेट्रोल पंप":"खुशबू पार्किंग";document.getElementById('searchInput').value="";document.getElementById('suggestionsBox').style.display='none';renderInventory();};
+        window.goBack=()=>{document.getElementById('inventory-screen').classList.add('hidden');document.getElementById('dashboard-screen').classList.remove('hidden');};
+        function sanitizeString(s){if(!s)return"";let c=s.replace(/[\s\.\-]/g,'').toLowerCase();if(c==="318")c="30018";return c;}
+
+        window.showSuggestions=()=>{let i=document.getElementById('searchInput'),b=document.getElementById('suggestionsBox'),q=sanitizeString(i.value);if(!q||q.length<1){b.style.display='none';renderInventory();return;}let m=Object.entries(window.inventory).filter(([k,v])=>sanitizeString(v.name).includes(q));if(m.length===0){b.style.display='none';renderInventory(i.value);return;}b.innerHTML="";m.forEach(([k,v])=>{let qty=window.currentShop==='Petrol Pump'?parseInt(v.pp||0):parseInt(v.kp||0);b.innerHTML+=`<div class="suggestion-item" onclick="selectProduct('${k}')"><span>${v.name}</span><span style="color:var(--red);font-weight:bold;">${qty} पीस</span></div>`;});b.style.display='block';};
+        window.selectProduct=(k)=>{document.getElementById('searchInput').value=window.inventory[k].name;document.getElementById('suggestionsBox').style.display='none';renderInventory(window.inventory[k].name);};
+        document.addEventListener('click',(e)=>{let b=document.getElementById('suggestionsBox'),i=document.getElementById('searchInput');if(b&&i&&!i.contains(e.target)&&!b.contains(e.target))b.style.display='none';let ab=document.getElementById('adminSuggestionsBox'),ai=document.getElementById('adminSearchInput');if(ab&&ai&&!ai.contains(e.target)&&!ab.contains(e.target))ab.style.display='none';});
+
+        window.adjustStock=(k,c)=>{if(!window.isAdminLoggedIn){alert("❌ सिर्फ एडमिन!");return;}let i=window.inventory[k];if(!i)return;if(window.currentShop==='Petrol Pump')i.pp=Math.max(0,parseInt(i.pp||0)+c);else i.kp=Math.max(0,parseInt(i.kp||0)+c);if(c<0)i.sold=(i.sold||0)+Math.abs(c);set(ref(db,'inventory/'+k),i);};
+
+        function renderInventory(f=""){
+            let cont=document.getElementById('stock-list-container'),lb=document.getElementById('low-stock-box'),ll=document.getElementById('low-stock-list');
+            if(!cont)return;cont.innerHTML="";if(ll)ll.innerHTML="";
+            let q=f?sanitizeString(f):"",hs=0,lc=0;
+            Object.values(window.inventory).forEach(i=>{if((i.sold||0)>hs)hs=i.sold||0;});
+            Object.entries(window.inventory).forEach(([k,i])=>{
+                let mq=window.currentShop==='Petrol Pump'?parseInt(i.pp||0):parseInt(i.kp||0),oq=window.currentShop==='Petrol Pump'?parseInt(i.kp||0):parseInt(i.pp||0),os=window.currentShop==='Petrol Pump'?"खुशबू पार्किंग":"पेट्रोल पंप";
+                if(mq<5&&mq>=0&&!f){lc++;ll.innerHTML+=`• ${i.name} <b>(${mq} पीस)</b><br>`;}
+                if(q&&!sanitizeString(i.name).includes(q))return;
+                let best=(i.sold>=hs&&hs>0)?'<span style="position:absolute;top:-8px;right:-8px;font-size:1.4rem;animation:bounce 0.6s infinite;">🔥</span>':'';
+                let ctrl=window.isAdminLoggedIn?`<div class="qty-controls"><button class="qty-btn qty-minus" onclick="adjustStock('${k}',-1)">−</button><div class="qty-box">${mq}</div><button class="qty-btn qty-plus" onclick="adjustStock('${k}',1)">+</button></div>`:`<div class="qty-box">${mq}</div>`;
+                cont.innerHTML+=`<div class="stock-item" style="position:relative;">${best}<div style="flex-grow:1;"><h4>${i.name}</h4>${i.alts&&i.alts.length?`<p style="font-size:0.8rem;color:#777;">Alt: ${i.alts.join(", ")}</p>`:''}${mq===0&&oq>0?`<p style="color:var(--blue);">👉 ${os} पर ${oq} पीस</p>`:''}</div>${ctrl}</div>`;
             });
+            if(lb){if(lc>0&&!f)lb.classList.remove('hidden');else lb.classList.add('hidden');}
         }
 
-        window.openShop = (shop) => {
-            window.currentShop = shop;
-            document.getElementById('dashboard-screen').classList.add('hidden');
-            document.getElementById('inventory-screen').classList.remove('hidden');
-            document.getElementById('shop-title').innerText = shop === "Petrol Pump" ? "पेट्रोल पंप" : "खुशबू पार्किंग";
-            document.getElementById('searchInput').value = "";
-            document.getElementById('suggestionsBox').style.display = 'none';
-            renderInventory();
-        };
+        window.handleSearch=()=>showSuggestions();
 
-        window.goBack = () => {
-            document.getElementById('inventory-screen').classList.add('hidden');
-            document.getElementById('dashboard-screen').classList.remove('hidden');
-        };
+        // ============ 🤖 AI CHATBOT (Sales Focused) ============
+        
+        async function callAI(msg) {
+            let stockCtx="";Object.entries(window.inventory).forEach(([k,i])=>stockCtx+=`${i.name}: PP=${i.pp||0}, KP=${i.kp||0}, Sold=${i.sold||0}\n`);
+            let attendanceCtx="";Object.entries(window.staffList).forEach(([id,s])=>attendanceCtx+=`${s.name} (Score:${s.score})\n`);
+            
+            let prompt = `You are a TYRE SHOP SALESMAN AI for TyreXpert shop (2 branches: Petrol Pump & Khusboo Parking). Your PRIMARY GOAL is to SELL tyres and increase shop revenue. Always push sales subtly.
 
-        function sanitizeString(str) { 
-            if(!str) return "";
-            let clean = str.replace(/[\s\.\-]/g, '').toLowerCase(); 
-            if(clean === "318") clean = "30018"; 
-            return clean;
+CURRENT STOCK:
+${stockCtx||"Empty"}
+
+STAFF:
+${attendanceCtx||"No staff"}
+
+RULES:
+1. Reply in Hinglish (Hindi+English, casual friendly tone)
+2. Keep answers 2-4 lines max
+3. ALWAYS suggest buying something from our shop - upsell, cross-sell
+4. If customer asks about a problem, solve it AND suggest a product
+5. If stock is low, suggest ordering from other branch
+6. Mention staff names if relevant
+7. Be like a helpful salesman who genuinely cares
+
+Examples:
+- "rim leak" -> "Rim leak? Valve pin badlo Rs 20 mein. Waise tubeless tyre lena chahenge? Safe rahega. Hamare paas CEAT ka accha stock hai!"
+- "i20 tyre" -> "i20 ke liye 195/55 R16 best rahega. CEAT ya Apollo - dono hain. Aaj hi lagwa lo, alignment free!"
+- "stock" -> "Filhaal 3.00-18 ka stock kam hai Petrol Pump mein. Khusboo Parking mein 8 piece hain. Order kar doon?"
+
+Customer: ${msg}
+Salesman reply (Hinglish, short, selling-focused):`;
+
+            try {
+                let res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+                    method:"POST",
+                    headers:{"Authorization":`Bearer ${OPENROUTER_KEY}`,"Content-Type":"application/json","HTTP-Referer":"https://tyrexpert.app","X-Title":"TyreXpert"},
+                    body:JSON.stringify({model:"openai/gpt-4o-mini",messages:[{role:"system",content:prompt},{role:"user",content:msg}],temperature:0.8,max_tokens:120})
+                });
+                let d = await res.json();
+                return d.choices?.[0]?.message?.content || getLocalReply(msg);
+            } catch(e) { return getLocalReply(msg); }
         }
 
-        // ✅ SHOW SUGGESTIONS AS USER TYPES
-        window.showSuggestions = () => {
-            let input = document.getElementById('searchInput');
-            let box = document.getElementById('suggestionsBox');
-            let query = sanitizeString(input.value);
-            
-            if(!query || query.length < 1) {
-                box.style.display = 'none';
-                renderInventory();
-                return;
-            }
-            
-            let matches = Object.entries(window.inventory).filter(([key, item]) => {
-                return sanitizeString(item.name).includes(query);
-            });
-            
-            if(matches.length === 0) {
-                box.style.display = 'none';
-                renderInventory(input.value);
-                return;
-            }
-            
-            box.innerHTML = "";
-            matches.forEach(([key, item]) => {
-                let myQty = window.currentShop === 'Petrol Pump' ? parseInt(item.pp||0) : parseInt(item.kp||0);
-                box.innerHTML += `
-                    <div class="suggestion-item" onclick="selectProduct('${key}')">
-                        <span>${item.name}</span>
-                        <span class="suggestion-qty">${myQty} पीस</span>
-                    </div>`;
-            });
-            box.style.display = 'block';
-        };
-
-        // ✅ SELECT PRODUCT FROM SUGGESTIONS
-        window.selectProduct = (key) => {
-            let item = window.inventory[key];
-            document.getElementById('searchInput').value = item.name;
-            document.getElementById('suggestionsBox').style.display = 'none';
-            renderInventory(item.name);
-        };
-
-        // ✅ HIDE SUGGESTIONS ON CLICK OUTSIDE
-        document.addEventListener('click', (e) => {
-            let box = document.getElementById('suggestionsBox');
-            let input = document.getElementById('searchInput');
-            if(box && input && !input.contains(e.target) && !box.contains(e.target)) {
-                box.style.display = 'none';
-            }
-            
-            // Admin suggestions box
-            let adminBox = document.getElementById('adminSuggestionsBox');
-            let adminInput = document.getElementById('adminSearchInput');
-            if(adminBox && adminInput && !adminInput.contains(e.target) && !adminBox.contains(e.target)) {
-                adminBox.style.display = 'none';
-            }
-        });
-
-        // ✅ STOCK ADJUST - Only Admin Can Do
-        window.adjustStock = (key, change) => {
-            if(!window.isAdminLoggedIn) {
-                alert("❌ सिर्फ एडमिन स्टॉक बदल सकता है!");
-                return;
-            }
-            
-            let item = window.inventory[key];
-            if(!item) return;
-            
-            if(window.currentShop === 'Petrol Pump') {
-                item.pp = Math.max(0, parseInt(item.pp || 0) + change);
-            } else {
-                item.kp = Math.max(0, parseInt(item.kp || 0) + change);
-            }
-            
-            if(change < 0) {
-                item.sold = (item.sold || 0) + Math.abs(change);
-            }
-            
-            set(ref(db, 'inventory/' + key), item);
-        };
-
-        function renderInventory(filterText = "") {
-            let cont = document.getElementById('stock-list-container');
-            let lowBox = document.getElementById('low-stock-box');
-            let lowList = document.getElementById('low-stock-list');
-            if(!cont) return; cont.innerHTML = "";
-            if(lowList) lowList.innerHTML = "";
-            
-            let query = filterText ? sanitizeString(filterText) : "";
-            let highestSold = 0;
-            let lowCount = 0;
-            
-            Object.values(window.inventory).forEach(i => { if((i.sold || 0) > highestSold) highestSold = i.sold || 0; });
-
-            Object.entries(window.inventory).forEach(([key, item]) => {
-                let myQty = window.currentShop === 'Petrol Pump' ? parseInt(item.pp||0) : parseInt(item.kp||0);
-                let otherQty = window.currentShop === 'Petrol Pump' ? parseInt(item.kp||0) : parseInt(item.pp||0);
-                let otherShopName = window.currentShop === 'Petrol Pump' ? "खुशबू पार्किंग" : "पेट्रोल पंप";
-
-                if(myQty < 5 && myQty >= 0 && !filterText) {
-                    lowCount++;
-                    if(lowList) lowList.innerHTML += `• ${item.name} <b>(${myQty} पीस बचे हैं)</b><br>`;
+        function getLocalReply(msg) {
+            let q = msg.toLowerCase();
+            // Stock check
+            for(let [k,i] of Object.entries(window.inventory)) {
+                if(sanitizeString(q).includes(sanitizeString(i.name))) {
+                    return `📦 ${i.name}: PP=${i.pp||0}, KP=${i.kp||0} pieces. ${(i.pp||0)<3?'⚠️ Kam hai - turant order karo!':'✅ Stock OK.'} ${i.alts?.length?'Alt: '+i.alts.join(', '):''} Aaj hi customer ko recommend karo!`;
                 }
-
-                let sanitizedName = sanitizeString(item.name);
-                if(query && !sanitizedName.includes(query)) return;
-
-                let isBestSeller = (item.sold >= highestSold && highestSold > 0) ? `<span class="bestseller-tag">🔥</span>` : '';
-                let otherShopMsg = (myQty === 0 && otherQty > 0) ? `<p style="color:#0984e3; font-size:0.8rem; font-weight:bold;">👉 ${otherShopName} पर ${otherQty} पीस हैं!</p>` : '';
-                let altsDisplay = (item.alts && item.alts.length > 0) ? `<p style="font-size:0.8rem; color:#777;">ऑल्टरनेटिव: ${item.alts.join(", ")}</p>` : "";
-
-                // ✅ Plus/Minus buttons only for admin
-                let qtyControls = window.isAdminLoggedIn ? `
-                    <div class="qty-controls">
-                        <button class="qty-btn qty-minus" onclick="adjustStock('${key}', -1)">−</button>
-                        <div class="qty-box" style="color: ${myQty < 5 ? 'red' : 'inherit'};">${myQty}</div>
-                        <button class="qty-btn qty-plus" onclick="adjustStock('${key}', 1)">+</button>
-                    </div>` : `
-                    <div class="qty-box" style="color: ${myQty < 5 ? 'red' : 'inherit'};">${myQty}</div>`;
-
-                cont.innerHTML += `
-                    <div class="stock-item">
-                        ${isBestSeller}
-                        <div style="flex-grow:1;">
-                            <h4>${item.name}</h4>
-                            ${altsDisplay}
-                            ${otherShopMsg}
-                        </div>
-                        ${qtyControls}
-                    </div>`;
-            });
-
-            if(lowBox) {
-                if(lowCount > 0 && !filterText) lowBox.classList.remove('hidden');
-                else lowBox.classList.add('hidden');
             }
+            if(q.includes("stock")||q.includes("कम")) {
+                let low=Object.entries(window.inventory).filter(([k,i])=>(i.pp||0)<5||(i.kp||0)<5);
+                return low.length?`⚠️ Kam stock:\n${low.map(([k,i])=>`${i.name} (PP:${i.pp||0}, KP:${i.kp||0})`).join('\n')}\n\nTurant order karo aur customers ko alternative suggest karo!`:"✅ Sab stock theek hai! Aaj sales push karo!";
+            }
+            if(q.includes("attendance")||q.includes("hajri")||q.includes("kon aya")) {
+                return "👥 Staff attendance details ke liye admin panel mein jaao. Wahan sab records hain. Abhi sales pe focus karo!";
+            }
+            if(q.includes("sell")||q.includes("bikri")||q.includes("sales")) return "💰 Sales badhane ke liye: 1) Customer ko alternative suggest karo 2) Combo offer do (tyre+tube) 3) Free alignment ka bolke customer bulavo!";
+            if(q.includes("rim")||q.includes("leak")) return "🔧 Rim leak? Valve pin Rs 20 mein badlo. Lekin tubeless tyre lena better rahega - safe aur long-lasting. Hamare paas CEAT ka stock hai!";
+            if(q.includes("puncture")) return "🛠️ Puncture? Tubeless Rs 50-100 mein repair. 5+ puncture hain to naya tyre becho - customer ko samjhao safety ka!";
+            if(q.includes("i20")) return "🚗 i20 ke liye 195/55 R16 best hai. CEAT ya Apollo - dono available. Aaj lagwao, alignment free! Petrol Pump mein check karo.";
+            return "🤔 Main salesman hoon! Puchho: Stock? Kaunsa tyre best hai? Sales kaise badhaye?";
         }
-
-        window.handleSearch = () => {
-            let query = document.getElementById('searchInput').value;
-            showSuggestions();
-        };
 
         function speakText(text) {
             window.speechSynthesis.cancel();
-            let msg = new SpeechSynthesisUtterance(text);
-            msg.lang = 'hi-IN';
-            window.speechSynthesis.speak(msg);
+            let clean = text.replace(/[*#₹]/g,'').replace(/\n/g,'. ').replace(/(\d+)\/(\d+)/g,'$1 $2').replace(/(\d+)-(\d+)/g,'$1 $2').substring(0,200);
+            let u = new SpeechSynthesisUtterance(clean); u.lang='hi-IN'; u.rate=1.0;
+            setTimeout(()=>window.speechSynthesis.speak(u),200);
         }
 
-        window.startMic = () => {
-            if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
-                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-                const recognition = new SpeechRecognition();
-                recognition.lang = 'hi-IN';
-                document.getElementById('searchInput').placeholder = "🎙️ सुन रहा हूँ...";
-                
-                recognition.start();
-                recognition.onresult = (event) => {
-                    let text = event.results[0][0].transcript;
-                    text = text.replace(/तीन सौ अठारह/g, "318").replace(/तीन सौ अठरा/g, "318");
-                    document.getElementById('searchInput').value = text;
-                    document.getElementById('suggestionsBox').style.display = 'none';
-                    renderInventory(text);
-                    
-                    setTimeout(() => {
-                        let query = sanitizeString(text);
-                        let match = Object.values(window.inventory).find(i => sanitizeString(i.name).includes(query));
-                        
-                        if(match) {
-                            let myQty = window.currentShop === 'Petrol Pump' ? parseInt(match.pp||0) : parseInt(match.kp||0);
-                            let otherQty = window.currentShop === 'Petrol Pump' ? parseInt(match.kp||0) : parseInt(match.pp||0);
-                            let otherShop = window.currentShop === 'Petrol Pump' ? 'खुशबू पार्किंग' : 'पेट्रोल पंप';
-                            let spokenName = match.name.replace(/[-/]/g, ' '); 
-                            
-                            if (myQty === 0) {
-                                let speechMsg = `${spokenName} यहाँ खत्म है। `;
-                                if (otherQty > 0) speechMsg += `लेकिन ${otherShop} पर ${otherQty} पीस रखे हैं। `;
-                                if(match.alts && match.alts.length > 0) speechMsg += `या ${match.alts.join(" या ")} लगा सकते हैं।`;
-                                speakText(speechMsg);
-                            } else {
-                                speakText(`${spokenName}. यहाँ ${myQty} पीस हैं।`);
-                            }
-                        } else {
-                            speakText("यह आइटम स्टॉक में नहीं मिला।");
-                        }
-                    }, 500);
-                };
-                recognition.onerror = () => { document.getElementById('searchInput').placeholder = "खोजें..."; }
+        window.toggleChatbot = () => {
+            let m = document.getElementById('chatbot-modal');
+            if(m.style.display==='flex'){m.style.display='none';}else{
+                m.style.display='flex';document.getElementById('chatbotInput').focus();
+                if(chatHistory.length===0){let w="👋 Namaste! Main TyreXpert salesman hoon. Batao kya chahiye?\n\n📦 Stock check karna?\n🔧 Koi problem?\n💰 Sales tip chahiye?";addBotMsg(w);speakText(w);addQR(["📦 Stock","🔧 Rim leak","🚗 i20 tyre","💰 Sales tip"]);}
             }
         };
 
-        // ============ ADMIN PANEL FUNCTIONS ============
-
-        // ✅ ADMIN SEARCH WITH SUGGESTIONS
-        window.showAdminSuggestions = () => {
-            let input = document.getElementById('adminSearchInput');
-            let box = document.getElementById('adminSuggestionsBox');
-            if(!input || !box) return;
-            
-            let query = sanitizeString(input.value);
-            
-            if(!query || query.length < 1) {
-                box.style.display = 'none';
-                document.getElementById('selectedProductInfo').style.display = 'none';
-                window.selectedProductKey = null;
-                return;
-            }
-            
-            let matches = Object.entries(window.inventory).filter(([key, item]) => {
-                return sanitizeString(item.name).includes(query);
-            });
-            
-            if(matches.length === 0) {
-                box.style.display = 'none';
-                return;
-            }
-            
-            box.innerHTML = "";
-            matches.forEach(([key, item]) => {
-                box.innerHTML += `
-                    <div class="suggestion-item" onclick="selectAdminProduct('${key}')">
-                        <span>${item.name}</span>
-                        <span class="suggestion-qty">PP:${item.pp||0} | KP:${item.kp||0}</span>
-                    </div>`;
-            });
-            box.style.display = 'block';
+        window.sendChatMsg = async () => {
+            let input=document.getElementById('chatbotInput'),msg=input.value.trim();if(!msg)return;
+            addUserMsg(msg);input.value='';document.getElementById('chatTyping').style.display='flex';
+            let reply=await callAI(msg);
+            document.getElementById('chatTyping').style.display='none';
+            addBotMsg(reply);speakText(reply);chatHistory.push({role:'user',content:msg},{role:'assistant',content:reply});
+            addQR(["📦 Stock","🔧 Problem","💰 Sales","🚗 Vehicle"]);
+            document.getElementById('chatbotBody').scrollTop=document.getElementById('chatbotBody').scrollHeight;
         };
 
-        // ✅ SELECT PRODUCT IN ADMIN PANEL
-        window.selectAdminProduct = (key) => {
-            window.selectedProductKey = key;
-            let item = window.inventory[key];
-            
-            document.getElementById('adminSearchInput').value = item.name;
-            document.getElementById('adminSuggestionsBox').style.display = 'none';
-            
-            // Show selected product info with plus/minus
-            let info = document.getElementById('selectedProductInfo');
-            info.style.display = 'block';
-            info.innerHTML = `
-                <strong>📦 ${item.name}</strong><br>
-                <div style="display:flex; gap:20px; margin-top:10px; flex-wrap:wrap;">
-                    <div style="flex:1; min-width:150px;">
-                        <small>⛽ पेट्रोल पंप</small>
-                        <div class="quick-qty-row">
-                            <button style="background:var(--red);" onclick="adminAdjustStock('pp', -1)">−</button>
-                            <input type="text" value="${item.pp||0}" id="adminPPQty" readonly>
-                            <button style="background:var(--green);" onclick="adminAdjustStock('pp', 1)">+</button>
-                        </div>
-                    </div>
-                    <div style="flex:1; min-width:150px;">
-                        <small>🅿️ खुशबू पार्किंग</small>
-                        <div class="quick-qty-row">
-                            <button style="background:var(--red);" onclick="adminAdjustStock('kp', -1)">−</button>
-                            <input type="text" value="${item.kp||0}" id="adminKPQty" readonly>
-                            <button style="background:var(--green);" onclick="adminAdjustStock('kp', 1)">+</button>
-                        </div>
-                    </div>
-                </div>
-                <div style="display:flex; gap:10px; margin-top:10px;">
-                    <input type="number" id="adminBulkQty" placeholder="Bulk quantity (+/-)" style="flex:2;">
-                    <button class="btn btn-sm btn-blue" onclick="adminBulkAdjust('pp')" style="flex:1;">PP में जोड़ें</button>
-                    <button class="btn btn-sm btn-dark" onclick="adminBulkAdjust('kp')" style="flex:1;">KP में जोड़ें</button>
-                </div>
-            `;
-        };
+        function addUserMsg(t){document.getElementById('chatbotBody').innerHTML+=`<div class="chat-msg user-msg">${t}</div>`;}
+        function addBotMsg(t){document.getElementById('chatbotBody').innerHTML+=`<div class="chat-msg bot-msg">${t.replace(/\n/g,'<br>')}</div>`;}
+        function addQR(r){let h='<div class="quick-replies">';r.forEach(x=>h+=`<button class="quick-reply-btn" onclick="qrClick('${x}')">${x}</button>`);h+='</div>';document.getElementById('chatbotBody').innerHTML+=h;}
+        window.qrClick=(t)=>{document.getElementById('chatbotInput').value=t;sendChatMsg();};
 
-        // ✅ ADMIN ADJUST STOCK (+1 / -1)
-        window.adminAdjustStock = (shop, change) => {
-            if(!window.selectedProductKey) return;
-            let item = window.inventory[window.selectedProductKey];
-            
-            if(shop === 'pp') {
-                item.pp = Math.max(0, parseInt(item.pp || 0) + change);
-                document.getElementById('adminPPQty').value = item.pp;
-            } else {
-                item.kp = Math.max(0, parseInt(item.kp || 0) + change);
-                document.getElementById('adminKPQty').value = item.kp;
-            }
-            
-            if(change < 0) item.sold = (item.sold || 0) + Math.abs(change);
-            
-            set(ref(db, 'inventory/' + window.selectedProductKey), item);
-        };
-
-        // ✅ ADMIN BULK ADJUST
-        window.adminBulkAdjust = (shop) => {
-            if(!window.selectedProductKey) { alert("पहले प्रोडक्ट चुनें!"); return; }
-            let change = parseInt(document.getElementById('adminBulkQty').value) || 0;
-            if(change === 0) { alert("कितना जोड़ना/घटाना है वो डालें!"); return; }
-            
-            let item = window.inventory[window.selectedProductKey];
-            if(shop === 'pp') {
-                item.pp = Math.max(0, parseInt(item.pp || 0) + change);
-                document.getElementById('adminPPQty').value = item.pp;
-            } else {
-                item.kp = Math.max(0, parseInt(item.kp || 0) + change);
-                document.getElementById('adminKPQty').value = item.kp;
-            }
-            
-            if(change < 0) item.sold = (item.sold || 0) + Math.abs(change);
-            
-            set(ref(db, 'inventory/' + window.selectedProductKey), item).then(() => {
-                document.getElementById('adminBulkQty').value = "";
-                alert("✅ स्टॉक अपडेट हो गया!");
-            });
-        };
-
-        // ✅ ADD NEW PRODUCT
-        window.addProduct = () => {
-            let name = document.getElementById('newProductName').value.trim();
-            if(!name) { alert("प्रोडक्ट का नाम डालें!"); return; }
-            
-            let altsStr = document.getElementById('newProductAlts').value.trim();
-            let alts = altsStr ? altsStr.split(',').map(s => s.trim()) : [];
-            
-            let ppQty = parseInt(document.getElementById('newProductPP').value) || 0;
-            let kpQty = parseInt(document.getElementById('newProductKP').value) || 0;
-            
-            let id = "prod_" + Date.now();
-            set(ref(db, 'inventory/' + id), {
-                name: name,
-                alts: alts,
-                pp: ppQty,
-                kp: kpQty,
-                sold: 0
-            }).then(() => { 
-                alert("✅ नया प्रोडक्ट जुड़ गया!"); 
-                document.getElementById('newProductName').value = "";
-                document.getElementById('newProductAlts').value = "";
-                document.getElementById('newProductPP').value = "";
-                document.getElementById('newProductKP').value = "";
-            });
-        };
-
-        // ✅ DELETE PRODUCT
-        window.deleteProduct = () => {
-            let key = document.getElementById('deleteItemSelect').value;
-            if(!key) { alert("पहले प्रोडक्ट चुनें!"); return; }
-            if(confirm("क्या आप सच में इस प्रोडक्ट को हमेशा के लिए हटाना चाहते हैं?")) {
-                remove(ref(db, 'inventory/' + key)).then(() => alert("🗑️ प्रोडक्ट हटा दिया गया!"));
-            }
-        };
-
-        // ✅ DELETE STAFF
-        window.deleteStaff = (staffId) => {
-            let staff = window.staffList[staffId];
-            if(!staff) return;
-            if(confirm(`क्या आप सच में ${staff.name} (${staff.phone}) को डिलीट करना चाहते हैं?`)) {
-                remove(ref(db, 'staffList/' + staffId)).then(() => {
-                    alert("🗑️ कर्मचारी हटा दिया गया!");
-                });
-            }
-        };
-
-        window.sendWhatsAppAlert = () => {
-            let lowItems = [];
-            Object.values(window.inventory).forEach(i => {
-                let ppQty = parseInt(i.pp || 0);
-                let kpQty = parseInt(i.kp || 0);
-                if(ppQty < 5 || kpQty < 5) {
-                    lowItems.push(`- ${i.name} (PP: ${ppQty}, KP: ${kpQty})`);
-                }
-            });
-            if(lowItems.length === 0) { alert("सब सही है! कोई स्टॉक कम नहीं है।"); return; }
-            
-            let myData = window.staffList[window.myStaffId] || {name: "Staff", phone: "Unknown"};
-            let text = `⚠️ *कम स्टॉक अलर्ट - TyreXpert*\nभेजने वाला: ${myData.name} (${myData.phone})\n\n${lowItems.join("\n")}`;
-            window.open(`https://wa.me/919068749268?text=${encodeURIComponent(text)}`, '_blank');
-        };
-
-        window.openAdminAuth = () => {
-            let pin = prompt("एडमिन पासवर्ड दर्ज करें:");
-            if(pin === window.settings.adminPin) {
-                window.isAdminLoggedIn = true;
-                populateAdminStaffList();
-                populateAdminDropdowns();
-                document.getElementById('admin-modal').style.display = "block";
-                renderInventory();
-            } else alert("❌ गलत एडमिन पासवर्ड!");
-        };
-
-        window.closeAdmin = () => { 
-            window.isAdminLoggedIn = false; 
-            document.getElementById('admin-modal').style.display = "none"; 
-            window.selectedProductKey = null;
-            renderInventory(); 
-        };
-
-        function populateAdminStaffList() {
-            let sel = document.getElementById('adminStaffSelect');
-            let staffListDiv = document.getElementById('staffDeleteList');
-            if(!sel) return; 
-            sel.innerHTML = "";
-            if(staffListDiv) staffListDiv.innerHTML = "";
-            
-            Object.entries(window.staffList).forEach(([id, s]) => {
-                sel.innerHTML += `<option value="${id}">${s.name} - 📱 ${s.phone} (Score: ${s.score})</option>`;
-                
-                if(staffListDiv) {
-                    staffListDiv.innerHTML += `
-                        <div style="display:flex; justify-content:space-between; align-items:center; padding:8px; background:white; margin-bottom:5px; border-radius:5px;">
-                            <span>👤 ${s.name} - 📱 ${s.phone} | Score: ${s.score}</span>
-                            <button class="staff-delete-btn" onclick="deleteStaff('${id}')">🗑️ हटाएं</button>
-                        </div>`;
-                }
-            });
-        }
-
-        window.updateStaffScore = () => {
-            let id = document.getElementById('adminStaffSelect').value;
-            let pts = parseInt(document.getElementById('newScoreInput').value);
-            if(!id || isNaN(pts)) return;
-            update(ref(db, 'staffList/' + id), { score: pts }).then(() => { 
-                alert("✅ पॉइंट्स अपडेट हो गए!"); 
-                document.getElementById('newScoreInput').value = ""; 
-            });
-        };
-
-        window.transferStock = () => {
-            let key = document.getElementById('transferItem').value;
-            let dir = document.getElementById('transferDir').value;
-            let qty = parseInt(document.getElementById('transferQty').value) || 0;
-            if(!key || qty <= 0) return;
-
-            let item = window.inventory[key];
-            if(dir === "P2K") {
-                if((item.pp||0) < qty) { alert("पेट्रोल पंप पर इतना स्टॉक नहीं है!"); return; }
-                item.pp -= qty; item.kp = (item.kp||0) + qty;
-            } else {
-                if((item.kp||0) < qty) { alert("खुशबू पार्किंग पर इतना स्टॉक नहीं है!"); return; }
-                item.kp -= qty; item.pp = (item.pp||0) + qty;
-            }
-            set(ref(db, 'inventory/' + key), item).then(() => {
-                alert("🔄 माल ट्रान्सफर हो गया!");
-                document.getElementById('transferQty').value = "";
-            });
-        };
-
-        window.claimDefect = () => {
-            let key = document.getElementById('defectItem').value;
-            let shop = document.getElementById('defectShop').value;
-            let qty = parseInt(document.getElementById('defectQty').value) || 0;
-            if(!key || qty <= 0) return;
-
-            let item = window.inventory[key];
-            if(shop === "Petrol Pump") item.pp = Math.max(0, parseInt(item.pp || 0) - qty);
-            else item.kp = Math.max(0, parseInt(item.kp || 0) - qty);
-            item.sold = (item.sold || 0) + qty;
-
-            set(ref(db, 'inventory/' + key), item).then(() => {
-                alert("🛑 डिफेक्ट क्लेम हो गया!");
-                document.getElementById('defectQty').value = "";
-            });
-        };
-
-        window.updatePasswords = () => {
-            let appP = document.getElementById('chgAppPass').value.trim();
-            let admP = document.getElementById('chgAdminPass').value.trim();
-            if(appP) window.settings.appPin = appP;
-            if(admP) window.settings.adminPin = admP;
-            set(ref(db, 'settings'), window.settings).then(() => alert("🔑 पासवर्ड बदल दिए गए हैं!"));
-        };
-
-        function populateAdminDropdowns() {
-            const delSel = document.getElementById('deleteItemSelect');
-            const defSel = document.getElementById('defectItem');
-            const traSel = document.getElementById('transferItem');
-            if(!delSel || !defSel || !traSel) return;
-            
-            delSel.innerHTML = "<option value=''>-- प्रोडक्ट चुनें --</option>"; 
-            defSel.innerHTML = ""; 
-            traSel.innerHTML = "";
-            
-            Object.keys(window.inventory).forEach(key => {
-                let item = window.inventory[key];
-                delSel.innerHTML += `<option value="${key}">${item.name} (PP:${item.pp||0}, KP:${item.kp||0})</option>`; 
-                defSel.innerHTML += `<option value="${key}">${item.name}</option>`; 
-                traSel.innerHTML += `<option value="${key}">${item.name}</option>`;
-            });
-        }
+        // Admin functions
+        window.showAdminSuggestions=()=>{let i=document.getElementById('adminSearchInput'),b=document.getElementById('adminSuggestionsBox'),q=sanitizeString(i.value);if(!q||q.length<1){b.style.display='none';document.getElementById('selectedProductInfo').style.display='none';window.selectedProductKey=null;return;}let m=Object.entries(window.inventory).filter(([k,v])=>sanitizeString(v.name).includes(q));if(m.length===0){b.style.display='none';return;}b.innerHTML="";m.forEach(([k,v])=>b.innerHTML+=`<div class="suggestion-item" onclick="selectAdminProduct('${k}')"><span>${v.name}</span><span style="color:var(--red);font-weight:bold;">PP:${v.pp||0}|KP:${v.kp||0}</span></div>`);b.style.display='block';};
+        window.selectAdminProduct=(k)=>{window.selectedProductKey=k;let i=window.inventory[k];document.getElementById('adminSearchInput').value=i.name;document.getElementById('adminSuggestionsBox').style.display='none';document.getElementById('selectedProductInfo').style.display='block';document.getElementById('selectedProductInfo').innerHTML=`<strong>📦 ${i.name}</strong><br><div style="display:flex;gap:15px;margin-top:10px;"><div style="flex:1;"><small>⛽ PP</small><div class="qty-controls"><button class="qty-btn qty-minus" onclick="adminAdj('pp',-1)">−</button><span id="appq" style="padding:8px;font-weight:bold;">${i.pp||0}</span><button class="qty-btn qty-plus" onclick="adminAdj('pp',1)">+</button></div></div><div style="flex:1;"><small>🅿️ KP</small><div class="qty-controls"><button class="qty-btn qty-minus" onclick="adminAdj('kp',-1)">−</button><span id="akpq" style="padding:8px;font-weight:bold;">${i.kp||0}</span><button class="qty-btn qty-plus" onclick="adminAdj('kp',1)">+</button></div></div></div>`;};
+        window.adminAdj=(s,c)=>{if(!window.selectedProductKey)return;let i=window.inventory[window.selectedProductKey];if(s==='pp'){i.pp=Math.max(0,parseInt(i.pp||0)+c);document.getElementById('appq').innerText=i.pp;}else{i.kp=Math.max(0,parseInt(i.kp||0)+c);document.getElementById('akpq').innerText=i.kp;}if(c<0)i.sold=(i.sold||0)+Math.abs(c);set(ref(db,'inventory/'+window.selectedProductKey),i);};
+        window.addProduct=()=>{let n=document.getElementById('newProductName').value.trim();if(!n){alert("नाम डालें!");return;}let a=document.getElementById('newProductAlts').value.trim().split(',').map(s=>s.trim()).filter(s=>s);set(ref(db,'inventory/prod_'+Date.now()),{name:n,alts:a,pp:parseInt(document.getElementById('newProductPP').value)||0,kp:parseInt(document.getElementById('newProductKP').value)||0,sold:0}).then(()=>{alert("✅");['newProductName','newProductAlts','newProductPP','newProductKP'].forEach(id=>document.getElementById(id).value="");});};
+        window.deleteProduct=()=>{let k=document.getElementById('deleteItemSelect').value;if(!k)return;if(confirm("हटाएं?"))remove(ref(db,'inventory/'+k)).then(()=>alert("🗑️"));};
+        window.deleteStaff=(id)=>{let s=window.staffList[id];if(!s)return;if(confirm(`${s.name} हटाएं?`))remove(ref(db,'staffList/'+id)).then(()=>alert("🗑️"));};
+        window.sendWhatsAppAlert=()=>{let low=Object.entries(window.inventory).filter(([k,i])=>(i.pp||0)<5||(i.kp||0)<5);if(low.length===0){alert("सब ठीक!");return;}let d=window.staffList[window.myStaffId]||{name:"Staff",phone:""};window.open(`https://wa.me/919068749268?text=${encodeURIComponent(`⚠️ कम स्टॉक\n${d.name}\n\n${low.map(([k,i])=>`- ${i.name} (PP:${i.pp||0}, KP:${i.kp||0})`).join("\n")}`)}`,'_blank');};
+        window.openAdminAuth=()=>{let p=prompt("एडमिन पासवर्ड:");if(p==="1234"){window.isAdminLoggedIn=true;populateAdminStaffList();populateAdminDropdowns();document.getElementById('admin-modal').style.display="block";renderInventory();}else if(p)alert("❌");};
+        window.closeAdmin=()=>{window.isAdminLoggedIn=false;document.getElementById('admin-modal').style.display="none";window.selectedProductKey=null;renderInventory();};
+        function populateAdminStaffList(){let s=document.getElementById('adminStaffSelect'),d=document.getElementById('staffDeleteList');if(!s)return;s.innerHTML="";if(d)d.innerHTML="";Object.entries(window.staffList).forEach(([id,x])=>{s.innerHTML+=`<option value="${id}">${x.name} - ${x.phone} (${x.score})</option>`;if(d)d.innerHTML+=`<div style="display:flex;justify-content:space-between;padding:8px;background:white;margin-bottom:5px;border-radius:8px;"><span>👤 ${x.name} | ${x.score} pts</span><button class="staff-delete-btn" onclick="deleteStaff('${id}')">🗑️</button></div>`;});}
+        window.updateStaffScore=()=>{let id=document.getElementById('adminStaffSelect').value,pts=parseInt(document.getElementById('newScoreInput').value);if(!id||isNaN(pts))return;update(ref(db,'staffList/'+id),{score:pts}).then(()=>{alert("✅");document.getElementById('newScoreInput').value="";});};
+        window.transferStock=()=>{let k=document.getElementById('transferItem').value,d=document.getElementById('transferDir').value,q=parseInt(document.getElementById('transferQty').value)||0;if(!k||q<=0)return;let i=window.inventory[k];if(d==="P2K"){if((i.pp||0)<q){alert("PP में नहीं!");return;}i.pp-=q;i.kp=(i.kp||0)+q;}else{if((i.kp||0)<q){alert("KP में नहीं!");return;}i.kp-=q;i.pp=(i.pp||0)+q;}set(ref(db,'inventory/'+k),i).then(()=>{alert("🔄");document.getElementById('transferQty').value="";});};
+        window.claimDefect=()=>{let k=document.getElementById('defectItem').value,s=document.getElementById('defectShop').value,q=parseInt(document.getElementById('defectQty').value)||0;if(!k||q<=0)return;let i=window.inventory[k];if(s==="Petrol Pump")i.pp=Math.max(0,(i.pp||0)-q);else i.kp=Math.max(0,(i.kp||0)-q);i.sold=(i.sold||0)+q;set(ref(db,'inventory/'+k),i).then(()=>{alert("🛑");document.getElementById('defectQty').value="";});};
+        window.updatePasswords=()=>{let a=document.getElementById('chgAppPass').value.trim(),b=document.getElementById('chgAdminPass').value.trim();if(a)window.settings.appPin=a;if(b)window.settings.adminPin=b;set(ref(db,'settings'),window.settings).then(()=>alert("🔑"));};
+        function populateAdminDropdowns(){['deleteItemSelect','defectItem','transferItem'].forEach(id=>{let s=document.getElementById(id);if(!s)return;s.innerHTML=id==='deleteItemSelect'?"<option value=''>-- चुनें --</option>":"";Object.entries(window.inventory).forEach(([k,i])=>s.innerHTML+=`<option value="${k}">${i.name} (PP:${i.pp||0}, KP:${i.kp||0})</option>`);});}
     </script>
 </head>
 <body>
 
-    <!-- ONBOARDING -->
-    <div id="onboarding-screen" class="screen hidden" style="background: var(--dark); color: white;">
-        <div class="auth-box" style="color: var(--dark);">
-            <h2>TyreXpert में आपका स्वागत है</h2>
-            <p style="margin-bottom:15px; font-size:0.9rem; color:#777;">अपनी प्रोफाइल बनाएं (केवल एक बार)</p>
-            <input type="text" id="obName" placeholder="आपका नाम (Your Name)">
-            <input type="number" id="obPhone" placeholder="मोबाइल नंबर (Mobile Number)">
-            <p style="text-align:left; font-size:0.9rem; font-weight:bold;">अपनी फोटो खींचें: 📷</p>
-            <input type="file" accept="image/*" capture="user" onchange="capturePhoto(event)">
-            <img id="previewImg" style="width:100px; height:100px; border-radius:50%; margin:10px auto; display:none; object-fit:cover;">
-            <button class="btn btn-dark" onclick="saveProfile()">सेव करें और ऐप खोलें</button>
-            <hr style="margin: 20px 0;">
-            <button class="btn btn-outline" onclick="directAdminLogin()">👑 एडमिन लॉगिन (स्किप करें)</button>
-        </div>
-    </div>
+<div id="onboarding-screen" class="screen hidden" style="background:var(--dark);color:white;"><div class="auth-box" style="color:var(--dark);"><h2>TyreXpert में स्वागत है</h2><p style="color:#777;">प्रोफाइल बनाएं</p><input type="text" id="obName" placeholder="आपका नाम"><input type="number" id="obPhone" placeholder="मोबाइल"><p>फोटो 📷</p><input type="file" accept="image/*" capture="user" onchange="capturePhoto(event)"><img id="previewImg" style="width:100px;height:100px;border-radius:50%;margin:10px auto;display:none;object-fit:cover;"><button class="btn btn-red" onclick="saveProfile()">सेव करें</button><hr><button class="btn btn-outline" onclick="directAdminLogin()">👑 एडमिन</button></div></div>
+<div id="auth-screen" class="screen hidden" style="background:var(--dark);"><div class="auth-box"><h1 class="logo" style="font-size:2.5rem;">Tyre<span>Xpert</span></h1><p>ऐप लॉक</p><input type="password" id="appPinInput" placeholder="पासवर्ड"><button class="btn btn-red" onclick="login()">खोलें</button></div></div>
 
-    <!-- APP LOCK -->
-    <div id="auth-screen" class="screen hidden" style="background: var(--dark);">
-        <div class="auth-box">
-            <h1 class="logo" style="font-size: 2.5rem;">Tyre<span>Xpert</span></h1>
-            <p style="margin: 10px 0 20px; font-weight: bold;">ऐप लॉक</p>
-            <input type="password" id="appPinInput" placeholder="पासवर्ड डालें">
-            <button class="btn btn-dark" onclick="login()">ऐप खोलें</button>
-        </div>
-    </div>
+<div id="dashboard-screen" class="screen hidden">
+    <div class="top-bar"><div class="logo">Tyre<span>Xpert</span></div><div><span class="icon-btn" onclick="openAdminAuth()">👑</span></div></div>
+    <h3 style="text-align:center;margin:15px 0;">🏆 टॉप कर्मचारी</h3><div class="leaderboard" id="leaderboard-container"></div>
+    <button class="btn btn-green" onclick="punchIn()">📍 हाजिरी लगाएं</button>
+    <h2 style="text-align:center;margin:15px 0;">दुकान चुनें</h2>
+    <button class="btn btn-dark" onclick="openShop('Petrol Pump')">⛽ पेट्रोल पंप</button>
+    <button class="btn btn-blue" onclick="openShop('Khusboo Parking')">🅿️ खुशबू पार्किंग</button>
+</div>
 
-    <!-- DASHBOARD -->
-    <div id="dashboard-screen" class="screen hidden">
-        <div class="top-bar" style="border-radius: 10px; margin-bottom: 20px;">
-            <div class="logo">Tyre<span>Xpert</span></div>
-            <div><span class="icon-btn" onclick="openAdminAuth()" title="Admin Panel">👑</span></div>
-        </div>
-        
-        <h3 style="text-align: center; margin-bottom: 10px;">🏆 टॉप कर्मचारी</h3>
-        <div class="leaderboard" id="leaderboard-container"></div>
+<div id="inventory-screen" class="screen hidden">
+    <div class="top-bar"><button onclick="goBack()" style="padding:8px 12px;border:none;border-radius:8px;background:var(--light-red);color:var(--red);font-weight:bold;cursor:pointer;">🔙</button><h3 id="shop-title"></h3><div class="icon-btn" onclick="openAdminAuth()">👑</div></div>
+    <div id="low-stock-box" class="glow-red-heading hidden">⚠️ कम स्टॉक<div id="low-stock-list" style="font-weight:normal;margin-top:8px;text-align:left;font-size:0.9rem;"></div></div>
+    <button class="btn btn-outline" style="margin-bottom:15px;" onclick="sendWhatsAppAlert()">📱 WhatsApp अलर्ट</button>
+    <div class="search-container"><input type="text" id="searchInput" placeholder="🔍 खोजें..." oninput="handleSearch()" autocomplete="off"><button class="mic-btn" onclick="startMic()">🎤</button><div id="suggestionsBox" class="suggestions-box"></div></div>
+    <div id="stock-list-container"></div>
+</div>
 
-        <button class="btn btn-green" onclick="punchIn()" style="margin-bottom: 30px; box-shadow: 0 5px 15px rgba(11, 232, 129, 0.4);">
-            📍 हाजिरी लगाएं (Punch-In)
-        </button>
+<div id="admin-modal">
+    <button class="btn btn-red" onclick="closeAdmin()" style="position:sticky;top:0;z-index:100;">❌ बंद करें</button><h2 style="text-align:center;margin:15px 0;">👑 एडमिन पैनल (Pass: 1234)</h2>
+    <div class="admin-section" style="border-color:var(--red);background:var(--light-red);"><h3 style="color:var(--red);">✏️ स्टॉक अपडेट</h3><div style="position:relative;"><input type="text" id="adminSearchInput" placeholder="🔍 खोजें..." oninput="showAdminSuggestions()" autocomplete="off"><div id="adminSuggestionsBox" class="suggestions-box"></div></div><div id="selectedProductInfo" class="selected-product-info"></div></div>
+    <div class="admin-section"><h3>➕ नया प्रोडक्ट</h3><input type="text" id="newProductName" placeholder="नाम"><input type="text" id="newProductAlts" placeholder="Alt"><div style="display:flex;gap:10px;"><input type="number" id="newProductPP" placeholder="PP"><input type="number" id="newProductKP" placeholder="KP"></div><button class="btn btn-red" onclick="addProduct()">✅ जोड़ें</button></div>
+    <div class="admin-section" style="background:#fff5f5;"><h3 style="color:var(--red);">🗑️ डिलीट</h3><select id="deleteItemSelect"><option>-- चुनें --</option></select><button class="btn btn-red" onclick="deleteProduct()">हटाएं</button></div>
+    <div class="admin-section"><h3>👥 स्टाफ</h3><select id="adminStaffSelect"></select><input type="number" id="newScoreInput" placeholder="पॉइंट्स"><button class="btn btn-red" onclick="updateStaffScore()">अपडेट</button></div>
+    <div class="admin-section" style="background:#fff5f5;"><h3 style="color:var(--red);">👤 स्टाफ हटाएं</h3><div id="staffDeleteList" style="max-height:200px;overflow-y:auto;"></div></div>
+    <div class="admin-section"><h3>🔄 ट्रांसफर</h3><select id="transferItem"></select><select id="transferDir"><option value="P2K">PP➡️KP</option><option value="K2P">KP➡️PP</option></select><input type="number" id="transferQty" placeholder="Qty"><button class="btn btn-dark" onclick="transferStock()">ट्रांसफर</button></div>
+    <div class="admin-section" style="background:#fffbf5;"><h3 style="color:var(--orange);">🛑 डिफेक्ट</h3><select id="defectItem"></select><select id="defectShop"><option value="Petrol Pump">PP</option><option value="Khusboo Parking">KP</option></select><input type="number" id="defectQty" placeholder="Qty"><button class="btn btn-orange" onclick="claimDefect()">क्लेम</button></div>
+    <div class="admin-section"><h3>🔑 पासवर्ड</h3><input type="text" id="chgAppPass" placeholder="नया ऐप"><input type="text" id="chgAdminPass" placeholder="नया एडमिन"><button class="btn btn-outline" onclick="updatePasswords()">सेव</button></div>
+</div>
 
-        <h2 style="text-align: center; margin-bottom: 20px;">दुकान चुनें</h2>
-        <button class="btn btn-dark" onclick="openShop('Petrol Pump')">⛽ पेट्रोल पंप</button>
-        <button class="btn btn-blue" onclick="openShop('Khusboo Parking')">🅿️ खुशबू पार्किंग</button>
-    </div>
+<!-- AI Chatbot -->
+<button class="chatbot-float-btn" onclick="toggleChatbot()">🤖</button>
+<div id="chatbot-modal">
+    <div class="chatbot-header"><span>🤖 TyreXpert Salesman AI</span><button onclick="toggleChatbot()" style="background:none;border:none;color:white;font-size:1.3rem;cursor:pointer;">✕</button></div>
+    <div class="chatbot-body" id="chatbotBody"><div class="chat-typing" id="chatTyping"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div></div>
+    <div class="chatbot-input-area"><input type="text" id="chatbotInput" placeholder="पूछो... (Stock? Problem? Sales?)" onkeypress="if(event.key==='Enter')sendChatMsg()"><button onclick="sendChatMsg()">➤</button></div>
+</div>
 
-    <!-- INVENTORY SCREEN -->
-    <div id="inventory-screen" class="screen hidden">
-        <div class="top-bar" style="border-radius: 10px; margin-bottom: 20px;">
-            <button onclick="goBack()" style="width:auto; padding:5px 10px; border:none; border-radius:5px; background:white; color:black; font-weight:bold;">🔙 पीछे जाएं</button>
-            <h3 id="shop-title">Shop</h3>
-            <div class="icon-btn" onclick="openAdminAuth()" style="color:black;">👑</div>
-        </div>
-        
-        <div id="low-stock-box" class="glow-red-heading hidden">
-            ⚠️ कम स्टॉक अलर्ट (5 से कम)
-            <div id="low-stock-list" style="font-weight: normal; margin-top: 10px; text-align: left; font-size: 0.9rem;"></div>
-        </div>
-
-        <button class="btn btn-outline" style="margin-bottom:20px; border-color: #25D366; color: #25D366; background: white;" onclick="sendWhatsAppAlert()">
-            📱 WhatsApp अलर्ट भेजें (कम स्टॉक)
-        </button>
-
-        <div class="search-container">
-            <input type="text" id="searchInput" placeholder="🔍 प्रोडक्ट खोजें (नाम लिखते ही options आएंगे)..." oninput="handleSearch()" autocomplete="off">
-            <button class="mic-btn" onclick="startMic()">🎤</button>
-            <div id="suggestionsBox" class="suggestions-box"></div>
-        </div>
-        
-        <div id="stock-list-container"></div>
-    </div>
-
-    <!-- ADMIN MODAL -->
-    <div id="admin-modal">
-        <button class="btn btn-red" onclick="closeAdmin()" style="position: sticky; top: 0; z-index: 100;">❌ पैनल बंद करें</button>
-        <h2 style="text-align: center; margin-bottom: 20px;">👑 एडमिन कंट्रोल सेंटर</h2>
-
-        <!-- STOCK UPDATE WITH SEARCH & SUGGESTIONS -->
-        <div class="admin-section" style="border-color: var(--green); background: #f0fff0;">
-            <h3 style="color: var(--green);">✏️ स्टॉक अपडेट करें (Search & Select)</h3>
-            <p style="font-size:0.8rem; margin-bottom:10px;">प्रोडक्ट का नाम टाइप करें, options में से चुनें, फिर +/− करें:</p>
-            <div style="position: relative;">
-                <input type="text" id="adminSearchInput" placeholder="🔍 प्रोडक्ट का नाम लिखें..." oninput="showAdminSuggestions()" autocomplete="off">
-                <div id="adminSuggestionsBox" class="suggestions-box"></div>
-            </div>
-            <div id="selectedProductInfo" class="selected-product-info"></div>
-        </div>
-
-        <!-- ADD NEW PRODUCT -->
-        <div class="admin-section" style="border-color: var(--green);">
-            <h3 style="color: var(--green);">➕ नया प्रोडक्ट जोड़ें</h3>
-            <input type="text" id="newProductName" placeholder="प्रोडक्ट का नाम (e.g. 3.00-18 CEAT)">
-            <input type="text" id="newProductAlts" placeholder="ऑल्टरनेटिव (comma separated)">
-            <div style="display: flex; gap:10px;">
-                <input type="number" id="newProductPP" placeholder="पेट्रोल पंप Qty">
-                <input type="number" id="newProductKP" placeholder="खुशबू पार्किंग Qty">
-            </div>
-            <button class="btn btn-green" onclick="addProduct()">✅ प्रोडक्ट जोड़ें</button>
-        </div>
-
-        <!-- DELETE PRODUCT -->
-        <div class="admin-section" style="border-color: var(--red); background: #ffefef;">
-            <h3 style="color: var(--red);">🗑️ प्रोडक्ट डिलीट करें</h3>
-            <select id="deleteItemSelect">
-                <option value="">-- प्रोडक्ट चुनें --</option>
-            </select>
-            <button class="btn btn-red" onclick="deleteProduct()">🗑️ हमेशा के लिए डिलीट करें</button>
-        </div>
-
-        <!-- STAFF MANAGEMENT -->
-        <div class="admin-section" style="border-color: var(--blue);">
-            <h3 style="color: var(--blue);">👥 कर्मचारी प्रबंधन</h3>
-            <select id="adminStaffSelect"></select>
-            <input type="number" id="newScoreInput" placeholder="नए पॉइंट्स डालें">
-            <button class="btn btn-blue" onclick="updateStaffScore()">पॉइंट्स अपडेट करें</button>
-        </div>
-
-        <!-- DELETE STAFF -->
-        <div class="admin-section" style="border-color: var(--red); background: #ffefef;">
-            <h3 style="color: var(--red);">👤 कर्मचारी हटाएं</h3>
-            <div id="staffDeleteList" style="max-height: 200px; overflow-y: auto;"></div>
-        </div>
-
-        <!-- STOCK TRANSFER -->
-        <div class="admin-section">
-            <h3>🔄 दुकान ट्रान्सफर (माल भेजें)</h3>
-            <select id="transferItem"></select>
-            <select id="transferDir">
-                <option value="P2K">पेट्रोल पंप ➡️ खुशबू पार्किंग</option>
-                <option value="K2P">खुशबू पार्किंग ➡️ पेट्रोल पंप</option>
-            </select>
-            <input type="number" id="transferQty" placeholder="संख्या (Quantity)">
-            <button class="btn btn-dark" onclick="transferStock()">माल ट्रान्सफर करें</button>
-        </div>
-
-        <!-- DEFECT CLAIM -->
-        <div class="admin-section" style="border-color: var(--orange); background: #fff8f0;">
-            <h3 style="color: var(--orange);">🛑 डिफेक्ट माल क्लेम करें</h3>
-            <select id="defectItem"></select>
-            <select id="defectShop">
-                <option value="Petrol Pump">पेट्रोल पंप से घटाएं</option>
-                <option value="Khusboo Parking">खुशबू पार्किंग से घटाएं</option>
-            </select>
-            <input type="number" id="defectQty" placeholder="कितने पीस डिफेक्ट हैं?">
-            <button class="btn btn-orange" onclick="claimDefect()">डिफेक्ट में डालें</button>
-        </div>
-
-        <!-- CHANGE PASSWORDS -->
-        <div class="admin-section">
-            <h3>🔑 पासवर्ड बदलें</h3>
-            <input type="text" id="chgAppPass" placeholder="नया ऐप पासवर्ड">
-            <input type="text" id="chgAdminPass" placeholder="नया एडमिन पासवर्ड">
-            <button class="btn btn-outline" onclick="updatePasswords()">पासवर्ड सेव करें</button>
-        </div>
-    </div>
 </body>
 </html>
