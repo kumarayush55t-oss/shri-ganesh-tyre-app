@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,14 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>TyreXpert Stock Master</title>
     <style>
-        :root { 
-            --dark: #1e272e; 
-            --red: #ff3f34; 
-            --green: #0be881; 
-            --blue: #0984e3; 
-            --bg: #f5f6fa; 
-            --card: #ffffff; 
-        }
+        :root { --dark: #1e272e; --red: #ff3f34; --green: #0be881; --blue: #0984e3; --bg: #f5f6fa; --card: #ffffff; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background: var(--bg); color: var(--dark); }
         .hidden { display: none !important; }
@@ -30,14 +22,16 @@
         .screen { padding: 20px; max-width: 600px; margin: 0 auto; min-height: 100vh; }
         #auth-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; background: var(--dark); color: white; }
         .auth-box { background: white; color: var(--dark); padding: 30px; border-radius: 15px; width: 90%; max-width: 400px; text-align: center; }
-        .leaderboard { display: flex; justify-content: center; align-items: flex-end; gap: 20px; margin-bottom: 30px; padding: 20px; background: white; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .staff-card { text-align: center; }
-        .staff-img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #d2dae2; }
-        .rank-1 .staff-img { width: 110px; height: 110px; border: 4px solid #f1c40f; box-shadow: 0 0 20px #f1c40f; animation: celebrate 2s infinite alternate; }
-        .rank-1 .badge { font-size: 2rem; display: block; margin-bottom: -15px; z-index: 10; position: relative; animation: bounce 1s infinite alternate; }
-        .rank-2 .badge { font-size: 1.5rem; display: block; margin-bottom: -10px; z-index: 10; position: relative; }
-        @keyframes celebrate { 0% { transform: scale(1); box-shadow: 0 0 10px #f1c40f; } 100% { transform: scale(1.05); box-shadow: 0 0 30px #f39c12; } }
-        @keyframes bounce { 0% { transform: translateY(0); } 100% { transform: translateY(-10px); } }
+        
+        /* Leaderboard Dynamic Styles */
+        .leaderboard { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-end; gap: 15px; margin-bottom: 30px; padding: 20px; background: white; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .staff-card { text-align: center; min-width: 90px; }
+        .staff-img { width: 75px; height: 75px; border-radius: 50%; object-fit: cover; border: 3px solid #d2dae2; background: #f1f2f6; }
+        .rank-1 .staff-img { width: 100px; height: 100px; border: 4px solid #f1c40f; box-shadow: 0 0 20px #f1c40f; animation: celebrate 2s infinite alternate; }
+        .badge { display: block; margin-bottom: -15px; z-index: 10; position: relative; font-weight: bold; background: white; border-radius: 10px; padding: 2px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        
+        @keyframes celebrate { 0% { transform: scale(1); box-shadow: 0 0 10px #f1c40f; } 100% { transform: scale(1.05); box-shadow: 0 0 20px #f39c12; } }
+        
         .glow-red-heading { background: #ff7675; color: white; padding: 15px; border-radius: 10px; margin-bottom: 20px; font-weight: 900; text-align: center; box-shadow: 0 0 15px #ff7675; animation: redGlow 1s infinite alternate; border: 2px solid #d63031; }
         @keyframes redGlow { 0% { box-shadow: 0 0 10px #ff7675; } 100% { box-shadow: 0 0 25px #d63031; } }
         .search-container { display: flex; gap: 10px; margin-bottom: 20px; }
@@ -51,76 +45,79 @@
         #admin-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 2000; overflow-y: auto; padding: 20px; display: none; }
         .admin-section { background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #d2dae2; }
         .admin-section h3 { margin-bottom: 15px; color: var(--dark); border-bottom: 2px solid #d2dae2; padding-bottom: 5px; }
-        .close-admin { background: var(--red); color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; width: 100%; margin-bottom: 20px; }
+        .close-admin { background: var(--red); color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; width: 100%; margin-bottom: 20px; position: sticky; top: 0; z-index: 100;}
     </style>
 
+    <!-- Firebase SDK (Version 10.8.0) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getDatabase, ref, set, onValue, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyApY09CHspm5TVxXTVvjnfB6lzwQ7nqltE",
             authDomain: "staff-managemant.firebaseapp.com",
-            databaseURL: "https://staff-managemant-default-rtdb.firebaseio.com", // Kripya check karein agar aapka URL alag hai
+            databaseURL: "https://staff-managemant-default-rtdb.firebaseio.com", 
             projectId: "staff-managemant",
             storageBucket: "staff-managemant.firebasestorage.app",
             messagingSenderID: "160818771446",
             appId: "1:160818771446:web:e55f1bfc308c504efb03d7"
         };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-
-        let settings = { appPin: "308913", adminPin: "12345" };
-        let leaderboard = {
-            r1: { name: "Iliyas", img: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png" },
-            r2: { name: "Raghav", img: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png" }
+        // App variables - using Objects instead of Arrays for Firebase stability
+        window.settings = { appPin: "308913", adminPin: "12345" };
+        window.staffList = {
+            "staff_1": { name: "Iliyas", img: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", score: 100 },
+            "staff_2": { name: "Raghav", img: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", score: 50 }
         };
-        let inventory = [];
-        let currentShop = "";
-        let isAdminLoggedIn = false;
+        window.inventory = {};
+        window.currentShop = "";
+        window.isAdminLoggedIn = false;
+        window.dbRef = null;
 
-        // Listeners for data synchronization
-        onValue(ref(db, 'settings'), (snapshot) => {
-            if(snapshot.exists()) { settings = snapshot.val(); }
-        });
+        try {
+            const app = initializeApp(firebaseConfig);
+            const db = getDatabase(app);
+            window.dbRef = db;
 
-        onValue(ref(db, 'leaderboard'), (snapshot) => {
-            if(snapshot.exists()) {
-                leaderboard = snapshot.val();
+            // Live Listeners for Realtime Sync
+            onValue(ref(db, 'settings'), (snapshot) => {
+                if(snapshot.exists()) { window.settings = snapshot.val(); }
+            });
+
+            onValue(ref(db, 'staffList'), (snapshot) => {
+                if(snapshot.exists()) { window.staffList = snapshot.val(); }
+                else { window.staffList = {}; }
                 renderLeaderboard();
-            }
-        });
+                populateStaffDropdown();
+            });
 
-        onValue(ref(db, 'inventory'), (snapshot) => {
-            inventory = snapshot.exists() ? snapshot.val() : [];
-            renderInventory(document.getElementById('searchInput').value.toLowerCase().trim());
-            populateAdminDropdowns();
-        });
+            onValue(ref(db, 'inventory'), (snapshot) => {
+                window.inventory = snapshot.exists() ? snapshot.val() : {};
+                renderInventory(document.getElementById('searchInput').value.toLowerCase().trim());
+                populateAdminDropdowns();
+            });
 
+        } catch(e) {
+            console.error("Firebase Sync Error", e);
+            alert("Firebase connect nahi hua. Kripya Internet check karein.");
+        }
+
+        // --- AUTH & NAVIGATION ---
         window.login = function() {
             let pin = document.getElementById('appPinInput').value;
-            if (pin === settings.appPin || settings.appPin === "") {
+            if (pin === window.settings.appPin || window.settings.appPin === "") {
                 document.getElementById('auth-screen').classList.add('hidden');
                 document.getElementById('dashboard-screen').classList.remove('hidden');
                 renderLeaderboard();
             } else { alert("❌ Galat Password"); }
         };
 
-        function renderLeaderboard() {
-            document.getElementById('rank1-name').innerText = leaderboard.r1.name;
-            document.getElementById('rank1-img').src = leaderboard.r1.img;
-            document.getElementById('rank2-name').innerText = leaderboard.r2.name;
-            document.getElementById('rank2-img').src = leaderboard.r2.img;
-        }
-
         window.openShop = function(shop) {
-            currentShop = shop;
+            window.currentShop = shop;
             document.getElementById('dashboard-screen').classList.add('hidden');
             document.getElementById('inventory-screen').classList.remove('hidden');
             document.getElementById('shop-title').innerText = shop;
-            isAdminLoggedIn = false; 
+            window.isAdminLoggedIn = false; 
             document.getElementById('searchInput').value = ""; 
             document.getElementById('smart-alert').style.display = "none";
             renderInventory();
@@ -133,10 +130,12 @@
 
         window.openAdminAuth = function() {
             let pin = prompt("Admin Password Daalein:");
-            if (pin === settings.adminPin || settings.adminPin === "") {
-                isAdminLoggedIn = true;
+            if (pin === window.settings.adminPin || window.settings.adminPin === "") {
+                window.isAdminLoggedIn = true;
                 populateAdminDropdowns();
-                fillAdminSettings();
+                populateStaffDropdown();
+                document.getElementById('chgAppPass').placeholder = "Current: " + window.settings.appPin;
+                document.getElementById('chgAdminPass').placeholder = "Current: " + window.settings.adminPin;
                 document.getElementById('admin-modal').style.display = "block";
                 renderInventory(); 
             } else if(pin) {
@@ -145,11 +144,82 @@
         };
 
         window.closeAdmin = function() {
-            isAdminLoggedIn = false;
+            window.isAdminLoggedIn = false;
             document.getElementById('admin-modal').style.display = "none";
             renderInventory(); 
         };
 
+        // --- LEADERBOARD LOGIC (DYNAMIC) ---
+        function renderLeaderboard() {
+            let container = document.getElementById('leaderboard-container');
+            if(!container) return;
+            container.innerHTML = "";
+
+            // Convert Object to Array and Sort by Score
+            let staffArray = Object.entries(window.staffList).map(([id, data]) => ({id, ...data}));
+            staffArray.sort((a, b) => b.score - a.score);
+
+            if(staffArray.length === 0) {
+                container.innerHTML = "<p style='color:gray; width:100%; text-align:center;'>Koi staff add nahi hai.</p>";
+                return;
+            }
+
+            staffArray.forEach((staff, index) => {
+                let isRank1 = index === 0;
+                let isRank2 = index === 1;
+                
+                let badge = isRank1 ? "🏆 Champion" : (isRank2 ? "🥈 Rank 2" : `⭐ Rank ${index+1}`);
+                let cardClass = isRank1 ? "rank-1" : "";
+                
+                container.innerHTML += `
+                    <div class="staff-card ${cardClass}">
+                        <span class="badge" style="font-size: ${isRank1 ? '1rem' : '0.8rem'}; color: ${isRank1 ? '#d35400' : 'black'};">${badge}</span>
+                        <img src="${staff.img || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'}" class="staff-img">
+                        <h4 style="margin-top:10px; color: ${isRank1 ? '#d35400' : 'inherit'};">${staff.name}</h4>
+                        <p style="font-size: 0.8rem; color: #7f8c8d; font-weight: bold;">Score: ${staff.score}</p>
+                    </div>
+                `;
+            });
+        }
+
+        // --- STAFF ADMIN FUNCTIONS ---
+        window.addStaff = function() {
+            let name = document.getElementById('newStaffName').value.trim();
+            let img = document.getElementById('newStaffImg').value.trim();
+            let score = parseInt(document.getElementById('newStaffScore').value) || 0;
+
+            if(!name) { alert("Staff ka naam daalna jaroori hai!"); return; }
+            if(!img) img = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"; // Default image
+
+            let id = "staff_" + Date.now();
+            let newStaff = { name: name, img: img, score: score };
+
+            set(ref(window.dbRef, 'staffList/' + id), newStaff).then(() => {
+                alert("✅ Staff Add Ho Gaya!");
+                document.getElementById('newStaffName').value = "";
+                document.getElementById('newStaffImg').value = "";
+                document.getElementById('newStaffScore').value = "";
+            });
+        };
+
+        window.deleteStaff = function() {
+            let id = document.getElementById('deleteStaffSelect').value;
+            if(!id) return;
+            if(confirm("Kya sach me is staff ko hatana chahte hain?")) {
+                remove(ref(window.dbRef, 'staffList/' + id)).then(() => { alert("🗑️ Staff Removed!"); });
+            }
+        };
+
+        function populateStaffDropdown() {
+            let sel = document.getElementById('deleteStaffSelect');
+            if(!sel) return;
+            sel.innerHTML = "";
+            Object.entries(window.staffList).forEach(([id, staff]) => {
+                sel.innerHTML += `<option value="${id}">${staff.name} (Score: ${staff.score})</option>`;
+            });
+        }
+
+        // --- INVENTORY LOGIC ---
         function renderInventory(filterText = "") {
             const listContainer = document.getElementById('stock-list-container');
             const lowBox = document.getElementById('low-stock-box');
@@ -160,29 +230,30 @@
             if(lowList) lowList.innerHTML = "";
             let lowCount = 0;
 
-            if (!inventory || inventory.length === 0) {
+            let invKeys = Object.keys(window.inventory);
+            if (invKeys.length === 0) {
                 listContainer.innerHTML = "<p style='text-align:center; color:#7f8c8d;'>Stock empty hai. Admin panel se maal add karein.</p>";
                 if(lowBox) lowBox.classList.add('hidden');
                 return;
             }
 
-            inventory.forEach((item, index) => {
-                if(!item) return;
-                let myQty = currentShop === 'Petrol Pump' ? parseInt(item.pp || 0) : parseInt(item.kp || 0);
-                let otherQty = currentShop === 'Petrol Pump' ? parseInt(item.kp || 0) : parseInt(item.pp || 0);
-                let otherShopName = currentShop === 'Petrol Pump' ? 'Khusboo Parking' : 'Petrol Pump';
+            invKeys.forEach(key => {
+                let item = window.inventory[key];
+                let myQty = window.currentShop === 'Petrol Pump' ? parseInt(item.pp || 0) : parseInt(item.kp || 0);
+                let otherQty = window.currentShop === 'Petrol Pump' ? parseInt(item.kp || 0) : parseInt(item.pp || 0);
+                let otherShopName = window.currentShop === 'Petrol Pump' ? 'Khusboo Parking' : 'Petrol Pump';
                 
                 if(myQty > 0 && myQty < 5 && !filterText) {
                     lowCount++;
                     if(lowList) lowList.innerHTML += `• ${item.name} <b>(${myQty} piece)</b><br>`;
                 }
 
-                if(filterText && !item.name.toLowerCase().includes(filterText.toLowerCase())) return;
+                if(filterText && !item.name.toLowerCase().includes(filterText)) return;
 
-                let adminBtns = isAdminLoggedIn ? `
+                let adminBtns = window.isAdminLoggedIn ? `
                     <div class="admin-controls">
-                        <button class="btn-red" onclick="updateQty(${index}, -1)">➖ Minus</button>
-                        <button class="btn-green" onclick="updateQty(${index}, 1)">➕ Add</button>
+                        <button class="btn-red" onclick="updateQty('${key}', -1)">➖ Minus</button>
+                        <button class="btn-green" onclick="updateQty('${key}', 1)">➕ Add</button>
                     </div>
                 ` : "";
 
@@ -223,26 +294,32 @@
             alertBox.style.display = "none";
             if(query.length < 2) return;
 
-            let exactMatch = inventory.find(i => i && i.name.toLowerCase().includes(query));
-            if(exactMatch) {
-                let myQty = currentShop === 'Petrol Pump' ? exactMatch.pp : exactMatch.kp;
-                let otherQty = currentShop === 'Petrol Pump' ? exactMatch.kp : exactMatch.pp;
-                let otherShop = currentShop === 'Petrol Pump' ? 'Khusboo Parking' : 'Petrol Pump';
-                if(myQty === 0 && otherQty > 0) {
-                    alertBox.innerHTML = `⚠️ <b>${exactMatch.name}</b> yahan khatam hai!<br>👉 Lekin <b>${otherShop} par ${otherQty} piece hain!</b>`;
-                    alertBox.style.display = "block";
+            // Smart Search Alert
+            let invKeys = Object.keys(window.inventory);
+            for(let i=0; i<invKeys.length; i++){
+                let item = window.inventory[invKeys[i]];
+                if(item.name.toLowerCase().includes(query)){
+                    let myQty = window.currentShop === 'Petrol Pump' ? item.pp : item.kp;
+                    let otherQty = window.currentShop === 'Petrol Pump' ? item.kp : item.pp;
+                    let otherShop = window.currentShop === 'Petrol Pump' ? 'Khusboo Parking' : 'Petrol Pump';
+                    
+                    if(myQty === 0 && otherQty > 0) {
+                        alertBox.innerHTML = `⚠️ <b>${item.name}</b> yahan khatam hai!<br>👉 Lekin <b>${otherShop} par ${otherQty} piece hain!</b>`;
+                        alertBox.style.display = "block";
+                        break;
+                    }
                 }
             }
         };
 
-        window.updateQty = function(index, change) {
-            let item = inventory[index];
-            if(currentShop === 'Petrol Pump') {
+        window.updateQty = function(key, change) {
+            let item = window.inventory[key];
+            if(window.currentShop === 'Petrol Pump') {
                 item.pp = Math.max(0, parseInt(item.pp || 0) + change);
             } else {
                 item.kp = Math.max(0, parseInt(item.kp || 0) + change);
             }
-            set(ref(db, 'inventory/' + index), item);
+            set(ref(window.dbRef, 'inventory/' + key), item);
         };
 
         window.addProduct = function() {
@@ -255,8 +332,10 @@
 
             let alts = altsInput ? altsInput.split(',').map(s => s.trim()) : [];
             let newItem = { name: name, alts: alts, pp: ppQty, kp: kpQty };
-            let newIndex = inventory ? inventory.length : 0;
-            set(ref(db, 'inventory/' + newIndex), newItem).then(() => {
+            
+            let id = "prod_" + Date.now(); // Unique ID for Firebase
+            
+            set(ref(window.dbRef, 'inventory/' + id), newItem).then(() => {
                 alert("📦 Naya product add ho gaya!");
                 document.getElementById('newName').value = "";
                 document.getElementById('newAlts').value = "";
@@ -266,37 +345,36 @@
         };
 
         window.deleteProduct = function() {
-            let index = document.getElementById('deleteItemSelect').value;
-            if(index === "") return;
+            let key = document.getElementById('deleteItemSelect').value;
+            if(!key) return;
             if(confirm("Kya aap sach me is maal ko hamesha ke liye hatana chahte hain?")) {
-                inventory.splice(index, 1);
-                set(ref(db, 'inventory'), inventory).then(() => { alert("🗑️ Product deleted!"); });
+                remove(ref(window.dbRef, 'inventory/' + key)).then(() => { alert("🗑️ Product deleted!"); });
             }
         };
 
         window.claimDefect = function() {
-            let index = document.getElementById('defectItem').value;
+            let key = document.getElementById('defectItem').value;
             let shop = document.getElementById('defectShop').value;
             let qty = parseInt(document.getElementById('defectQty').value) || 0;
-            if(index === "" || qty <= 0) { alert("Sahi Details Daalein!"); return; }
+            if(!key || qty <= 0) { alert("Sahi Details Daalein!"); return; }
 
-            let item = inventory[index];
+            let item = window.inventory[key];
             if(shop === "Petrol Pump") { item.pp = Math.max(0, parseInt(item.pp || 0) - qty); } 
             else { item.kp = Math.max(0, parseInt(item.kp || 0) - qty); }
 
-            set(ref(db, 'inventory/' + index), item).then(() => {
+            set(ref(window.dbRef, 'inventory/' + key), item).then(() => {
                 alert("🛑 Defect Registered and Stock Updated!");
                 document.getElementById('defectQty').value = "";
             });
         };
 
         window.transferStock = function() {
-            let index = document.getElementById('transferItem').value;
+            let key = document.getElementById('transferItem').value;
             let dir = document.getElementById('transferDir').value;
             let qty = parseInt(document.getElementById('transferQty').value) || 0;
-            if(index === "" || qty <= 0) { alert("Sahi Quantity Daalein!"); return; }
+            if(!key || qty <= 0) { alert("Sahi Quantity Daalein!"); return; }
 
-            let item = inventory[index];
+            let item = window.inventory[key];
             if(dir === "P2K") {
                 if(item.pp < qty) { alert("Petrol Pump par itna maal nahi hai!"); return; }
                 item.pp = parseInt(item.pp) - qty; item.kp = parseInt(item.kp) + qty;
@@ -304,32 +382,18 @@
                 if(item.kp < qty) { alert("Khusboo Parking par itna maal nahi hai!"); return; }
                 item.kp = parseInt(item.kp) - qty; item.pp = parseInt(item.pp) + qty;
             }
-            set(ref(db, 'inventory/' + index), item).then(() => {
+            set(ref(window.dbRef, 'inventory/' + key), item).then(() => {
                 alert("🔄 Maal transfer successfully done!");
                 document.getElementById('transferQty').value = "";
             });
         };
 
-        window.updateLeaderboard = function() {
-            let r1n = document.getElementById('r1Name').value.trim();
-            let r1p = document.getElementById('r1Pic').value.trim();
-            let r2n = document.getElementById('r2Name').value.trim();
-            let r2p = document.getElementById('r2Pic').value.trim();
-
-            if(r1n) leaderboard.r1.name = r1n;
-            if(r1p) leaderboard.r1.img = r1p;
-            if(r2n) leaderboard.r2.name = r2n;
-            if(r2p) leaderboard.r2.img = r2p;
-
-            set(ref(db, 'leaderboard'), leaderboard).then(() => { alert("🏆 Leaderboard Updated!"); });
-        };
-
         window.updatePasswords = function() {
             let appP = document.getElementById('chgAppPass').value.trim();
             let admP = document.getElementById('chgAdminPass').value.trim();
-            if(appP) settings.appPin = appP;
-            if(admP) settings.adminPin = admP;
-            set(ref(db, 'settings'), settings).then(() => { alert("🔑 Passwords Successfully updated on Firebase!"); });
+            if(appP) window.settings.appPin = appP;
+            if(admP) window.settings.adminPin = admP;
+            set(ref(window.dbRef, 'settings'), window.settings).then(() => { alert("🔑 Passwords Successfully updated!"); });
         };
 
         function populateAdminDropdowns() {
@@ -337,20 +401,14 @@
             const defSel = document.getElementById('defectItem');
             const traSel = document.getElementById('transferItem');
             if(!delSel || !defSel || !traSel) return;
+            
             delSel.innerHTML = ""; defSel.innerHTML = ""; traSel.innerHTML = "";
 
-            inventory.forEach((item, index) => {
-                if(!item) return;
-                let opt = `<option value="${index}">${item.name}</option>`;
+            Object.keys(window.inventory).forEach(key => {
+                let item = window.inventory[key];
+                let opt = `<option value="${key}">${item.name}</option>`;
                 delSel.innerHTML += opt; defSel.innerHTML += opt; traSel.innerHTML += opt;
             });
-        }
-
-        function fillAdminSettings() {
-            document.getElementById('r1Name').placeholder = leaderboard.r1.name;
-            document.getElementById('r2Name').placeholder = leaderboard.r2.name;
-            document.getElementById('chgAppPass').placeholder = "Current: " + settings.appPin;
-            document.getElementById('chgAdminPass').placeholder = "Current: " + settings.adminPin;
         }
 
         window.startMic = function() {
@@ -371,9 +429,14 @@
                 };
             } else { alert("Aapka browser voice typing support nahi karta."); }
         };
+
+        window.onload = function() {
+            renderLeaderboard();
+        };
     </script>
 </head>
 <body>
+    <!-- 1. LOGIN SCREEN -->
     <div id="auth-screen" class="screen">
         <div class="auth-box">
             <h1 class="logo" style="font-size: 2.5rem;">Tyre<span>Xpert</span></h1>
@@ -383,28 +446,24 @@
         </div>
     </div>
 
+    <!-- 2. DASHBOARD / SHOP SELECT -->
     <div id="dashboard-screen" class="screen hidden">
         <div class="top-bar" style="border-radius: 10px; margin-bottom: 20px;">
             <div class="logo">Tyre<span>Xpert</span></div>
             <div class="admin-icon" onclick="openAdminAuth()">👑</div>
         </div>
-        <div class="leaderboard">
-            <div class="staff-card rank-2">
-                <span class="badge">🥈</span>
-                <img id="rank2-img" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="staff-img">
-                <h4 id="rank2-name" style="margin-top:10px;">Staff 2</h4>
-            </div>
-            <div class="staff-card rank-1">
-                <span class="badge">🏆</span>
-                <img id="rank1-img" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="staff-img">
-                <h3 id="rank1-name" style="margin-top:10px; color: #d35400;">Staff 1</h3>
-            </div>
+        
+        <h3 style="text-align: center; margin-bottom: 10px; color: var(--dark);">🏆 Top Performers</h3>
+        <div class="leaderboard" id="leaderboard-container">
+            <!-- Staff cards injected via JS based on Score -->
         </div>
+
         <h2 style="text-align: center; margin-bottom: 20px;">Kahan ka stock dekhna hai?</h2>
         <button class="btn btn-dark" onclick="openShop('Petrol Pump')">⛽ Petrol Pump</button>
         <button class="btn btn-blue" onclick="openShop('Khusboo Parking')">🅿️ Khusboo Parking</button>
     </div>
 
+    <!-- 3. INVENTORY SCREEN -->
     <div id="inventory-screen" class="screen hidden">
         <div class="top-bar" style="border-radius: 10px; margin-bottom: 20px;">
             <button onclick="goBack()" style="width:auto; padding:5px 10px; margin:0; border:none; border-radius:5px; background:white; color:black; font-weight:bold;">🔙 Back</button>
@@ -424,14 +483,34 @@
         <div id="stock-list-container"></div>
     </div>
 
+    <!-- 4. ADMIN PANEL -->
     <div id="admin-modal">
         <button class="close-admin" onclick="closeAdmin()">❌ Close Admin Panel</button>
         <h2 style="text-align: center; margin-bottom: 20px; color: var(--blue);">Admin Control Center</h2>
+        
+        <!-- NEW STAFF MANAGEMENT SYSTEM -->
+        <div class="admin-section" style="background: #eaf2f8; border-color: var(--blue);">
+            <h3 style="color: var(--blue); border-bottom-color: var(--blue);">👥 Staff Leaderboard Manage Karein</h3>
+            
+            <p style="font-size: 0.85rem; font-weight: bold;">➕ Naya Staff Add Karein (Ya Score Update Karein)</p>
+            <input type="text" id="newStaffName" placeholder="Staff Ka Naam (e.g. Rahul)">
+            <input type="text" id="newStaffImg" placeholder="Photo URL Link (Optional)">
+            <input type="number" id="newStaffScore" placeholder="Points / Score (e.g. 100)">
+            <button class="btn btn-blue" onclick="addStaff()">Add / Update Staff</button>
+            
+            <hr style="margin: 15px 0; border: 1px solid #d2dae2;">
+            
+            <p style="font-size: 0.85rem; font-weight: bold; color: var(--red);">❌ Staff Ko Hatayein</p>
+            <select id="deleteStaffSelect"></select>
+            <button class="btn btn-red" onclick="deleteStaff()">Delete Staff</button>
+        </div>
+
         <div class="admin-section" style="border-color: var(--red); background: #ffefef;">
             <h3 style="color: var(--red); border-bottom-color: var(--red);">🗑️ Product Delete Karein</h3>
             <select id="deleteItemSelect"></select>
             <button class="btn btn-red" onclick="deleteProduct()">Hamesha ke liye Delete Karein</button>
         </div>
+        
         <div class="admin-section">
             <h3>🛑 Defect Claim</h3>
             <select id="defectItem"></select>
@@ -442,6 +521,7 @@
             <input type="number" id="defectQty" placeholder="Kitne piece defect hain?">
             <button class="btn btn-dark" onclick="claimDefect()">Defect mein daalo (Minus Stock)</button>
         </div>
+        
         <div class="admin-section">
             <h3>➕ Naya Product Add Karo</h3>
             <input type="text" id="newName" placeholder="Product Name (e.g. 155/80 R13 CEAT)">
@@ -450,8 +530,9 @@
                 <input type="number" id="newPP" placeholder="Petrol Pump Qty">
                 <input type="number" id="newKP" placeholder="Khusboo P. Qty">
             </div>
-            <button class="btn btn-blue" onclick="addProduct()">Add to System</button>
+            <button class="btn btn-green" onclick="addProduct()">Add to System</button>
         </div>
+        
         <div class="admin-section">
             <h3>🔄 Dukaan Transfer</h3>
             <select id="transferItem"></select>
@@ -460,16 +541,9 @@
                 <option value="K2P">Khusboo Parking ➡️ Petrol Pump</option>
             </select>
             <input type="number" id="transferQty" placeholder="Quantity">
-            <button class="btn btn-green" onclick="transferStock()">Transfer Maal</button>
+            <button class="btn btn-dark" onclick="transferStock()">Transfer Maal</button>
         </div>
-        <div class="admin-section">
-            <h3>🏆 Update Staff Rank</h3>
-            <input type="text" id="r1Name" placeholder="Rank 1 Name">
-            <input type="text" id="r1Pic" placeholder="Rank 1 Photo URL">
-            <input type="text" id="r2Name" placeholder="Rank 2 Name">
-            <input type="text" id="r2Pic" placeholder="Rank 2 Photo URL">
-            <button class="btn btn-dark" onclick="updateLeaderboard()">Update Leaderboard</button>
-        </div>
+        
         <div class="admin-section">
             <h3>🔑 Passwords Change</h3>
             <input type="text" id="chgAppPass" placeholder="Naya App Password">
@@ -479,5 +553,3 @@
     </div>
 </body>
 </html>
-
-```
