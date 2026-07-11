@@ -1,54 +1,42 @@
-        
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TyreXpert Smart Master</title>
+    <title>TyreXpert - AI Tyre Expert</title>
     <style>
-        :root { 
-            --dark: #1e272e; --red: #e63946; --green: #2ecc71; --blue: #3498db; 
-            --bg: #fafafa; --card: #ffffff; --orange: #e67e22; --light-red: #ffeaea;
-            --shadow: 0 4px 15px rgba(0,0,0,0.08); --shadow-hover: 0 8px 25px rgba(0,0,0,0.15);
-            --deepseek: #4f46e5; --claude: #d97706; --gemini: #4285f4; --llama: #0891b2; --qwen: #7c3aed;
-        }
+        :root { --dark: #1e272e; --red: #e63946; --green: #2ecc71; --blue: #3498db; --bg: #fafafa; --card: #ffffff; --orange: #e67e22; --light-red: #ffeaea; --shadow: 0 4px 15px rgba(0,0,0,0.08); }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
         body { background: var(--bg); color: var(--dark); }
         .hidden { display: none !important; }
         .btn { width: 100%; padding: 15px; margin-bottom: 10px; border: none; border-radius: 10px; font-weight: 700; font-size: 1rem; cursor: pointer; color: white; transition: all 0.3s; box-shadow: var(--shadow); }
-        .btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+        .btn:hover { transform: translateY(-2px); }
         .btn:active { transform: scale(0.96); }
         .btn-blue { background: var(--blue); }
         .btn-green { background: var(--green); color: white; }
         .btn-red { background: var(--red); }
         .btn-dark { background: var(--dark); }
         .btn-outline { background: transparent; border: 2px solid var(--red); color: var(--red); }
-        .btn-sm { padding: 10px 15px; font-size: 0.85rem; width: auto; display: inline-block; }
+        input, select { width: 100%; padding: 14px; margin-bottom: 10px; border: 2px solid #e8e8e8; border-radius: 10px; font-size: 1rem; outline: none; background: white; }
+        input:focus, select:focus { border-color: var(--red); }
         
-        input, select { width: 100%; padding: 14px 16px; margin-bottom: 12px; border: 2px solid #e8e8e8; border-radius: 10px; font-size: 1rem; outline: none; transition: all 0.3s; background: white; }
-        input:focus, select:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(230,57,70,0.1); }
-        
-        .top-bar { background: white; color: var(--dark); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 15px rgba(0,0,0,0.06); border-bottom: 3px solid var(--red); position: sticky; top: 0; z-index: 10; }
-        .logo { font-size: 1.5rem; font-weight: 900; font-style: italic; }
+        .top-bar { background: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 15px rgba(0,0,0,0.06); border-bottom: 3px solid var(--red); position: sticky; top: 0; z-index: 10; }
+        .logo { font-size: 1.5rem; font-weight: 900; }
         .logo span { color: var(--red); }
-        .icon-btn { font-size: 1.3rem; cursor: pointer; background: var(--light-red); border-radius: 50%; padding: 8px; margin-left: 8px; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; transition: all 0.3s; color: var(--red); }
-        .icon-btn:hover { background: var(--red); color: white; transform: rotate(10deg); }
+        .icon-btn { font-size: 1.3rem; cursor: pointer; background: var(--light-red); border-radius: 50%; padding: 8px; margin-left: 8px; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; color: var(--red); }
         
-        .screen { padding: 20px; max-width: 600px; margin: 0 auto; min-height: 100vh; animation: fadeIn 0.4s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .auth-box { background: white; padding: 35px 25px; border-radius: 20px; text-align: center; margin-top: 40px; box-shadow: var(--shadow); animation: popIn 0.5s ease; }
-        @keyframes popIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-        
+        .screen { padding: 20px; max-width: 600px; margin: 0 auto; min-height: 100vh; }
+        .auth-box { background: white; padding: 35px; border-radius: 20px; text-align: center; margin-top: 40px; box-shadow: var(--shadow); }
         .leaderboard { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-bottom: 20px; background: white; padding: 20px; border-radius: 15px; box-shadow: var(--shadow); }
-        .staff-card { text-align: center; min-width: 85px; transition: transform 0.3s; }
-        .staff-card:hover { transform: translateY(-5px); }
-        .staff-img { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 3px solid #f0f0f0; background: #fafafa; }
-        .rank-1 .staff-img { border: 4px solid #f1c40f; box-shadow: 0 0 20px rgba(241,196,15,0.4); animation: glow 2s infinite; }
-        @keyframes glow { 0%,100% { box-shadow: 0 0 10px rgba(241,196,15,0.3); } 50% { box-shadow: 0 0 25px rgba(241,196,15,0.7); } }
+        .staff-card { text-align: center; min-width: 85px; }
+        .staff-img { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 3px solid #f0f0f0; }
+        .rank-1 .staff-img { border-color: #f1c40f; box-shadow: 0 0 20px rgba(241,196,15,0.4); }
         
         .search-container { display: flex; gap: 10px; margin-bottom: 20px; position: relative; }
-        .search-container input { margin: 0; border: 2px solid #e8e8e8; border-radius: 25px; padding-left: 20px; }
+        .search-container input { margin: 0; border-radius: 25px; padding-left: 20px; }
         .mic-btn { width: 50px; height: 50px; border-radius: 50%; background: var(--red); color: white; border: none; font-size: 1.3rem; cursor: pointer; flex-shrink: 0; }
+        .mic-btn.listening { background: #c0392b; animation: micPulse 0.5s infinite; }
+        @keyframes micPulse { 0%,100% { box-shadow: 0 0 10px var(--red); } 50% { box-shadow: 0 0 25px var(--red); } }
         
         .suggestions-box { position: absolute; top: 58px; left: 0; right: 0; background: white; border: 2px solid var(--red); border-radius: 12px; max-height: 250px; overflow-y: auto; z-index: 100; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
         .suggestion-item { padding: 12px 15px; cursor: pointer; border-bottom: 1px solid #f5f5f5; display: flex; justify-content: space-between; }
@@ -57,131 +45,98 @@
         .glow-red-heading { background: linear-gradient(135deg, #e63946, #ff6b6b); color: white; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-weight: 900; text-align: center; animation: redGlow 1.5s infinite alternate; }
         @keyframes redGlow { 0% { box-shadow: 0 0 10px rgba(230,57,70,0.4); } 100% { box-shadow: 0 0 30px rgba(230,57,70,0.8); } }
 
-        .stock-item { background: white; padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; box-shadow: var(--shadow); border-left: 5px solid var(--red); position: relative; transition: all 0.3s; animation: slideIn 0.4s ease; }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
-        .stock-item:hover { transform: translateX(3px); box-shadow: var(--shadow-hover); }
-        .qty-box { background: var(--light-red); padding: 10px 18px; border-radius: 10px; font-size: 1.5rem; font-weight: 900; text-align: center; min-width: 70px; color: var(--red); }
+        .stock-item { background: white; padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; box-shadow: var(--shadow); border-left: 5px solid var(--red); }
+        .qty-box { background: var(--light-red); padding: 10px 18px; border-radius: 10px; font-size: 1.5rem; font-weight: 900; color: var(--red); }
         .qty-controls { display: flex; align-items: center; gap: 8px; }
         .qty-btn { width: 38px; height: 38px; border-radius: 50%; border: none; font-size: 1.2rem; font-weight: bold; cursor: pointer; color: white; display: flex; align-items: center; justify-content: center; }
         .qty-plus { background: var(--green); }
         .qty-minus { background: var(--red); }
-        .qty-btn:active { transform: scale(0.85); }
 
         #admin-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 2000; overflow-y: auto; padding: 20px; display: none; }
         .admin-section { background: #fafafa; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #f0f0f0; }
         .staff-delete-btn { background: var(--red); color: white; border: none; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; }
-        .selected-product-info { background: var(--light-red); padding: 12px 15px; border-radius: 10px; margin-bottom: 10px; display: none; border: 2px solid var(--red); }
 
-        /* Chatbot */
+        /* Chatbot - Tyre Expert */
         .chatbot-float-btn { position: fixed; bottom: 25px; right: 25px; width: 65px; height: 65px; border-radius: 50%; background: linear-gradient(135deg, #e63946, #ff6b6b); border: 3px solid white; color: white; font-size: 2rem; cursor: pointer; box-shadow: 0 8px 30px rgba(230,57,70,0.5); z-index: 1500; animation: botBounce 2s infinite; display: flex; align-items: center; justify-content: center; }
         @keyframes botBounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         
-        #chatbot-modal { position: fixed; bottom: 100px; right: 25px; width: 420px; max-width: 94vw; height: 600px; max-height: 70vh; background: white; border-radius: 20px; box-shadow: 0 25px 60px rgba(0,0,0,0.35); z-index: 1600; display: none; flex-direction: column; overflow: hidden; }
+        #chatbot-modal { position: fixed; bottom: 100px; right: 25px; width: 440px; max-width: 94vw; height: 620px; max-height: 72vh; background: white; border-radius: 20px; box-shadow: 0 25px 60px rgba(0,0,0,0.35); z-index: 1600; display: none; flex-direction: column; overflow: hidden; }
         .chatbot-header { background: linear-gradient(135deg, #1a1a2e, #2d2d44); color: white; padding: 12px 15px; }
         .chatbot-header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .chatbot-title { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 0.9rem; }
+        .chatbot-title { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 0.95rem; }
         .online-dot { width: 8px; height: 8px; background: #0be881; border-radius: 50%; animation: pulse 2s infinite; }
         @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
         
-        /* Model selector chips */
-        .model-chips { display: flex; gap: 6px; overflow-x: auto; padding: 4px 0; scrollbar-width: none; -ms-overflow-style: none; }
+        .model-chips { display: flex; gap: 6px; overflow-x: auto; padding: 4px 0; scrollbar-width: none; }
         .model-chips::-webkit-scrollbar { display: none; }
-        .model-chip {
-            padding: 5px 10px; border-radius: 14px; font-size: 0.7rem; font-weight: 700; cursor: pointer;
-            white-space: nowrap; border: 2px solid transparent; transition: all 0.2s; opacity: 0.7;
-            display: flex; align-items: center; gap: 4px;
-        }
-        .model-chip:hover { opacity: 1; transform: scale(1.05); }
-        .model-chip.active { opacity: 1; border-color: white; box-shadow: 0 0 10px currentColor; }
-        .chip-gpt { background: #10a37f; color: white; }
-        .chip-claude { background: #d97706; color: white; }
-        .chip-gemini { background: #4285f4; color: white; }
-        .chip-deepseek { background: #4f46e5; color: white; }
-        .chip-llama { background: #0891b2; color: white; }
-        .chip-qwen { background: #7c3aed; color: white; }
-        .chip-dot { width: 6px; height: 6px; border-radius: 50%; background: white; }
+        .model-chip { padding: 5px 10px; border-radius: 14px; font-size: 0.7rem; font-weight: 700; cursor: pointer; white-space: nowrap; border: 2px solid transparent; opacity: 0.7; }
+        .model-chip:hover { opacity: 1; }
+        .model-chip.active { opacity: 1; border-color: white; }
+        .chip-green { background: #10a37f; color: white; }
+        .chip-orange { background: #d97706; color: white; }
+        .chip-blue { background: #4285f4; color: white; }
+        .chip-purple { background: #4f46e5; color: white; }
         
         .chatbot-body { flex: 1; overflow-y: auto; padding: 15px; background: #fefefe; display: flex; flex-direction: column; gap: 8px; }
-        .chat-msg { max-width: 85%; padding: 10px 14px; border-radius: 16px; font-size: 0.85rem; line-height: 1.5; animation: msgPop 0.3s ease; }
+        .chat-msg { max-width: 88%; padding: 10px 14px; border-radius: 16px; font-size: 0.85rem; line-height: 1.5; animation: msgPop 0.3s ease; }
         @keyframes msgPop { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-        .bot-msg { background: #f5f5f5; align-self: flex-start; border-bottom-left-radius: 4px; }
-        .user-msg { background: var(--red); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+        .bot-msg { background: #f5f5f5; align-self: flex-start; }
+        .user-msg { background: var(--red); color: white; align-self: flex-end; }
+        
         .chat-typing { display: none; align-self: flex-start; background: #f5f5f5; padding: 12px 16px; border-radius: 16px; gap: 4px; }
         .typing-dot { width: 7px; height: 7px; background: #ccc; border-radius: 50%; animation: typeBounce 1.3s infinite; display: inline-block; }
         .typing-dot:nth-child(2) { animation-delay: 0.2s; } .typing-dot:nth-child(3) { animation-delay: 0.4s; }
         @keyframes typeBounce { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-6px); } }
-        .chatbot-input-area { padding: 12px 14px; background: white; display: flex; gap: 8px; border-top: 1px solid #eee; align-items: center; }
+        
+        .chatbot-input-area { padding: 12px; background: white; display: flex; gap: 8px; border-top: 1px solid #eee; align-items: center; }
         .chatbot-input-area input { flex: 1; border: 2px solid #f0f0f0; border-radius: 25px; padding: 12px 18px; font-size: 0.9rem; margin: 0; }
-        .chatbot-input-area input:focus { border-color: var(--red); }
         .chatbot-input-area button { width: 42px; height: 42px; border-radius: 50%; border: none; color: white; font-size: 1.2rem; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
         .send-btn { background: var(--red); }
         .voice-btn { background: #e74c3c; }
         .voice-btn.active { animation: voicePulse 0.5s infinite; background: #ff0000; }
         @keyframes voicePulse { 0%,100% { box-shadow: 0 0 10px red; } 50% { box-shadow: 0 0 30px red; } }
+        .photo-btn { background: #f39c12; }
+        
         .quick-replies { display: flex; flex-wrap: wrap; gap: 6px; padding: 4px 0; }
         .quick-reply-btn { background: var(--light-red); color: var(--red); border: 1px solid var(--red); padding: 7px 14px; border-radius: 18px; font-size: 0.75rem; cursor: pointer; font-weight: 600; white-space: nowrap; }
         .quick-reply-btn:active { background: var(--red); color: white; }
+        
+        .photo-preview { max-width: 200px; max-height: 150px; border-radius: 10px; margin: 5px 0; border: 2px solid var(--red); cursor: pointer; }
 
         @media (max-width: 480px) {
             #chatbot-modal { width: 96vw; right: 2vw; bottom: 90px; height: 65vh; }
             .chatbot-float-btn { bottom: 20px; right: 20px; width: 58px; height: 58px; font-size: 1.6rem; }
-            .model-chip { font-size: 0.65rem; padding: 4px 8px; }
         }
     </style>
 </head>
 <body>
 
-<!-- ONBOARDING -->
 <div id="onboarding-screen" class="screen hidden" style="background:var(--dark);color:white;">
-    <div class="auth-box" style="color:var(--dark);">
-        <h2>TyreXpert में स्वागत है</h2>
-        <p style="margin-bottom:15px;color:#777;">प्रोफाइल बनाएं</p>
-        <input type="text" id="obName" placeholder="आपका नाम">
-        <input type="number" id="obPhone" placeholder="मोबाइल नंबर">
-        <p style="text-align:left;font-weight:bold;">फोटो खींचें 📷</p>
-        <input type="file" accept="image/*" capture="user" onchange="capturePhoto(event)">
-        <img id="previewImg" style="width:100px;height:100px;border-radius:50%;margin:10px auto;display:none;object-fit:cover;">
-        <button class="btn btn-red" onclick="saveProfile()">सेव करें</button>
-        <hr style="margin:20px 0;">
-        <button class="btn btn-outline" onclick="directAdminLogin()">👑 एडमिन लॉगिन</button>
-    </div>
+    <div class="auth-box" style="color:var(--dark);"><h2>TyreXpert में स्वागत है</h2><p style="color:#777;margin-bottom:15px;">प्रोफाइल बनाएं</p><input type="text" id="obName" placeholder="आपका नाम"><input type="number" id="obPhone" placeholder="मोबाइल"><p style="text-align:left;font-weight:bold;">फोटो 📷</p><input type="file" accept="image/*" capture="user" onchange="capturePhoto(event)"><img id="previewImg" style="width:100px;height:100px;border-radius:50%;margin:10px auto;display:none;object-fit:cover;"><button class="btn btn-red" onclick="saveProfile()">सेव करें</button><hr style="margin:20px 0;"><button class="btn btn-outline" onclick="directAdminLogin()">👑 एडमिन</button></div>
 </div>
 
-<!-- APP LOCK -->
-<div id="auth-screen" class="screen hidden" style="background:var(--dark);">
-    <div class="auth-box">
-        <h1 class="logo" style="font-size:2.5rem;">Tyre<span>Xpert</span></h1>
-        <p style="margin:10px 0 20px;">ऐप लॉक</p>
-        <input type="password" id="appPinInput" placeholder="पासवर्ड डालें">
-        <button class="btn btn-red" onclick="login()">ऐप खोलें</button>
-    </div>
-</div>
+<div id="auth-screen" class="screen hidden" style="background:var(--dark);"><div class="auth-box"><h1 class="logo" style="font-size:2.5rem;">Tyre<span>Xpert</span></h1><p>ऐप लॉक</p><input type="password" id="appPinInput" placeholder="पासवर्ड"><button class="btn btn-red" onclick="login()">खोलें</button></div></div>
 
-<!-- DASHBOARD -->
 <div id="dashboard-screen" class="screen hidden">
     <div class="top-bar"><div class="logo">Tyre<span>Xpert</span></div><div><span class="icon-btn" onclick="openAdminAuth()">👑</span></div></div>
-    <h3 style="text-align:center;margin:15px 0;">🏆 टॉप कर्मचारी</h3>
-    <div class="leaderboard" id="leaderboard-container"></div>
-    <button class="btn btn-green" onclick="punchIn()">📍 हाजिरी लगाएं (Punch-In)</button>
+    <h3 style="text-align:center;margin:15px 0;">🏆 टॉप कर्मचारी</h3><div class="leaderboard" id="leaderboard-container"></div>
+    <button class="btn btn-green" onclick="punchIn()">📍 हाजिरी लगाएं</button>
     <h2 style="text-align:center;margin:20px 0;">दुकान चुनें</h2>
     <button class="btn btn-dark" onclick="openShop('Petrol Pump')">⛽ पेट्रोल पंप</button>
     <button class="btn btn-blue" onclick="openShop('Khusboo Parking')">🅿️ खुशबू पार्किंग</button>
 </div>
 
-<!-- INVENTORY -->
 <div id="inventory-screen" class="screen hidden">
     <div class="top-bar"><button onclick="goBack()" style="padding:8px 14px;border:none;border-radius:8px;background:var(--light-red);color:var(--red);font-weight:bold;cursor:pointer;">🔙</button><h3 id="shop-title"></h3><div class="icon-btn" onclick="openAdminAuth()">👑</div></div>
     <div id="low-stock-box" class="glow-red-heading hidden">⚠️ कम स्टॉक (5 से कम)<div id="low-stock-list" style="font-weight:normal;margin-top:10px;text-align:left;font-size:0.9rem;"></div></div>
     <button class="btn btn-outline" style="margin-bottom:20px;" onclick="sendWhatsAppAlert()">📱 WhatsApp अलर्ट</button>
-    <div class="search-container"><input type="text" id="searchInput" placeholder="🔍 खोजें..." oninput="handleSearch()" autocomplete="off"><button class="mic-btn" onclick="startMic()">🎤</button><div id="suggestionsBox" class="suggestions-box"></div></div>
+    <div class="search-container"><input type="text" id="searchInput" placeholder="🔍 खोजें या 🎤 बोलें..." oninput="handleSearch()" autocomplete="off"><button class="mic-btn" id="searchMicBtn" onclick="startSearchVoice()">🎤</button><div id="suggestionsBox" class="suggestions-box"></div></div>
     <div id="stock-list-container"></div>
 </div>
 
-<!-- ADMIN -->
 <div id="admin-modal">
-    <button class="btn btn-red" onclick="closeAdmin()" style="position:sticky;top:0;z-index:100;">❌ बंद करें</button>
-    <h2 style="text-align:center;margin:15px 0;">👑 एडमिन (Pass: 1234)</h2>
-    <div class="admin-section" style="border-color:var(--red);background:var(--light-red);"><h3 style="color:var(--red);">✏️ स्टॉक अपडेट</h3><div style="position:relative;"><input type="text" id="adminSearchInput" placeholder="🔍 खोजें..." oninput="showAdminSuggestions()" autocomplete="off"><div id="adminSuggestionsBox" class="suggestions-box"></div></div><div id="selectedProductInfo" class="selected-product-info"></div></div>
+    <button class="btn btn-red" onclick="closeAdmin()" style="position:sticky;top:0;z-index:100;">❌ बंद करें</button><h2 style="text-align:center;margin:15px 0;">👑 एडमिन (Pass: 1234)</h2>
+    <div class="admin-section" style="border-color:var(--red);background:var(--light-red);"><h3 style="color:var(--red);">✏️ स्टॉक</h3><div style="position:relative;"><input type="text" id="adminSearchInput" placeholder="🔍 खोजें..." oninput="showAdminSuggestions()" autocomplete="off"><div id="adminSuggestionsBox" class="suggestions-box"></div></div><div id="selectedProductInfo" style="display:none;background:white;padding:10px;border-radius:8px;margin-top:10px;border:2px solid var(--red);"></div></div>
     <div class="admin-section"><h3>➕ नया</h3><input type="text" id="newProductName" placeholder="नाम"><input type="text" id="newProductAlts" placeholder="Alt"><div style="display:flex;gap:10px;"><input type="number" id="newProductPP" placeholder="PP"><input type="number" id="newProductKP" placeholder="KP"></div><button class="btn btn-red" onclick="addProduct()">✅ जोड़ें</button></div>
     <div class="admin-section" style="background:#fff5f5;"><h3 style="color:var(--red);">🗑️ डिलीट</h3><select id="deleteItemSelect"><option>-- चुनें --</option></select><button class="btn btn-red" onclick="deleteProduct()">हटाएं</button></div>
     <div class="admin-section"><h3>👥 स्टाफ</h3><select id="adminStaffSelect"></select><input type="number" id="newScoreInput" placeholder="पॉइंट्स"><button class="btn btn-red" onclick="updateStaffScore()">अपडेट</button></div>
@@ -191,56 +146,30 @@
     <div class="admin-section"><h3>🔑 पासवर्ड</h3><input type="text" id="chgAppPass" placeholder="नया ऐप"><input type="text" id="chgAdminPass" placeholder="नया एडमिन"><button class="btn btn-outline" onclick="updatePasswords()">सेव</button></div>
 </div>
 
-<!-- AI CHATBOT -->
-<button class="chatbot-float-btn" onclick="toggleChatbot()">🤖</button>
+<!-- AI CHATBOT - TYRE EXPERT -->
+<button class="chatbot-float-btn" onclick="toggleChatbot()">🔧</button>
 <div id="chatbot-modal">
     <div class="chatbot-header">
         <div class="chatbot-header-top">
-            <div class="chatbot-title">
-                <span class="online-dot"></span>
-                <span>TyreXpert AI Salesman</span>
-            </div>
+            <div class="chatbot-title"><span class="online-dot"></span>🔧 Tyre Expert AI</div>
             <button onclick="toggleChatbot()" style="background:none;border:none;color:white;font-size:1.3rem;cursor:pointer;">✕</button>
         </div>
-        <!-- ALL AI MODELS -->
         <div class="model-chips">
-            <span class="model-chip chip-gpt active" onclick="switchModel('openai/gpt-4o-mini', this)" data-model="openai/gpt-4o-mini">
-                <span class="chip-dot"></span> GPT-4o Mini
-            </span>
-            <span class="model-chip chip-gpt" onclick="switchModel('openai/gpt-4o', this)" data-model="openai/gpt-4o">
-                <span class="chip-dot"></span> GPT-4o
-            </span>
-            <span class="model-chip chip-claude" onclick="switchModel('anthropic/claude-3.5-haiku', this)" data-model="anthropic/claude-3.5-haiku">
-                <span class="chip-dot"></span> Claude 3.5
-            </span>
-            <span class="model-chip chip-claude" onclick="switchModel('anthropic/claude-3-opus', this)" data-model="anthropic/claude-3-opus">
-                <span class="chip-dot"></span> Claude Opus
-            </span>
-            <span class="model-chip chip-gemini" onclick="switchModel('google/gemini-2.0-flash-001', this)" data-model="google/gemini-2.0-flash-001">
-                <span class="chip-dot"></span> Gemini Flash
-            </span>
-            <span class="model-chip chip-gemini" onclick="switchModel('google/gemini-pro', this)" data-model="google/gemini-pro">
-                <span class="chip-dot"></span> Gemini Pro
-            </span>
-            <span class="model-chip chip-deepseek" onclick="switchModel('deepseek/deepseek-chat', this)" data-model="deepseek/deepseek-chat">
-                <span class="chip-dot"></span> DeepSeek V3
-            </span>
-            <span class="model-chip chip-deepseek" onclick="switchModel('deepseek/deepseek-r1', this)" data-model="deepseek/deepseek-r1">
-                <span class="chip-dot"></span> DeepSeek R1
-            </span>
-            <span class="model-chip chip-llama" onclick="switchModel('meta-llama/llama-3.3-70b-instruct', this)" data-model="meta-llama/llama-3.3-70b-instruct">
-                <span class="chip-dot"></span> Llama 3.3
-            </span>
-            <span class="model-chip chip-qwen" onclick="switchModel('qwen/qwen-2.5-72b-instruct', this)" data-model="qwen/qwen-2.5-72b-instruct">
-                <span class="chip-dot"></span> Qwen 2.5
-            </span>
+            <span class="model-chip chip-green active" onclick="switchModel('openai/gpt-4o-mini', this)">GPT-4o Mini</span>
+            <span class="model-chip chip-green" onclick="switchModel('openai/gpt-4o', this)">GPT-4o</span>
+            <span class="model-chip chip-orange" onclick="switchModel('anthropic/claude-3.5-haiku', this)">Claude 3.5</span>
+            <span class="model-chip chip-blue" onclick="switchModel('google/gemini-2.0-flash-001', this)">Gemini Flash</span>
+            <span class="model-chip chip-purple" onclick="switchModel('deepseek/deepseek-chat', this)">DeepSeek</span>
+            <span class="model-chip chip-purple" onclick="switchModel('meta-llama/llama-3.3-70b-instruct', this)">Llama 3.3</span>
         </div>
     </div>
     <div class="chatbot-body" id="chatbotBody">
         <div class="chat-typing" id="chatTyping"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>
     </div>
     <div class="chatbot-input-area">
-        <input type="text" id="chatbotInput" placeholder="कुछ पूछो या 🎤 बोलो..." onkeypress="if(event.key==='Enter')sendChatMsg()" autocomplete="off">
+        <input type="text" id="chatbotInput" placeholder="पूछो: puncture kaise thik kare? i20 mein kaunsa tyre?" onkeypress="if(event.key==='Enter')sendChatMsg()" autocomplete="off">
+        <button class="photo-btn" onclick="uploadTyrePhoto()" title="फोटो अपलोड करो">📷</button>
+        <input type="file" id="tyrePhotoInput" accept="image/*" capture="environment" onchange="handlePhotoUpload(event)" style="display:none;">
         <button class="voice-btn" id="chatVoiceBtn" onclick="startChatVoice()" title="बोलकर पूछो">🎤</button>
         <button class="send-btn" onclick="sendChatMsg()">➤</button>
     </div>
@@ -258,6 +187,7 @@ const OPENROUTER_KEY = "sk-or-v1-646e98a40e8bbab0af595cc67d0d6e90284c5c66e3389e5
 let currentModel = "openai/gpt-4o-mini";
 let chatHistory = [];
 let isChatListening = false;
+let isSearchListening = false;
 
 window.settings = { appPin: "308913", adminPin: "1234" };
 window.staffList = {}; window.inventory = {}; window.currentShop = "";
@@ -270,205 +200,8 @@ const SHOPS = { PP: { name: "Petrol Pump", lat: 28.7005, lng: 76.9304 }, KP: { n
 onValue(ref(db, 'settings'), (s) => { if(s.exists()) window.settings = s.val(); });
 onValue(ref(db, 'staffList'), (s) => { window.staffList = s.val() || {}; renderLeaderboard(); populateAdminStaffList(); });
 onValue(ref(db, 'inventory'), (s) => { window.inventory = s.val() || {}; renderInventory(document.getElementById('searchInput')?.value||""); populateAdminDropdowns(); });
-onValue(ref(db, 'attendanceLog'), (s) => { 
-    attendanceLogs = s.val() || {};
-    if(Object.keys(attendanceLogs).length > 0) {
-        let keys = Object.keys(attendanceLogs), latest = attendanceLogs[keys[keys.length-1]];
-        if(Date.now() - latest.timestamp < 15000 && latest.timestamp > lastAttendanceTime) {
-            lastAttendanceTime = latest.timestamp;
-            alert(`🔔 ${latest.staff} ने ${latest.shop} पर हाजिरी लगाई! (${latest.time})`);
-        }
-    }
-});
+onValue(ref(db, 'attendanceLog'), (s) => { attendanceLogs = s.val() || {}; });
 
 window.onload = () => {
     if(!window.myStaffId) { document.getElementById('onboarding-screen').classList.remove('hidden'); document.getElementById('auth-screen').classList.add('hidden'); }
-    else { document.getElementById('auth-screen').classList.remove('hidden'); document.getElementById('onboarding-screen').classList.add('hidden'); }
-};
-
-window.capturePhoto = function(e) { let f=e.target.files[0],r=new FileReader();r.onload=(ev)=>{let i=new Image();i.onload=()=>{let c=document.createElement('canvas');c.width=150;c.height=(150*i.height)/i.width;c.getContext('2d').drawImage(i,0,0,c.width,c.height);window.tempPhotoBase64=c.toDataURL('image/jpeg',0.6);document.getElementById('previewImg').src=window.tempPhotoBase64;document.getElementById('previewImg').style.display="block";};i.src=ev.target.result;};if(f)r.readAsDataURL(f);};
-window.saveProfile = () => { let n=document.getElementById('obName').value.trim(),p=document.getElementById('obPhone').value.trim();if(!n||!p||!window.tempPhotoBase64){alert("सब भरें!");return;}window.myStaffId="staff_"+Date.now();localStorage.setItem("tx_staff_id",window.myStaffId);set(ref(db,'staffList/'+window.myStaffId),{name:n,phone:p,img:window.tempPhotoBase64,score:0}).then(()=>{document.getElementById('onboarding-screen').classList.add('hidden');document.getElementById('auth-screen').classList.remove('hidden');}); };
-window.login = () => { if(document.getElementById('appPinInput').value===window.settings.appPin){document.getElementById('auth-screen').classList.add('hidden');document.getElementById('dashboard-screen').classList.remove('hidden');} else alert("❌ गलत पासवर्ड"); };
-window.directAdminLogin = () => { let p=prompt("एडमिन पासवर्ड:");if(p==="1234"){window.isAdminLoggedIn=true;document.getElementById('onboarding-screen').classList.add('hidden');document.getElementById('auth-screen').classList.add('hidden');document.getElementById('dashboard-screen').classList.remove('hidden');populateAdminStaffList();populateAdminDropdowns();document.getElementById('admin-modal').style.display="block";renderInventory();}else if(p)alert("❌ गलत! Pass: 1234"); };
-
-function getDistance(lat1,lon1,lat2,lon2){const R=6371e3;const φ1=lat1*Math.PI/180,φ2=lat2*Math.PI/180;const Δφ=(lat2-lat1)*Math.PI/180,Δλ=(lon2-lon1)*Math.PI/180;const a=Math.sin(Δφ/2)**2+Math.cos(φ1)*Math.cos(φ2)*Math.sin(Δλ/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));}
-window.punchIn = () => {
-    if(!navigator.geolocation){alert("GPS नहीं!");return;}
-    alert("📍 लोकेशन चेक हो रही है...");
-    navigator.geolocation.getCurrentPosition((pos)=>{
-        let dPP=getDistance(pos.coords.latitude,pos.coords.longitude,SHOPS.PP.lat,SHOPS.PP.lng), dKP=getDistance(pos.coords.latitude,pos.coords.longitude,SHOPS.KP.lat,SHOPS.KP.lng);
-        let shop=""; if(dPP<=150)shop=SHOPS.PP.name; else if(dKP<=150)shop=SHOPS.KP.name;
-        if(shop){
-            let myData=window.staffList[window.myStaffId]||{name:"Staff"};
-            let t=new Date().toLocaleTimeString('hi-IN',{hour:'2-digit',minute:'2-digit'});
-            set(ref(db,'attendanceLog/'+Date.now()),{staff:myData.name,shop,time:t,timestamp:Date.now()}).then(()=>alert(`✅ ${shop} (${t})`));
-        } else alert("❌ 150m दायरे में नहीं!");
-    },(err)=>{alert("GPS Error");},{enableHighAccuracy:true});
-};
-
-function renderLeaderboard(){let c=document.getElementById('leaderboard-container');if(!c)return;c.innerHTML="";Object.entries(window.staffList).map(([id,d])=>({id,...d})).sort((a,b)=>b.score-a.score).forEach((s,idx)=>{c.innerHTML+=`<div class="staff-card ${idx===0?'rank-1':''}"><span class="badge">${idx===0?'🏆 #1':'⭐ '+(idx+1)}</span><img src="${s.img}" class="staff-img"><h4>${s.name}</h4><p>${s.score} pts</p></div>`;});}
-window.openShop=(s)=>{window.currentShop=s;document.getElementById('dashboard-screen').classList.add('hidden');document.getElementById('inventory-screen').classList.remove('hidden');document.getElementById('shop-title').innerText=s==="Petrol Pump"?"पेट्रोल पंप":"खुशबू पार्किंग";document.getElementById('searchInput').value="";document.getElementById('suggestionsBox').style.display='none';renderInventory();};
-window.goBack=()=>{document.getElementById('inventory-screen').classList.add('hidden');document.getElementById('dashboard-screen').classList.remove('hidden');};
-function sanitizeString(s){if(!s)return"";let c=s.replace(/[\s\.\-]/g,'').toLowerCase();if(c==="318")c="30018";return c;}
-
-window.showSuggestions=()=>{let i=document.getElementById('searchInput'),b=document.getElementById('suggestionsBox'),q=sanitizeString(i.value);if(!q||q.length<1){b.style.display='none';renderInventory();return;}let m=Object.entries(window.inventory).filter(([k,v])=>sanitizeString(v.name).includes(q));if(m.length===0){b.style.display='none';renderInventory(i.value);return;}b.innerHTML="";m.forEach(([k,v])=>{let qty=window.currentShop==='Petrol Pump'?parseInt(v.pp||0):parseInt(v.kp||0);b.innerHTML+=`<div class="suggestion-item" onclick="selectProduct('${k}')"><span>${v.name}</span><span style="color:var(--red);font-weight:bold;">${qty} पीस</span></div>`;});b.style.display='block';};
-window.selectProduct=(k)=>{document.getElementById('searchInput').value=window.inventory[k].name;document.getElementById('suggestionsBox').style.display='none';renderInventory(window.inventory[k].name);};
-document.addEventListener('click',(e)=>{let b=document.getElementById('suggestionsBox'),i=document.getElementById('searchInput');if(b&&i&&!i.contains(e.target)&&!b.contains(e.target))b.style.display='none';let ab=document.getElementById('adminSuggestionsBox'),ai=document.getElementById('adminSearchInput');if(ab&&ai&&!ai.contains(e.target)&&!ab.contains(e.target))ab.style.display='none';});
-
-window.adjustStock=(k,c)=>{if(!window.isAdminLoggedIn){alert("❌ सिर्फ एडमिन!");return;}let i=window.inventory[k];if(!i)return;if(window.currentShop==='Petrol Pump')i.pp=Math.max(0,parseInt(i.pp||0)+c);else i.kp=Math.max(0,parseInt(i.kp||0)+c);if(c<0)i.sold=(i.sold||0)+Math.abs(c);set(ref(db,'inventory/'+k),i);};
-
-function renderInventory(f=""){
-    let cont=document.getElementById('stock-list-container'),lb=document.getElementById('low-stock-box'),ll=document.getElementById('low-stock-list');
-    if(!cont)return;cont.innerHTML="";if(ll)ll.innerHTML="";
-    let q=f?sanitizeString(f):"",hs=0,lc=0;
-    Object.values(window.inventory).forEach(i=>{if((i.sold||0)>hs)hs=i.sold||0;});
-    Object.entries(window.inventory).forEach(([k,i])=>{
-        let mq=window.currentShop==='Petrol Pump'?parseInt(i.pp||0):parseInt(i.kp||0),oq=window.currentShop==='Petrol Pump'?parseInt(i.kp||0):parseInt(i.pp||0),os=window.currentShop==='Petrol Pump'?"खुशबू पार्किंग":"पेट्रोल पंप";
-        if(mq<5&&mq>=0&&!f){lc++;ll.innerHTML+=`• ${i.name} <b>(${mq} पीस)</b><br>`;}
-        if(q&&!sanitizeString(i.name).includes(q))return;
-        let best=(i.sold>=hs&&hs>0)?'<span style="position:absolute;top:-8px;right:-8px;font-size:1.4rem;">🔥</span>':'';
-        let ctrl=window.isAdminLoggedIn?`<div class="qty-controls"><button class="qty-btn qty-minus" onclick="adjustStock('${k}',-1)">−</button><div class="qty-box">${mq}</div><button class="qty-btn qty-plus" onclick="adjustStock('${k}',1)">+</button></div>`:`<div class="qty-box">${mq}</div>`;
-        cont.innerHTML+=`<div class="stock-item" style="position:relative;">${best}<div style="flex-grow:1;"><h4>${i.name}</h4>${i.alts&&i.alts.length?`<p style="font-size:0.8rem;color:#777;">Alt: ${i.alts.join(", ")}</p>`:''}${mq===0&&oq>0?`<p style="color:var(--blue);">👉 ${os} पर ${oq} पीस</p>`:''}</div>${ctrl}</div>`;
-    });
-    if(lb){if(lc>0&&!f)lb.classList.remove('hidden');else lb.classList.add('hidden');}
-}
-
-window.handleSearch=()=>showSuggestions();
-
-// ============ 🤖 AI CHATBOT WITH ALL MODELS ============
-
-// ✅ Model switcher
-window.switchModel = function(model, el) {
-    currentModel = model;
-    document.querySelectorAll('.model-chip').forEach(c => c.classList.remove('active'));
-    el.classList.add('active');
-    let modelName = el.textContent.trim();
-    addBotMsg(`🔄 Model changed to: **${modelName}**`);
-    speakText(`Model ${modelName} select kiya gaya`);
-};
-
-async function callAI(msg) {
-    let stockCtx=""; Object.entries(window.inventory).forEach(([k,i])=>stockCtx+=`${i.name}: PP=${i.pp||0}, KP=${i.kp||0}, Sold=${i.sold||0}\n`);
-    let staffCtx=""; Object.entries(window.staffList).forEach(([id,s])=>staffCtx+=`${s.name} (Score:${s.score})\n`);
-    let attendanceCtx=""; Object.entries(attendanceLogs).slice(-5).forEach(([ts,log])=>attendanceCtx+=`${log.staff} - ${log.shop} - ${log.time}\n`);
-    
-    let prompt = `You are a TYRE SHOP SALESMAN AI. PRIMARY GOAL: SELL products.
-
-SHOP DATA:
-- Branches: Petrol Pump (PP) & Khusboo Parking (KP)
-- STOCK: ${stockCtx||"Empty"}
-- STAFF: ${staffCtx||"None"}
-- RECENT ATTENDANCE: ${attendanceCtx||"None"}
-
-RULES:
-1. Reply in Hinglish (casual Hindi+English, friendly)
-2. 2-4 lines MAX
-3. ALWAYS try to sell something
-4. Problem → solution + suggest buying
-5. Mention stock when relevant
-6. Attendance query → show recent logs
-7. Be a helpful shopkeeper
-
-Customer: ${msg}
-Salesman (Hinglish, short):`;
-
-    try {
-        let res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-            method:"POST",
-            headers:{"Authorization":`Bearer ${OPENROUTER_KEY}`,"Content-Type":"application/json","HTTP-Referer":"https://tyrexpert.app","X-Title":"TyreXpert"},
-            body:JSON.stringify({model:currentModel,messages:[{role:"system",content:prompt},{role:"user",content:msg}],temperature:0.8,max_tokens:150})
-        });
-        let d = await res.json();
-        return d.choices?.[0]?.message?.content || getLocalReply(msg);
-    } catch(e) { return getLocalReply(msg); }
-}
-
-function getLocalReply(msg) {
-    let q = msg.toLowerCase();
-    for(let [k,i] of Object.entries(window.inventory)) {
-        if(sanitizeString(q).includes(sanitizeString(i.name))) return `📦 ${i.name}: PP=${i.pp||0}, KP=${i.kp||0} pieces.\n${(i.pp||0)<3||(i.kp||0)<3?'⚠️ Kam stock! Order karo aur becho!':'✅ Stock OK. Recommend karo!'}`;
-    }
-    if(q.includes("stock")||q.includes("कम")) {
-        let low=Object.entries(window.inventory).filter(([k,i])=>(i.pp||0)<5||(i.kp||0)<5);
-        return low.length?`⚠️ Kam:\n${low.map(([k,i])=>`${i.name} (PP:${i.pp||0}, KP:${i.kp||0})`).join('\n')}\nOrder karo!`:"✅ Sab theek! Sales pe focus karo!";
-    }
-    if(q.includes("attendance")||q.includes("hajri")||q.includes("हाजिरी")||q.includes("kaun aya")) {
-        let logs=Object.entries(attendanceLogs).slice(-5).reverse();
-        return logs.length?`👥 Recent:\n${logs.map(([ts,l])=>`• ${l.staff} → ${l.shop} (${l.time})`).join('\n')}`:"👥 Aaj kisi ne hajri nahi lagayi!";
-    }
-    if(q.includes("sell")||q.includes("sales")||q.includes("बिक्री")) return "💰 Tips: 1. Alternative suggest karo 2. Combo offer (tyre+tube) 3. Free alignment ka bolkar bulavo!";
-    if(q.includes("rim")||q.includes("leak")||q.includes("हवा")) return "🔧 Rim leak? Valve pin Rs 20. Tubeless tyre better - hamare paas CEAT stock hai! Aaj lagwao?";
-    if(q.includes("puncture")) return "🛠️ Puncture Rs 50-100. 5+ hain to naya tyre becho! Customer ko safety samjhao!";
-    if(q.includes("side cut")) return "⚠️ Side cut = naya tyre! Customer ko mat jaane do bina badle!";
-    if(q.includes("i20")) return "🚗 i20: 195/55 R16 best! CEAT/Apollo available. Aaj lagwao, alignment free!";
-    if(q.includes("swift")) return "🚗 Swift: 165/80 R14 ya 185/70 R14. Tubeless best. Stock mein hai!";
-    if(q.includes("pulsar")) return "🏍️ Pulsar: F 90/90-17, R 120/80-17. MRF recommended!";
-    return "🤔 Puchho: 📦 Stock? 👥 Attendance? 💰 Sales? 🔧 Problem?";
-}
-
-function speakText(text) {
-    window.speechSynthesis.cancel();
-    let clean = text.replace(/[*#₹🔄⚠️✅❌📦🔧💡💰👥🚗🏍️]/g,'').replace(/\n/g,'. ').replace(/(\d+)\/(\d+)/g,'$1 $2').replace(/(\d+)-(\d+)/g,'$1 $2').substring(0,200);
-    let u = new SpeechSynthesisUtterance(clean); u.lang='hi-IN'; u.rate=1.0;
-    setTimeout(()=>window.speechSynthesis.speak(u),200);
-}
-
-window.toggleChatbot = () => {
-    let m = document.getElementById('chatbot-modal');
-    if(m.style.display==='flex'){m.style.display='none';}else{
-        m.style.display='flex';document.getElementById('chatbotInput').focus();
-        if(chatHistory.length===0){
-            let w="👋 Namaste! Main TyreXpert Salesman hoon. ⬆️ Model select karo!\n\nPuchho:\n📦 Stock?\n👥 Aaj kaun aya?\n💰 Sales tip?\n🔧 Koi problem?";
-            addBotMsg(w);speakText(w);addQR(["📦 Stock","👥 Attendance","💰 Sales","🔧 Rim leak"]);
-        }
-    }
-};
-
-window.sendChatMsg = async () => {
-    let input=document.getElementById('chatbotInput'),msg=input.value.trim();if(!msg)return;
-    addUserMsg(msg);input.value='';document.getElementById('chatTyping').style.display='flex';
-    document.getElementById('chatbotBody').scrollTop=document.getElementById('chatbotBody').scrollHeight;
-    let reply=await callAI(msg);
-    document.getElementById('chatTyping').style.display='none';
-    addBotMsg(reply);speakText(reply);chatHistory.push({role:'user',content:msg},{role:'assistant',content:reply});
-    addQR(["📦 Stock","👥 Attendance","💰 Sales","🔧 Problem"]);
-    document.getElementById('chatbotBody').scrollTop=document.getElementById('chatbotBody').scrollHeight;
-};
-
-window.startChatVoice = () => {
-    if(!('webkitSpeechRecognition' in window)&&!('SpeechRecognition' in window)){alert("❌ Voice nahi!");return;}
-    const SR=window.SpeechRecognition||window.webkitSpeechRecognition;const recog=new SR();recog.lang='hi-IN';
-    let btn=document.getElementById('chatVoiceBtn');
-    if(isChatListening){recog.stop();btn.classList.remove('active');isChatListening=false;return;}
-    recog.start();btn.classList.add('active');isChatListening=true;
-    document.getElementById('chatbotInput').placeholder="🎤 बोलो...";
-    recog.onresult=(e)=>{let t=e.results[0][0].transcript;document.getElementById('chatbotInput').value=t;btn.classList.remove('active');isChatListening=false;document.getElementById('chatbotInput').placeholder="कुछ पूछो...";sendChatMsg();};
-    recog.onerror=()=>{btn.classList.remove('active');isChatListening=false;document.getElementById('chatbotInput').placeholder="कुछ पूछो...";};
-    setTimeout(()=>{if(isChatListening){recog.stop();btn.classList.remove('active');isChatListening=false;document.getElementById('chatbotInput').placeholder="कुछ पूछो...";}},8000);
-};
-
-function addUserMsg(t){document.getElementById('chatbotBody').innerHTML+=`<div class="chat-msg user-msg">${t}</div>`;}
-function addBotMsg(t){document.getElementById('chatbotBody').innerHTML+=`<div class="chat-msg bot-msg">${t.replace(/\n/g,'<br>')}</div>`;}
-function addQR(r){let h='<div class="quick-replies">';r.forEach(x=>h+=`<button class="quick-reply-btn" onclick="qrClick('${x}')">${x}</button>`);h+='</div>';document.getElementById('chatbotBody').innerHTML+=h;}
-window.qrClick=(t)=>{document.getElementById('chatbotInput').value=t;sendChatMsg();};
-
-// Admin
-window.showAdminSuggestions=()=>{let i=document.getElementById('adminSearchInput'),b=document.getElementById('adminSuggestionsBox'),q=sanitizeString(i.value);if(!q||q.length<1){b.style.display='none';document.getElementById('selectedProductInfo').style.display='none';window.selectedProductKey=null;return;}let m=Object.entries(window.inventory).filter(([k,v])=>sanitizeString(v.name).includes(q));if(m.length===0){b.style.display='none';return;}b.innerHTML="";m.forEach(([k,v])=>b.innerHTML+=`<div class="suggestion-item" onclick="selectAdminProduct('${k}')"><span>${v.name}</span><span style="color:var(--red);font-weight:bold;">PP:${v.pp||0}|KP:${v.kp||0}</span></div>`);b.style.display='block';};
-window.selectAdminProduct=(k)=>{window.selectedProductKey=k;let i=window.inventory[k];document.getElementById('adminSearchInput').value=i.name;document.getElementById('adminSuggestionsBox').style.display='none';document.getElementById('selectedProductInfo').style.display='block';document.getElementById('selectedProductInfo').innerHTML=`<strong>📦 ${i.name}</strong><br><div style="display:flex;gap:15px;margin-top:10px;"><div style="flex:1;"><small>⛽ PP</small><div class="qty-controls"><button class="qty-btn qty-minus" onclick="adminAdj('pp',-1)">−</button><span id="appq" style="padding:8px;font-weight:bold;">${i.pp||0}</span><button class="qty-btn qty-plus" onclick="adminAdj('pp',1)">+</button></div></div><div style="flex:1;"><small>🅿️ KP</small><div class="qty-controls"><button class="qty-btn qty-minus" onclick="adminAdj('kp',-1)">−</button><span id="akpq" style="padding:8px;font-weight:bold;">${i.kp||0}</span><button class="qty-btn qty-plus" onclick="adminAdj('kp',1)">+</button></div></div></div>`;};
-window.adminAdj=(s,c)=>{if(!window.selectedProductKey)return;let i=window.inventory[window.selectedProductKey];if(s==='pp'){i.pp=Math.max(0,parseInt(i.pp||0)+c);document.getElementById('appq').innerText=i.pp;}else{i.kp=Math.max(0,parseInt(i.kp||0)+c);document.getElementById('akpq').innerText=i.kp;}if(c<0)i.sold=(i.sold||0)+Math.abs(c);set(ref(db,'inventory/'+window.selectedProductKey),i);};
-window.addProduct=()=>{let n=document.getElementById('newProductName').value.trim();if(!n){alert("नाम!");return;}let a=document.getElementById('newProductAlts').value.trim().split(',').map(s=>s.trim()).filter(s=>s);set(ref(db,'inventory/prod_'+Date.now()),{name:n,alts:a,pp:parseInt(document.getElementById('newProductPP').value)||0,kp:parseInt(document.getElementById('newProductKP').value)||0,sold:0}).then(()=>{alert("✅");['newProductName','newProductAlts','newProductPP','newProductKP'].forEach(id=>document.getElementById(id).value="");});};
-window.deleteProduct=()=>{let k=document.getElementById('deleteItemSelect').value;if(!k)return;if(confirm("हटाएं?"))remove(ref(db,'inventory/'+k)).then(()=>alert("🗑️"));};
-window.deleteStaff=(id)=>{let s=window.staffList[id];if(!s)return;if(confirm(`${s.name} हटाएं?`))remove(ref(db,'staffList/'+id)).then(()=>alert("🗑️"));};
-window.sendWhatsAppAlert=()=>{let low=Object.entries(window.inventory).filter(([k,i])=>(i.pp||0)<5||(i.kp||0)<5);if(low.length===0){alert("✅");return;}let d=window.staffList[window.myStaffId]||{name:"Staff",phone:""};window.open(`https://wa.me/919068749268?text=${encodeURIComponent(`⚠️ कम स्टॉक\n${d.name}\n\n${low.map(([k,i])=>`- ${i.name} (PP:${i.pp||0}, KP:${i.kp||0})`).join("\n")}`)}`,'_blank');};
-window.openAdminAuth=()=>{let p=prompt("एडमिन पासवर्ड:");if(p==="1234"){window.isAdminLoggedIn=true;populateAdminStaffList();populateAdminDropdowns();document.getElementById('admin-modal').style.display="block";renderInventory();}else if(p)alert("❌ Pass: 1234");};
-window.closeAdmin=()=>{window.isAdminLoggedIn=false;document.getElementById('admin-modal').style.display="none";window.selectedProductKey=null;renderInventory();};
-function populateAdminStaffList(){let s=document.getElementById('adminStaffSelect'),d=document.getElementById('staffDeleteList');if(!s)return;s.innerHTML="";if(d)d.innerHTML="";Object.entries(window.staffList).forEach(([id,x])=>{s.innerHTML+=`<option value="${id}">${x.name} - ${x.phone} (${x.score})</option>`;if(d)d.innerHTML+=`<div style="display:flex;justify-content:space-between;padding:8px;background:white;margin-bottom:5px;border-radius:8px;"><span>👤 ${x.name} | ${x.score} pts</span><button class="staff-delete-btn" onclick="deleteStaff('${id}')">🗑️</button></div>`;});}
-window.updateStaffScore=()=>{let id=document.getElementById('adminStaffSelect').value,pts=parseInt(document.getElementById('newScoreInput').value);if(!id||isNaN(pts))return;update(ref(db,'staffList/'+id),{score:pts}).then(()=>{alert("✅");document.getElementById('newScoreInput').value="";});};
-window.transferStock=()=>{let k=document.getElementById('transferItem').value,d=document.getElementById('transferDir').value,q=parseInt(document.getElementById('transferQty').value)||0;if(!k||q<=0)return;let i=window.inventory[k];if(d==="P2K"){if((i.pp||0)<q){alert("PP नहीं!");return;}i.pp-=q;i.kp=(i.kp||0)+q;}else{if((i.kp||0)<q){alert("KP नहीं!");return;}i.kp-=q;i.pp=(i.pp||0)+q;}set(ref(db,'inventory/'+k),i).then(()=>{alert("🔄");document.getElementById('transferQty').value="";});};
-window.claimDefect=()=>{let k=document.getElementById('defectItem').value,s=document.getElementById('defectShop').value,q=parseInt(document.getElementById('defectQty').value)||0;if(!k||q<=0)return;let i=window.inventory[k];if(s==="Petrol Pump")i.pp=Math.max(0,(i.pp||0)-q);else i.kp=Math.max(0,(i.kp||0)-q);i.sold=(i.sold||0)+q;set(ref(db,'inventory/'+k),i).then(()=>{alert("🛑");document.getElementById('defectQty').value="";});};
-window.updatePasswords=()=>{let a=document.getElementById('chgAppPass').value.trim(),b=document.getElementById('chgAdminPass').value.trim();if(a)window.settings.appPin=a;if(b)window.settings.adminPin=b;set(ref(db,'settings'),window.settings).then(()=>alert("🔑"));};
-function populateAdminDropdowns(){['deleteItemSelect','defectItem','transferItem'].forEach(id=>{let s=document.getElementById(id);if(!s)return;s.innerHTML=id==='deleteItemSelect'?"<option value=''>-- चुनें --</option>":"";Object.entries(window.inventory).forEach(([k,i])=>s.innerHTML+=`<option value="${k}">${i.name} (PP:${i.pp||0}, KP:${i.kp||0})</option>`);});}
-window.startMic = () => { if(!('webkitSpeechRecognition' in window)){alert("❌ Voice नहीं");return;}let r=new(window.SpeechRecognition||window.webkitSpeechRecognition)();r.lang='hi-IN';r.start();document.querySelector('.mic-btn').style.background='#c0392b';r.onresult=(e)=>{document.getElementById('searchInput').value=e.results[0][0].transcript;document.getElementById('suggestionsBox').style.display='none';renderInventory(e.results[0][0].transcript);document.querySelector('.mic-btn').style.background='var(--red)';};r.onerror=()=>{document.querySelector('.mic-btn').style.background='var(--red)';};};
-</script>
-</body>
-</html>
+    else { document.getElementById('auth-screen').classList.remove('hidden'); document.ge
