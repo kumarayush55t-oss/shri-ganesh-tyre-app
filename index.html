@@ -74,8 +74,7 @@
         .umsg { background: var(--r); color: #fff; align-self: flex-end; }
         .ct { display: none; align-self: flex-start; background: #f5f5f5; padding: 12px 16px; border-radius: 16px; gap: 4px; }
         .td { width: 7px; height: 7px; background: #ccc; border-radius: 50%; animation: tb 1.3s infinite; display: inline-block; }
-        .td:nth-child(2) { animation-delay: 0.2s; }
-        .td:nth-child(3) { animation-delay: 0.4s; }
+        .td:nth-child(2) { animation-delay: 0.2s; } .td:nth-child(3) { animation-delay: 0.4s; }
         @keyframes tb { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-6px); } }
         .cia { padding: 12px; background: #fff; display: flex; gap: 8px; border-top: 1px solid #eee; align-items: center; }
         .cia input { flex: 1; border: 2px solid #f0f0f0; border-radius: 25px; padding: 12px 18px; font-size: 0.9rem; margin: 0; }
@@ -84,7 +83,6 @@
         .voice-b { background: #e74c3c; }
         .voice-b.ac2 { animation: vp 0.5s infinite; background: #f00; }
         @keyframes vp { 0%,100% { box-shadow: 0 0 10px red; } 50% { box-shadow: 0 0 30px red; } }
-        .photo-b { background: #f39c12; }
         .tread-b { background: #e67e22; font-size: 0.8rem; font-weight: 700; padding: 0 10px; white-space: nowrap; }
         .qr { display: flex; flex-wrap: wrap; gap: 6px; padding: 4px 0; }
         .qrb { background: var(--lr); color: var(--r); border: 1px solid var(--r); padding: 7px 14px; border-radius: 18px; font-size: 0.75rem; cursor: pointer; font-weight: 600; white-space: nowrap; }
@@ -128,39 +126,291 @@ const fc = { apiKey: "AIzaSyApY09CHspm5TVxXTVvjnfB6lzwQ7nqltE", authDomain: "sta
 const app = initializeApp(fc);
 const db = getDatabase(app);
 
-// ⚠️ APNI OPENROUTER API KEY YAHAN DALO
-const ORK = "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";
-let cm2 = "openai/gpt-4o-mini";
-let ch2 = [];
-let icl = false;
-let isl = false;
+// ⚠️ APNI OPENROUTER API KEY YAHAN DALO (https://openrouter.ai/keys)
+const OPENROUTER_KEY = "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";
+let currentModel = "openai/gpt-4o-mini";
+let chatHistory = [];
+let isChatListening = false;
+let isSearchListening = false;
 let treadHistory = JSON.parse(localStorage.getItem("treadHistory") || "[]");
 
 window.settings = { appPin: "308913", adminPin: "1234" };
 window.staffList = {}; window.inventory = {}; window.currentShop = "";
 window.isAdminLoggedIn = false; window.myStaffId = localStorage.getItem("tx_staff_id") || null;
 window.selectedProductKey = null;
-let al2 = {};
+let attendanceLogs = {};
 
 const SHOPS = { PP: { name: "Petrol Pump", lat: 28.7005, lng: 76.9304 }, KP: { name: "Khusboo Parking", lat: 28.7013, lng: 76.9121 } };
 
 onValue(ref(db, 'settings'), (s) => { if(s.exists()) window.settings = s.val(); });
-onValue(ref(db, 'staffList'), (s) => { window.staffList = s.val() || {}; rl(); pas(); });
-onValue(ref(db, 'inventory'), (s) => { window.inventory = s.val() || {}; ri(document.getElementById('si2')?.value||""); pad(); });
-onValue(ref(db, 'attendanceLog'), (s) => { al2 = s.val() || {}; });
+onValue(ref(db, 'staffList'), (s) => { window.staffList = s.val() || {}; renderLeaderboard(); populateAdminStaff(); });
+onValue(ref(db, 'inventory'), (s) => { window.inventory = s.val() || {}; renderInventory(); populateAdminDropdowns(); });
+onValue(ref(db, 'attendanceLog'), (s) => { attendanceLogs = s.val() || {}; });
 
 window.onload = () => {
-    if(!window.myStaffId) { document.getElementById('os').classList.remove('hidden'); document.getElementById('as2').classList.add('hidden'); }
-    else { document.getElementById('as2').classList.remove('hidden'); document.getElementById('os').classList.add('hidden'); }
+    if(!window.myStaffId) { showScreen('os'); hideScreen('as2'); }
+    else { showScreen('as2'); hideScreen('os'); }
 };
 
-window.cp = function(e) { let f=e.target.files[0],r=new FileReader();r.onload=(ev)=>{let i=new Image();i.onload=()=>{let c=document.createElement('canvas');c.width=150;c.height=(150*i.height)/i.width;c.getContext('2d').drawImage(i,0,0,c.width,c.height);window.tempPhotoBase64=c.toDataURL('image/jpeg',0.6);document.getElementById('pi').src=window.tempPhotoBase64;document.getElementById('pi').style.display="block";};i.src=ev.target.result;};if(f)r.readAsDataURL(f);};
-window.sp = () => { let n=document.getElementById('obName').value.trim(),p=document.getElementById('obPhone').value.trim();if(!n||!p||!window.tempPhotoBase64){alert("सब भरें!");return;}window.myStaffId="staff_"+Date.now();localStorage.setItem("tx_staff_id",window.myStaffId);set(ref(db,'staffList/'+window.myStaffId),{name:n,phone:p,img:window.tempPhotoBase64,score:0}).then(()=>{document.getElementById('os').classList.add('hidden');document.getElementById('as2').classList.remove('hidden');}); };
-window.li = () => { if(document.getElementById('apin').value===window.settings.appPin){document.getElementById('as2').classList.add('hidden');document.getElementById('ds').classList.remove('hidden');} else alert("❌ गलत पासवर्ड"); };
-window.dal = () => { let p=prompt("एडमिन पासवर्ड:");if(p==="1234"){window.isAdminLoggedIn=true;document.getElementById('os').classList.add('hidden');document.getElementById('as2').classList.add('hidden');document.getElementById('ds').classList.remove('hidden');pas();pad();document.getElementById('am').style.display="block";ri();}else if(p)alert("❌ Pass: 1234"); };
+// Utility
+function showScreen(id) { document.getElementById(id).classList.remove('hidden'); }
+function hideScreen(id) { document.getElementById(id).classList.add('hidden'); }
+function sanitize(str) { return str ? str.replace(/[\s\.\-]/g,'').toLowerCase() : ''; }
 
-function gd(lat1,lon1,lat2,lon2){const R=6371e3;const φ1=lat1*Math.PI/180,φ2=lat2*Math.PI/180;const Δφ=(lat2-lat1)*Math.PI/180,Δλ=(lon2-lon1)*Math.PI/180;const a=Math.sin(Δφ/2)**2+Math.cos(φ1)*Math.cos(φ2)*Math.sin(Δλ/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));}
+// Photo capture for profile
+window.cp = function(e) { let f=e.target.files[0],r=new FileReader();r.onload=(ev)=>{let i=new Image();i.onload=()=>{let c=document.createElement('canvas');c.width=150;c.height=(150*i.height)/i.width;c.getContext('2d').drawImage(i,0,0,c.width,c.height);window.tempPhotoBase64=c.toDataURL('image/jpeg',0.6);document.getElementById('pi').src=window.tempPhotoBase64;document.getElementById('pi').style.display="block";};i.src=ev.target.result;};if(f)r.readAsDataURL(f);};
+window.sp = () => { let n=document.getElementById('obName').value.trim(),p=document.getElementById('obPhone').value.trim();if(!n||!p||!window.tempPhotoBase64){alert("सब भरें!");return;}window.myStaffId="staff_"+Date.now();localStorage.setItem("tx_staff_id",window.myStaffId);set(ref(db,'staffList/'+window.myStaffId),{name:n,phone:p,img:window.tempPhotoBase64,score:0}).then(()=>{hideScreen('os');showScreen('as2');}); };
+window.li = () => { if(document.getElementById('apin').value===window.settings.appPin){hideScreen('as2');showScreen('ds');} else alert("❌ गलत पासवर्ड"); };
+window.dal = () => { let p=prompt("एडमिन पासवर्ड:");if(p==="1234"){window.isAdminLoggedIn=true;hideScreen('os');hideScreen('as2');showScreen('ds');populateAdminStaff();populateAdminDropdowns();document.getElementById('am').style.display="block";renderInventory();}else if(p)alert("❌ Pass: 1234"); };
+
+function getDistance(lat1,lon1,lat2,lon2){const R=6371e3;const φ1=lat1*Math.PI/180,φ2=lat2*Math.PI/180;const Δφ=(lat2-lat1)*Math.PI/180,Δλ=(lon2-lon1)*Math.PI/180;const a=Math.sin(Δφ/2)**2+Math.cos(φ1)*Math.cos(φ2)*Math.sin(Δλ/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));}
 window.pi2 = () => {
     if(!navigator.geolocation){alert("GPS नहीं!");return;}
     navigator.geolocation.getCurrentPosition((pos)=>{
-    
+        let dPP=getDistance(pos.coords.latitude,pos.coords.longitude,SHOPS.PP.lat,SHOPS.PP.lng), dKP=getDistance(pos.coords.latitude,pos.coords.longitude,SHOPS.KP.lat,SHOPS.KP.lng);
+        let shop=""; if(dPP<=150)shop=SHOPS.PP.name; else if(dKP<=150)shop=SHOPS.KP.name;
+        if(shop){let d=window.staffList[window.myStaffId]||{name:"Staff"},t=new Date().toLocaleTimeString('hi-IN',{hour:'2-digit',minute:'2-digit'});set(ref(db,'attendanceLog/'+Date.now()),{staff:d.name,shop,time:t,timestamp:Date.now()}).then(()=>alert(`✅ ${shop} (${t})`));}
+        else alert("❌ 150m दायरे में नहीं!");
+    },()=>{alert("GPS Error");},{enableHighAccuracy:true});
+};
+
+function renderLeaderboard(){let c=document.getElementById('lbc');if(!c)return;c.innerHTML="";Object.entries(window.staffList).map(([id,d])=>({id,...d})).sort((a,b)=>b.score-a.score).forEach((s,idx)=>{c.innerHTML+=`<div class="sc ${idx===0?'r1':''}"><span style="font-weight:bold;">${idx===0?'🏆 #1':'⭐ '+(idx+1)}</span><img src="${s.img}" class="si"><h4>${s.name}</h4><p>${s.score} pts</p></div>`;});}
+window.os2=(s)=>{window.currentShop=s;hideScreen('ds');showScreen('is2');document.getElementById('st').innerText=s==="Petrol Pump"?"पेट्रोल पंप":"खुशबू पार्किंग";renderInventory();};
+window.gb=()=>{hideScreen('is2');showScreen('ds');};
+
+window.hs=()=>{let i=document.getElementById('si2'),b=document.getElementById('sb2'),q=sanitize(i.value);if(!q){b.style.display='none';renderInventory();return;}let m=Object.entries(window.inventory).filter(([k,v])=>sanitize(v.name).includes(q));b.innerHTML="";m.forEach(([k,v])=>{let qty=window.currentShop==='Petrol Pump'?parseInt(v.pp||0):parseInt(v.kp||0);b.innerHTML+=`<div class="sbi" onclick="sp2('${k}')"><span>${v.name}</span><span style="color:var(--r);">${qty} पीस</span></div>`;});b.style.display=m.length?'block':'none';};
+window.sp2=(k)=>{document.getElementById('si2').value=window.inventory[k].name;document.getElementById('sb2').style.display='none';renderInventory();};
+document.addEventListener('click',(e)=>{let b=document.getElementById('sb2'),i=document.getElementById('si2');if(b&&i&&!i.contains(e.target)&&!b.contains(e.target))b.style.display='none';});
+
+window.adj=(k,c)=>{if(!window.isAdminLoggedIn){alert("❌ सिर्फ एडमिन!");return;}let i=window.inventory[k];if(!i)return;if(window.currentShop==='Petrol Pump')i.pp=Math.max(0,parseInt(i.pp||0)+c);else i.kp=Math.max(0,parseInt(i.kp||0)+c);if(c<0)i.sold=(i.sold||0)+Math.abs(c);set(ref(db,'inventory/'+k),i);};
+
+function renderInventory(f=""){
+    let cont=document.getElementById('slc'),lb=document.getElementById('lsb'),ll=document.getElementById('lsl');
+    if(!cont)return;cont.innerHTML="";if(ll)ll.innerHTML="";
+    let q=sanitize(f),hs=0,lc=0;
+    Object.values(window.inventory).forEach(i=>{if((i.sold||0)>hs)hs=i.sold||0;});
+    Object.entries(window.inventory).forEach(([k,i])=>{
+        let mq=window.currentShop==='Petrol Pump'?parseInt(i.pp||0):parseInt(i.kp||0),oq=window.currentShop==='Petrol Pump'?parseInt(i.kp||0):parseInt(i.pp||0),os=window.currentShop==='Petrol Pump'?"खुशबू पार्किंग":"पेट्रोल पंप";
+        if(mq<5&&mq>=0&&!f){lc++;ll.innerHTML+=`• ${i.name} <b>(${mq} पीस)</b><br>`;}
+        if(q&&!sanitize(i.name).includes(q))return;
+        let best=(i.sold>=hs&&hs>0)?'<span style="position:absolute;top:-8px;right:-8px;font-size:1.4rem;">🔥</span>':'';
+        let ctrl=window.isAdminLoggedIn?`<div class="qc"><button class="qbtn qbtn-m" onclick="adj('${k}',-1)">−</button><div class="qb">${mq}</div><button class="qbtn qbtn-p" onclick="adj('${k}',1)">+</button></div>`:`<div class="qb">${mq}</div>`;
+        cont.innerHTML+=`<div class="sti" style="position:relative;">${best}<div style="flex-grow:1;"><h4>${i.name}</h4>${i.alts?.length?`<p style="font-size:0.8rem;color:#777;">Alt: ${i.alts.join(", ")}</p>`:''}${mq===0&&oq>0?`<p style="color:var(--b);">👉 ${os} पर ${oq} पीस</p>`:''}</div>${ctrl}</div>`;
+    });
+    if(lb){lb.classList.toggle('hidden', lc===0 || f!=='');}
+}
+
+window.ssv = () => {
+    if(!('webkitSpeechRecognition' in window)){alert("Voice नहीं!");return;}
+    const recog=new(window.SpeechRecognition||webkitSpeechRecognition)();recog.lang='hi-IN';
+    let btn=document.getElementById('smb');
+    if(isSearchListening){recog.stop();btn.classList.remove('lis');isSearchListening=false;return;}
+    recog.start();btn.classList.add('lis');isSearchListening=true;
+    recog.onresult=(e)=>{let t=e.results[0][0].transcript;document.getElementById('si2').value=t;btn.classList.remove('lis');isSearchListening=false;renderInventory(t);};
+    recog.onerror=()=>{btn.classList.remove('lis');isSearchListening=false;};
+    setTimeout(()=>{if(isSearchListening){recog.stop();btn.classList.remove('lis');isSearchListening=false;}},8000);
+};
+
+// ============ 📸 AI TREAD SCANNER ============
+
+window.startTreadScan = () => document.getElementById('tpi').click();
+
+window.handleTreadUpload = function(e) {
+    let file = e.target.files[0];
+    if(!file) return;
+    let reader = new FileReader();
+    reader.onload = async (ev) => {
+        let imgData = ev.target.result;
+        addUserMessage(`📸 Tread Scan: <img src="${imgData}" class="pp">`);
+        document.getElementById('ct2').style.display='flex';
+        scrollChatBottom();
+        
+        let result = await analyzeTreadAI(imgData);
+        document.getElementById('ct2').style.display='none';
+        
+        // Save history
+        treadHistory.push({date: new Date().toLocaleDateString(), img: imgData, result: result});
+        if(treadHistory.length > 20) treadHistory.shift();
+        localStorage.setItem("treadHistory", JSON.stringify(treadHistory));
+        
+        let formatted = formatTreadResult(result);
+        addBotMessage(formatted);
+        speakText(result);
+        addQuickReplies(["📸 Scan Aur", "🛠️ Puncture", "🚗 Vehicle", "📦 Stock"]);
+        scrollChatBottom();
+    };
+    reader.readAsDataURL(file);
+};
+
+async function analyzeTreadAI(imgData) {
+    const prompt = `You are a tyre tread depth analyzer. Analyze this tyre photo and provide assessment in Hinglish. Return EXACTLY in this format (keep labels in English, values in Hinglish):
+Condition: [Excellent/Good/Fair/Poor/Bald]
+TreadDepth: [Xmm estimate]
+RemainingLife: [X km estimate]
+Issues: [List issues or "None"]
+WearType: [Normal/Shoulder/Center/Cupping/One-sided]
+Recommendation: [Action to take]
+CostEstimate: [₹XXX - ₹XXX]`;
+    try {
+        let res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+            method:"POST",
+            headers:{"Authorization":`Bearer ${OPENROUTER_KEY}`,"Content-Type":"application/json","HTTP-Referer":"https://tyrexpert.app","X-Title":"TyreXpert"},
+            body:JSON.stringify({
+                model: currentModel,
+                messages: [{role:"system",content:prompt},{role:"user",content:[{type:"text",text:"Analyze tread"},{type:"image_url",image_url:{url:imgData}}]}],
+                temperature:0.3, max_tokens:250
+            })
+        });
+        if (!res.ok) throw new Error("API Error "+res.status);
+        let data = await res.json();
+        return data.choices?.[0]?.message?.content || "Condition: Unknown\nTreadDepth: N/A\nRemainingLife: N/A\nIssues: Analysis failed\nWearType: N/A\nRecommendation: Try again\nCostEstimate: N/A";
+    } catch(e) {
+        console.error(e);
+        return "Condition: Error\nTreadDepth: N/A\nRemainingLife: N/A\nIssues: API Error - Check key or internet\nWearType: N/A\nRecommendation: Retry\nCostEstimate: N/A";
+    }
+}
+
+function formatTreadResult(raw) {
+    let lines = raw.split('\n'), data = {};
+    lines.forEach(l => { let p = l.split(': '); if(p.length>=2) data[p[0].trim()] = p.slice(1).join(': ').trim(); });
+    let condEmoji = {Excellent:'🟢', Good:'🟢', Fair:'🟡', Poor:'🟠', Bald:'🔴'};
+    let emoji = condEmoji[data.Condition] || '⚪';
+    let depth = parseInt(data.TreadDepth) || 0;
+    let barColor = depth >= 6 ? '#2ecc71' : depth >= 3 ? '#f39c12' : '#e74c3c';
+    let barWidth = Math.min(100, Math.max(5, (depth/8)*100));
+    return `<div class="tread-result">
+        <strong>📊 AI Tread Analysis</strong><br><br>
+        ${emoji} <b>Condition:</b> ${data.Condition || 'N/A'}<br>
+        📏 <b>Tread Depth:</b> ${data.TreadDepth || 'N/A'}<br>
+        <div class="tread-meter"><div class="tread-fill" style="width:${barWidth}%;background:${barColor};"></div></div>
+        🚗 <b>Remaining Life:</b> ${data.RemainingLife || 'N/A'}<br>
+        ⚠️ <b>Issues:</b> ${data.Issues || 'None'}<br>
+        📐 <b>Wear Type:</b> ${data.WearType || 'N/A'}<br>
+        💡 <b>Recommendation:</b> ${data.Recommendation || 'N/A'}<br>
+        💰 <b>Cost Estimate:</b> ${data.CostEstimate || 'N/A'}
+    </div>`;
+}
+
+// ============ AI CHATBOT ============
+
+window.sm = (model, el) => {
+    currentModel = model;
+    document.querySelectorAll('.mc').forEach(c => c.classList.remove('ac'));
+    el.classList.add('ac');
+    addBotMessage(`🔄 Model: **${el.textContent.trim()}**`);
+};
+
+window.utp = () => document.getElementById('upi').click();
+
+window.hpu = function(e) {
+    let file = e.target.files[0]; if(!file) return;
+    let reader = new FileReader();
+    reader.onload = (ev) => {
+        let imgData = ev.target.result;
+        addUserMessage(`📷 Photo: <img src="${imgData}" class="pp">`);
+        document.getElementById('ct2').style.display='flex';
+        analyzeGeneralPhoto(imgData);
+    };
+    reader.readAsDataURL(file);
+};
+
+async function analyzeGeneralPhoto(imgData) {
+    let prompt = "You are a tyre expert. Analyze this photo and give practical repair advice in Hinglish. Include costs.";
+    try {
+        let res = await fetch("https://openrouter.ai/api/v1/chat/completions", { method:"POST", headers:{"Authorization":`Bearer ${OPENROUTER_KEY}`,"Content-Type":"application/json","HTTP-Referer":"https://tyrexpert.app","X-Title":"TyreXpert"}, body:JSON.stringify({model:currentModel,messages:[{role:"system",content:prompt},{role:"user",content:[{type:"text",text:"Analyze"},{type:"image_url",image_url:{url:imgData}}]}],temperature:0.7}) });
+        let d = await res.json();
+        let reply = d.choices?.[0]?.message?.content || "Analyze nahi hua.";
+        document.getElementById('ct2').style.display='none';
+        addBotMessage(reply);
+        speakText(reply);
+    } catch(e) { document.getElementById('ct2').style.display='none'; addBotMessage("Error."); }
+}
+
+async function callAI(msg) {
+    let stockCtx=""; Object.entries(window.inventory).forEach(([k,i])=>stockCtx+=`${i.name}: PP=${i.pp||0}, KP=${i.kp||0}\n`);
+    let prompt = `You are a tyre expert mechanic. Stock: ${stockCtx}. Reply in Hinglish. Be detailed, include costs. User: ${msg}`;
+    try {
+        let res = await fetch("https://openrouter.ai/api/v1/chat/completions", { method:"POST", headers:{"Authorization":`Bearer ${OPENROUTER_KEY}`,"Content-Type":"application/json","HTTP-Referer":"https://tyrexpert.app","X-Title":"TyreXpert"}, body:JSON.stringify({model:currentModel,messages:[{role:"system",content:prompt},{role:"user",content:msg}],temperature:0.7}) });
+        let d = await res.json();
+        return d.choices?.[0]?.message?.content || getOfflineReply(msg);
+    } catch(e) { return getOfflineReply(msg); }
+}
+
+function getOfflineReply(msg) {
+    let q = msg.toLowerCase();
+    if(q.includes("stock")) {
+        let all=Object.entries(window.inventory);
+        return all.length? `📦 Stock:\n${all.map(([k,i])=>`• ${i.name}: PP=${i.pp||0}, KP=${i.kp||0}`).join('\n')}`:"📦 Khali.";
+    }
+    if(q.includes("puncture")) return "🛠️ Tubeless: Rs 50-100. Tube: Rs 200-400.";
+    if(q.includes("i20")) return "i20: 175/70 R14, 185/65 R14, 195/55 R16. Tubeless. 32-34 PSI.";
+    return "🔧 Puchho: puncture? i20 tyre? Stock?";
+}
+
+function speakText(text) {
+    window.speechSynthesis.cancel();
+    let clean = text.replace(/[*#₹🔧⚠️✅❌]/g,'').replace(/\n/g,'. ').replace(/(\d+)\/(\d+)/g,'$1 $2').substring(0,250);
+    let u = new SpeechSynthesisUtterance(clean); u.lang='hi-IN'; u.rate=1.0;
+    setTimeout(()=>window.speechSynthesis.speak(u),200);
+}
+
+window.tc = () => {
+    let m = document.getElementById('cm');
+    if(m.style.display==='flex'){m.style.display='none';}else{
+        m.style.display='flex';document.getElementById('ci').focus();
+        if(chatHistory.length===0){
+            let w="🔧 Namaste! Mai Tyre Expert hoon. 📸 **AI Tread Scanner** se tyre ki photo lo, mai tread depth aur life bata dunga!";
+            addBotMessage(w); speakText(w);
+            addQuickReplies(["📸 Tread Scan","🛠️ Puncture","🚗 i20 tyre","📦 Stock"]);
+        }
+    }
+};
+
+window.scm = async () => {
+    let input=document.getElementById('ci'),msg=input.value.trim();if(!msg)return;
+    addUserMessage(msg);input.value='';document.getElementById('ct2').style.display='flex';
+    let reply = await callAI(msg);
+    document.getElementById('ct2').style.display='none';
+    addBotMessage(reply); speakText(reply);
+    chatHistory.push({role:'user',content:msg},{role:'assistant',content:reply});
+    addQuickReplies(["📸 Tread Scan","🛠️ Puncture","🚗 Vehicle","📦 Stock"]);
+    scrollChatBottom();
+};
+
+window.scv = () => {
+    if(!('webkitSpeechRecognition' in window)){alert("Voice nahi!");return;}
+    const recog=new(window.SpeechRecognition||webkitSpeechRecognition)();recog.lang='hi-IN';
+    let btn=document.getElementById('cvb');
+    if(isChatListening){recog.stop();btn.classList.remove('ac2');isChatListening=false;return;}
+    recog.start();btn.classList.add('ac2');isChatListening=true;
+    document.getElementById('ci').placeholder="🎤 बोलो...";
+    recog.onresult=(e)=>{let t=e.results[0][0].transcript;document.getElementById('ci').value=t;btn.classList.remove('ac2');isChatListening=false;document.getElementById('ci').placeholder="पूछो...";scm();};
+    recog.onerror=()=>{btn.classList.remove('ac2');isChatListening=false;};
+    setTimeout(()=>{if(isChatListening){recog.stop();btn.classList.remove('ac2');isChatListening=false;}},8000);
+};
+
+function addUserMessage(t){document.getElementById('cbb').innerHTML+=`<div class="cmsg umsg">${t}</div>`;}
+function addBotMessage(t){document.getElementById('cbb').innerHTML+=`<div class="cmsg bmsg">${t.replace(/\n/g,'<br>')}</div>`;}
+function addQuickReplies(r){let h='<div class="qr">';r.forEach(x=>h+=`<button class="qrb" onclick="quickReply('${x}')">${x}</button>`);h+='</div>';document.getElementById('cbb').innerHTML+=h;}
+window.quickReply = (t) => { document.getElementById('ci').value = t; scm(); };
+function scrollChatBottom(){let b=document.getElementById('cbb');b.scrollTop=b.scrollHeight;}
+
+// Admin functions (keep existing logic)
+window.sas=()=>{let i=document.getElementById('asi'),b=document.getElementById('asb'),q=sanitize(i.value);if(!q){b.style.display='none';return;}let m=Object.entries(window.inventory).filter(([k,v])=>sanitize(v.name).includes(q));b.innerHTML="";m.forEach(([k,v])=>b.innerHTML+=`<div class="sbi" onclick="sap('${k}')"><span>${v.name}</span><span style="color:var(--r);">PP:${v.pp||0}|KP:${v.kp||0}</span></div>`);b.style.display='block';};
+window.sap=(k)=>{window.selectedProductKey=k;let i=window.inventory[k];document.getElementById('asi').value=i.name;document.getElementById('asb').style.display='none';document.getElementById('spi2').style.display='block';document.getElementById('spi2').innerHTML=`<strong>${i.name}</strong><br><div style="display:flex;gap:15px;margin-top:10px;"><div><small>⛽ PP</small><div class="qc"><button class="qbtn qbtn-m" onclick="aad('pp',-1)">−</button><span id="appq2">${i.pp||0}</span><button class="qbtn qbtn-p" onclick="aad('pp',1)">+</button></div></div><div><small>🅿️ KP</small><div class="qc"><button class="qbtn qbtn-m" onclick="aad('kp',-1)">−</button><span id="akpq2">${i.kp||0}</span><button class="qbtn qbtn-p" onclick="aad('kp',1)">+</button></div></div></div>`;};
+window.aad=(s,c)=>{if(!window.selectedProductKey)return;let i=window.inventory[window.selectedProductKey];if(s==='pp'){i.pp=Math.max(0,parseInt(i.pp||0)+c);document.getElementById('appq2').innerText=i.pp;}else{i.kp=Math.max(0,parseInt(i.kp||0)+c);document.getElementById('akpq2').innerText=i.kp;}if(c<0)i.sold=(i.sold||0)+Math.abs(c);set(ref(db,'inventory/'+window.selectedProductKey),i);};
+window.ap=()=>{let n=document.getElementById('npn').value.trim();if(!n){alert("नाम!");return;}let a=document.getElementById('npa').value.trim().split(',').map(s=>s.trim()).filter(s=>s);set(ref(db,'inventory/prod_'+Date.now()),{name:n,alts:a,pp:parseInt(document.getElementById('npp').value)||0,kp:parseInt(document.getElementById('npk').value)||0,sold:0}).then(()=>{alert("✅");['npn','npa','npp','npk'].forEach(id=>document.getElementById(id).value="");});};
+window.dp2=()=>{let k=document.getElementById('dis').value;if(!k)return;if(confirm("हटाएं?"))remove(ref(db,'inventory/'+k)).then(()=>alert("🗑️"));};
+window.ds2=(id)=>{let s=window.staffList[id];if(!s)return;if(confirm(`${s.name} हटाएं?`))remove(ref(db,'staffList/'+id)).then(()=>alert("🗑️"));};
+window.swa=()=>{let low=Object.entries(window.inventory).filter(([k,i])=>(i.pp||0)<5||(i.kp||0)<5);if(low.length===0){alert("✅");return;}let d=window.staffList[window.myStaffId]||{name:"Staff"};window.open(`https://wa.me/919068749268?text=${encodeURIComponent(`⚠️ कम स्टॉक\n${d.name}\n\n${low.map(([k,i])=>`- ${i.name} (PP:${i.pp||0}, KP:${i.kp||0})`).join("\n")}`)}`,'_blank');};
+window.oaa=()=>{let p=prompt("एडमिन पासवर्ड:");if(p==="1234"){window.isAdminLoggedIn=true;populateAdminStaff();populateAdminDropdowns();document.getElementById('am').style.display="block";renderInventory();}else if(p)alert("❌ Pass: 1234");};
+window.ca=()=>{window.isAdminLoggedIn=false;document.getElementById('am').style.display="none";renderInventory();};
+function populateAdminStaff(){let s=document.getElementById('ass2'),d=document.getElementById('sdl');if(!s)return;s.innerHTML="";if(d)d.innerHTML="";Object.entries(window.staffList).forEach(([id,x])=>{s.innerHTML+=`<option value="${id}">${x.name} - ${x.phone} (${x.score})</option>`;if(d)d.innerHTML+=`<div style="display:flex;justify-content:space-between;padding:8px;background:#fff;margin-bottom:5px;border-radius:8px;"><span>👤 ${x.name} | ${x.score} pts</span><button class="sdb" onclick="ds2('${id}')">🗑️</button></div>`;});}
+window.uss=()=>{let id=document.getElementById('ass2').value,pts=parseInt(document.getElementById('nsi').value);if(!id||isNaN(pts))return;update(ref(db,'staffList/'+id),{score:pts}).then(()=>{alert("✅");document.getElementById('nsi').value="";});};
+window.ts2=()=>{let k=document.getElementById('tis').value,d=document.getElementById('tds').value,q=parseInt(document.getElementById('tqs').value)||0;if(!k||q<=0)return;let i=window.inventory[k];if(d==="P2K"){if((i.pp||0)<q){alert("PP नहीं!");return;}i.pp-=q;i.kp=(i.kp||0)+q;}else{if((i.kp||0)<q){alert("KP नहीं!");return;}i.kp-=q;i.pp=(i.pp||0)+q;}set(ref(db,'inventory/'+k),i).then(()=>{alert("🔄");document.getElementById('tqs').value="";});};
+window.cd2=()=>{let k=document.getElementById('dfi').value,s=document.getElementById('dfs').value,q=parseInt(document.getElementById('dfq').value)||0;if(!k||q<=0)return;let i=window.inventory[k];if(s==="Petrol Pump")i.pp=Math.max(0,(i.pp||0)-q);else i.kp=Math.max(0,(i.kp||0)-q);i.sold=(i.sold||0)+q;set(ref(db,'inventory/'+k),i).then(()=>{alert("🛑");document.getElementById('dfq').value="";});};
+window.up=()=>{let a=document.getElementById('cap').value.trim(),b=document.getElementById('cad').value.trim();if(a)window.settings.appPin=a;if(b)window.settings.adminPin=b;set(ref(db,'settings'),window.settings).then(()=>alert("🔑"));};
+function populateAdminDropdowns(){['dis','dfi','tis'].forEach(id=>{let s=document.getElementById(id);if(!s)return;s.innerHTML=id==='dis'?"<option value=''>-- चुनें --</option>":"";Object.entries(window.inventory).forEach(([k,i])=>s.innerHTML+=`<option value="${k}">${i.name} (PP:${i.pp||0}, KP:${i.kp||0})</option>`);});}
+</script>
+</body>
+</html>
