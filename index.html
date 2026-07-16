@@ -1,281 +1,731 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TyreXpert - AI Mechanic Raju</title>
-    <style>
-        :root { --red: #e63946; --green: #2ecc71; --bg: #fafafa; --card: #fff; --lr: #ffeaea; --sh: 0 4px 15px rgba(0,0,0,0.08); }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-        body { background: var(--bg); color: #1e272e; }
-        .hidden { display: none !important; }
-        .btn { width: 100%; padding: 15px; margin-bottom: 10px; border: none; border-radius: 10px; font-weight: 700; font-size: 1rem; cursor: pointer; color: #fff; transition: all 0.3s; box-shadow: var(--sh); }
-        .btn:hover { transform: translateY(-2px); }
-        .btn:active { transform: scale(0.96); }
-        .btn-r { background: var(--red); }
-        .btn-g { background: var(--green); color: #fff; }
-        .btn-d { background: #1e272e; }
-        .btn-o { background: transparent; border: 2px solid var(--red); color: var(--red); }
-        input, select { width: 100%; padding: 14px; margin-bottom: 10px; border: 2px solid #e8e8e8; border-radius: 10px; font-size: 1rem; outline: none; background: #fff; }
-        input:focus, select:focus { border-color: var(--red); }
-        .top-bar { background: #fff; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 15px rgba(0,0,0,0.06); border-bottom: 3px solid var(--red); position: sticky; top: 0; z-index: 10; }
-        .logo { font-size: 1.5rem; font-weight: 900; }
-        .logo span { color: var(--red); }
-        .ic { font-size: 1.3rem; cursor: pointer; background: var(--lr); border-radius: 50%; padding: 8px; margin-left: 8px; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; color: var(--red); transition: all 0.3s; }
-        .ic:hover { background: var(--red); color: #fff; }
-        .screen { padding: 20px; max-width: 600px; margin: 0 auto; min-height: 100vh; }
-        .auth-box { background: #fff; padding: 35px; border-radius: 20px; text-align: center; margin-top: 40px; box-shadow: var(--sh); }
-        .lb { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-bottom: 20px; background: #fff; padding: 20px; border-radius: 15px; box-shadow: var(--sh); }
-        .sc { text-align: center; min-width: 85px; }
-        .si { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 3px solid #f0f0f0; }
-        .r1 .si { border-color: #f1c40f; box-shadow: 0 0 20px rgba(241,196,15,0.4); }
-        .sr { display: flex; gap: 10px; margin-bottom: 20px; position: relative; }
-        .sr input { margin: 0; border-radius: 25px; padding-left: 20px; }
-        .mic { width: 50px; height: 50px; border-radius: 50%; background: var(--red); color: #fff; border: none; font-size: 1.3rem; cursor: pointer; flex-shrink: 0; }
-        .sb { position: absolute; top: 58px; left: 0; right: 0; background: #fff; border: 2px solid var(--red); border-radius: 12px; max-height: 250px; overflow-y: auto; z-index: 100; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
-        .sbi { padding: 12px 15px; cursor: pointer; border-bottom: 1px solid #f5f5f5; display: flex; justify-content: space-between; }
-        .sbi:hover { background: var(--lr); }
-        .grh { background: linear-gradient(135deg, #e63946, #ff6b6b); color: #fff; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-weight: 900; text-align: center; animation: rg 1.5s infinite alternate; }
-        @keyframes rg { 0% { box-shadow: 0 0 10px rgba(230,57,70,0.4); } 100% { box-shadow: 0 0 30px rgba(230,57,70,0.8); } }
-        .sti { background: #fff; padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; box-shadow: var(--sh); border-left: 5px solid var(--red); }
-        .qb { background: var(--lr); padding: 10px 18px; border-radius: 10px; font-size: 1.5rem; font-weight: 900; color: var(--red); min-width: 70px; text-align: center; }
-        .qc { display: flex; align-items: center; gap: 8px; }
-        .qbtn { width: 38px; height: 38px; border-radius: 50%; border: none; font-size: 1.2rem; font-weight: bold; cursor: pointer; color: #fff; display: flex; align-items: center; justify-content: center; }
-        .qbtn-p { background: var(--green); }
-        .qbtn-m { background: var(--red); }
-        #am { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 2000; overflow-y: auto; padding: 20px; display: none; }
-        .as { background: #fafafa; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #f0f0f0; }
-        .sdb { background: var(--red); color: #fff; border: none; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PUC Service App</title>
 
-        /* Floating Mechanic Button */
-        .cfb { position: fixed; bottom: 25px; right: 25px; width: 65px; height: 65px; border-radius: 50%; background: linear-gradient(135deg, #e63946, #ff6b6b); border: 3px solid #fff; color: #fff; font-size: 2rem; cursor: pointer; box-shadow: 0 8px 30px rgba(230,57,70,0.5); z-index: 1500; animation: bb 2s infinite; display: flex; align-items: center; justify-content: center; }
-        @keyframes bb { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-        #cm { position: fixed; bottom: 100px; right: 25px; width: 440px; max-width: 94vw; height: 600px; max-height: 70vh; background: #fff; border-radius: 20px; box-shadow: 0 25px 60px rgba(0,0,0,0.35); z-index: 1600; display: none; flex-direction: column; overflow: hidden; }
-        .ch { background: linear-gradient(135deg, #1a1a2e, #2d2d44); color: #fff; padding: 12px 15px; }
-        .cht { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-weight: 700; font-size: 0.9rem; }
-        .od { width: 8px; height: 8px; background: #0be881; border-radius: 50%; display: inline-block; margin-right: 6px; animation: pulse 2s infinite; }
-        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
-        .mcs { display: flex; gap: 5px; overflow-x: auto; padding: 2px 0; scrollbar-width: none; }
-        .mcs::-webkit-scrollbar { display: none; }
-        .mc { padding: 5px 10px; border-radius: 14px; font-size: 0.68rem; font-weight: 700; cursor: pointer; white-space: nowrap; border: 2px solid transparent; opacity: 0.7; color: #fff; }
-        .mc:hover { opacity: 1; }
-        .mc.ac { opacity: 1; border-color: #fff; }
-        .mc-gpt { background: #10a37f; }
-        .cb { flex: 1; overflow-y: auto; padding: 15px; background: #fefefe; display: flex; flex-direction: column; gap: 8px; }
-        .cmsg { max-width: 88%; padding: 10px 14px; border-radius: 16px; font-size: 0.85rem; line-height: 1.5; animation: mp2 0.3s ease; }
-        @keyframes mp2 { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-        .bmsg { background: #f5f5f5; align-self: flex-start; }
-        .umsg { background: var(--red); color: #fff; align-self: flex-end; }
-        .ct { display: none; align-self: flex-start; background: #f5f5f5; padding: 12px 16px; border-radius: 16px; gap: 4px; }
-        .td { width: 7px; height: 7px; background: #ccc; border-radius: 50%; animation: tb 1.3s infinite; display: inline-block; }
-        .td:nth-child(2) { animation-delay: 0.2s; } .td:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes tb { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-6px); } }
-        .cia { padding: 12px; background: #fff; display: flex; gap: 8px; border-top: 1px solid #eee; align-items: center; }
-        .cia input { flex: 1; border: 2px solid #f0f0f0; border-radius: 25px; padding: 12px 18px; font-size: 0.9rem; margin: 0; }
-        .cia button { width: 42px; height: 42px; border-radius: 50%; border: none; color: #fff; font-size: 1.2rem; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
-        .send-b { background: var(--red); }
-        .voice-b { background: #e74c3c; }
-        .photo-b { background: #f39c12; }
-        .video-b { background: #8e44ad; }
-        .qr { display: flex; flex-wrap: wrap; gap: 6px; padding: 4px 0; }
-        .qrb { background: var(--lr); color: var(--red); border: 1px solid var(--red); padding: 7px 14px; border-radius: 18px; font-size: 0.75rem; cursor: pointer; font-weight: 600; white-space: nowrap; }
-        .pp { max-width: 200px; max-height: 150px; border-radius: 10px; margin: 5px 0; border: 2px solid var(--red); }
-        @media (max-width: 480px) {
-            #cm { width: 96vw; right: 2vw; bottom: 90px; height: 65vh; }
-            .cfb { bottom: 20px; right: 20px; width: 58px; height: 58px; font-size: 1.6rem; }
-        }
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+    <!-- Bootstrap CSS + JS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" />
+
+    <!-- jsPDF for PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
+    <style>
+        body { background: #f0f4f8; padding: 20px; }
+        .container-custom { max-width: 700px; margin: auto; }
+        .card-main { border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: none; }
+        .mood-btn { font-size: 2rem; cursor: pointer; padding: 10px 20px; border-radius: 50px; transition: 0.3s; border: 2px solid transparent; }
+        .mood-btn.active-happy { border-color: #28a745; background: #d4edda; }
+        .mood-btn.active-angry { border-color: #dc3545; background: #f8d7da; }
+        .history-card { background: #fff; border-radius: 15px; padding: 15px; margin-top: 20px; border-left: 5px solid #007bff; }
+        #historyList { max-height: 300px; overflow-y: auto; }
+        .login-container { max-width: 400px; margin: 80px auto; }
+        .tab-content-admin { background: white; padding: 20px; border-radius: 0 0 15px 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
+        .nav-tabs .nav-link.active { background: #0d6efd; color: white; border-color: #0d6efd; }
+        .stats-card { background: white; border-radius: 12px; padding: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .hidden { display: none; }
+        .admin-link { position: fixed; top: 20px; right: 20px; z-index: 999; }
+        .delete-btn { cursor: pointer; color: #dc3545; margin-left: 10px; }
+        .delete-btn:hover { color: #a71d2a; }
+        .bulk-send-warning { font-size: 0.85rem; color: #d63384; }
     </style>
 </head>
 <body>
 
-<!-- ONBOARDING (shortened for brevity) -->
-<div id="os" class="screen hidden" style="background:#1e272e;color:#fff;"><div class="auth-box" style="color:#1e272e;"><h2>TyreXpert में स्वागत है</h2><p style="color:#777;margin-bottom:15px;">प्रोफाइल बनाएं</p><input type="text" id="obName" placeholder="नाम"><input type="number" id="obPhone" placeholder="मोबाइल"><p style="text-align:left;font-weight:bold;">फोटो 📷</p><input type="file" accept="image/*" capture="user" onchange="cp(event)"><img id="pi" style="width:100px;height:100px;border-radius:50%;margin:10px auto;display:none;object-fit:cover;"><button class="btn btn-r" onclick="sp()">सेव करें</button><hr style="margin:20px 0;"><button class="btn btn-o" onclick="dal()">👑 एडमिन</button></div></div>
-<div id="as2" class="screen hidden" style="background:#1e272e;"><div class="auth-box"><h1 class="logo" style="font-size:2.5rem;">Tyre<span>Xpert</span></h1><p>ऐप लॉक</p><input type="password" id="apin" placeholder="पासवर्ड"><button class="btn btn-r" onclick="li()">खोलें</button></div></div>
-<div id="ds" class="screen hidden"><div class="top-bar"><div class="logo">Tyre<span>Xpert</span></div><div><span class="ic" onclick="oaa()">👑</span></div></div><h3 style="text-align:center;margin:15px 0;">🏆 टॉप कर्मचारी</h3><div class="lb" id="lbc"></div><button class="btn btn-g" onclick="pi2()">📍 हाजिरी लगाएं</button><h2 style="text-align:center;margin:20px 0;">दुकान चुनें</h2><button class="btn btn-d" onclick="os2('Petrol Pump')">⛽ पेट्रोल पंप</button><button class="btn btn-r" onclick="os2('Khusboo Parking')">🅿️ खुशबू पार्किंग</button></div>
-<div id="is2" class="screen hidden"><div class="top-bar"><button onclick="gb()" style="padding:8px 14px;border:none;border-radius:8px;background:var(--lr);color:var(--red);font-weight:bold;cursor:pointer;">🔙</button><h3 id="st"></h3><div class="ic" onclick="oaa()">👑</div></div><div id="lsb" class="grh hidden">⚠️ कम स्टॉक (5 से कम)<div id="lsl" style="font-weight:normal;margin-top:10px;text-align:left;font-size:0.9rem;"></div></div><button class="btn btn-o" style="margin-bottom:20px;" onclick="swa()">📱 WhatsApp</button><div class="sr"><input type="text" id="si2" placeholder="🔍 खोजें या 🎤 बोलें..." oninput="hs()" autocomplete="off"><button class="mic" id="smb" onclick="ssv()">🎤</button><div id="sb2" class="sb"></div></div><div id="slc"></div></div>
-<div id="am"><button class="btn btn-r" onclick="ca()" style="position:sticky;top:0;z-index:100;">❌ बंद करें</button><h2 style="text-align:center;margin:15px 0;">👑 एडमिन (Pass: 1234)</h2><div class="as" style="border-color:var(--red);background:var(--lr);"><h3 style="color:var(--red);">✏️ स्टॉक</h3><div style="position:relative;"><input type="text" id="asi" placeholder="🔍 खोजें..." oninput="sas()" autocomplete="off"><div id="asb" class="sb"></div></div><div id="spi2" style="display:none;background:#fff;padding:10px;border-radius:8px;margin-top:10px;border:2px solid var(--red);"></div></div><div class="as"><h3>➕ नया</h3><input type="text" id="npn" placeholder="नाम"><input type="text" id="npa" placeholder="Alt"><div style="display:flex;gap:10px;"><input type="number" id="npp" placeholder="PP"><input type="number" id="npk" placeholder="KP"></div><button class="btn btn-r" onclick="ap()">✅ जोड़ें</button></div><div class="as" style="background:#fff5f5;"><h3 style="color:var(--red);">🗑️ डिलीट</h3><select id="dis"><option>-- चुनें --</option></select><button class="btn btn-r" onclick="dp2()">हटाएं</button></div><div class="as"><h3>👥 स्टाफ</h3><select id="ass2"></select><input type="number" id="nsi" placeholder="पॉइंट्स"><button class="btn btn-r" onclick="uss()">अपडेट</button></div></div>
+    <!-- Admin Toggle Button -->
+    <button id="adminToggleBtn" class="btn btn-dark admin-link" onclick="toggleAdmin()">
+        <i class="bi bi-shield-lock"></i> Admin
+    </button>
 
-<!-- AI MECHANIC RAJU FAB & CHAT -->
-<button class="cfb" onclick="tc()">🔧</button>
-<div id="cm">
-    <div class="ch">
-        <div class="cht"><span><span class="od"></span>🔧 Raju Mechanic</span><button onclick="tc()" style="background:none;border:none;color:#fff;font-size:1.3rem;cursor:pointer;">✕</button></div>
+    <!-- ========== MAIN ENTRY SECTION ========== -->
+    <div id="mainSection" class="container container-custom">
+        <div class="card card-main p-4">
+            <h3 class="text-center text-primary"><i class="bi bi-fuel-pump"></i> PUC Entry</h3>
+            <p class="text-center text-muted" id="todayDate"></p>
+            <hr />
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Vehicle No <span class="text-danger">*</span></label>
+                    <input type="text" id="vehicleNo" class="form-control" placeholder="UP32 AB 1234" onkeyup="this.value=this.value.toUpperCase(); fetchHistory()" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Mobile No <span class="text-danger">*</span></label>
+                    <input type="number" id="mobileNo" class="form-control" placeholder="9876543210" onkeyup="fetchHistory()" />
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label">Vehicle Type</label>
+                    <div class="btn-group w-100" role="group">
+                        <input type="radio" class="btn-check" name="vehicleType" id="twoW" value="2 Wheeler" checked onclick="toggleFuel()" />
+                        <label class="btn btn-outline-success" for="twoW"><i class="bi bi-bicycle"></i> 2 Wheeler</label>
+                        <input type="radio" class="btn-check" name="vehicleType" id="fourW" value="4 Wheeler" onclick="toggleFuel()" />
+                        <label class="btn btn-outline-primary" for="fourW"><i class="bi bi-car-front"></i> 4 Wheeler</label>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Fuel Type</label>
+                    <select id="fuelType" class="form-select">
+                        <option value="Petrol">Petrol</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Validity</label>
+                    <select id="duration" class="form-select">
+                        <option value="6">6 Months</option>
+                        <option value="12" selected>12 Months</option>
+                    </select>
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label">Customer Mood</label>
+                    <div>
+                        <span id="moodHappy" class="mood-btn active-happy" onclick="selectMood('happy')">😊 Happy</span>
+                        <span id="moodAngry" class="mood-btn" onclick="selectMood('angry')">😠 Angry</span>
+                    </div>
+                    <input type="hidden" id="selectedMood" value="happy" />
+                </div>
+
+                <div class="col-12">
+                    <button class="btn btn-success w-100 py-2" onclick="submitData()"><i class="bi bi-save"></i> PUC Submit करें</button>
+                </div>
+            </div>
+
+            <div id="historySection" class="history-card hidden">
+                <h6><i class="bi bi-clock-history"></i> पिछला रिकॉर्ड</h6>
+                <div id="historyList"></div>
+            </div>
+        </div>
     </div>
-    <div class="cb" id="cbb"><div class="ct" id="ct2"><span class="td"></span><span class="td"></span><span class="td"></span></div></div>
-    <div class="cia">
-        <input type="text" id="ci" placeholder="Raju se pucho..." onkeypress="if(event.key==='Enter')scm()" autocomplete="off">
-        <button class="photo-b" onclick="up('photo')">📷</button>
-        <button class="video-b" onclick="up('video')">🎥</button>
-        <input type="file" id="mediaInput" accept="image/*,video/*" capture="environment" onchange="handleMedia(event)" style="display:none;">
-        <button class="voice-b" id="cvb" onclick="scv()">🎤</button>
-        <button class="send-b" onclick="scm()">➤</button>
+
+    <!-- ========== ADMIN SECTION ========== -->
+    <div id="adminSection" class="container container-custom hidden">
+        <!-- LOGIN SCREEN -->
+        <div id="loginScreen" class="login-container">
+            <div class="card p-4 shadow">
+                <h4 class="text-center"><i class="bi bi-shield-lock"></i> Admin Access</h4>
+                <div id="passwordSetupMsg" class="alert alert-info">पहली बार उपयोग: नया Password सेट करें</div>
+                <input type="password" id="adminPasswordInput" class="form-control mb-2" placeholder="Enter Password" />
+                <button class="btn btn-primary w-100" onclick="handleAdminAuth()">Login / Set Password</button>
+            </div>
+        </div>
+
+        <!-- MAIN DASHBOARD -->
+        <div id="adminDashboard" class="hidden">
+            <div class="d-flex justify-content-between align-items-center my-3">
+                <h3><i class="bi bi-bar-chart-fill"></i> PUC Admin Panel</h3>
+                <button class="btn btn-outline-danger" onclick="logoutAdmin()">Logout</button>
+            </div>
+
+            <!-- Tabs -->
+            <ul class="nav nav-tabs" id="adminTabs" role="tablist">
+                <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabDashboard">📊 Dashboard</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabReminder">🔔 Reminder / MSG</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab360">🔍 Customer 360</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabManage">🗑️ Manage</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabExport">📄 Export PDF</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabSettings">⚙️ Settings</button></li>
+            </ul>
+
+            <div class="tab-content tab-content-admin">
+                <!-- Dashboard -->
+                <div class="tab-pane show active" id="tabDashboard">
+                    <!-- Dashboard Filters -->
+                    <div class="card bg-light border-0 p-3 mb-3">
+                        <div class="row g-2">
+                            <div class="col-md-6">
+                                <label class="small text-muted">Time Filter</label>
+                                <select id="dashTimeFilter" class="form-select" onchange="loadDashboard()">
+                                    <option value="today">Today (आज का)</option>
+                                    <option value="all_time">All Time (शुरू से अब तक)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small text-muted">Vehicle Filter</label>
+                                <select id="dashTypeFilter" class="form-select" onchange="loadDashboard()">
+                                    <option value="All">All (सभी)</option>
+                                    <option value="2 Wheeler">Only 2 Wheeler</option>
+                                    <option value="4 Wheeler">Only 4 Wheeler</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3" id="dashboardStats">
+                        <div class="col-md-3"><div class="stats-card text-center"><h5>Total</h5><h2 id="statTotal">0</h2></div></div>
+                        <div class="col-md-3"><div class="stats-card text-center"><h5>2 Wheeler</h5><h2 id="stat2W">0</h2></div></div>
+                        <div class="col-md-3"><div class="stats-card text-center"><h5>4 Wheeler</h5><h2 id="stat4W">0</h2></div></div>
+                        <div class="col-md-3"><div class="stats-card text-center"><h5>Fuel Breakup</h5><span id="statFuel" class="fw-bold">P:0 D:0 C:0</span></div></div>
+                    </div>
+                </div>
+
+                <!-- Reminder -->
+                <div class="tab-pane" id="tabReminder">
+                    <!-- Sub Tabs for Reminders -->
+                    <ul class="nav nav-pills mb-3 bg-light p-2 rounded" id="reminderSubTabs" role="tablist">
+                        <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#remToday">⚠️ आज Expire</button></li>
+                        <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#remUpcoming">📅 5 दिन में</button></li>
+                        <li class="nav-item"><button class="nav-link bg-dark text-white ms-2" data-bs-toggle="pill" data-bs-target="#remAll">👥 सभी (All Customers)</button></li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <!-- Today Expiry -->
+                        <div class="tab-pane show active" id="remToday">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="bulk-send-warning">(*Popups Allow रखें)</span>
+                                <button class="btn btn-sm btn-success" onclick="sendBulkWhatsApp('todayExpiryList')"><i class="bi bi-whatsapp"></i> Send All (Today)</button>
+                            </div>
+                            <div id="todayExpiryList" class="list-group"></div>
+                        </div>
+
+                        <!-- Upcoming Expiry -->
+                        <div class="tab-pane" id="remUpcoming">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="bulk-send-warning">(*Popups Allow रखें)</span>
+                                <button class="btn btn-sm btn-success" onclick="sendBulkWhatsApp('upcomingExpiryList')"><i class="bi bi-whatsapp"></i> Send All (Upcoming)</button>
+                            </div>
+                            <div id="upcomingExpiryList" class="list-group"></div>
+                        </div>
+
+                        <!-- All Customers (Broadcast) -->
+                        <div class="tab-pane" id="remAll">
+                            <div class="alert alert-secondary py-2 mb-2">
+                                <label class="fw-bold mb-1">Custom Message for All Customers:</label>
+                                <textarea id="bulkCustomMsg" class="form-control mb-2" rows="2">नमस्ते! अपनी गाड़ी का PUC TyreXpert से समय पर बनवाएं और चालान से बचें। आपका स्वागत है!</textarea>
+                                <button class="btn btn-success w-100" onclick="sendBulkWhatsApp('allCustomersReminderList', true, 'bulkCustomMsg')">
+                                    <i class="bi bi-whatsapp"></i> Send Custom MSG to ALL Customers
+                                </button>
+                                <div class="text-center mt-1 bulk-send-warning">यह बारी-बारी से सभी के WhatsApp खोलेगा।</div>
+                            </div>
+                            <div id="allCustomersReminderList" class="list-group" style="max-height: 300px; overflow-y: auto;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Customer 360 -->
+                <div class="tab-pane" id="tab360">
+                    <div class="input-group mb-3">
+                        <input type="text" id="search360Input" class="form-control" placeholder="Vehicle No या Mobile No डालें..." onkeyup="this.value = this.value.toUpperCase()" />
+                        <button class="btn btn-primary" onclick="searchCustomer360()"><i class="bi bi-search"></i></button>
+                    </div>
+                    <div id="customer360Result"></div>
+                </div>
+
+                <!-- Manage Records -->
+                <div class="tab-pane" id="tabManage">
+                    <div class="d-flex justify-content-between mb-2">
+                        <h6>सभी रिकॉर्ड्स</h6>
+                        <button class="btn btn-sm btn-secondary" onclick="loadAllRecords()"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
+                    </div>
+                    <div id="allRecordsList" class="list-group"></div>
+                </div>
+
+                <!-- Export PDF -->
+                <div class="tab-pane" id="tabExport">
+                    <div class="row g-2">
+                        <div class="col-md-4"><label>From Date</label><input type="date" id="exportFrom" class="form-control" /></div>
+                        <div class="col-md-4"><label>To Date</label><input type="date" id="exportTo" class="form-control" /></div>
+                        <div class="col-md-4"><label>&nbsp;</label><button class="btn btn-danger w-100" onclick="exportPDF()"><i class="bi bi-file-pdf"></i> Download PDF</button></div>
+                    </div>
+                    <div id="exportPreview" class="mt-3"></div>
+                </div>
+
+                <!-- Settings -->
+                <div class="tab-pane" id="tabSettings">
+                    <h6>Change Password</h6>
+                    <input type="password" id="newPassword" class="form-control mb-2" placeholder="New Password" />
+                    <button class="btn btn-warning" onclick="changePassword()">Update Password</button>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getDatabase, ref, set, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-
-const fc = { apiKey: "AIzaSyApY09CHspm5TVxXTVvjnfB6lzwQ7nqltE", authDomain: "staff-managemant.firebaseapp.com", databaseURL: "https://staff-managemant-default-rtdb.firebaseio.com", projectId: "staff-managemant", storageBucket: "staff-managemant.firebasestorage.app", messagingSenderID: "160818771446", appId: "1:160818771446:web:e55f1bfc308c504efb03d7" };
-const app = initializeApp(fc);
-const db = getDatabase(app);
-
-// ⚠️ APNI OPENROUTER API KEY YAHAN DALO
-const OPENROUTER_KEY = "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";
-let currentModel = "openai/gpt-4o-mini";
-let chatHistory = [];
-let isChatListening = false;
-
-window.settings = { appPin: "308913", adminPin: "1234" };
-window.staffList = {}; window.inventory = {}; window.currentShop = "";
-window.isAdminLoggedIn = false; window.myStaffId = localStorage.getItem("tx_staff_id") || null;
-window.selectedProductKey = null;
-
-onValue(ref(db, 'settings'), (s) => { if(s.exists()) window.settings = s.val(); });
-onValue(ref(db, 'staffList'), (s) => { window.staffList = s.val() || {}; renderLeaderboard(); populateAdminStaff(); });
-onValue(ref(db, 'inventory'), (s) => { window.inventory = s.val() || {}; renderInventory(); populateAdminDropdowns(); });
-
-window.onload = () => {
-    if(!window.myStaffId) { document.getElementById('os').classList.remove('hidden'); document.getElementById('as2').classList.add('hidden'); }
-    else { document.getElementById('as2').classList.remove('hidden'); document.getElementById('os').classList.add('hidden'); }
-};
-
-// Utility
-function sanitize(s){ return s ? s.replace(/[\s\.\-]/g,'').toLowerCase() : ''; }
-function show(id){ document.getElementById(id).classList.remove('hidden'); }
-function hide(id){ document.getElementById(id).classList.add('hidden'); }
-
-// Photo/Video capture
-let mediaType = 'photo';
-window.up = (type) => { mediaType = type; document.getElementById('mediaInput').click(); };
-
-window.handleMedia = async (e) => {
-    const file = e.target.files[0];
-    if(!file) return;
-    const reader = new FileReader();
-    reader.onload = async (ev) => {
-        let imgData = ev.target.result;
-        if (mediaType === 'video') {
-            // Extract frame from video (simplified: use first frame)
-            imgData = await extractVideoFrame(file);
-        }
-        addUserMessage(`📸 ${mediaType==='video'?'Video':'Photo'}: <img src="${imgData}" class="pp">`);
-        document.getElementById('ct2').style.display='flex';
-        let reply = await analyzeMedia(imgData);
-        document.getElementById('ct2').style.display='none';
-        addBotMessage(reply);
-        speakText(reply);
-    };
-    if (mediaType === 'photo') reader.readAsDataURL(file);
-    else reader.readAsDataURL(file); // will be processed after extract
-};
-
-async function extractVideoFrame(file) {
-    return new Promise((resolve) => {
-        const video = document.createElement('video');
-        video.preload = 'metadata';
-        video.onloadeddata = () => {
-            video.currentTime = 1;
+    <script>
+        // ========== FIREBASE CONFIG ==========
+        const firebaseConfig = {
+            apiKey: "AIzaSyApY09CHspm5TVxXTVvjnfB6lzwQ7nqltE",
+            authDomain: "staff-managemant.firebaseapp.com",
+            databaseURL: "https://staff-managemant-default-rtdb.firebaseio.com",
+            projectId: "staff-managemant",
+            storageBucket: "staff-managemant.firebasestorage.app",
+            messagingSenderId: "160818771446",
+            appId: "1:160818771446:web:e55f1bfc308c504efb03d7"
         };
-        video.onseeked = () => {
-            const canvas = document.createElement('canvas');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            canvas.getContext('2d').drawImage(video, 0, 0);
-            resolve(canvas.toDataURL('image/jpeg', 0.8));
-        };
-        video.src = URL.createObjectURL(file);
-    });
-}
-
-// AI Mechanic Raju prompt
-async function analyzeMedia(imgData) {
-    const stockCtx = Object.entries(window.inventory).map(([k,i])=>`${i.name}: PP${i.pp||0} KP${i.kp||0}`).join('\n');
-    const prompt = `You are Raju, a 45-year-old senior tyre mechanic with 25 years of experience at TyreXpert shop. You know everything about tyres, tubes, rims, punctures, side cuts, bulges, tread wear, alignment, balancing, valves (goti), and all vehicle tyre sizes. You speak Hinglish (Hindi+English mix) in a very friendly, patient manner. When you see a photo or video frame of a tyre/rim/problem, you diagnose it instantly and give a step-by-step repair guide with approximate cost in Indian Rupees. You also suggest the right products from our shop inventory.
-
-Current shop inventory: ${stockCtx}
-
-Now, look at this image and respond exactly as Raju would – with warmth, expertise, and practical advice. Give the problem diagnosis, step-by-step fix, cost, and safety tip.`;
-    try {
-        const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-            method:"POST",
-            headers:{"Authorization":`Bearer ${OPENROUTER_KEY}`,"Content-Type":"application/json","HTTP-Referer":"https://tyrexpert.app","X-Title":"TyreXpert"},
-            body:JSON.stringify({
-                model: currentModel,
-                messages: [{role:"system",content:prompt},{role:"user",content:[{type:"text",text:"Analyze this tyre media."},{type:"image_url",image_url:{url:imgData}}]}],
-                temperature:0.7, max_tokens:400
-            })
-        });
-        const data = await res.json();
-        return data.choices?.[0]?.message?.content || "Arre bhai, photo theek se nahi dikhi. Dobara bhejo.";
-    } catch(e) { return "Raju: Server down hai, baad mein try karo."; }
-}
-
-// Text query to Raju
-async function askRaju(question) {
-    const stockCtx = Object.entries(window.inventory).map(([k,i])=>`${i.name}: PP${i.pp||0} KP${i.kp||0}`).join('\n');
-    const sysPrompt = `You are Raju, 45-year-old tyre mechanic at TyreXpert shop. Answer in Hinglish, very practical, step-by-step, with cost in ₹. Inventory: ${stockCtx}.`;
-    try {
-        const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-            method:"POST",
-            headers:{"Authorization":`Bearer ${OPENROUTER_KEY}`,"Content-Type":"application/json","HTTP-Referer":"https://tyrexpert.app","X-Title":"TyreXpert"},
-            body:JSON.stringify({
-                model: currentModel,
-                messages: [{role:"system",content:sysPrompt},{role:"user",content:question}],
-                temperature:0.7, max_tokens:300
-            })
-        });
-        const data = await res.json();
-        return data.choices?.[0]?.message?.content || "Samjha nahi, phir se puchho.";
-    } catch(e) { return "Raju: Abhi busy hoon, thodi der mein puchho."; }
-}
-
-window.scm = async () => {
-    const input = document.getElementById('ci');
-    const msg = input.value.trim();
-    if(!msg) return;
-    addUserMessage(msg);
-    input.value = '';
-    document.getElementById('ct2').style.display='flex';
-    const reply = await askRaju(msg);
-    document.getElementById('ct2').style.display='none';
-    addBotMessage(reply);
-    speakText(reply);
-};
-
-function speakText(text) {
-    window.speechSynthesis.cancel();
-    const clean = text.replace(/[*#₹]/g,'').replace(/\n/g,'. ').substring(0,250);
-    const u = new SpeechSynthesisUtterance(clean); u.lang='hi-IN'; u.rate=1.0;
-    setTimeout(()=>window.speechSynthesis.speak(u),200);
-}
-
-window.tc = () => {
-    document.getElementById('cm').style.display = document.getElementById('cm').style.display==='flex'?'none':'flex';
-    if(document.getElementById('cm').style.display==='flex') {
-        if(chatHistory.length===0){
-            const w = "नमस्ते! मैं Raju हूँ, TyreXpert का मैकेनिक। फोटो/वीडियो भेजो या पूछो – मैं स्टेप बाय स्टेप रिपेयर बताऊंगा।";
-            addBotMessage(w);
-            speakText(w);
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
         }
-    }
-};
+        const db = firebase.firestore();
 
-function addUserMessage(t){ document.getElementById('cbb').innerHTML += `<div class="cmsg umsg">${t}</div>`; }
-function addBotMessage(t){ document.getElementById('cbb').innerHTML += `<div class="cmsg bmsg">${t.replace(/\n/g,'<br>')}</div>`; }
+        const ADMIN_COLLECTION = 'adminSettings';
+        const RECORDS_COLLECTION = 'pucRecords';
+        let isAdminLoggedIn = false;
+        let isSendingBulk = false;
 
-// Voice
-window.scv = () => {
-    if(!('webkitSpeechRecognition' in window)) return;
-    const recog = new (window.SpeechRecognition||window.webkitSpeechRecognition)();
-    recog.lang = 'hi-IN';
-    if(isChatListening){ recog.stop(); isChatListening=false; return; }
-    recog.start(); isChatListening=true;
-    recog.onresult = e => { document.getElementById('ci').value = e.results[0][0].transcript; scm(); };
-};
+        // HELPER: Get correct local date in YYYY-MM-DD
+        function getLocalDate(dateObj = new Date()) {
+            const year = dateObj.getFullYear();
+            const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const day = String(dateObj.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
 
-// ... (baki admin, stock functions same hain, maine skip kiye brevity ke liye, lekin aapke existing code ke saath merge kar lijiye)
+        // Auto Refresh Admin Tabs
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabElements = document.querySelectorAll('button[data-bs-toggle="tab"]');
+            tabElements.forEach(tab => {
+                tab.addEventListener('shown.bs.tab', event => {
+                    if (!isAdminLoggedIn) return;
+                    const target = event.target.getAttribute('data-bs-target');
+                    if (target === '#tabDashboard') loadDashboard();
+                    else if (target === '#tabReminder') loadReminders();
+                    else if (target === '#tabManage') loadAllRecords();
+                });
+            });
+        });
 
-</script>
+        // ============================================================
+        //  TOGGLE MAIN / ADMIN
+        // ============================================================
+        window.toggleAdmin = function() {
+            const main = document.getElementById('mainSection');
+            const admin = document.getElementById('adminSection');
+            const btn = document.getElementById('adminToggleBtn');
+
+            if (admin.classList.contains('hidden')) {
+                main.classList.add('hidden');
+                admin.classList.remove('hidden');
+                btn.innerHTML = '<i class="bi bi-house"></i> Main';
+                
+                if (!isAdminLoggedIn) {
+                    document.getElementById('loginScreen').style.display = 'block';
+                    document.getElementById('adminDashboard').style.display = 'none';
+                    checkPasswordExists();
+                } else {
+                    showDashboard();
+                }
+            } else {
+                main.classList.remove('hidden');
+                admin.classList.add('hidden');
+                btn.innerHTML = '<i class="bi bi-shield-lock"></i> Admin';
+            }
+        };
+
+        async function checkPasswordExists() {
+            try {
+                const doc = await db.collection(ADMIN_COLLECTION).doc('config').get();
+                if (doc.exists && doc.data().password) {
+                    document.getElementById('passwordSetupMsg').innerHTML = 'Enter Admin Password';
+                    document.getElementById('passwordSetupMsg').className = 'alert alert-info';
+                } else {
+                    document.getElementById('passwordSetupMsg').innerHTML = '⚠️ पहली बार सेटअप: नया Password डालें और Submit करें।';
+                    document.getElementById('passwordSetupMsg').className = 'alert alert-warning';
+                }
+            } catch(e) {
+                console.error("Auth check error", e);
+            }
+        }
+
+        window.handleAdminAuth = async function() {
+            const input = document.getElementById('adminPasswordInput').value;
+            if(!input) return alert("Password enter karein!");
+
+            const doc = await db.collection(ADMIN_COLLECTION).doc('config').get();
+            if (!doc.exists || !doc.data().password) {
+                await db.collection(ADMIN_COLLECTION).doc('config').set({ password: input });
+                alert('✅ Password Set Successfully!');
+                document.getElementById('adminPasswordInput').value = '';
+                isAdminLoggedIn = true;
+                showDashboard();
+            } else {
+                if (input === doc.data().password) {
+                    isAdminLoggedIn = true;
+                    showDashboard();
+                } else {
+                    alert('❌ Incorrect Password!');
+                }
+            }
+        };
+
+        function showDashboard() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('adminDashboard').style.display = 'block';
+            loadDashboard();
+            loadReminders();
+        }
+
+        window.logoutAdmin = function() {
+            isAdminLoggedIn = false;
+            document.getElementById('adminDashboard').style.display = 'none';
+            document.getElementById('loginScreen').style.display = 'block';
+            document.getElementById('adminPasswordInput').value = '';
+            document.getElementById('mainSection').classList.remove('hidden');
+            document.getElementById('adminSection').classList.add('hidden');
+            document.getElementById('adminToggleBtn').innerHTML = '<i class="bi bi-shield-lock"></i> Admin';
+        };
+
+        window.changePassword = async function() {
+            const newPass = document.getElementById('newPassword').value;
+            if (newPass.length < 4) return alert('Password must be at least 4 characters');
+            await db.collection(ADMIN_COLLECTION).doc('config').set({ password: newPass }, {merge: true});
+            alert('✅ Password Updated!');
+            document.getElementById('newPassword').value = '';
+        };
+
+        // ============================================================
+        //  MAIN ENTRY FUNCTIONS
+        // ============================================================
+        document.getElementById('todayDate').innerText = "आज की तारीख: " + new Date().toLocaleDateString('hi-IN');
+
+        window.selectMood = function(mood) {
+            document.getElementById('selectedMood').value = mood;
+            document.getElementById('moodHappy').className = 'mood-btn' + (mood === 'happy' ? ' active-happy' : '');
+            document.getElementById('moodAngry').className = 'mood-btn' + (mood === 'angry' ? ' active-angry' : '');
+        };
+
+        window.toggleFuel = function() {
+            const fuelSelect = document.getElementById('fuelType');
+            const isFour = document.getElementById('fourW').checked;
+            if (isFour) {
+                fuelSelect.innerHTML = `<option value="Petrol">Petrol</option>
+                                        <option value="Diesel">Diesel</option>
+                                        <option value="CNG">CNG</option>`;
+            } else {
+                fuelSelect.innerHTML = `<option value="Petrol">Petrol</option>`;
+            }
+        };
+
+        window.fetchHistory = function() {
+            const vehicle = document.getElementById('vehicleNo').value.trim().toUpperCase();
+            const mobile = document.getElementById('mobileNo').value.trim();
+            if (vehicle.length < 2 && mobile.length < 4) {
+                document.getElementById('historySection').classList.add('hidden');
+                return;
+            }
+
+            let query = db.collection(RECORDS_COLLECTION);
+            if (vehicle.length > 1) query = query.where('vehicleNo', '==', vehicle);
+            else if (mobile.length > 3) query = query.where('mobileNo', '==', mobile);
+
+            query.orderBy('createdAt', 'desc').limit(5).get()
+                .then(snapshot => {
+                    const list = document.getElementById('historyList');
+                    list.innerHTML = '';
+                    if (snapshot.empty) {
+                        document.getElementById('historySection').classList.add('hidden');
+                        return;
+                    }
+                    document.getElementById('historySection').classList.remove('hidden');
+                    snapshot.forEach(doc => {
+                        const d = doc.data();
+                        const date = d.purchaseDate;
+                        const moodEmoji = d.mood === 'happy' ? '😊' : '😠';
+                        list.innerHTML += `<div class="border-bottom py-1 d-flex justify-content-between">
+                            <span><strong>${d.vehicleNo}</strong> (${d.mobileNo})</span>
+                            <span>${date} ${moodEmoji} ${d.fuel}</span>
+                        </div>`;
+                    });
+                }).catch(err => console.error("History Error:", err));
+        };
+
+        window.submitData = function() {
+            const vehicle = document.getElementById('vehicleNo').value.trim().toUpperCase();
+            const mobile = document.getElementById('mobileNo').value.trim();
+            const type = document.querySelector('input[name="vehicleType"]:checked').value;
+            const fuel = document.getElementById('fuelType').value;
+            const duration = parseInt(document.getElementById('duration').value);
+            const mood = document.getElementById('selectedMood').value;
+
+            if (!vehicle || !mobile) return alert('कृपया Vehicle और Mobile Number डालें!');
+
+            // 1 Day minus Logic
+            const today = new Date();
+            const expiryDate = new Date(today);
+            expiryDate.setMonth(expiryDate.getMonth() + duration);
+            expiryDate.setDate(expiryDate.getDate() - 1); // 1 दिन कम
+
+            db.collection(RECORDS_COLLECTION).add({
+                vehicleNo: vehicle,
+                mobileNo: mobile,
+                vehicleType: type,
+                fuel: fuel,
+                durationMonths: duration,
+                purchaseDate: getLocalDate(today),
+                expiryDate: getLocalDate(expiryDate), // Modified Date saved
+                mood: mood,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            })
+            .then(() => {
+                alert('✅ PUC सफलतापूर्वक Save हो गया!\nExpiry Date: ' + getLocalDate(expiryDate));
+                document.getElementById('vehicleNo').value = '';
+                document.getElementById('mobileNo').value = '';
+                document.getElementById('historySection').classList.add('hidden');
+                if(isAdminLoggedIn) loadDashboard();
+            }).catch(err => alert('Error: ' + err.message));
+        };
+
+        toggleFuel();
+
+        // ============================================================
+        //  ADMIN FUNCTIONS (Dashboard Filters & WhatsApp Bulk)
+        // ============================================================
+        
+        // 1. Dashboard Logic
+        window.loadDashboard = function() {
+            const timeFilter = document.getElementById('dashTimeFilter').value;
+            const typeFilter = document.getElementById('dashTypeFilter').value;
+            const todayStr = getLocalDate(new Date());
+
+            let query = db.collection(RECORDS_COLLECTION);
+            
+            if (timeFilter === 'today') {
+                query = query.where('purchaseDate', '==', todayStr);
+            }
+
+            query.get().then(snap => {
+                let total = 0, twoW = 0, fourW = 0, petrol = 0, diesel = 0, cng = 0;
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    
+                    // Vehicle Type Filter Application
+                    if (typeFilter !== 'All' && d.vehicleType !== typeFilter) return;
+
+                    total++;
+                    if (d.vehicleType === '2 Wheeler') twoW++;
+                    else fourW++;
+                    
+                    if (d.fuel === 'Petrol') petrol++;
+                    else if (d.fuel === 'Diesel') diesel++;
+                    else if (d.fuel === 'CNG') cng++;
+                });
+                
+                document.getElementById('statTotal').innerText = total;
+                document.getElementById('stat2W').innerText = twoW;
+                document.getElementById('stat4W').innerText = fourW;
+                document.getElementById('statFuel').innerText = `P:${petrol} D:${diesel} C:${cng}`;
+            }).catch(err => console.error('Dashboard error:', err));
+        };
+
+        // 2. Reminder & All Customers Logic
+        window.loadReminders = function() {
+            const today = new Date();
+            const todayStr = getLocalDate(today);
+            const futureDate = new Date(today);
+            futureDate.setDate(today.getDate() + 5);
+            const futureStr = getLocalDate(futureDate);
+
+            // A) Today Expiry
+            db.collection(RECORDS_COLLECTION).where('expiryDate', '==', todayStr).get()
+                .then(snap => {
+                    const container = document.getElementById('todayExpiryList');
+                    container.innerHTML = '';
+                    if (snap.empty) {
+                        container.innerHTML = '<p class="text-muted">कोई गाड़ी Expire नहीं हो रही आज</p>';
+                    } else {
+                        snap.forEach(doc => {
+                            const d = doc.data();
+                            const msg = `नमस्ते सर/मैडम, आपका PUC आज खत्म हो रहा है। कृपया TyreXpert (Gaurraiya Petrol Pump) पर आकर बनवा लें।`;
+                            const encodedMsg = encodeURIComponent(msg);
+                            
+                            container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center" data-phone="91${d.mobileNo}" data-msg="${encodedMsg}">
+                                <span><strong>${d.vehicleNo}</strong> - ${d.mobileNo}</span> 
+                                <button class="btn btn-sm btn-outline-success" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodedMsg}', '_blank')"><i class="bi bi-whatsapp"></i></button>
+                            </div>`;
+                        });
+                    }
+                });
+
+            // B) Next 5 Days
+            db.collection(RECORDS_COLLECTION)
+                .where('expiryDate', '>', todayStr)
+                .where('expiryDate', '<=', futureStr)
+                .get()
+                .then(snap => {
+                    const container = document.getElementById('upcomingExpiryList');
+                    container.innerHTML = '';
+                    if (snap.empty) {
+                        container.innerHTML = '<p class="text-muted">अगले 5 दिनों में कोई Expiry नहीं</p>';
+                    } else {
+                        snap.forEach(doc => {
+                            const d = doc.data();
+                            const msg = `नमस्ते सर/मैडम, आपकी गाड़ी ${d.vehicleNo} का PUC ${d.expiryDate} को खत्म हो रहा है। कृपया TyreXpert आकर बनवा लें।`;
+                            const encodedMsg = encodeURIComponent(msg);
+
+                            container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center" data-phone="91${d.mobileNo}" data-msg="${encodedMsg}">
+                                <span><strong>${d.vehicleNo}</strong> <br><small class="text-muted">${d.mobileNo} (Exp: ${d.expiryDate})</small></span> 
+                                <button class="btn btn-sm btn-outline-success" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodedMsg}', '_blank')"><i class="bi bi-whatsapp"></i></button>
+                            </div>`;
+                        });
+                    }
+                });
+
+            // C) All Customers
+            db.collection(RECORDS_COLLECTION).orderBy('purchaseDate', 'desc').get()
+                .then(snap => {
+                    const container = document.getElementById('allCustomersReminderList');
+                    container.innerHTML = '';
+                    
+                    // Deduplicate Phone Numbers to prevent spamming same customer multiple times
+                    const uniquePhones = new Set();
+                    
+                    snap.forEach(doc => {
+                        const d = doc.data();
+                        if(!uniquePhones.has(d.mobileNo)) {
+                            uniquePhones.add(d.mobileNo);
+                            container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center" data-phone="91${d.mobileNo}">
+                                <span><strong>${d.vehicleNo}</strong> - ${d.mobileNo}</span>
+                            </div>`;
+                        }
+                    });
+                });
+        };
+
+        // 3. Bulk WhatsApp Sending Function
+        window.sendBulkWhatsApp = function(containerId, isCustomMsg = false, customInputId = '') {
+            if(isSendingBulk) return;
+            
+            const container = document.getElementById(containerId);
+            const items = container.querySelectorAll('[data-phone]');
+            if(items.length === 0) return alert('लिस्ट में कोई नंबर नहीं मिला!');
+
+            if(!confirm(`⚠️ ध्यान दें: यह ${items.length} लोगों के लिए अलग-अलग टैब खोलेगा।\nक्या आपने ब्राउज़र में Pop-up Allow किया हुआ है?`)) return;
+
+            isSendingBulk = true;
+            let customMsgRaw = "";
+            if(isCustomMsg) {
+                customMsgRaw = document.getElementById(customInputId).value;
+            }
+
+            let i = 0;
+            const interval = setInterval(() => {
+                if(i >= items.length) {
+                    clearInterval(interval);
+                    isSendingBulk = false;
+                    alert('✅ Bulk Message Command Completed!');
+                    return;
+                }
+                
+                const phone = items[i].getAttribute('data-phone');
+                let finalMsg = isCustomMsg ? encodeURIComponent(customMsgRaw) : items[i].getAttribute('data-msg');
+                
+                window.open(`https://wa.me/${phone}?text=${finalMsg}`, '_blank');
+                i++;
+            }, 1200); // 1.2 Second delay to prevent immediate browser block
+        };
+
+
+        // ============================================================
+        //  OTHER UTILITY FUNCTIONS (Manage, 360, PDF)
+        // ============================================================
+        window.searchCustomer360 = function() {
+            const query = document.getElementById('search360Input').value.trim();
+            if (!query) return;
+            const container = document.getElementById('customer360Result');
+            container.innerHTML = '<p>Searching...</p>';
+            db.collection(RECORDS_COLLECTION).where('vehicleNo', '==', query.toUpperCase()).get()
+                .then(snap => {
+                    if (!snap.empty) render360(snap);
+                    else {
+                        db.collection(RECORDS_COLLECTION).where('mobileNo', '==', query).get()
+                            .then(snap2 => {
+                                if(!snap2.empty) render360(snap2);
+                                else container.innerHTML = '<div class="alert alert-warning">No Record Found</div>';
+                            });
+                    }
+                });
+        };
+
+        function render360(snap) {
+            const container = document.getElementById('customer360Result');
+            container.innerHTML = '';
+            snap.forEach(doc => {
+                const d = doc.data();
+                const mood = d.mood === 'happy' ? '😊' : '😠';
+                container.innerHTML += `<div class="border p-3 mb-2 rounded bg-light d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>${d.vehicleNo}</strong> | 📞 ${d.mobileNo} <br>
+                        <small class="text-muted">${d.fuel} | ${d.purchaseDate} → ${d.expiryDate} | Mood: ${mood}</small>
+                    </div>
+                    <span class="delete-btn fs-4" onclick="deleteRecord('${doc.id}')"><i class="bi bi-trash"></i></span>
+                </div>`;
+            });
+        }
+
+        window.loadAllRecords = function() {
+            const container = document.getElementById('allRecordsList');
+            container.innerHTML = '<p class="text-muted">लोड हो रहा...</p>';
+            db.collection(RECORDS_COLLECTION).orderBy('purchaseDate', 'desc').limit(50).get() 
+                .then(snap => {
+                    container.innerHTML = '';
+                    if (snap.empty) return container.innerHTML = '<p class="text-muted">कोई रिकॉर्ड नहीं</p>';
+                    snap.forEach(doc => {
+                        const d = doc.data();
+                        const mood = d.mood === 'happy' ? '😊' : '😠';
+                        container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div><strong>${d.vehicleNo}</strong> | ${d.mobileNo} <br><small class="text-muted">${d.fuel} | Date: ${d.purchaseDate} | ${mood}</small></div>
+                            <span class="delete-btn fs-4" onclick="deleteRecord('${doc.id}')"><i class="bi bi-trash"></i></span>
+                        </div>`;
+                    });
+                });
+        };
+
+        window.deleteRecord = function(docId) {
+            if (!confirm('क्या आप सच में यह रिकॉर्ड हटाना चाहते हैं?')) return;
+            db.collection(RECORDS_COLLECTION).doc(docId).delete()
+                .then(() => {
+                    alert('✅ Record deleted!');
+                    loadAllRecords(); loadDashboard(); loadReminders();
+                    document.getElementById('customer360Result').innerHTML = ''; 
+                }).catch(err => alert('Error: ' + err.message));
+        };
+
+        window.exportPDF = function() {
+            const from = document.getElementById('exportFrom').value;
+            const to = document.getElementById('exportTo').value;
+            if (!from || !to) return alert('कृपया From और To Date चुनें!');
+
+            db.collection(RECORDS_COLLECTION)
+                .where('purchaseDate', '>=', from)
+                .where('purchaseDate', '<=', to)
+                .get()
+                .then(snap => {
+                    if(snap.empty) return alert('No records found for selected dates.');
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF('landscape');
+                    doc.text(`PUC Records Report (${from} to ${to})`, 14, 20);
+
+                    const rows = [];
+                    let total = 0, happy = 0, angry = 0;
+                    snap.forEach(d => {
+                        const data = d.data();
+                        total++;
+                        if (data.mood === 'happy') happy++; else angry++;
+                        rows.push([data.vehicleNo, data.mobileNo, data.vehicleType, data.fuel, data.purchaseDate, data.expiryDate, data.mood]);
+                    });
+
+                    doc.autoTable({ head: [['Vehicle', 'Mobile', 'Type', 'Fuel', 'Purchased', 'Expiry', 'Mood']], body: rows, startY: 30 });
+                    const finalY = doc.lastAutoTable.finalY || 100;
+                    doc.text(`Summary: Total=${total}, Happy=${happy}, Angry=${angry}`, 14, finalY + 10);
+                    doc.save(`PUC_Report_${from}_to_${to}.pdf`);
+                }).catch(err => alert('Error generating PDF: ' + err.message));
+        };
+
+        window.onload = function() {
+            const todayStr = getLocalDate(new Date());
+            document.getElementById('exportFrom').value = todayStr;
+            document.getElementById('exportTo').value = todayStr;
+        };
+    </script>
 </body>
 </html>
