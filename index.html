@@ -5,112 +5,141 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Tracker by Ayush Anand</title>
     
-    <!-- Firebase SDKs (Compat Version for simplicity) -->
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
 
     <style>
-        body { font-family: Arial, sans-serif; padding: 20px; text-align: center; }
-        .upload-box { border: 1px solid #ccc; padding: 20px; border-radius: 10px; max-width: 400px; margin: auto; }
-        button { background-color: #28a745; color: white; border: none; padding: 10px 20px; margin-top: 15px; cursor: pointer; border-radius: 5px; }
-        button:hover { background-color: #218838; }
+        body { font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f9; }
+        .dashboard { background: white; padding: 25px; border-radius: 10px; max-width: 500px; margin: auto; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #333; }
+        .input-group { margin-bottom: 15px; }
+        input[type="text"], select { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        button { width: 100%; background-color: #007bff; color: white; border: none; padding: 12px; font-size: 16px; cursor: pointer; border-radius: 5px; }
+        button:hover { background-color: #0056b3; }
+        .details-card { display: none; margin-top: 20px; padding: 15px; border: 1px solid #28a745; background-color: #e9f7ef; border-radius: 5px; }
+        .details-card p { margin: 5px 0; }
     </style>
 </head>
 <body>
 
-    <div class="upload-box">
-        <h2>TyreXpert - Live PUC Capture</h2>
+    <div class="dashboard">
+        <h2>TyreXpert Vehicle Connect</h2>
         
-        <!-- capture="environment" forces the rear camera on mobile phones -->
-        <label><b>1. Capture Vehicle Photo:</b></label><br><br>
-        <input type="file" id="cameraInput" accept="image/*" capture="environment" />
+        <div class="input-group">
+            <label><b>Vehicle Number:</b></label>
+            <input type="text" id="vehicleNo" placeholder="e.g. HR13XX1234" style="text-transform: uppercase;">
+        </div>
+
+        <div class="input-group">
+            <label><b>Handled By (Staff):</b></label>
+            <select id="staffName">
+                <option value="Laddu">Laddu</option>
+                <option value="Haider">Haider</option>
+                <option value="Arwaz">Arwaz</option>
+                <option value="Ankit">Ankit</option>
+            </select>
+        </div>
+
+        <button onclick="connectVehicle()">Connect</button>
         
-        <br><br>
-        <b>2. Upload Data:</b><br>
-        <button id="uploadBtn" onclick="captureAndUpload()">Submit Record</button>
-        
-        <p id="status" style="color: blue; font-weight: bold;"></p>
+        <p id="statusMsg" style="text-align: center; margin-top: 10px; font-weight: bold;"></p>
+
+        <!-- Fetched Details Display -->
+        <div class="details-card" id="vehicleDetails">
+            <h3 style="color: #28a745; margin-top: 0;">Vehicle Details Found!</h3>
+            <p><b>Owner Name:</b> <span id="ownerName"></span></p>
+            <p><b>Model:</b> <span id="vehicleModel"></span></p>
+            <p><b>Fuel Type:</b> <span id="fuelType"></span></p>
+            <p><b>Last PUC Date:</b> <span id="lastPuc"></span></p>
+            <button style="background-color: #28a745; margin-top: 15px;" onclick="proceedToCapture()">Proceed to Capture</button>
+        </div>
     </div>
 
     <script>
-        // 1. Firebase Configuration (Apne Firebase console se copy karke yahan dalein)
+        // 1. Firebase Configuration (Apni API keys yahan dalein)
         const firebaseConfig = {
             apiKey: "YOUR_API_KEY",
             authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_PROJECT_ID.appspot.com",
-            messagingSenderId: "YOUR_SENDER_ID",
-            appId: "YOUR_APP_ID"
+            projectId: "YOUR_PROJECT_ID"
         };
-
-        // Firebase Initialize karein
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-        const storage = firebase.storage();
 
-        function captureAndUpload() {
-            const fileInput = document.getElementById('cameraInput');
-            const statusText = document.getElementById('status');
+        // 2. Connect Button Logic
+        function connectVehicle() {
+            const vNum = document.getElementById("vehicleNo").value.trim().toUpperCase();
+            const statusMsg = document.getElementById("statusMsg");
+            const detailsCard = document.getElementById("vehicleDetails");
 
-            if (fileInput.files.length === 0) {
-                alert("Please capture a photo first!");
+            if(vNum === "") {
+                statusMsg.innerText = "Please enter a valid vehicle number.";
+                statusMsg.style.color = "red";
                 return;
             }
 
-            const file = fileInput.files[0];
-            statusText.innerText = "Fetching exact location...";
+            statusMsg.innerText = "Connecting to database...";
+            statusMsg.style.color = "blue";
+            detailsCard.style.display = "none";
 
-            // 2. HTML5 API se GPS Location nikalna
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const lat = position.coords.latitude;
-                        const lng = position.coords.longitude;
-                        
-                        statusText.innerText = "Uploading photo to server...";
-                        uploadToFirebase(file, lat, lng);
-                    },
-                    (error) => {
-                        alert("Location access is required to proceed!");
-                        statusText.innerText = "Location Error: " + error.message;
-                    },
-                    { enableHighAccuracy: true } // Yeh accurate GPS coordinates ensure karta hai
-                );
-            } else {
-                alert("Geolocation is not supported by your browser.");
-            }
+            // Step A: Pehle apne Firebase mein check karein
+            db.collection("tyrexpert_vehicles").doc(vNum).get().then((doc) => {
+                if (doc.exists) {
+                    // Gaadi ka data apne DB mein mil gaya
+                    statusMsg.innerText = "Fetched from Smart Tracker DB!";
+                    statusMsg.style.color = "green";
+                    displayData(doc.data());
+                } else {
+                    // Step B: Agar DB mein nahi hai, toh external RTO API call karein
+                    statusMsg.innerText = "Fetching from RTO API...";
+                    fetchFromExternalAPI(vNum);
+                }
+            }).catch((error) => {
+                statusMsg.innerText = "Error connecting: " + error.message;
+                statusMsg.style.color = "red";
+            });
         }
 
-        function uploadToFirebase(file, lat, lng) {
-            const statusText = document.getElementById('status');
-            const fileName = "puc_images/" + Date.now() + "_" + file.name;
-            const storageRef = storage.ref().child(fileName);
+        // 3. Fake API Fetch (Ise aap real RTO API se replace karenge baad mein)
+        function fetchFromExternalAPI(vNum) {
+            // Yahan actual API fetch() lagega. Abhi ke liye hum ek dummy data use kar rahe hain
+            setTimeout(() => {
+                const apiResponse = {
+                    owner: "Rahul Kumar",
+                    model: "Maruti Suzuki Swift",
+                    fuel: "Petrol",
+                    last_puc: "12-10-2025"
+                };
+                
+                document.getElementById("statusMsg").innerText = "Data fetched via API!";
+                document.getElementById("statusMsg").style.color = "green";
+                displayData(apiResponse);
 
-            // 3. Photo ko Firebase Storage mein upload karna
-            storageRef.put(file).then((snapshot) => {
-                return snapshot.ref.getDownloadURL();
-            }).then((downloadURL) => {
-                
-                // 4. Firestore Database mein Image URL aur Location (Lat/Lng) save karna
-                db.collection("tyrexpert_puc_logs").add({
-                    imageUrl: downloadURL,
-                    latitude: lat,
-                    longitude: lng,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                }).then(() => {
-                    statusText.innerText = "Upload Successful!";
-                    statusText.style.color = "green";
-                    document.getElementById('cameraInput').value = ""; // Form reset karne ke liye
-                }).catch((error) => {
-                    statusText.innerText = "Database Error: " + error.message;
-                    statusText.style.color = "red";
-                });
-                
-            }).catch((error) => {
-                statusText.innerText = "Upload Failed: " + error.message;
-                statusText.style.color = "red";
-            });
+                // Naya data apne Firebase mein save kar lein future ke liye
+                saveToInternalDB(vNum, apiResponse);
+
+            }, 1500); // 1.5 seconds ka delay dikhane ke liye
+        }
+
+        // 4. Data ko screen par dikhana
+        function displayData(data) {
+            document.getElementById("ownerName").innerText = data.owner;
+            document.getElementById("vehicleModel").innerText = data.model;
+            document.getElementById("fuelType").innerText = data.fuel;
+            document.getElementById("lastPuc").innerText = data.last_puc;
+            document.getElementById("vehicleDetails").style.display = "block";
+        }
+
+        // 5. Nayi gaadi ko DB mein save karna
+        function saveToInternalDB(vNum, data) {
+            db.collection("tyrexpert_vehicles").doc(vNum).set(data);
+        }
+
+        function proceedToCapture() {
+            const staff = document.getElementById("staffName").value;
+            const vNum = document.getElementById("vehicleNo").value;
+            alert(`Proceeding to capture photo for ${vNum}. Handled by: ${staff}`);
+            // Yahan pichle waale camera upload code ka link jod sakte hain
         }
     </script>
 </body>
