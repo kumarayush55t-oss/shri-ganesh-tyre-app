@@ -1,109 +1,117 @@
-<uses-permission android:name="android.permission.CAMERA" />
-<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />import android.Manifest
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.location.Location
-import android.os.Bundle
-import android.provider.MediaStore
-import android.widget.Button
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
-import java.io.ByteArrayOutputStream
-import java.util.UUID
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Tracker by Ayush Anand</title>
+    
+    <!-- Firebase SDKs (Compat Version for simplicity) -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
 
-class PucCaptureActivity : AppCompatActivity() {
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; text-align: center; }
+        .upload-box { border: 1px solid #ccc; padding: 20px; border-radius: 10px; max-width: 400px; margin: auto; }
+        button { background-color: #28a745; color: white; border: none; padding: 10px 20px; margin-top: 15px; cursor: pointer; border-radius: 5px; }
+        button:hover { background-color: #218838; }
+    </style>
+</head>
+<body>
 
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private var currentLocation: Location? = null
-    private val REQUEST_IMAGE_CAPTURE = 1
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_puc_capture)
-
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-
-        val captureBtn = findViewById<Button>(R.id.btnCaptureVehicle)
-        captureBtn.setOnClickListener {
-            checkPermissionsAndCapture()
-        }
-    }
-
-    private fun checkPermissionsAndCapture() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
-            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            
-            ActivityCompat.requestPermissions(this, arrayOf(
-                Manifest.permission.CAMERA, 
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ), 100)
-            return
-        }
-
-        // Location fetch karna
-        fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-            currentLocation = location
-            openLiveCamera()
-        }
-    }
-
-    private fun openLiveCamera() {
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        if (takePictureIntent.resolveActivity(packageManager) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            val imageBitmap = data?.extras?.get("data") as Bitmap
-            uploadDataToFirebase(imageBitmap)
-        }
-    }
-
-    private fun uploadDataToFirebase(bitmap: Bitmap) {
-        val storageRef = FirebaseStorage.getInstance().reference
-        val firestoreDb = FirebaseFirestore.getInstance()
+    <div class="upload-box">
+        <h2>TyreXpert - Live PUC Capture</h2>
         
-        val imageId = UUID.randomUUID().toString()
-        val vehicleImageRef = storageRef.child("puc_images/$imageId.jpg")
+        <!-- capture="environment" forces the rear camera on mobile phones -->
+        <label><b>1. Capture Vehicle Photo:</b></label><br><br>
+        <input type="file" id="cameraInput" accept="image/*" capture="environment" />
+        
+        <br><br>
+        <b>2. Upload Data:</b><br>
+        <button id="uploadBtn" onclick="captureAndUpload()">Submit Record</button>
+        
+        <p id="status" style="color: blue; font-weight: bold;"></p>
+    </div>
 
-        val baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-        val data = baos.toByteArray()
+    <script>
+        // 1. Firebase Configuration (Apne Firebase console se copy karke yahan dalein)
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
 
-        // 1. Photo Upload
-        vehicleImageRef.putBytes(data).addOnSuccessListener {
-            vehicleImageRef.downloadUrl.addOnSuccessListener { uri ->
-                
-                // 2. Location aur Image URL ko DB mein save karna
-                val pucRecord = hashMapOf(
-                    "imageUrl" to uri.toString(),
-                    "latitude" to (currentLocation?.latitude ?: 0.0),
-                    "longitude" to (currentLocation?.longitude ?: 0.0),
-                    "timestamp" to System.currentTimeMillis()
-                )
+        // Firebase Initialize karein
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const storage = firebase.storage();
 
-                // Data saved under Tyrexpert logs
-                firestoreDb.collection("tyrexpert_puc_logs")
-                    .add(pucRecord)
-                    .addOnSuccessListener {
-                        Toast.makeText(this, "Upload Successful!", Toast.LENGTH_SHORT).show()
-                    }
-                    .addOnFailureListener {
-                        Toast.makeText(this, "Database Error", Toast.LENGTH_SHORT).show()
-                    }
+        function captureAndUpload() {
+            const fileInput = document.getElementById('cameraInput');
+            const statusText = document.getElementById('status');
+
+            if (fileInput.files.length === 0) {
+                alert("Please capture a photo first!");
+                return;
             }
-        }.addOnFailureListener {
-            Toast.makeText(this, "Upload Failed", Toast.LENGTH_SHORT).show()
+
+            const file = fileInput.files[0];
+            statusText.innerText = "Fetching exact location...";
+
+            // 2. HTML5 API se GPS Location nikalna
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        
+                        statusText.innerText = "Uploading photo to server...";
+                        uploadToFirebase(file, lat, lng);
+                    },
+                    (error) => {
+                        alert("Location access is required to proceed!");
+                        statusText.innerText = "Location Error: " + error.message;
+                    },
+                    { enableHighAccuracy: true } // Yeh accurate GPS coordinates ensure karta hai
+                );
+            } else {
+                alert("Geolocation is not supported by your browser.");
+            }
         }
-    }
-}
+
+        function uploadToFirebase(file, lat, lng) {
+            const statusText = document.getElementById('status');
+            const fileName = "puc_images/" + Date.now() + "_" + file.name;
+            const storageRef = storage.ref().child(fileName);
+
+            // 3. Photo ko Firebase Storage mein upload karna
+            storageRef.put(file).then((snapshot) => {
+                return snapshot.ref.getDownloadURL();
+            }).then((downloadURL) => {
+                
+                // 4. Firestore Database mein Image URL aur Location (Lat/Lng) save karna
+                db.collection("tyrexpert_puc_logs").add({
+                    imageUrl: downloadURL,
+                    latitude: lat,
+                    longitude: lng,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                }).then(() => {
+                    statusText.innerText = "Upload Successful!";
+                    statusText.style.color = "green";
+                    document.getElementById('cameraInput').value = ""; // Form reset karne ke liye
+                }).catch((error) => {
+                    statusText.innerText = "Database Error: " + error.message;
+                    statusText.style.color = "red";
+                });
+                
+            }).catch((error) => {
+                statusText.innerText = "Upload Failed: " + error.message;
+                statusText.style.color = "red";
+            });
+        }
+    </script>
+</body>
+</html>
