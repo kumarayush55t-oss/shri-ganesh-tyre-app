@@ -36,6 +36,7 @@
         .delete-btn { cursor: pointer; color: #dc3545; margin-left: 10px; }
         .delete-btn:hover { color: #a71d2a; }
         .bulk-send-warning { font-size: 0.85rem; color: #d63384; }
+        .reminder-box { background: white; padding: 10px 15px; border-radius: 10px; border: 1px solid #dee2e6; display: inline-block; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
     </style>
 </head>
 <body>
@@ -89,6 +90,17 @@
 
                 <div class="col-12 mt-4">
                     <button class="btn btn-success w-100 py-2 fs-5" onclick="submitData()"><i class="bi bi-save"></i> PUC Submit करें</button>
+                </div>
+
+                <!-- NOTIFICATION REMINDER TOGGLE -->
+                <div class="col-12 mt-3 text-center">
+                    <div class="reminder-box form-check form-switch">
+                        <input class="form-check-input ms-0 me-2" type="checkbox" id="reminderToggle" style="cursor:pointer; width: 40px; height: 20px;" onchange="togglePCReminder()">
+                        <label class="form-check-label text-danger fw-bold" for="reminderToggle" style="cursor:pointer;">
+                            🔔 30-Sec PC Reminder (ON/OFF)
+                        </label>
+                    </div>
+                    <div class="text-muted small mt-1">ऑन करने पर हर 30 सेकंड में एंट्री का अलर्ट आएगा</div>
                 </div>
             </div>
 
@@ -276,6 +288,7 @@
         const RECORDS_COLLECTION = 'pucRecords';
         let isAdminLoggedIn = false;
         let isSendingBulk = false;
+        let entryReminderTimer = null; // Timer variable for Notification
 
         // HELPER: Get correct local date in YYYY-MM-DD
         function getLocalDate(dateObj = new Date()) {
@@ -409,7 +422,6 @@
             const vehicle = document.getElementById('vehicleNo').value.trim().toUpperCase();
             const mobile = document.getElementById('mobileNo').value.trim();
             
-            // Check if input is long enough to avoid firing too early
             if (vehicle.length < 4 && mobile.length < 10) {
                 document.getElementById('historySection').classList.add('hidden');
                 return;
@@ -433,7 +445,6 @@
 
                 document.getElementById('historySection').classList.remove('hidden');
                 
-                // Fetch and Sort records locally (to avoid Firebase Index issues)
                 let records = [];
                 snapshot.forEach(doc => records.push(doc.data()));
                 records.sort((a, b) => new Date(b.purchaseDate) - new Date(a.purchaseDate));
@@ -484,6 +495,55 @@
         };
 
         toggleFuel();
+
+        // ============================================================
+        //  PC NOTIFICATION REMINDER (Every 30 Seconds)
+        // ============================================================
+        window.togglePCReminder = function() {
+            const isChecked = document.getElementById('reminderToggle').checked;
+
+            if (isChecked) {
+                // Request Permission
+                if (window.Notification && Notification.permission !== "granted") {
+                    Notification.requestPermission().then(permission => {
+                        if (permission === "granted") {
+                            startTimer();
+                        } else {
+                            alert("PC Notifications ब्लॉक हैं! कृपया ब्राउज़र सेटिंग में जाकर Allow करें।");
+                            document.getElementById('reminderToggle').checked = false;
+                        }
+                    });
+                } else if (window.Notification && Notification.permission === "granted") {
+                    startTimer();
+                } else {
+                    alert("आपका ब्राउज़र नोटिफिकेशन सपोर्ट नहीं करता है।");
+                    document.getElementById('reminderToggle').checked = false;
+                }
+            } else {
+                // Stop Reminder
+                clearInterval(entryReminderTimer);
+                entryReminderTimer = null;
+            }
+        };
+
+        function startTimer() {
+            if (entryReminderTimer) clearInterval(entryReminderTimer);
+            
+            entryReminderTimer = setInterval(() => {
+                if (Notification.permission === "granted") {
+                    const notification = new Notification("TyreXpert Reminder ⚠️", {
+                        body: "गाड़ी की एंट्री करना न भूलें! जल्दी से फॉर्म भरें।",
+                        icon: "https://cdn-icons-png.flaticon.com/512/1043/1043306.png", 
+                        requireInteraction: false 
+                    });
+                    
+                    // Auto close notification after 4 seconds
+                    setTimeout(() => {
+                        notification.close();
+                    }, 4000);
+                }
+            }, 30000); // 30 seconds
+        }
 
         // ============================================================
         //  ADMIN FUNCTIONS (Dashboard Filters & WhatsApp Bulk)
