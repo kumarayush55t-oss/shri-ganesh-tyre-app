@@ -56,7 +56,7 @@
             <div class="row g-3">
                 <div class="col-md-6">
                     <label class="form-label">Vehicle No <span class="text-danger">*</span></label>
-                    <input type="text" id="vehicleNo" class="form-control" placeholder="UP32 AB 1234" onkeyup="this.value=this.value.toUpperCase(); fetchHistory()" />
+                    <input type="text" id="vehicleNo" class="form-control" placeholder="HR12 AB 1234" onkeyup="this.value=this.value.toUpperCase(); fetchHistory()" />
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Mobile No <span class="text-danger">*</span></label>
@@ -417,7 +417,7 @@
             }
         };
 
-        // NEW ENHANCED HISTORY FUNCTION
+        // ENHANCED HISTORY FUNCTION
         window.fetchHistory = function() {
             const vehicle = document.getElementById('vehicleNo').value.trim().toUpperCase();
             const mobile = document.getElementById('mobileNo').value.trim();
@@ -474,6 +474,7 @@
             const expiryDate = new Date(today);
             expiryDate.setMonth(expiryDate.getMonth() + duration);
             expiryDate.setDate(expiryDate.getDate() - 1); 
+            const finalExpiryStr = getLocalDate(expiryDate);
 
             db.collection(RECORDS_COLLECTION).add({
                 vehicleNo: vehicle,
@@ -482,19 +483,39 @@
                 fuel: fuel,
                 durationMonths: duration,
                 purchaseDate: getLocalDate(today),
-                expiryDate: getLocalDate(expiryDate), 
+                expiryDate: finalExpiryStr, 
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             })
             .then(() => {
-                alert('✅ PUC सफलतापूर्वक Save हो गया!\nExpiry Date: ' + getLocalDate(expiryDate));
+                // --- SMART RECEIPT & AD LOGIC ---
+                let adText = "";
+                if (type === "4 Wheeler") {
+                    adText = "🚗 *क्या आपकी कार को नए या बेहतरीन कंडीशन वाले पुराने टायर्स की जरूरत है?*\nशानदार ग्रिप, बेहतर माइलेज और सेफ ड्राइविंग के लिए आज ही हमारी नई ब्रांच *TyreXpert* पर आएं!";
+                } else {
+                    adText = "🏍️ *क्या आपकी बाइक या स्कूटी को नए या बेहतरीन कंडीशन वाले पुराने टायर्स की जरूरत है?*\nस्किड-फ्री और एकदम सुरक्षित राइडिंग के लिए आज ही हमारी नई ब्रांच *TyreXpert* पर आएं!";
+                }
+
+                const freeService = "🎁 *फ्री सर्विस:* अपनी गाड़ी के टायर्स की हवा (Air Pressure) एकदम फ्री में चेक करवाएं!";
+                const address = "📍 *हमारा पता:* पहली पुलिया, सेक्टर 6-7 वाली रोड, खुशबू पार्किंग के पास।";
+                
+                const waMessage = `✅ *TyreXpert PUC Center*\n\nनमस्ते, आपकी गाड़ी *${vehicle}* का प्रदूषण (PUC) सफलतापूर्वक बन गया है।\n📅 *Expiry Date:* ${finalExpiryStr}\n\n---\n${adText}\n\n${freeService}\n\n${address}\n\nसुरक्षित चलें, TyreXpert को चुनें! 🙏`;
+                
+                const encodedMsg = encodeURIComponent(waMessage);
+                
+                // Success Alert
+                alert('✅ PUC सफलतापूर्वक Save हो गया!\nअब कस्टमर को WhatsApp पर रसीद भेजी जाएगी।');
+                
+                // Open WhatsApp automatically
+                window.open(`https://wa.me/91${mobile}?text=${encodedMsg}`, '_blank');
+
+                // Clear Form
                 document.getElementById('vehicleNo').value = '';
                 document.getElementById('mobileNo').value = '';
                 document.getElementById('historySection').classList.add('hidden');
                 if(isAdminLoggedIn) loadDashboard();
+                
             }).catch(err => alert('Error: ' + err.message));
         };
-
-        toggleFuel();
 
         // ============================================================
         //  PC NOTIFICATION REMINDER (Every 30 Seconds)
@@ -792,6 +813,9 @@
             const todayStr = getLocalDate(new Date());
             document.getElementById('exportFrom').value = todayStr;
             document.getElementById('exportTo').value = todayStr;
+            
+            // Initialization setup check
+            toggleFuel();
         };
     </script>
 </body>
