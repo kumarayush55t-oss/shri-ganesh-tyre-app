@@ -23,10 +23,10 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
-        /* ================= ULTRA PREMIUM UI CSS (GLASSMORPHISM) ================= */
+        /* ================= ULTRA PREMIUM UI CSS (BLUE THEME) ================= */
         body { 
             font-family: 'Outfit', sans-serif; 
-            background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%); 
+            background: linear-gradient(135deg, #e4f0fe 0%, #f4f7fc 100%); 
             color: #2b3240; 
             min-height: 100vh;
             padding: 20px 0 60px 0;
@@ -36,81 +36,72 @@
         
         /* Glass Card Effect */
         .card-main { 
-            background: rgba(255, 255, 255, 0.9); 
+            background: rgba(255, 255, 255, 0.95); 
             backdrop-filter: blur(15px); 
             -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.6);
             border-radius: 24px; 
-            box-shadow: 0 20px 50px rgba(0,0,0,0.05); 
+            box-shadow: 0 20px 50px rgba(13, 110, 253, 0.08); 
             overflow: hidden; 
             transition: all 0.3s ease;
         }
 
+        /* Blue Gradient Header */
         .gradient-header { 
-            background: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%); 
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); 
             color: white; 
             padding: 30px 20px; 
             text-align: center; 
             position: relative; 
         }
         
-        .gradient-header h2 { font-weight: 800; letter-spacing: 0.5px; margin: 0; text-shadow: 2px 4px 10px rgba(0,0,0,0.2); }
+        .gradient-header h2 { font-weight: 800; letter-spacing: 0.5px; margin: 0; text-shadow: 2px 4px 10px rgba(0,0,0,0.3); }
         .brand-badge { background: rgba(255,255,255,0.2); backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.3); padding: 5px 15px; border-radius: 50px; font-size: 0.85rem; font-weight: 600; }
 
         /* Floating Inputs Modernized */
-        .form-floating > label { color: #8492a6; font-weight: 500; }
-        .form-control, .form-select { border-radius: 12px; border: 2px solid #e9ecef; background: #f8fafc; font-weight: 600; color: #1e293b; transition: 0.3s; }
-        .form-control:focus, .form-select:focus { background: #fff; box-shadow: 0 0 0 4px rgba(238, 9, 121, 0.1); border-color: #ee0979; }
+        .form-floating > label { color: #64748b; font-weight: 500; }
+        .form-control, .form-select { border-radius: 12px; border: 2px solid #e2e8f0; background: #f8fafc; font-weight: 600; color: #1e293b; transition: 0.3s; }
+        .form-control:focus, .form-select:focus { background: #fff; box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15); border-color: #0d6efd; }
 
-        /* Premium Buttons */
+        /* Premium Buttons (Blue) */
         .btn-gradient { 
-            background: linear-gradient(135deg, #00b4db 0%, #0083b0 100%); 
+            background: linear-gradient(135deg, #0d6efd 0%, #0043a8 100%); 
             color: white; 
             border: none; 
             font-weight: 700; 
             letter-spacing: 1px;
-            box-shadow: 0 8px 20px rgba(0, 131, 176, 0.3); 
+            box-shadow: 0 8px 20px rgba(13, 110, 253, 0.3); 
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
         }
-        .btn-gradient:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(0, 131, 176, 0.4); color: white; }
+        .btn-gradient:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(13, 110, 253, 0.4); color: white; }
 
         /* Radio Buttons (Vehicle Type) */
         .btn-outline-dark { border: 2px solid #e2e8f0; color: #64748b; font-weight: 600; border-radius: 12px !important; margin: 0 5px; }
-        .btn-check:checked + .btn-outline-dark { background: #1e293b; color: #fff; border-color: #1e293b; box-shadow: 0 4px 15px rgba(30, 41, 59, 0.3); }
-
-        /* 30-Sec Reminder Animation */
-        #customReminder {
-            position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
-            background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);
-            color: white; padding: 15px 35px; border-radius: 50px; font-weight: 700; font-size: 1.1rem;
-            box-shadow: 0 10px 30px rgba(255, 8, 68, 0.5); z-index: 9999; transition: top 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-        #customReminder.show { top: 30px; animation: pulseAlert 1s infinite; }
-        @keyframes pulseAlert { 0% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.05); } 100% { transform: translateX(-50%) scale(1); } }
+        .btn-check:checked + .btn-outline-dark { background: #0d6efd; color: #fff; border-color: #0d6efd; box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3); }
 
         /* Admin Floating Button */
         .admin-link { position: fixed; bottom: 25px; right: 25px; z-index: 1050; box-shadow: 0 10px 25px rgba(0,0,0,0.2); border-radius: 50px; font-weight: 700; padding: 12px 25px; transition: 0.3s; border: none; }
         .admin-link:hover { transform: scale(1.05); }
 
-        /* VIP Badge */
-        .vip-badge { position: absolute; right: 20px; top: -15px; background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); color: #fff; font-size: 0.8rem; padding: 6px 15px; border-radius: 50px; font-weight: 800; box-shadow: 0 5px 15px rgba(253, 160, 133, 0.4); display: none; z-index: 10; }
+        /* VIP Badge (Cyan/Blue) */
+        .vip-badge { position: absolute; right: 20px; top: -15px; background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%); color: #fff; font-size: 0.8rem; padding: 6px 15px; border-radius: 50px; font-weight: 800; box-shadow: 0 5px 15px rgba(0, 114, 255, 0.4); display: none; z-index: 10; }
 
         /* Modal Enhancements */
-        .modal-content { border-radius: 24px; border: none; box-shadow: 0 25px 50px rgba(0,0,0,0.2); background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); }
+        .modal-content { border-radius: 24px; border: none; box-shadow: 0 25px 50px rgba(0,0,0,0.2); background: rgba(255,255,255,0.98); backdrop-filter: blur(10px); }
         .select-btn { border: 2px solid #e2e8f0; background: #fff; color: #475569; border-radius: 16px; padding: 15px; font-weight: 700; transition: 0.2s; cursor: pointer; text-align: center; }
         .select-btn:hover { border-color: #cbd5e1; }
-        .select-btn.active-staff { border-color: #3b82f6; background: #eff6ff; color: #1d4ed8; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2); }
+        .select-btn.active-staff { border-color: #0d6efd; background: #eff6ff; color: #0d6efd; box-shadow: 0 4px 15px rgba(13, 110, 253, 0.2); }
         .select-btn.active-duration { border-color: #10b981; background: #ecfdf5; color: #047857; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2); }
 
         /* Admin Panel Customization */
-        .admin-header { background: #1e293b; color: white; padding: 25px; border-radius: 24px 24px 0 0; }
+        .admin-header { background: #0a192f; color: white; padding: 25px; border-radius: 24px 24px 0 0; }
         .nav-tabs { border-bottom: 2px solid #e2e8f0; padding: 0 20px; background: white; }
         .nav-tabs .nav-link { font-weight: 600; color: #64748b; padding: 15px 20px; border: none; margin-bottom: -2px; }
-        .nav-tabs .nav-link.active { color: #ee0979; border-bottom: 3px solid #ee0979; background: transparent; }
+        .nav-tabs .nav-link.active { color: #0d6efd; border-bottom: 3px solid #0d6efd; background: transparent; }
         .tab-content-admin { background: #f8fafc; padding: 30px; border-radius: 0 0 24px 24px; }
         
         .stats-card { background: #fff; border-radius: 20px; padding: 25px 15px; border: 1px solid #e2e8f0; box-shadow: 0 10px 20px rgba(0,0,0,0.02); text-align: center; transition: 0.3s; }
-        .stats-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.05); }
+        .stats-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(13, 110, 253, 0.08); border-color: #dbeafe; }
         
         /* Table Styling */
         .table-modern { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
@@ -123,11 +114,6 @@
     </style>
 </head>
 <body>
-
-    <!-- CUSTOM 30-SEC REMINDER POPUP -->
-    <div id="customReminder">
-        <i class="bi bi-exclamation-triangle-fill"></i> कस्टमर इंतजार कर रहा है, जल्दी एंट्री करें!
-    </div>
 
     <!-- Admin Toggle Button -->
     <button id="adminToggleBtn" class="btn btn-dark admin-link" onclick="toggleAdmin()">
@@ -148,12 +134,12 @@
             </div>
             
             <div class="p-4 p-md-5 position-relative bg-white">
-                <span id="vipBadge" class="vip-badge"><i class="bi bi-star-fill"></i> VIP Customer</span>
+                <span id="vipBadge" class="vip-badge"><i class="bi bi-star-fill text-warning"></i> VIP Customer</span>
                 
                 <div class="row g-4 mt-2">
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input type="text" id="vehicleNo" class="form-control text-uppercase" placeholder="HR12AB1234" onkeyup="autoFillAndHistory()" autocomplete="off"/>
+                            <input type="text" id="vehicleNo" class="form-control text-uppercase fw-bold text-primary" placeholder="HR12AB1234" onkeyup="autoFillAndHistory()" autocomplete="off"/>
                             <label for="vehicleNo">Vehicle Number <span class="text-danger">*</span></label>
                         </div>
                     </div>
@@ -188,16 +174,17 @@
                         </button>
                     </div>
 
-                    <!-- Auto Reminder Toggle -->
+                    <!-- PC Notification Reminder Toggle -->
                     <div class="col-12 mt-3 text-center">
                         <div class="d-inline-flex align-items-center p-2 px-4 border rounded-pill bg-light shadow-sm">
                             <div class="form-check form-switch m-0 p-0 d-flex align-items-center">
-                                <input class="form-check-input ms-0 me-2" type="checkbox" id="reminderToggle" style="cursor:pointer; width: 40px; height: 20px;" onchange="toggleAppReminder()">
-                                <label class="form-check-label text-danger fw-bold" for="reminderToggle" style="cursor:pointer; font-size: 0.95rem; margin-top: 2px;">
-                                    🔔 30-Sec Auto Alert
+                                <input class="form-check-input ms-0 me-2" type="checkbox" id="reminderToggle" style="cursor:pointer; width: 40px; height: 20px;" onchange="togglePCNotificationReminder()">
+                                <label class="form-check-label text-primary fw-bold" for="reminderToggle" style="cursor:pointer; font-size: 0.95rem; margin-top: 2px;">
+                                    🔔 PC Background Reminder (30s)
                                 </label>
                             </div>
                         </div>
+                        <div class="small text-muted mt-1">ऑन रहने पर, ब्राउज़र मिनीमाइज़ होने पर भी डेस्कटॉप नोटिफिकेशन आएगा।</div>
                     </div>
                 </div>
             </div>
@@ -264,7 +251,7 @@
             
             <div class="admin-header d-flex justify-content-between align-items-center">
                 <div>
-                    <h3 class="fw-bold m-0"><i class="bi bi-grid-1x2-fill text-warning me-2"></i> Business Hub</h3>
+                    <h3 class="fw-bold m-0"><i class="bi bi-grid-1x2-fill text-info me-2"></i> Business Hub</h3>
                     <p class="m-0 text-light opacity-75 small mt-1">Manage operations and analytics</p>
                 </div>
                 <button class="btn btn-outline-light rounded-pill px-4 fw-bold" onclick="logoutAdmin()">Logout</button>
@@ -397,7 +384,7 @@
         let selectedStaff = "";
         let selectedDuration = 0;
         let pendingFormData = {};
-        let reminderTimer = null;
+        let pcReminderTimer = null; // Timer for system notification
         let globalStaffList = [];
 
         function getLocalDate(dateObj = new Date()) {
@@ -471,7 +458,7 @@
             const fuel = document.getElementById('fuelType').value;
 
             if (!vehicle || mobile.length < 10) {
-                Swal.fire({ icon: 'error', title: 'Invalid Input', text: 'सही Vehicle No और Mobile No डालें!', confirmButtonColor: '#ff0844' });
+                Swal.fire({ icon: 'error', title: 'Invalid Input', text: 'सही Vehicle No और Mobile No डालें!', confirmButtonColor: '#0d6efd' });
                 return;
             }
 
@@ -551,29 +538,56 @@
             });
         };
 
-        // ========== INTERESTING 30-SEC REMINDER ==========
-        window.toggleAppReminder = function() {
+        // ========== PC BACKGROUND NOTIFICATION REMINDER (Web Notifications API) ==========
+        window.togglePCNotificationReminder = function() {
             const isChecked = document.getElementById('reminderToggle').checked;
-            const banner = document.getElementById('customReminder');
 
             if (isChecked) {
-                if (reminderTimer) clearInterval(reminderTimer);
-                Swal.fire({ toast: true, position: 'bottom-end', icon: 'success', title: 'Auto Reminder Activated', showConfirmButton: false, timer: 1500 });
-                
-                reminderTimer = setInterval(() => {
-                    banner.classList.add('show');
-                    if(navigator.vibrate) navigator.vibrate([200, 100, 200]);
-                    setTimeout(() => { banner.classList.remove('show'); }, 4000);
-                }, 30000); 
+                // Browser support check
+                if (!("Notification" in window)) {
+                    Swal.fire({ icon: 'error', title: 'Not Supported', text: 'आपका ब्राउज़र डेस्कटॉप नोटिफिकेशन सपोर्ट नहीं करता।' });
+                    document.getElementById('reminderToggle').checked = false;
+                    return;
+                }
+
+                if (Notification.permission !== "granted") {
+                    Notification.requestPermission().then(permission => {
+                        if (permission === "granted") {
+                            startPCNotificationTimer();
+                            Swal.fire({ toast: true, position: 'bottom-end', icon: 'success', title: 'PC Notifications ON', showConfirmButton: false, timer: 1500 });
+                        } else {
+                            Swal.fire({ icon: 'warning', title: 'Permission Denied', text: 'PC Notifications के लिए ब्राउज़र से परमिशन Allow करें (URL Bar के पास)।' });
+                            document.getElementById('reminderToggle').checked = false;
+                        }
+                    });
+                } else {
+                    startPCNotificationTimer();
+                    Swal.fire({ toast: true, position: 'bottom-end', icon: 'success', title: 'PC Notifications ON', showConfirmButton: false, timer: 1500 });
+                }
             } else {
-                clearInterval(reminderTimer);
-                reminderTimer = null;
-                banner.classList.remove('show');
-                Swal.fire({ toast: true, position: 'bottom-end', icon: 'info', title: 'Auto Reminder Deactivated', showConfirmButton: false, timer: 1500 });
+                clearInterval(pcReminderTimer);
+                pcReminderTimer = null;
+                Swal.fire({ toast: true, position: 'bottom-end', icon: 'info', title: 'PC Notifications OFF', showConfirmButton: false, timer: 1500 });
             }
         };
 
-        // ========== ADMIN LOGIC (FIXED) ==========
+        function startPCNotificationTimer() {
+            if (pcReminderTimer) clearInterval(pcReminderTimer);
+            
+            pcReminderTimer = setInterval(() => {
+                if (Notification.permission === "granted") {
+                    const notif = new Notification("Shree Ganesh PUC Center", {
+                        body: "⚠️ भाई, गाड़ी की एंट्री करना मत भूलना! कस्टमर इंतजार कर रहा है।",
+                        requireInteraction: false // Automatically dismisses on most OS
+                    });
+                    
+                    // Close after 5 seconds just in case OS doesn't auto-close
+                    setTimeout(() => { notif.close(); }, 5000); 
+                }
+            }, 30000); // 30 seconds interval
+        }
+
+        // ========== ADMIN LOGIC ==========
         window.toggleAdmin = function() {
             const main = document.getElementById('mainSection');
             const admin = document.getElementById('adminSection');
@@ -839,7 +853,7 @@
                         const msg = `🚨 *PUC Expiry Alert*\n\nनमस्ते, आपकी गाड़ी *${d.vehicleNo}* का PUC आज खत्म हो रहा है! चालान से बचने के लिए तुरंत रिन्यू कराएं।\n\n🎁 *TyreXpert ऑफर:* अपना PUC रिन्यू कराएं और पाएं फ्री टायर्स एयर प्रेशर चेकअप!\n\n📍 *Shree Ganesh PUC Center*, पहली पुलिया, सेक्टर 6-7 रोड।`;
                         container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-2 border rounded-3 p-3 bg-white">
                             <span><strong class="fs-5">${d.vehicleNo}</strong> <br><small class="text-muted"><i class="bi bi-telephone-fill"></i> ${d.mobileNo}</small></span> 
-                            <button class="btn btn-success fw-bold rounded-pill px-3" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-whatsapp me-1"></i> Send</button>
+                            <button class="btn btn-primary fw-bold rounded-pill px-3" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-whatsapp me-1"></i> Send</button>
                         </div>`;
                     });
                 }
@@ -879,6 +893,11 @@
                     });
                 }
             });
+        };
+
+        // Init
+        window.onload = function() {
+            toggleFuel();
         };
     </script>
 </body>
