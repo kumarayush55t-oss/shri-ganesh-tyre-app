@@ -5,139 +5,198 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Shree Ganesh Pollution Checking Center</title>
 
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Modern & Clean -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
-    <!-- Bootstrap CSS + JS -->
+    <!-- Bootstrap 5 CSS + JS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" />
 
-    <!-- SweetAlert2 (For Premium Popups) -->
+    <!-- SweetAlert2 (Premium Alerts) -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <!-- jsPDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
-
     <style>
-        /* ================= PREMIUM UI CSS ================= */
-        body { font-family: 'Poppins', sans-serif; background: #f0f2f5; color: #2b2b2b; padding-bottom: 50px; }
-        .container-custom { max-width: 800px; margin: auto; padding-top: 20px; }
-        
-        .card-main { border-radius: 20px; border: none; box-shadow: 0 10px 40px rgba(0,0,0,0.08); background: #ffffff; overflow: hidden; }
-        .gradient-header { background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%); color: white; padding: 25px 20px; text-align: center; position: relative; }
-        .gradient-header h2 { font-weight: 700; letter-spacing: 1px; margin: 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
-        
-        .form-floating > label { color: #6c757d; font-weight: 500; }
-        .form-control:focus, .form-select:focus { box-shadow: 0 0 0 0.25rem rgba(255, 126, 95, 0.25); border-color: #ff7e5f; }
-        
-        .btn-gradient { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; border: none; font-weight: 600; box-shadow: 0 4px 15px rgba(17, 153, 142, 0.4); transition: 0.3s; }
-        .btn-gradient:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(17, 153, 142, 0.6); color: white; }
+        /* ================= ULTRA PREMIUM UI CSS (GLASSMORPHISM) ================= */
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%); 
+            color: #2b3240; 
+            min-height: 100vh;
+            padding: 20px 0 60px 0;
+        }
 
-        /* Custom In-App Reminder Animation */
+        .container-custom { max-width: 850px; margin: auto; }
+        
+        /* Glass Card Effect */
+        .card-main { 
+            background: rgba(255, 255, 255, 0.9); 
+            backdrop-filter: blur(15px); 
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 24px; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.05); 
+            overflow: hidden; 
+            transition: all 0.3s ease;
+        }
+
+        .gradient-header { 
+            background: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%); 
+            color: white; 
+            padding: 30px 20px; 
+            text-align: center; 
+            position: relative; 
+        }
+        
+        .gradient-header h2 { font-weight: 800; letter-spacing: 0.5px; margin: 0; text-shadow: 2px 4px 10px rgba(0,0,0,0.2); }
+        .brand-badge { background: rgba(255,255,255,0.2); backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.3); padding: 5px 15px; border-radius: 50px; font-size: 0.85rem; font-weight: 600; }
+
+        /* Floating Inputs Modernized */
+        .form-floating > label { color: #8492a6; font-weight: 500; }
+        .form-control, .form-select { border-radius: 12px; border: 2px solid #e9ecef; background: #f8fafc; font-weight: 600; color: #1e293b; transition: 0.3s; }
+        .form-control:focus, .form-select:focus { background: #fff; box-shadow: 0 0 0 4px rgba(238, 9, 121, 0.1); border-color: #ee0979; }
+
+        /* Premium Buttons */
+        .btn-gradient { 
+            background: linear-gradient(135deg, #00b4db 0%, #0083b0 100%); 
+            color: white; 
+            border: none; 
+            font-weight: 700; 
+            letter-spacing: 1px;
+            box-shadow: 0 8px 20px rgba(0, 131, 176, 0.3); 
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
+        }
+        .btn-gradient:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(0, 131, 176, 0.4); color: white; }
+
+        /* Radio Buttons (Vehicle Type) */
+        .btn-outline-dark { border: 2px solid #e2e8f0; color: #64748b; font-weight: 600; border-radius: 12px !important; margin: 0 5px; }
+        .btn-check:checked + .btn-outline-dark { background: #1e293b; color: #fff; border-color: #1e293b; box-shadow: 0 4px 15px rgba(30, 41, 59, 0.3); }
+
+        /* 30-Sec Reminder Animation */
         #customReminder {
             position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
             background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);
-            color: white; padding: 15px 30px; border-radius: 50px; font-weight: bold; font-size: 1.1rem;
+            color: white; padding: 15px 35px; border-radius: 50px; font-weight: 700; font-size: 1.1rem;
             box-shadow: 0 10px 30px rgba(255, 8, 68, 0.5); z-index: 9999; transition: top 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
-        #customReminder.show { top: 30px; animation: shake 0.5s ease-in-out 0.5s; }
-        @keyframes shake { 0%, 100% {transform: translateX(-50%);} 25% {transform: translateX(-55%);} 75% {transform: translateX(-45%);} }
+        #customReminder.show { top: 30px; animation: pulseAlert 1s infinite; }
+        @keyframes pulseAlert { 0% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.05); } 100% { transform: translateX(-50%) scale(1); } }
 
-        /* Admin UI */
-        .admin-link { position: fixed; bottom: 20px; right: 20px; z-index: 999; box-shadow: 0 4px 10px rgba(0,0,0,0.2); border-radius: 50px; font-weight: 600; padding: 10px 25px; }
-        .tab-content-admin { background: white; padding: 25px; border-radius: 0 0 15px 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .nav-tabs .nav-link { font-weight: 500; color: #6c757d; padding: 12px 15px; border: none; }
-        .nav-tabs .nav-link.active { color: #ff7e5f; border-bottom: 3px solid #ff7e5f; background: transparent; font-weight: 700; }
-        .stats-card { background: #fff; border-radius: 15px; padding: 20px; border: 1px solid #eee; box-shadow: 0 4px 10px rgba(0,0,0,0.03); text-align: center; }
+        /* Admin Floating Button */
+        .admin-link { position: fixed; bottom: 25px; right: 25px; z-index: 1050; box-shadow: 0 10px 25px rgba(0,0,0,0.2); border-radius: 50px; font-weight: 700; padding: 12px 25px; transition: 0.3s; border: none; }
+        .admin-link:hover { transform: scale(1.05); }
+
+        /* VIP Badge */
+        .vip-badge { position: absolute; right: 20px; top: -15px; background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); color: #fff; font-size: 0.8rem; padding: 6px 15px; border-radius: 50px; font-weight: 800; box-shadow: 0 5px 15px rgba(253, 160, 133, 0.4); display: none; z-index: 10; }
+
+        /* Modal Enhancements */
+        .modal-content { border-radius: 24px; border: none; box-shadow: 0 25px 50px rgba(0,0,0,0.2); background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); }
+        .select-btn { border: 2px solid #e2e8f0; background: #fff; color: #475569; border-radius: 16px; padding: 15px; font-weight: 700; transition: 0.2s; cursor: pointer; text-align: center; }
+        .select-btn:hover { border-color: #cbd5e1; }
+        .select-btn.active-staff { border-color: #3b82f6; background: #eff6ff; color: #1d4ed8; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2); }
+        .select-btn.active-duration { border-color: #10b981; background: #ecfdf5; color: #047857; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2); }
+
+        /* Admin Panel Customization */
+        .admin-header { background: #1e293b; color: white; padding: 25px; border-radius: 24px 24px 0 0; }
+        .nav-tabs { border-bottom: 2px solid #e2e8f0; padding: 0 20px; background: white; }
+        .nav-tabs .nav-link { font-weight: 600; color: #64748b; padding: 15px 20px; border: none; margin-bottom: -2px; }
+        .nav-tabs .nav-link.active { color: #ee0979; border-bottom: 3px solid #ee0979; background: transparent; }
+        .tab-content-admin { background: #f8fafc; padding: 30px; border-radius: 0 0 24px 24px; }
         
-        .hidden { display: none !important; }
-        .vip-badge { position: absolute; right: 15px; top: 15px; background: #ffc107; color: #000; font-size: 0.75rem; padding: 4px 10px; border-radius: 20px; font-weight: bold; display: none; }
-
-        /* Modal Custom Buttons */
-        .select-btn { border: 2px solid #dee2e6; background: white; color: #495057; border-radius: 12px; padding: 15px; font-weight: 600; transition: 0.2s; cursor: pointer; text-align: center; }
-        .select-btn.active-staff { border-color: #0d6efd; background: #e9f2ff; color: #0d6efd; box-shadow: 0 4px 10px rgba(13, 110, 253, 0.2); }
-        .select-btn.active-duration { border-color: #198754; background: #e8f9f0; color: #198754; box-shadow: 0 4px 10px rgba(25, 135, 84, 0.2); }
+        .stats-card { background: #fff; border-radius: 20px; padding: 25px 15px; border: 1px solid #e2e8f0; box-shadow: 0 10px 20px rgba(0,0,0,0.02); text-align: center; transition: 0.3s; }
+        .stats-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.05); }
+        
+        /* Table Styling */
+        .table-modern { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
+        .table-modern thead { background: #f1f5f9; color: #475569; }
+        .table-modern th, .table-modern td { padding: 15px; vertical-align: middle; border-bottom: 1px solid #f1f5f9; }
+        
+        /* Utility */
+        .smooth-fade { animation: fadeIn 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
     <!-- CUSTOM 30-SEC REMINDER POPUP -->
     <div id="customReminder">
-        <i class="bi bi-bell-fill"></i> ⚠️ अलर्ट: कस्टमर इंतजार कर रहा है, जल्दी एंट्री करें!
+        <i class="bi bi-exclamation-triangle-fill"></i> कस्टमर इंतजार कर रहा है, जल्दी एंट्री करें!
     </div>
 
-    <!-- Admin Toggle Button (Moved to bottom right to avoid header overlap) -->
+    <!-- Admin Toggle Button -->
     <button id="adminToggleBtn" class="btn btn-dark admin-link" onclick="toggleAdmin()">
-        <i class="bi bi-shield-lock-fill"></i> Admin Panel
+        <i class="bi bi-shield-lock-fill me-1"></i> Admin Panel
     </button>
 
-    <!-- ========== MAIN ENTRY SECTION ========== -->
-    <div id="mainSection" class="container container-custom">
+    <!-- ==========================================
+         MAIN ENTRY SECTION
+    =========================================== -->
+    <div id="mainSection" class="container container-custom smooth-fade">
         <div class="card-main">
             <div class="gradient-header">
                 <h2>Shree Ganesh PUC Center</h2>
                 <p class="m-0 text-light opacity-75 mt-1" id="todayDate"></p>
-                <div class="mt-2">
-                    <span class="badge bg-light text-dark shadow-sm">Partnered with TyreXpert</span>
+                <div class="mt-3">
+                    <span class="brand-badge"><i class="bi bi-award-fill text-warning"></i> Powered by TyreXpert</span>
                 </div>
             </div>
             
-            <div class="p-4 p-md-5 position-relative">
-                <span id="vipBadge" class="vip-badge shadow-sm"><i class="bi bi-star-fill"></i> VIP Customer</span>
+            <div class="p-4 p-md-5 position-relative bg-white">
+                <span id="vipBadge" class="vip-badge"><i class="bi bi-star-fill"></i> VIP Customer</span>
                 
-                <div class="row g-4 mt-1">
+                <div class="row g-4 mt-2">
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input type="text" id="vehicleNo" class="form-control fw-bold" placeholder="HR12 AB 1234" onkeyup="this.value=this.value.toUpperCase(); autoFillAndHistory()" autocomplete="off"/>
-                            <label for="vehicleNo">Vehicle No <span class="text-danger">*</span></label>
+                            <input type="text" id="vehicleNo" class="form-control text-uppercase" placeholder="HR12AB1234" onkeyup="autoFillAndHistory()" autocomplete="off"/>
+                            <label for="vehicleNo">Vehicle Number <span class="text-danger">*</span></label>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating">
                             <input type="number" id="mobileNo" class="form-control fw-bold" placeholder="9876543210" autocomplete="off"/>
-                            <label for="mobileNo">Mobile No <span class="text-danger">*</span></label>
+                            <label for="mobileNo">Mobile Number <span class="text-danger">*</span></label>
                         </div>
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label text-muted small fw-bold">Vehicle Type</label>
-                        <div class="btn-group w-100 shadow-sm" role="group">
+                        <label class="form-label text-muted small fw-bold ms-1">Vehicle Type</label>
+                        <div class="btn-group w-100" role="group">
                             <input type="radio" class="btn-check" name="vehicleType" id="twoW" value="2 Wheeler" checked onclick="toggleFuel()" />
-                            <label class="btn btn-outline-dark" for="twoW"><i class="bi bi-bicycle text-primary"></i> 2 Wheeler</label>
+                            <label class="btn btn-outline-dark" for="twoW"><i class="bi bi-bicycle"></i> 2 Wheeler</label>
                             
                             <input type="radio" class="btn-check" name="vehicleType" id="fourW" value="4 Wheeler" onclick="toggleFuel()" />
-                            <label class="btn btn-outline-dark" for="fourW"><i class="bi bi-car-front text-danger"></i> 4 Wheeler</label>
+                            <label class="btn btn-outline-dark" for="fourW"><i class="bi bi-car-front"></i> 4 Wheeler</label>
                         </div>
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label text-muted small fw-bold">Fuel Type</label>
-                        <select id="fuelType" class="form-select form-select-lg shadow-sm" style="height: calc(3.5rem + 2px);">
+                        <label class="form-label text-muted small fw-bold ms-1">Fuel Type</label>
+                        <select id="fuelType" class="form-select form-select-lg" style="height: calc(3.5rem + 2px);">
                             <option value="Petrol">Petrol</option>
                         </select>
                     </div>
 
-                    <div class="col-12 mt-4">
+                    <div class="col-12 mt-5">
                         <button class="btn btn-gradient w-100 py-3 fs-5 rounded-pill" onclick="initiateSubmit()">
-                            <i class="bi bi-lightning-charge-fill text-warning"></i> Save PUC Entry
+                            <i class="bi bi-cloud-check-fill me-2"></i> Save & Continue
                         </button>
                     </div>
 
-                    <!-- NOTIFICATION TOGGLE -->
-                    <div class="col-12 mt-2 text-center">
-                        <div class="form-check form-switch d-inline-block p-2 border rounded-pill bg-light shadow-sm">
-                            <input class="form-check-input ms-0 me-2" type="checkbox" id="reminderToggle" style="cursor:pointer; width: 40px; height: 20px;" onchange="toggleAppReminder()">
-                            <label class="form-check-label text-danger fw-bold" for="reminderToggle" style="cursor:pointer; font-size: 0.9rem;">
-                                🔔 30-Sec Auto Alert (ON/OFF)
-                            </label>
+                    <!-- Auto Reminder Toggle -->
+                    <div class="col-12 mt-3 text-center">
+                        <div class="d-inline-flex align-items-center p-2 px-4 border rounded-pill bg-light shadow-sm">
+                            <div class="form-check form-switch m-0 p-0 d-flex align-items-center">
+                                <input class="form-check-input ms-0 me-2" type="checkbox" id="reminderToggle" style="cursor:pointer; width: 40px; height: 20px;" onchange="toggleAppReminder()">
+                                <label class="form-check-label text-danger fw-bold" for="reminderToggle" style="cursor:pointer; font-size: 0.95rem; margin-top: 2px;">
+                                    🔔 30-Sec Auto Alert
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -145,154 +204,166 @@
         </div>
     </div>
 
-    <!-- ========== UNIFIED ENTRY MODAL (STAFF & DURATION) ========== -->
+    <!-- ==========================================
+         UNIFIED ENTRY MODAL (STAFF & DURATION)
+    =========================================== -->
     <div class="modal fade" id="entryModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content" style="border-radius: 20px; border: none; overflow: hidden;">
-                <div class="modal-header bg-light border-0">
-                    <h5 class="modal-title fw-bold text-center w-100 text-primary">Finalize Entry</h5>
+            <div class="modal-content">
+                <div class="modal-header bg-light border-0 py-3">
+                    <h5 class="modal-title fw-bold text-center w-100 text-dark">Finalize Entry</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="resetModalSelections()"></button>
                 </div>
-                <div class="modal-body p-4">
+                <div class="modal-body p-4 p-md-5">
                     
-                    <!-- Step 1: Staff -->
-                    <h6 class="fw-bold mb-3 text-secondary">1. किसने एंट्री की है? (Staff)</h6>
-                    <div class="row g-2 mb-4" id="modalStaffContainer">
-                        <!-- Staff buttons will load here dynamically -->
-                        <div class="col-12 text-center text-muted small">Loading staff...</div>
+                    <h6 class="fw-bold mb-3 text-secondary">1. Select Staff (किसने एंट्री की है?)</h6>
+                    <div class="row g-3 mb-5" id="modalStaffContainer">
+                        <!-- Dynamically loaded -->
                     </div>
 
-                    <!-- Step 2: Duration -->
-                    <h6 class="fw-bold mb-3 text-secondary">2. कितने महीने का PUC है? (Duration)</h6>
-                    <div class="row g-2 mb-4">
+                    <h6 class="fw-bold mb-3 text-secondary">2. Select Duration (कितने महीने?)</h6>
+                    <div class="row g-3 mb-4">
                         <div class="col-6">
-                            <div class="select-btn duration-opt" data-val="6" onclick="selectDuration(this, 6)">6 Months</div>
+                            <div class="select-btn duration-opt" onclick="selectDuration(this, 6)">6 Months</div>
                         </div>
                         <div class="col-6">
-                            <div class="select-btn duration-opt" data-val="12" onclick="selectDuration(this, 12)">12 Months</div>
+                            <div class="select-btn duration-opt" onclick="selectDuration(this, 12)">12 Months</div>
                         </div>
                     </div>
 
-                    <button class="btn btn-primary w-100 py-3 rounded-pill fw-bold fs-5 shadow" onclick="finalizeSubmit()">
-                        <i class="bi bi-check-circle-fill"></i> Confirm & Save
+                    <button class="btn btn-primary w-100 py-3 rounded-pill fw-bold fs-5 mt-3 shadow" onclick="finalizeSubmit()">
+                        Confirm & Save Data <i class="bi bi-arrow-right-circle-fill ms-2"></i>
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ========== ADMIN SECTION ========== -->
-    <div id="adminSection" class="container container-custom hidden">
+    <!-- ==========================================
+         ADMIN SECTION
+    =========================================== -->
+    <div id="adminSection" class="container container-custom d-none smooth-fade">
+        
         <!-- LOGIN SCREEN -->
-        <div id="loginScreen" class="card-main p-5 mt-4" style="max-width: 400px; margin: auto;">
-            <h4 class="text-center fw-bold mb-4"><i class="bi bi-shield-lock text-primary"></i> Admin Auth</h4>
-            <div id="passwordSetupMsg" class="alert alert-info small text-center">Checking Security...</div>
-            <div class="form-floating mb-4">
-                <input type="password" id="adminPasswordInput" class="form-control" placeholder="Password" />
-                <label>Enter Admin Password</label>
+        <div id="loginScreen" class="card-main p-5 mt-5 text-center" style="max-width: 450px; margin: auto;">
+            <div class="mb-4">
+                <i class="bi bi-shield-lock-fill text-primary" style="font-size: 3rem;"></i>
             </div>
-            <button class="btn btn-dark w-100 py-2 rounded-pill fw-bold" onclick="handleAdminAuth()">Access Panel</button>
+            <h3 class="fw-bold mb-2">Admin Access</h3>
+            <p id="passwordSetupMsg" class="text-muted small mb-4">Checking Security Status...</p>
+            
+            <div class="form-floating mb-4">
+                <input type="password" id="adminPasswordInput" class="form-control rounded-pill px-4" placeholder="Password" />
+                <label class="ms-2">Enter Secure Password</label>
+            </div>
+            <button class="btn btn-dark w-100 py-3 rounded-pill fw-bold fs-5" onclick="handleAdminAuth()">Authenticate</button>
         </div>
 
         <!-- MAIN DASHBOARD -->
-        <div id="adminDashboard" class="hidden mt-2">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h3 class="fw-bold m-0"><i class="bi bi-bar-chart-line-fill text-primary"></i> Business Hub</h3>
+        <div id="adminDashboard" class="card-main d-none mt-2">
+            
+            <div class="admin-header d-flex justify-content-between align-items-center">
+                <div>
+                    <h3 class="fw-bold m-0"><i class="bi bi-grid-1x2-fill text-warning me-2"></i> Business Hub</h3>
+                    <p class="m-0 text-light opacity-75 small mt-1">Manage operations and analytics</p>
+                </div>
+                <button class="btn btn-outline-light rounded-pill px-4 fw-bold" onclick="logoutAdmin()">Logout</button>
             </div>
 
             <ul class="nav nav-tabs" id="adminTabs" role="tablist">
                 <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabDashboard">Overview</button></li>
-                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabStaff">Staff & Analytics</button></li>
-                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabManage">Manage Data</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabStaff">Staff Mgmt</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabManage">Edit Records</button></li>
                 <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabReminder">Reminders</button></li>
             </ul>
 
-            <div class="tab-content tab-content-admin border-top-0">
+            <div class="tab-content tab-content-admin">
+                
                 <!-- 1. Dashboard Overview -->
-                <div class="tab-pane show active" id="tabDashboard">
-                    <div class="row g-2 mb-4">
-                        <div class="col-md-6">
-                            <select id="dashTimeFilter" class="form-select bg-light border-0 shadow-sm" onchange="loadDashboard()">
+                <div class="tab-pane show active smooth-fade" id="tabDashboard">
+                    <div class="row g-3 mb-4 align-items-end">
+                        <div class="col-md-4">
+                            <label class="small text-muted fw-bold ms-1">Time Frame</label>
+                            <select id="dashTimeFilter" class="form-select shadow-sm" onchange="loadDashboard()">
                                 <option value="today">Today (आज)</option>
                                 <option value="all_time">All Time (शुरू से)</option>
                             </select>
                         </div>
                     </div>
                     <div class="row g-3" id="dashboardStats">
-                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-1 small">Total Entries</p><h2 id="statTotal" class="text-primary fw-bold m-0">0</h2></div></div>
-                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-1 small">2 Wheeler</p><h2 id="stat2W" class="text-success fw-bold m-0">0</h2></div></div>
-                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-1 small">4 Wheeler</p><h2 id="stat4W" class="text-danger fw-bold m-0">0</h2></div></div>
-                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-1 small">Fuel (P / D)</p><h4 id="statFuel" class="fw-bold m-0 mt-1">0 / 0</h4></div></div>
+                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-1 small fw-bold">Total Entries</p><h1 id="statTotal" class="text-primary fw-bolder m-0">0</h1></div></div>
+                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-1 small fw-bold">2 Wheeler</p><h1 id="stat2W" class="text-success fw-bolder m-0">0</h1></div></div>
+                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-1 small fw-bold">4 Wheeler</p><h1 id="stat4W" class="text-danger fw-bolder m-0">0</h1></div></div>
+                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-1 small fw-bold">Fuel (P / D)</p><h3 id="statFuel" class="text-dark fw-bolder m-0 mt-2">0 / 0</h3></div></div>
                     </div>
                 </div>
 
                 <!-- 2. Staff Management & Analytics -->
-                <div class="tab-pane" id="tabStaff">
+                <div class="tab-pane smooth-fade" id="tabStaff">
                     <div class="row g-4">
                         <div class="col-md-6">
-                            <div class="card border-0 bg-light p-3 rounded-4 shadow-sm h-100">
-                                <h6 class="fw-bold text-primary"><i class="bi bi-people-fill"></i> Manage Staff</h6>
-                                <hr>
-                                <div class="input-group mb-3">
+                            <div class="bg-white p-4 rounded-4 shadow-sm border h-100">
+                                <h6 class="fw-bold text-dark mb-3"><i class="bi bi-person-plus-fill text-primary me-2"></i> Manage Staff</h6>
+                                <div class="input-group mb-4">
                                     <input type="text" id="newStaffName" class="form-control" placeholder="Enter Staff Name">
-                                    <button class="btn btn-success fw-bold" onclick="addStaff()">Add</button>
+                                    <button class="btn btn-primary fw-bold px-4" onclick="addStaff()">Add</button>
                                 </div>
-                                <ul class="list-group list-group-flush bg-transparent" id="adminStaffList">
-                                    <!-- Staff list loads here -->
-                                </ul>
+                                <ul class="list-group list-group-flush" id="adminStaffList"></ul>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="card border-0 bg-light p-3 rounded-4 shadow-sm h-100">
-                                <div class="d-flex justify-content-between">
-                                    <h6 class="fw-bold text-success"><i class="bi bi-graph-up-arrow"></i> Today's Performance</h6>
-                                    <button class="btn btn-sm btn-outline-dark py-0" onclick="loadStaffAnalytics()"><i class="bi bi-arrow-clockwise"></i></button>
+                            <div class="bg-white p-4 rounded-4 shadow-sm border h-100">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h6 class="fw-bold text-dark m-0"><i class="bi bi-graph-up-arrow text-success me-2"></i> Today's Leaderboard</h6>
+                                    <button class="btn btn-sm btn-light border" onclick="loadStaffAnalytics()"><i class="bi bi-arrow-clockwise"></i></button>
                                 </div>
-                                <hr>
-                                <div id="staffAnalyticsContainer">
-                                    <p class="text-muted small">Loading data...</p>
-                                </div>
+                                <div id="staffAnalyticsContainer"></div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- 3. Manage Data & Edit -->
-                <div class="tab-pane" id="tabManage">
-                    <div class="row g-2 align-items-end mb-3 bg-light p-3 rounded-4 shadow-sm">
-                        <div class="col-md-4"><label class="small text-muted">From Date</label><input type="date" id="manageFrom" class="form-control border-0 shadow-sm" /></div>
-                        <div class="col-md-4"><label class="small text-muted">To Date</label><input type="date" id="manageTo" class="form-control border-0 shadow-sm" /></div>
-                        <div class="col-md-4"><button class="btn btn-primary w-100 shadow-sm fw-bold" onclick="loadManageData()">Get Data</button></div>
+                <div class="tab-pane smooth-fade" id="tabManage">
+                    <div class="row g-3 align-items-end mb-4 bg-white p-3 rounded-4 shadow-sm border">
+                        <div class="col-md-4"><label class="small text-muted fw-bold ms-1">From Date</label><input type="date" id="manageFrom" class="form-control" /></div>
+                        <div class="col-md-4"><label class="small text-muted fw-bold ms-1">To Date</label><input type="date" id="manageTo" class="form-control" /></div>
+                        <div class="col-md-4"><button class="btn btn-dark w-100 fw-bold py-2" onclick="loadManageData()">Fetch Records</button></div>
                     </div>
-                    <div class="table-responsive border rounded-3">
-                        <table class="table table-hover align-middle mb-0 text-center" style="font-size: 0.9rem;">
-                            <thead class="table-light text-muted">
+                    <div class="table-responsive table-modern">
+                        <table class="table mb-0 text-center align-middle">
+                            <thead>
                                 <tr><th>Vehicle</th><th>Mobile</th><th>Type/Fuel</th><th>Staff</th><th>Date</th><th>Action</th></tr>
                             </thead>
                             <tbody id="manageTableBody">
-                                <tr><td colspan="6" class="py-3 text-muted">Select dates and click Get Data</td></tr>
+                                <tr><td colspan="6" class="py-4 text-muted">Select dates and click Fetch Records</td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
                 <!-- 4. Reminders & Lost Customers -->
-                <div class="tab-pane" id="tabReminder">
-                    <ul class="nav nav-pills mb-3 bg-light p-1 rounded-pill" id="remSubTabs" role="tablist" style="font-size: 0.9rem;">
-                        <li class="nav-item"><button class="nav-link active rounded-pill px-3" data-bs-toggle="pill" data-bs-target="#remToday">⚠️ आज Expire</button></li>
-                        <li class="nav-item"><button class="nav-link rounded-pill px-3" data-bs-toggle="pill" data-bs-target="#remUpcoming">📅 5 दिन में</button></li>
-                        <li class="nav-item"><button class="nav-link rounded-pill px-3 text-danger fw-bold" data-bs-toggle="pill" data-bs-target="#remLost">💔 Lost Customers</button></li>
+                <div class="tab-pane smooth-fade" id="tabReminder">
+                    <ul class="nav nav-pills mb-4 bg-white p-2 rounded-pill shadow-sm border d-inline-flex" id="remSubTabs" role="tablist">
+                        <li class="nav-item"><button class="nav-link active rounded-pill px-4 fw-bold" data-bs-toggle="pill" data-bs-target="#remToday">⚠️ आज Expire</button></li>
+                        <li class="nav-item"><button class="nav-link rounded-pill px-4 fw-bold" data-bs-toggle="pill" data-bs-target="#remUpcoming">📅 5 दिन में</button></li>
+                        <li class="nav-item"><button class="nav-link rounded-pill px-4 text-danger fw-bold" data-bs-toggle="pill" data-bs-target="#remLost">💔 Lost Customers</button></li>
                     </ul>
                     <div class="tab-content">
+                        <!-- Today -->
                         <div class="tab-pane show active" id="remToday">
-                            <div class="alert alert-warning py-2 mb-3 small fw-bold">Note: Send Alert पर क्लिक करने से कस्टमर को WhatsApp पर मैसेज जाएगा।</div>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="small text-muted fw-bold"><i class="bi bi-info-circle"></i> Send will open WhatsApp</span>
+                            </div>
                             <div id="todayExpiryList" class="list-group shadow-sm border-0"></div>
                         </div>
+                        <!-- Upcoming -->
                         <div class="tab-pane" id="remUpcoming">
                             <div id="upcomingExpiryList" class="list-group shadow-sm border-0"></div>
                         </div>
+                        <!-- Lost -->
                         <div class="tab-pane" id="remLost">
-                            <div class="alert alert-danger py-2 mb-3 small fw-bold">ये वो गाड़ियां हैं जिनका PUC 15 दिन से ज्यादा समय से एक्सपायर है। इन्हें Special Offer भेजें!</div>
+                            <div class="alert alert-danger py-2 mb-3 small fw-bold text-center border-0 rounded-3">ये वो गाड़ियां हैं जिनका PUC 15 दिन से ज्यादा समय से एक्सपायर है। इन्हें Special Offer भेजें!</div>
                             <div id="lostExpiryList" class="list-group shadow-sm border-0"></div>
                         </div>
                     </div>
@@ -301,6 +372,9 @@
         </div>
     </div>
 
+    <!-- ==========================================
+         JAVASCRIPT LOGIC
+    =========================================== -->
     <script>
         // ========== FIREBASE CONFIG ==========
         const firebaseConfig = {
@@ -333,6 +407,7 @@
             return `${year}-${month}-${day}`;
         }
 
+        // Initialize App
         document.addEventListener('DOMContentLoaded', () => {
             bsEntryModal = new bootstrap.Modal(document.getElementById('entryModal'));
             document.getElementById('todayDate').innerText = new Date().toLocaleDateString('hi-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -341,9 +416,9 @@
             document.getElementById('manageFrom').value = todayStr;
             document.getElementById('manageTo').value = todayStr;
 
-            // Load Staff list from Firebase on boot
             fetchStaffList();
 
+            // Bootstrap Tab Events
             const tabElements = document.querySelectorAll('button[data-bs-toggle="tab"]');
             tabElements.forEach(tab => {
                 tab.addEventListener('shown.bs.tab', event => {
@@ -365,7 +440,7 @@
             else { fuelSelect.innerHTML = `<option value="Petrol">Petrol</option>`; }
         };
 
-        // SMART AUTO-FILL (VIP FEATURE)
+        // SMART AUTO-FILL (VIP)
         window.autoFillAndHistory = function() {
             const vehicle = document.getElementById('vehicleNo').value.trim().toUpperCase();
             const badge = document.getElementById('vipBadge');
@@ -377,20 +452,15 @@
               .then(snap => {
                   if(!snap.empty){
                       const d = snap.docs[0].data();
-                      
-                      // Fill Data automatically
                       document.getElementById('mobileNo').value = d.mobileNo;
                       if(d.vehicleType === '2 Wheeler') { document.getElementById('twoW').click(); } 
                       else { document.getElementById('fourW').click(); }
-                      
                       setTimeout(() => { document.getElementById('fuelType').value = d.fuel; }, 50);
-
-                      // Show VIP Badge
                       badge.style.display = 'block';
                   } else {
                       badge.style.display = 'none';
                   }
-              }).catch(e => console.log(e));
+              }).catch(e => console.log("AutoFill Error:", e));
         };
 
         // MODAL LOGIC
@@ -401,22 +471,22 @@
             const fuel = document.getElementById('fuelType').value;
 
             if (!vehicle || mobile.length < 10) {
-                Swal.fire({ icon: 'error', title: 'Oops...', text: 'सही Vehicle No और Mobile No डालें!', confirmButtonColor: '#ff7e5f' });
+                Swal.fire({ icon: 'error', title: 'Invalid Input', text: 'सही Vehicle No और Mobile No डालें!', confirmButtonColor: '#ff0844' });
                 return;
             }
 
             pendingFormData = { vehicle, mobile, type, fuel };
             
-            // Build Staff Buttons Dynamically
+            // Build Staff Buttons
             const staffContainer = document.getElementById('modalStaffContainer');
             staffContainer.innerHTML = '';
             if(globalStaffList.length === 0){
-                staffContainer.innerHTML = '<div class="col-12 text-danger small">No staff found. Please add in Admin Panel.</div>';
+                staffContainer.innerHTML = '<div class="col-12 text-danger small text-center">No staff found. Please add in Admin Panel.</div>';
             } else {
                 globalStaffList.forEach(name => {
                     staffContainer.innerHTML += `
                         <div class="col-4">
-                            <div class="select-btn staff-opt p-2" onclick="selectStaff(this, '${name}')">${name}</div>
+                            <div class="select-btn staff-opt p-3" onclick="selectStaff(this, '${name}')">${name}</div>
                         </div>`;
                 });
             }
@@ -443,11 +513,11 @@
         };
 
         window.finalizeSubmit = function() {
-            if(!selectedStaff) return Swal.fire({ icon: 'warning', text: 'कृपया स्टाफ का नाम चुनें!' });
-            if(!selectedDuration) return Swal.fire({ icon: 'warning', text: 'कृपया 6 या 12 महीने चुनें!' });
+            if(!selectedStaff) return Swal.fire({ icon: 'warning', title: 'Missing Data', text: 'कृपया स्टाफ का नाम चुनें!' });
+            if(!selectedDuration) return Swal.fire({ icon: 'warning', title: 'Missing Data', text: 'कृपया 6 या 12 महीने चुनें!' });
 
             bsEntryModal.hide();
-            Swal.fire({ title: 'Saving...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
+            Swal.fire({ title: 'Saving Data...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
 
             const today = new Date();
             const expiryDate = new Date(today);
@@ -461,24 +531,23 @@
                 vehicleType: pendingFormData.type,
                 fuel: pendingFormData.fuel,
                 durationMonths: selectedDuration,
-                staffName: selectedStaff, // Added Staff Mapping
+                staffName: selectedStaff,
                 purchaseDate: getLocalDate(today),
                 expiryDate: finalExpiryStr, 
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             }).then(() => {
-                Swal.fire({ icon: 'success', title: 'Saved!', text: 'PUC एंट्री सफलतापूर्वक हो गई है।', timer: 2000, showConfirmButton: false });
+                Swal.fire({ icon: 'success', title: 'Success!', text: 'PUC एंट्री सफलतापूर्वक हो गई है।', timer: 2000, showConfirmButton: false });
                 
-                // Reset Form
+                // Form Reset
                 document.getElementById('vehicleNo').value = '';
                 document.getElementById('mobileNo').value = '';
                 document.getElementById('vipBadge').style.display = 'none';
                 
                 resetModalSelections();
                 pendingFormData = {};
-                
                 if(isAdminLoggedIn) loadDashboard();
             }).catch(err => {
-                Swal.fire({ icon: 'error', title: 'Error', text: err.message });
+                Swal.fire({ icon: 'error', title: 'Database Error', text: err.message });
             });
         };
 
@@ -489,54 +558,62 @@
 
             if (isChecked) {
                 if (reminderTimer) clearInterval(reminderTimer);
-                Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Auto Reminder ON', showConfirmButton: false, timer: 1500 });
+                Swal.fire({ toast: true, position: 'bottom-end', icon: 'success', title: 'Auto Reminder Activated', showConfirmButton: false, timer: 1500 });
                 
                 reminderTimer = setInterval(() => {
                     banner.classList.add('show');
-                    // Vibrate if on mobile
                     if(navigator.vibrate) navigator.vibrate([200, 100, 200]);
-                    
                     setTimeout(() => { banner.classList.remove('show'); }, 4000);
-                }, 30000); // 30 sec
+                }, 30000); 
             } else {
                 clearInterval(reminderTimer);
                 reminderTimer = null;
                 banner.classList.remove('show');
-                Swal.fire({ toast: true, position: 'top-end', icon: 'info', title: 'Auto Reminder OFF', showConfirmButton: false, timer: 1500 });
+                Swal.fire({ toast: true, position: 'bottom-end', icon: 'info', title: 'Auto Reminder Deactivated', showConfirmButton: false, timer: 1500 });
             }
         };
 
-        // ========== ADMIN LOGIC ==========
+        // ========== ADMIN LOGIC (FIXED) ==========
         window.toggleAdmin = function() {
             const main = document.getElementById('mainSection');
             const admin = document.getElementById('adminSection');
             const btn = document.getElementById('adminToggleBtn');
             
-            if (admin.classList.contains('hidden')) {
-                main.classList.add('hidden');
-                admin.classList.remove('hidden');
-                btn.innerHTML = '<i class="bi bi-house-door-fill"></i> Back to Form';
+            if (admin.classList.contains('d-none')) {
+                // Open Admin
+                main.classList.add('d-none');
+                admin.classList.remove('d-none');
+                btn.innerHTML = '<i class="bi bi-arrow-left-circle-fill me-1"></i> Back to Form';
                 btn.classList.replace('btn-dark', 'btn-danger');
                 
                 if (!isAdminLoggedIn) {
-                    document.getElementById('loginScreen').style.display = 'block';
-                    document.getElementById('adminDashboard').style.display = 'none';
+                    document.getElementById('loginScreen').classList.remove('d-none');
+                    document.getElementById('adminDashboard').classList.add('d-none');
                     checkPasswordExists();
-                } else { showDashboard(); }
+                } else { 
+                    showDashboard(); 
+                }
             } else {
-                main.classList.remove('hidden');
-                admin.classList.add('hidden');
-                btn.innerHTML = '<i class="bi bi-shield-lock-fill"></i> Admin Panel';
+                // Close Admin
+                main.classList.remove('d-none');
+                admin.classList.add('d-none');
+                btn.innerHTML = '<i class="bi bi-shield-lock-fill me-1"></i> Admin Panel';
                 btn.classList.replace('btn-danger', 'btn-dark');
             }
         };
 
         async function checkPasswordExists() {
-            const doc = await db.collection(ADMIN_COLLECTION).doc('config').get();
-            if (doc.exists && doc.data().password) {
-                document.getElementById('passwordSetupMsg').innerText = 'Please Enter Password';
-            } else {
-                document.getElementById('passwordSetupMsg').innerText = '⚠️ Create New Admin Password';
+            try {
+                const doc = await db.collection(ADMIN_COLLECTION).doc('config').get();
+                if (doc.exists && doc.data().password) {
+                    document.getElementById('passwordSetupMsg').innerText = 'Please Enter Password to access hub.';
+                    document.getElementById('passwordSetupMsg').className = 'text-muted small mb-4';
+                } else {
+                    document.getElementById('passwordSetupMsg').innerText = '⚠️ First Time Setup: Create a new password.';
+                    document.getElementById('passwordSetupMsg').className = 'text-danger fw-bold small mb-4';
+                }
+            } catch(e) {
+                console.log("Firebase Auth Check Error:", e);
             }
         }
 
@@ -544,21 +621,29 @@
             const input = document.getElementById('adminPasswordInput').value;
             if(!input) return Swal.fire({ toast: true, icon: 'error', title: 'Password required!', position: 'top', timer: 2000, showConfirmButton: false });
             
-            const doc = await db.collection(ADMIN_COLLECTION).doc('config').get();
-            if (!doc.exists || !doc.data().password) {
-                await db.collection(ADMIN_COLLECTION).doc('config').set({ password: input }, {merge: true});
-                Swal.fire({ toast: true, icon: 'success', title: 'Password Set!', position: 'top', timer: 2000, showConfirmButton: false });
-                document.getElementById('adminPasswordInput').value = '';
-                isAdminLoggedIn = true; showDashboard();
-            } else {
-                if (input === doc.data().password) { isAdminLoggedIn = true; showDashboard(); } 
-                else { Swal.fire({ toast: true, icon: 'error', title: 'Wrong Password!', position: 'top', timer: 2000, showConfirmButton: false }); }
+            try {
+                const doc = await db.collection(ADMIN_COLLECTION).doc('config').get();
+                if (!doc.exists || !doc.data().password) {
+                    await db.collection(ADMIN_COLLECTION).doc('config').set({ password: input }, {merge: true});
+                    Swal.fire({ toast: true, icon: 'success', title: 'Password Created!', position: 'top', timer: 2000, showConfirmButton: false });
+                    document.getElementById('adminPasswordInput').value = '';
+                    isAdminLoggedIn = true; showDashboard();
+                } else {
+                    if (input === doc.data().password) { 
+                        isAdminLoggedIn = true; 
+                        showDashboard(); 
+                    } else { 
+                        Swal.fire({ toast: true, icon: 'error', title: 'Incorrect Password!', position: 'top', timer: 2000, showConfirmButton: false }); 
+                    }
+                }
+            } catch(e) {
+                Swal.fire({ icon: 'error', title: 'Network Error', text: e.message });
             }
         };
 
         function showDashboard() {
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('adminDashboard').style.display = 'block';
+            document.getElementById('loginScreen').classList.add('d-none');
+            document.getElementById('adminDashboard').classList.remove('d-none');
             loadDashboard(); 
         }
 
@@ -572,7 +657,9 @@
         function fetchStaffList() {
             db.collection(ADMIN_COLLECTION).doc('staffConfig').get().then(doc => {
                 if(doc.exists && doc.data().list) { globalStaffList = doc.data().list; }
-                else { globalStaffList = ["Laddu", "Haider", "Arwaz", "Ankit"]; } // Defaults
+                else { globalStaffList = ["Laddu", "Haider", "Arwaz", "Ankit"]; } 
+            }).catch(() => {
+                globalStaffList = ["Laddu", "Haider", "Arwaz", "Ankit"];
             });
         }
 
@@ -581,9 +668,9 @@
             container.innerHTML = '';
             globalStaffList.forEach((name, index) => {
                 container.innerHTML += `
-                    <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent px-0 border-bottom border-light">
-                        <span class="fw-bold text-secondary">${name}</span>
-                        <button class="btn btn-sm btn-outline-danger py-0 px-2" onclick="removeStaff(${index})"><i class="bi bi-x-lg"></i></button>
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 border-bottom">
+                        <span class="fw-bold text-secondary"><i class="bi bi-person-badge text-primary me-2"></i> ${name}</span>
+                        <button class="btn btn-sm btn-outline-danger rounded-circle" onclick="removeStaff(${index})"><i class="bi bi-trash"></i></button>
                     </li>`;
             });
         }
@@ -602,7 +689,7 @@
         };
 
         window.removeStaff = function(index) {
-            Swal.fire({ title: 'Remove Staff?', text: `Delete ${globalStaffList[index]}?`, icon: 'warning', showCancelButton: true, confirmButtonText: 'Yes, Delete'
+            Swal.fire({ title: 'Remove Staff?', text: `Delete ${globalStaffList[index]}?`, icon: 'warning', showCancelButton: true, confirmButtonText: 'Yes, Delete', confirmButtonColor: '#dc3545'
             }).then((result) => {
                 if (result.isConfirmed) {
                     globalStaffList.splice(index, 1);
@@ -642,10 +729,10 @@
         window.loadStaffAnalytics = function() {
             const todayStr = getLocalDate();
             const container = document.getElementById('staffAnalyticsContainer');
-            container.innerHTML = '<div class="spinner-border spinner-border-sm text-primary"></div> Fetching...';
+            container.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary"></div></div>';
             
             db.collection(RECORDS_COLLECTION).where('purchaseDate', '==', todayStr).get().then(snap => {
-                if(snap.empty){ container.innerHTML = '<p class="text-muted small">आज कोई एंट्री नहीं हुई है।</p>'; return; }
+                if(snap.empty){ container.innerHTML = '<p class="text-muted small text-center mt-3">आज कोई एंट्री नहीं हुई है।</p>'; return; }
                 
                 let counts = {};
                 snap.forEach(doc => {
@@ -653,14 +740,18 @@
                     counts[sName] = (counts[sName] || 0) + 1;
                 });
 
+                // Sort by performance
+                let sortedStaff = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+
                 container.innerHTML = '';
-                for (const [name, count] of Object.entries(counts)) {
+                sortedStaff.forEach(([name, count], index) => {
+                    let medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🔹';
                     container.innerHTML += `
-                        <div class="d-flex justify-content-between align-items-center mb-2 border-bottom pb-2">
-                            <span class="fw-bold text-dark"><i class="bi bi-person-circle text-primary me-2"></i> ${name}</span>
-                            <span class="badge bg-success rounded-pill px-3">${count} Entries</span>
+                        <div class="d-flex justify-content-between align-items-center mb-3 bg-light p-3 rounded-3 border">
+                            <span class="fw-bold text-dark">${medal} ${name}</span>
+                            <span class="badge bg-primary rounded-pill fs-6 px-3">${count} Entries</span>
                         </div>`;
-                }
+                });
             });
         };
 
@@ -671,7 +762,7 @@
             const tbody = document.getElementById('manageTableBody');
             
             if(!fromDate || !toDate) return;
-            tbody.innerHTML = '<tr><td colspan="6" class="text-primary py-4"><div class="spinner-border spinner-border-sm"></div> Fetching data...</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="6" class="text-primary py-4"><div class="spinner-border"></div></td></tr>';
             
             db.collection(RECORDS_COLLECTION)
               .where('purchaseDate', '>=', fromDate).where('purchaseDate', '<=', toDate)
@@ -686,12 +777,12 @@
                 records.forEach(d => {
                     tbody.innerHTML += `
                         <tr>
-                            <td class="fw-bold text-primary">${d.vehicleNo}</td>
-                            <td>${d.mobileNo} <i class="bi bi-pencil-square text-info ms-1" style="cursor:pointer;" onclick="editMobile('${d.id}', '${d.mobileNo}')"></i></td>
-                            <td><span class="small">${d.vehicleType === '2 Wheeler' ? '2W' : '4W'} / ${d.fuel}</span></td>
-                            <td><span class="badge bg-light text-dark border">${d.staffName || 'N/A'}</span></td>
-                            <td class="small">${d.purchaseDate}</td>
-                            <td><i class="bi bi-trash-fill text-danger" style="cursor:pointer;" onclick="deleteRecord('${d.id}')"></i></td>
+                            <td class="fw-bold text-dark">${d.vehicleNo}</td>
+                            <td>${d.mobileNo} <i class="bi bi-pencil-square text-primary ms-2" style="cursor:pointer; font-size:1.1rem;" onclick="editMobile('${d.id}', '${d.mobileNo}')"></i></td>
+                            <td><span class="badge bg-secondary">${d.vehicleType === '2 Wheeler' ? '2W' : '4W'} - ${d.fuel}</span></td>
+                            <td><span class="fw-bold text-muted">${d.staffName || '-'}</span></td>
+                            <td class="small text-muted">${d.purchaseDate}</td>
+                            <td><button class="btn btn-sm btn-outline-danger rounded-circle" onclick="deleteRecord('${d.id}')"><i class="bi bi-trash"></i></button></td>
                         </tr>`;
                 });
             });
@@ -699,11 +790,12 @@
 
         window.editMobile = function(docId, oldMobile) {
             Swal.fire({
-                title: 'Edit Mobile Number',
+                title: 'Update Mobile Number',
                 input: 'number',
                 inputValue: oldMobile,
                 showCancelButton: true,
-                confirmButtonText: 'Update'
+                confirmButtonText: 'Update',
+                confirmButtonColor: '#0d6efd'
             }).then((result) => {
                 if (result.isConfirmed && result.value && result.value !== oldMobile) {
                     db.collection(RECORDS_COLLECTION).doc(docId).update({ mobileNo: result.value }).then(() => {
@@ -715,7 +807,7 @@
         };
 
         window.deleteRecord = function(docId) {
-            Swal.fire({ title: 'Delete Record?', icon: 'warning', showCancelButton: true, confirmButtonText: 'Yes, Delete'
+            Swal.fire({ title: 'Delete Record?', text: "यह वापस नहीं आएगा!", icon: 'warning', showCancelButton: true, confirmButtonText: 'Yes, Delete', confirmButtonColor: '#dc3545'
             }).then((result) => {
                 if (result.isConfirmed) {
                     db.collection(RECORDS_COLLECTION).doc(docId).delete().then(() => {
@@ -740,14 +832,14 @@
             // Today
             db.collection(RECORDS_COLLECTION).where('expiryDate', '==', todayStr).get().then(snap => {
                 const container = document.getElementById('todayExpiryList'); container.innerHTML = '';
-                if (snap.empty) container.innerHTML = '<p class="text-muted small p-3">कोई गाड़ी Expire नहीं हो रही आज</p>';
+                if (snap.empty) container.innerHTML = '<p class="text-muted small p-4 text-center border rounded">कोई गाड़ी Expire नहीं हो रही आज</p>';
                 else {
                     snap.forEach(doc => {
                         const d = doc.data();
-                        const msg = `🚨 *PUC Expiry Alert*\n\nनमस्ते, आपकी गाड़ी *${d.vehicleNo}* का PUC आज खत्म हो रहा है! चालान से बचने के लिए तुरंत रिन्यू कराएं।\n🎁 *TyreXpert ऑफर:* अपना PUC रिन्यू कराएं और पाएं फ्री टायर्स एयर प्रेशर चेकअप!\n\n📍 *Shree Ganesh PUC Center*, पहली पुलिया, सेक्टर 6-7 रोड।`;
-                        container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-2 border rounded">
-                            <span><strong>${d.vehicleNo}</strong> <br><small>${d.mobileNo}</small></span> 
-                            <button class="btn btn-sm btn-success" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-whatsapp"></i> Send Alert</button>
+                        const msg = `🚨 *PUC Expiry Alert*\n\nनमस्ते, आपकी गाड़ी *${d.vehicleNo}* का PUC आज खत्म हो रहा है! चालान से बचने के लिए तुरंत रिन्यू कराएं।\n\n🎁 *TyreXpert ऑफर:* अपना PUC रिन्यू कराएं और पाएं फ्री टायर्स एयर प्रेशर चेकअप!\n\n📍 *Shree Ganesh PUC Center*, पहली पुलिया, सेक्टर 6-7 रोड।`;
+                        container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-2 border rounded-3 p-3 bg-white">
+                            <span><strong class="fs-5">${d.vehicleNo}</strong> <br><small class="text-muted"><i class="bi bi-telephone-fill"></i> ${d.mobileNo}</small></span> 
+                            <button class="btn btn-success fw-bold rounded-pill px-3" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-whatsapp me-1"></i> Send</button>
                         </div>`;
                     });
                 }
@@ -756,33 +848,33 @@
             // Upcoming
             db.collection(RECORDS_COLLECTION).where('expiryDate', '>', todayStr).where('expiryDate', '<=', futureStr).get().then(snap => {
                 const container = document.getElementById('upcomingExpiryList'); container.innerHTML = '';
-                if (snap.empty) container.innerHTML = '<p class="text-muted small p-3">अगले 5 दिनों में कोई Expiry नहीं</p>';
+                if (snap.empty) container.innerHTML = '<p class="text-muted small p-4 text-center border rounded">अगले 5 दिनों में कोई Expiry नहीं</p>';
                 else {
                     snap.forEach(doc => {
                         const d = doc.data();
-                        const msg = `⚠️ *PUC Advance Reminder*\n\nनमस्ते, आपकी गाड़ी *${d.vehicleNo}* का PUC ${d.expiryDate} को खत्म हो रहा है।\n🎁 *TyreXpert ऑफर:* समय से रिन्यू कराएं और पाएं फ्री एयर चेकअप।\n\n📍 *Shree Ganesh PUC Center*`;
-                        container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-2 border rounded">
-                            <span><strong>${d.vehicleNo}</strong> <br><small class="text-danger">Exp: ${d.expiryDate}</small></span> 
-                            <button class="btn btn-sm btn-success" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-whatsapp"></i> Send Alert</button>
+                        const msg = `⚠️ *PUC Advance Reminder*\n\nनमस्ते, आपकी गाड़ी *${d.vehicleNo}* का PUC ${d.expiryDate} को खत्म हो रहा है।\n\n🎁 *TyreXpert ऑफर:* समय से रिन्यू कराएं और पाएं फ्री एयर चेकअप।\n\n📍 *Shree Ganesh PUC Center*`;
+                        container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-2 border rounded-3 p-3 bg-white">
+                            <span><strong class="fs-5">${d.vehicleNo}</strong> <br><small class="text-danger fw-bold">Exp: ${d.expiryDate}</small></span> 
+                            <button class="btn btn-warning text-dark fw-bold rounded-pill px-3" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-whatsapp me-1"></i> Send</button>
                         </div>`;
                     });
                 }
             });
 
-            // Lost Customers (Expired more than 15 days ago up to 6 months ago)
+            // Lost Customers
             const past6Months = new Date(today); past6Months.setMonth(past6Months.getMonth() - 6);
             const past6MStr = getLocalDate(past6Months);
 
             db.collection(RECORDS_COLLECTION).where('expiryDate', '<=', past15Str).where('expiryDate', '>=', past6MStr).get().then(snap => {
                 const container = document.getElementById('lostExpiryList'); container.innerHTML = '';
-                if (snap.empty) container.innerHTML = '<p class="text-muted small p-3">No lost customers found recently.</p>';
+                if (snap.empty) container.innerHTML = '<p class="text-muted small p-4 text-center border rounded">No lost customers found recently.</p>';
                 else {
                     snap.forEach(doc => {
                         const d = doc.data();
-                        const msg = `💔 *TyreXpert Special Comeback Offer*\n\nनमस्ते सर, आपकी गाड़ी *${d.vehicleNo}* का PUC काफी समय से एक्सपायर है।\nबिना PUC गाड़ी चलाना रिस्की हो सकता है।\n\n🎁 *स्पेशल ऑफर:* आज ही हमारे सेंटर आएं, PUC बनवाएं और पाएं *फ्री कार/बाइक वाश कूपन या डिस्काउंट*!\n📍 *Shree Ganesh PUC Center*`;
-                        container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-2 border border-danger rounded bg-white">
-                            <span><strong>${d.vehicleNo}</strong> <br><small class="text-muted">Exp: ${d.expiryDate}</small></span> 
-                            <button class="btn btn-sm btn-outline-danger fw-bold" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-gift-fill"></i> Send Offer</button>
+                        const msg = `💔 *TyreXpert Special Comeback Offer*\n\nनमस्ते सर, आपकी गाड़ी *${d.vehicleNo}* का PUC काफी समय से एक्सपायर है। बिना PUC गाड़ी चलाना रिस्की हो सकता है।\n\n🎁 *स्पेशल ऑफर:* आज ही हमारे सेंटर आएं, PUC बनवाएं और पाएं *फ्री कार/बाइक वाश कूपन या डिस्काउंट*!\n📍 *Shree Ganesh PUC Center*`;
+                        container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-2 border border-danger rounded-3 p-3 bg-white">
+                            <span><strong class="fs-5 text-dark">${d.vehicleNo}</strong> <br><small class="text-muted">Exp: ${d.expiryDate}</small></span> 
+                            <button class="btn btn-danger fw-bold rounded-pill px-3" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-gift-fill me-1"></i> Offer</button>
                         </div>`;
                     });
                 }
