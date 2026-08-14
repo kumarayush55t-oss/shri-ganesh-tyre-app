@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Shree Ganesh Pollution Checking Center</title>
 
-    <!-- Google Fonts: Modern & Clean -->
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Plus Jakarta Sans for Premium Look -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
@@ -23,129 +23,140 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
-        /* ================= ULTRA PREMIUM UI CSS (BLUE THEME) ================= */
+        /* ================= ULTRA PREMIUM BLUE THEME ================= */
+        :root {
+            --primary-blue: #1e40af;
+            --accent-blue: #3b82f6;
+            --light-blue: #eff6ff;
+            --dark-blue: #0f172a;
+            --glass-bg: rgba(255, 255, 255, 0.95);
+        }
+
         body { 
-            font-family: 'Outfit', sans-serif; 
-            background: linear-gradient(135deg, #e4f0fe 0%, #f4f7fc 100%); 
-            color: #2b3240; 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: linear-gradient(135deg, #e0e7ff 0%, #bae6fd 100%); 
+            color: var(--dark-blue); 
             min-height: 100vh;
-            padding: 20px 0 60px 0;
+            padding: 30px 0 80px 0;
+            overflow-x: hidden;
         }
 
-        .container-custom { max-width: 850px; margin: auto; }
+        .container-custom { max-width: 800px; margin: auto; }
         
-        /* Glass Card Effect */
-        .card-main { 
-            background: rgba(255, 255, 255, 0.95); 
-            backdrop-filter: blur(15px); 
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            border-radius: 24px; 
-            box-shadow: 0 20px 50px rgba(13, 110, 253, 0.08); 
-            overflow: hidden; 
-            transition: all 0.3s ease;
+        /* Smooth Entry Animation */
+        .slide-in-up { animation: slideInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes slideInUp {
+            0% { opacity: 0; transform: translateY(40px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* Blue Gradient Header */
+        /* Glassmorphism Card */
+        .card-main { 
+            background: var(--glass-bg); 
+            backdrop-filter: blur(20px); 
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 28px; 
+            box-shadow: 0 25px 50px -12px rgba(30, 64, 175, 0.15); 
+            overflow: hidden; 
+        }
+
+        /* Animated Deep Blue Header */
         .gradient-header { 
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); 
+            background: linear-gradient(120deg, var(--dark-blue) 0%, var(--primary-blue) 100%);
             color: white; 
-            padding: 30px 20px; 
+            padding: 35px 25px; 
             text-align: center; 
             position: relative; 
+            overflow: hidden;
         }
         
-        .gradient-header h2 { font-weight: 800; letter-spacing: 0.5px; margin: 0; text-shadow: 2px 4px 10px rgba(0,0,0,0.3); }
-        .brand-badge { background: rgba(255,255,255,0.2); backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.3); padding: 5px 15px; border-radius: 50px; font-size: 0.85rem; font-weight: 600; }
-
-        /* Floating Inputs Modernized */
-        .form-floating > label { color: #64748b; font-weight: 500; }
-        .form-control, .form-select { border-radius: 12px; border: 2px solid #e2e8f0; background: #f8fafc; font-weight: 600; color: #1e293b; transition: 0.3s; }
-        .form-control:focus, .form-select:focus { background: #fff; box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15); border-color: #0d6efd; }
-
-        /* Premium Buttons (Blue) */
-        .btn-gradient { 
-            background: linear-gradient(135deg, #0d6efd 0%, #0043a8 100%); 
-            color: white; 
-            border: none; 
-            font-weight: 700; 
-            letter-spacing: 1px;
-            box-shadow: 0 8px 20px rgba(13, 110, 253, 0.3); 
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
+        /* Header Shine Animation */
+        .gradient-header::after {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%);
+            transform: rotate(30deg); animation: shine 6s infinite;
         }
-        .btn-gradient:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(13, 110, 253, 0.4); color: white; }
+        @keyframes shine { 0% { transform: translateX(-100%) rotate(30deg); } 20%, 100% { transform: translateX(100%) rotate(30deg); } }
 
-        /* Radio Buttons (Vehicle Type) */
-        .btn-outline-dark { border: 2px solid #e2e8f0; color: #64748b; font-weight: 600; border-radius: 12px !important; margin: 0 5px; }
-        .btn-check:checked + .btn-outline-dark { background: #0d6efd; color: #fff; border-color: #0d6efd; box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3); }
+        .gradient-header h2 { font-weight: 800; letter-spacing: -0.5px; margin: 0; }
+        .brand-badge { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); padding: 6px 18px; border-radius: 50px; font-size: 0.85rem; font-weight: 700; display: inline-block; backdrop-filter: blur(5px); }
 
-        /* Floating PIP Button */
-        .btn-pip { background: #1e293b; color: white; font-weight: 700; border-radius: 50px; padding: 10px 25px; transition: 0.3s; border: none; box-shadow: 0 8px 15px rgba(30, 41, 59, 0.3); }
-        .btn-pip:hover { background: #0f172a; transform: translateY(-2px); }
+        /* Premium Inputs */
+        .form-floating > label { color: #64748b; font-weight: 600; padding-left: 20px; }
+        .form-control, .form-select { border-radius: 16px; border: 2px solid #e2e8f0; background: #f8fafc; font-weight: 700; color: var(--dark-blue); transition: all 0.3s ease; padding-left: 20px; }
+        .form-control:focus, .form-select:focus { background: #fff; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15); border-color: var(--accent-blue); transform: translateY(-2px); }
+
+        /* VIP Badge Animation */
+        .vip-badge { position: absolute; right: 25px; top: -18px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #fff; font-size: 0.85rem; padding: 8px 20px; border-radius: 50px; font-weight: 800; box-shadow: 0 10px 25px rgba(217, 119, 6, 0.4); display: none; z-index: 10; animation: bounce 1s infinite alternate; }
+        @keyframes bounce { 0% { transform: translateY(0); } 100% { transform: translateY(-5px); } }
+
+        /* Liquid Blue Submit Button */
+        .btn-gradient { 
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--primary-blue) 100%); 
+            color: white; border: none; font-weight: 800; letter-spacing: 0.5px; border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(30, 64, 175, 0.4); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
+            position: relative; overflow: hidden;
+        }
+        .btn-gradient:hover { transform: translateY(-4px); box-shadow: 0 15px 35px rgba(30, 64, 175, 0.5); color: white; }
+
+        /* Radio Buttons */
+        .btn-outline-dark { border: 2px solid #e2e8f0; color: #64748b; font-weight: 700; border-radius: 14px !important; margin: 0 6px; transition: 0.3s; }
+        .btn-check:checked + .btn-outline-dark { background: var(--dark-blue); color: #fff; border-color: var(--dark-blue); box-shadow: 0 8px 20px rgba(15, 23, 42, 0.3); transform: scale(1.05); }
+
+        /* Advanced Notification Toggle */
+        .toggle-wrapper { background: white; border: 2px solid #e2e8f0; border-radius: 50px; padding: 12px 25px; display: inline-flex; align-items: center; box-shadow: 0 5px 15px rgba(0,0,0,0.02); transition: 0.3s; }
+        .toggle-wrapper:hover { border-color: var(--accent-blue); }
+        .form-check-input { cursor: pointer; width: 45px !important; height: 24px !important; margin-top: 0; }
+        .form-check-input:checked { background-color: var(--accent-blue); border-color: var(--accent-blue); box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); }
 
         /* Admin Floating Button */
-        .admin-link { position: fixed; bottom: 25px; right: 25px; z-index: 1050; box-shadow: 0 10px 25px rgba(0,0,0,0.2); border-radius: 50px; font-weight: 700; padding: 12px 25px; transition: 0.3s; border: none; }
-        .admin-link:hover { transform: scale(1.05); }
+        .admin-link { position: fixed; bottom: 30px; right: 30px; background: var(--dark-blue); color: white; z-index: 1050; box-shadow: 0 15px 30px rgba(15, 23, 42, 0.4); border-radius: 50px; font-weight: 800; padding: 15px 30px; transition: 0.3s; border: none; }
+        .admin-link:hover { transform: scale(1.08) translateY(-5px); background: #000; }
 
-        /* VIP Badge (Cyan/Blue) */
-        .vip-badge { position: absolute; right: 20px; top: -15px; background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%); color: #fff; font-size: 0.8rem; padding: 6px 15px; border-radius: 50px; font-weight: 800; box-shadow: 0 5px 15px rgba(0, 114, 255, 0.4); display: none; z-index: 10; }
+        /* Custom Modal (Staff & Duration) */
+        .modal-content { border-radius: 28px; border: none; box-shadow: 0 30px 60px rgba(0,0,0,0.3); background: rgba(255,255,255,0.98); backdrop-filter: blur(15px); }
+        .select-btn { border: 2px solid #e2e8f0; background: #fff; color: #475569; border-radius: 18px; padding: 18px; font-weight: 800; font-size: 1.1rem; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; text-align: center; }
+        .select-btn:hover { border-color: #cbd5e1; transform: translateY(-3px); }
+        .select-btn.active-staff { border-color: var(--accent-blue); background: var(--light-blue); color: var(--primary-blue); box-shadow: 0 8px 20px rgba(59, 130, 246, 0.2); transform: scale(1.05); }
+        .select-btn.active-duration { border-color: #10b981; background: #ecfdf5; color: #047857; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.2); transform: scale(1.05); }
 
-        /* Modal Enhancements */
-        .modal-content { border-radius: 24px; border: none; box-shadow: 0 25px 50px rgba(0,0,0,0.2); background: rgba(255,255,255,0.98); backdrop-filter: blur(10px); }
-        .select-btn { border: 2px solid #e2e8f0; background: #fff; color: #475569; border-radius: 16px; padding: 15px; font-weight: 700; transition: 0.2s; cursor: pointer; text-align: center; }
-        .select-btn:hover { border-color: #cbd5e1; }
-        .select-btn.active-staff { border-color: #0d6efd; background: #eff6ff; color: #0d6efd; box-shadow: 0 4px 15px rgba(13, 110, 253, 0.2); }
-        .select-btn.active-duration { border-color: #10b981; background: #ecfdf5; color: #047857; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2); }
-
-        /* Admin Panel Customization */
-        .admin-header { background: #0a192f; color: white; padding: 25px; border-radius: 24px 24px 0 0; }
-        .nav-tabs { border-bottom: 2px solid #e2e8f0; padding: 0 20px; background: white; }
-        .nav-tabs .nav-link { font-weight: 600; color: #64748b; padding: 15px 20px; border: none; margin-bottom: -2px; }
-        .nav-tabs .nav-link.active { color: #0d6efd; border-bottom: 3px solid #0d6efd; background: transparent; }
-        .tab-content-admin { background: #f8fafc; padding: 30px; border-radius: 0 0 24px 24px; }
+        /* Admin Panel Styles */
+        .admin-header { background: var(--dark-blue); color: white; padding: 30px; border-radius: 28px 28px 0 0; }
+        .nav-tabs { border-bottom: 2px solid #e2e8f0; padding: 0 25px; background: white; }
+        .nav-tabs .nav-link { font-weight: 700; color: #64748b; padding: 18px 25px; border: none; margin-bottom: -2px; transition: 0.3s; }
+        .nav-tabs .nav-link:hover { color: var(--accent-blue); }
+        .nav-tabs .nav-link.active { color: var(--accent-blue); border-bottom: 4px solid var(--accent-blue); background: transparent; }
+        .tab-content-admin { background: #f8fafc; padding: 35px; border-radius: 0 0 28px 28px; }
         
-        .stats-card { background: #fff; border-radius: 20px; padding: 25px 15px; border: 1px solid #e2e8f0; box-shadow: 0 10px 20px rgba(0,0,0,0.02); text-align: center; transition: 0.3s; }
-        .stats-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(13, 110, 253, 0.08); border-color: #dbeafe; }
-        
-        .table-modern { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
-        .table-modern thead { background: #f1f5f9; color: #475569; }
-        .table-modern th, .table-modern td { padding: 15px; vertical-align: middle; border-bottom: 1px solid #f1f5f9; }
-        
-        .smooth-fade { animation: fadeIn 0.4s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .stats-card { background: #fff; border-radius: 24px; padding: 30px 20px; border: 1px solid #e2e8f0; box-shadow: 0 10px 25px rgba(0,0,0,0.02); text-align: center; transition: 0.4s; }
+        .stats-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(59, 130, 246, 0.1); border-color: #bfdbfe; }
     </style>
 </head>
 <body>
 
-    <!-- Admin Toggle Button -->
-    <button id="adminToggleBtn" class="btn btn-dark admin-link" onclick="toggleAdmin()">
-        <i class="bi bi-shield-lock-fill me-1"></i> Admin Panel
+    <!-- Admin Floating Button -->
+    <button id="adminToggleBtn" class="btn admin-link" onclick="toggleAdmin()">
+        <i class="bi bi-shield-lock-fill me-2"></i> Admin Panel
     </button>
 
     <!-- ==========================================
          MAIN ENTRY SECTION
     =========================================== -->
-    <div id="mainSection" class="container container-custom smooth-fade">
+    <div id="mainSection" class="container container-custom slide-in-up">
         <div class="card-main">
             <div class="gradient-header">
                 <h2>Shree Ganesh PUC Center</h2>
-                <p class="m-0 text-light opacity-75 mt-1" id="todayDate"></p>
+                <p class="m-0 text-light opacity-75 mt-1 fw-bold" id="todayDate"></p>
                 <div class="mt-3">
-                    <span class="brand-badge"><i class="bi bi-award-fill text-warning"></i> Powered by TyreXpert</span>
+                    <span class="brand-badge"><i class="bi bi-award-fill text-warning me-1"></i> Partnered with TyreXpert</span>
                 </div>
             </div>
             
             <div class="p-4 p-md-5 position-relative bg-white">
-                <span id="vipBadge" class="vip-badge"><i class="bi bi-star-fill text-warning"></i> VIP Customer</span>
+                <span id="vipBadge" class="vip-badge"><i class="bi bi-star-fill me-1"></i> VIP Customer</span>
                 
-                <!-- PIP / Floating Button -->
-                <div class="text-end mb-3">
-                    <button class="btn-pip" onclick="openPiPWindow()">
-                        <i class="bi bi-pip me-1"></i> Minimize (Float Mode)
-                    </button>
-                </div>
-
-                <div class="row g-4 mt-1">
+                <div class="row g-4 mt-2">
                     <div class="col-md-6">
                         <div class="form-floating">
                             <input type="text" id="vehicleNo" class="form-control text-uppercase fw-bold text-primary" placeholder="HR12AB1234" onkeyup="autoFillAndHistory()" autocomplete="off"/>
@@ -160,27 +171,38 @@
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label text-muted small fw-bold ms-1">Vehicle Type</label>
+                        <label class="form-label text-muted small fw-bold ms-2 mb-2">Vehicle Type</label>
                         <div class="btn-group w-100" role="group">
                             <input type="radio" class="btn-check" name="vehicleType" id="twoW" value="2 Wheeler" checked onclick="toggleFuel()" />
-                            <label class="btn btn-outline-dark" for="twoW"><i class="bi bi-bicycle"></i> 2 Wheeler</label>
+                            <label class="btn btn-outline-dark py-3" for="twoW"><i class="bi bi-bicycle me-2 fs-5"></i> 2 Wheeler</label>
                             
                             <input type="radio" class="btn-check" name="vehicleType" id="fourW" value="4 Wheeler" onclick="toggleFuel()" />
-                            <label class="btn btn-outline-dark" for="fourW"><i class="bi bi-car-front"></i> 4 Wheeler</label>
+                            <label class="btn btn-outline-dark py-3" for="fourW"><i class="bi bi-car-front me-2 fs-5"></i> 4 Wheeler</label>
                         </div>
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label text-muted small fw-bold ms-1">Fuel Type</label>
-                        <select id="fuelType" class="form-select form-select-lg" style="height: calc(3.5rem + 2px);">
+                        <label class="form-label text-muted small fw-bold ms-2 mb-2">Fuel Type</label>
+                        <select id="fuelType" class="form-select" style="height: calc(4rem + 2px); font-size: 1.1rem;">
                             <option value="Petrol">Petrol</option>
                         </select>
                     </div>
 
                     <div class="col-12 mt-5">
-                        <button class="btn btn-gradient w-100 py-3 fs-5 rounded-pill" onclick="initiateSubmit()">
-                            <i class="bi bi-cloud-check-fill me-2"></i> Save & Continue
+                        <button class="btn btn-gradient w-100 py-3 fs-4" onclick="initiateSubmit()">
+                            <i class="bi bi-send-check-fill me-2"></i> Save & Submit Entry
                         </button>
+                    </div>
+
+                    <!-- Ultimate PC Notification Reminder Toggle -->
+                    <div class="col-12 mt-4 text-center">
+                        <div class="toggle-wrapper">
+                            <input class="form-check-input ms-0 me-3" type="checkbox" id="reminderToggle" onchange="toggleBackgroundWorker()">
+                            <label class="form-check-label text-primary fw-bold mb-0" for="reminderToggle" style="cursor:pointer; font-size: 1rem;">
+                                <i class="bi bi-bell-fill text-warning me-1"></i> 30-Sec Background Alert (ON/OFF)
+                            </label>
+                        </div>
+                        <div class="small text-muted mt-2 fw-bold opacity-75">इसे ON रखें। ब्राउज़र मिनिमाइज़ होने पर भी डेस्कटॉप नोटिफिकेशन आएगा।</div>
                     </div>
                 </div>
             </div>
@@ -193,19 +215,19 @@
     <div class="modal fade" id="entryModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header bg-light border-0 py-3">
-                    <h5 class="modal-title fw-bold text-center w-100 text-dark">Finalize Entry</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="resetModalSelections()"></button>
+                <div class="modal-header bg-light border-0 py-4">
+                    <h4 class="modal-title fw-bolder text-center w-100" style="color: var(--dark-blue);">Finalize Entry</h4>
+                    <button type="button" class="btn-close fs-5" data-bs-dismiss="modal" aria-label="Close" onclick="resetModalSelections()"></button>
                 </div>
                 <div class="modal-body p-4 p-md-5">
                     
-                    <h6 class="fw-bold mb-3 text-secondary">1. Select Staff (किसने एंट्री की है?)</h6>
+                    <h6 class="fw-bold mb-3 text-muted">1. Select Staff (किसने एंट्री की है?)</h6>
                     <div class="row g-3 mb-5" id="modalStaffContainer">
                         <!-- Dynamically loaded -->
                     </div>
 
-                    <h6 class="fw-bold mb-3 text-secondary">2. Select Duration (कितने महीने?)</h6>
-                    <div class="row g-3 mb-4">
+                    <h6 class="fw-bold mb-3 text-muted">2. Select Duration (कितने महीने?)</h6>
+                    <div class="row g-3 mb-5">
                         <div class="col-6">
                             <div class="select-btn duration-opt" onclick="selectDuration(this, 6)">6 Months</div>
                         </div>
@@ -214,7 +236,7 @@
                         </div>
                     </div>
 
-                    <button class="btn btn-primary w-100 py-3 rounded-pill fw-bold fs-5 mt-3 shadow" onclick="finalizeSubmit()">
+                    <button class="btn btn-gradient w-100 py-3 fs-5 mt-2" onclick="finalizeSubmit()">
                         Confirm & Save Data <i class="bi bi-arrow-right-circle-fill ms-2"></i>
                     </button>
                 </div>
@@ -225,32 +247,31 @@
     <!-- ==========================================
          ADMIN SECTION
     =========================================== -->
-    <div id="adminSection" class="container container-custom d-none smooth-fade">
+    <div id="adminSection" class="container container-custom d-none slide-in-up">
         
         <!-- LOGIN SCREEN -->
         <div id="loginScreen" class="card-main p-5 mt-5 text-center" style="max-width: 450px; margin: auto;">
             <div class="mb-4">
-                <i class="bi bi-shield-lock-fill text-primary" style="font-size: 3rem;"></i>
+                <i class="bi bi-fingerprint text-primary" style="font-size: 4rem;"></i>
             </div>
-            <h3 class="fw-bold mb-2">Admin Access</h3>
-            <p id="passwordSetupMsg" class="text-muted small mb-4">Checking Security Status...</p>
+            <h3 class="fw-bolder mb-2 text-dark">Admin Access</h3>
+            <p id="passwordSetupMsg" class="text-muted fw-bold small mb-4">Verifying Security Status...</p>
             
             <div class="form-floating mb-4">
-                <input type="password" id="adminPasswordInput" class="form-control rounded-pill px-4" placeholder="Password" />
-                <label class="ms-2">Enter Secure Password</label>
+                <input type="password" id="adminPasswordInput" class="form-control rounded-pill px-4 text-center" placeholder="Password" />
+                <label class="ms-2 w-100 text-center">Enter Secure Password</label>
             </div>
-            <button class="btn btn-dark w-100 py-3 rounded-pill fw-bold fs-5" onclick="handleAdminAuth()">Authenticate</button>
+            <button class="btn btn-gradient w-100 py-3 fs-5" onclick="handleAdminAuth()">Authenticate</button>
         </div>
 
         <!-- MAIN DASHBOARD -->
         <div id="adminDashboard" class="card-main d-none mt-2">
-            
             <div class="admin-header d-flex justify-content-between align-items-center">
                 <div>
-                    <h3 class="fw-bold m-0"><i class="bi bi-grid-1x2-fill text-info me-2"></i> Business Hub</h3>
-                    <p class="m-0 text-light opacity-75 small mt-1">Manage operations and analytics</p>
+                    <h3 class="fw-bolder m-0"><i class="bi bi-pie-chart-fill text-warning me-2"></i> Business Hub</h3>
+                    <p class="m-0 text-light opacity-75 small mt-1 fw-bold">Live Data & Analytics</p>
                 </div>
-                <button class="btn btn-outline-light rounded-pill px-4 fw-bold" onclick="logoutAdmin()">Logout</button>
+                <button class="btn btn-danger rounded-pill px-4 fw-bold" onclick="logoutAdmin()"><i class="bi bi-box-arrow-right me-2"></i>Logout</button>
             </div>
 
             <ul class="nav nav-tabs" id="adminTabs" role="tablist">
@@ -262,42 +283,42 @@
 
             <div class="tab-content tab-content-admin">
                 <!-- Dashboard Overview -->
-                <div class="tab-pane show active smooth-fade" id="tabDashboard">
-                    <div class="row g-3 mb-4 align-items-end">
-                        <div class="col-md-4">
-                            <label class="small text-muted fw-bold ms-1">Time Frame</label>
+                <div class="tab-pane show active" id="tabDashboard">
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-5">
+                            <label class="small text-muted fw-bold ms-2 mb-1">Time Filter</label>
                             <select id="dashTimeFilter" class="form-select shadow-sm" onchange="loadDashboard()">
                                 <option value="today">Today (आज)</option>
                                 <option value="all_time">All Time (शुरू से)</option>
                             </select>
                         </div>
                     </div>
-                    <div class="row g-3" id="dashboardStats">
-                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-1 small fw-bold">Total Entries</p><h1 id="statTotal" class="text-primary fw-bolder m-0">0</h1></div></div>
-                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-1 small fw-bold">2 Wheeler</p><h1 id="stat2W" class="text-success fw-bolder m-0">0</h1></div></div>
-                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-1 small fw-bold">4 Wheeler</p><h1 id="stat4W" class="text-danger fw-bolder m-0">0</h1></div></div>
-                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-1 small fw-bold">Fuel (P / D)</p><h3 id="statFuel" class="text-dark fw-bolder m-0 mt-2">0 / 0</h3></div></div>
+                    <div class="row g-4" id="dashboardStats">
+                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-2 small fw-bold">Total Entries</p><h1 id="statTotal" class="text-primary fw-bolder m-0">0</h1></div></div>
+                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-2 small fw-bold">2 Wheeler</p><h1 id="stat2W" class="text-success fw-bolder m-0">0</h1></div></div>
+                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-2 small fw-bold">4 Wheeler</p><h1 id="stat4W" class="text-danger fw-bolder m-0">0</h1></div></div>
+                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-2 small fw-bold">Fuel (P / D)</p><h3 id="statFuel" class="text-dark fw-bolder m-0 mt-2">0 / 0</h3></div></div>
                     </div>
                 </div>
 
-                <!-- Staff Management -->
-                <div class="tab-pane smooth-fade" id="tabStaff">
+                <!-- Keep other tabs simple as they were, just inheriting the global CSS -->
+                <div class="tab-pane" id="tabStaff">
                     <div class="row g-4">
                         <div class="col-md-6">
                             <div class="bg-white p-4 rounded-4 shadow-sm border h-100">
-                                <h6 class="fw-bold text-dark mb-3"><i class="bi bi-person-plus-fill text-primary me-2"></i> Manage Staff</h6>
-                                <div class="input-group mb-4">
-                                    <input type="text" id="newStaffName" class="form-control" placeholder="Enter Staff Name">
-                                    <button class="btn btn-primary fw-bold px-4" onclick="addStaff()">Add</button>
+                                <h6 class="fw-bolder text-dark mb-4"><i class="bi bi-person-plus-fill text-primary me-2"></i> Manage Staff</h6>
+                                <div class="input-group mb-4 shadow-sm rounded-pill overflow-hidden border">
+                                    <input type="text" id="newStaffName" class="form-control border-0" placeholder="Enter Staff Name">
+                                    <button class="btn btn-primary fw-bold px-4 border-0" onclick="addStaff()">Add</button>
                                 </div>
                                 <ul class="list-group list-group-flush" id="adminStaffList"></ul>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="bg-white p-4 rounded-4 shadow-sm border h-100">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h6 class="fw-bold text-dark m-0"><i class="bi bi-graph-up-arrow text-success me-2"></i> Today's Leaderboard</h6>
-                                    <button class="btn btn-sm btn-light border" onclick="loadStaffAnalytics()"><i class="bi bi-arrow-clockwise"></i></button>
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <h6 class="fw-bolder text-dark m-0"><i class="bi bi-graph-up-arrow text-success me-2"></i> Today's Leaderboard</h6>
+                                    <button class="btn btn-sm btn-light border rounded-circle" onclick="loadStaffAnalytics()"><i class="bi bi-arrow-clockwise"></i></button>
                                 </div>
                                 <div id="staffAnalyticsContainer"></div>
                             </div>
@@ -305,27 +326,25 @@
                     </div>
                 </div>
 
-                <!-- Manage Data -->
-                <div class="tab-pane smooth-fade" id="tabManage">
-                    <div class="row g-3 align-items-end mb-4 bg-white p-3 rounded-4 shadow-sm border">
+                <div class="tab-pane" id="tabManage">
+                    <div class="row g-3 align-items-end mb-4 bg-white p-4 rounded-4 shadow-sm border">
                         <div class="col-md-4"><label class="small text-muted fw-bold ms-1">From Date</label><input type="date" id="manageFrom" class="form-control" /></div>
                         <div class="col-md-4"><label class="small text-muted fw-bold ms-1">To Date</label><input type="date" id="manageTo" class="form-control" /></div>
-                        <div class="col-md-4"><button class="btn btn-dark w-100 fw-bold py-2" onclick="loadManageData()">Fetch Records</button></div>
+                        <div class="col-md-4"><button class="btn btn-dark w-100 fw-bold py-3 rounded-pill" onclick="loadManageData()">Fetch Records</button></div>
                     </div>
-                    <div class="table-responsive table-modern">
+                    <div class="table-responsive table-modern border rounded-4">
                         <table class="table mb-0 text-center align-middle">
-                            <thead>
+                            <thead class="table-light">
                                 <tr><th>Vehicle</th><th>Mobile</th><th>Type/Fuel</th><th>Staff</th><th>Date</th><th>Action</th></tr>
                             </thead>
                             <tbody id="manageTableBody">
-                                <tr><td colspan="6" class="py-4 text-muted">Select dates and click Fetch Records</td></tr>
+                                <tr><td colspan="6" class="py-5 text-muted fw-bold">Select dates and click Fetch Records</td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- Reminders -->
-                <div class="tab-pane smooth-fade" id="tabReminder">
+                <div class="tab-pane" id="tabReminder">
                     <ul class="nav nav-pills mb-4 bg-white p-2 rounded-pill shadow-sm border d-inline-flex" id="remSubTabs" role="tablist">
                         <li class="nav-item"><button class="nav-link active rounded-pill px-4 fw-bold" data-bs-toggle="pill" data-bs-target="#remToday">⚠️ आज Expire</button></li>
                         <li class="nav-item"><button class="nav-link rounded-pill px-4 fw-bold" data-bs-toggle="pill" data-bs-target="#remUpcoming">📅 5 दिन में</button></li>
@@ -335,7 +354,7 @@
                         <div class="tab-pane show active" id="remToday"><div id="todayExpiryList" class="list-group shadow-sm border-0"></div></div>
                         <div class="tab-pane" id="remUpcoming"><div id="upcomingExpiryList" class="list-group shadow-sm border-0"></div></div>
                         <div class="tab-pane" id="remLost">
-                            <div class="alert alert-danger py-2 mb-3 small fw-bold text-center border-0 rounded-3">ये वो गाड़ियां हैं जिनका PUC 15 दिन से ज्यादा समय से एक्सपायर है। इन्हें Special Offer भेजें!</div>
+                            <div class="alert alert-danger py-3 mb-4 fw-bold text-center border-0 rounded-4 shadow-sm">ये वो गाड़ियां हैं जिनका PUC 15 दिन से ज्यादा समय से एक्सपायर है। इन्हें Special Offer भेजें!</div>
                             <div id="lostExpiryList" class="list-group shadow-sm border-0"></div>
                         </div>
                     </div>
@@ -370,8 +389,7 @@
         let selectedDuration = 0;
         let pendingFormData = {};
         let globalStaffList = [];
-        let pipWindow = null;
-        let pipInterval = null;
+        let backgroundWorker = null; // The secret background thread
 
         function getLocalDate(dateObj = new Date()) {
             const year = dateObj.getFullYear();
@@ -380,7 +398,6 @@
             return `${year}-${month}-${day}`;
         }
 
-        // Initialize App
         document.addEventListener('DOMContentLoaded', () => {
             bsEntryModal = new bootstrap.Modal(document.getElementById('entryModal'));
             document.getElementById('todayDate').innerText = new Date().toLocaleDateString('hi-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -390,6 +407,7 @@
             document.getElementById('manageTo').value = todayStr;
 
             fetchStaffList();
+            initBackgroundWorker();
 
             const tabElements = document.querySelectorAll('button[data-bs-toggle="tab"]');
             tabElements.forEach(tab => {
@@ -404,74 +422,6 @@
             });
         });
 
-        // ========== FLOATING PIP WINDOW (OPTION A) ==========
-        async function openPiPWindow() {
-            if (!('documentPictureInPicture' in window)) {
-                Swal.fire({ icon: 'warning', title: 'Not Supported', text: 'आपका ब्राउज़र Floating Window सपोर्ट नहीं करता। कृपया Chrome को अपडेट करें।', confirmButtonColor: '#0d6efd' });
-                return;
-            }
-
-            try {
-                // Request a floating window
-                pipWindow = await documentPictureInPicture.requestWindow({
-                    width: 350,
-                    height: 250
-                });
-
-                // Styling for the PiP Window
-                const style = pipWindow.document.createElement('style');
-                style.textContent = `
-                    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@500;700&display=swap');
-                    body { font-family: 'Outfit', sans-serif; background: #0a192f; color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; margin: 0; text-align: center; padding: 20px; box-sizing: border-box; }
-                    .alert-box { background: #1e293b; padding: 20px; border-radius: 16px; border: 2px solid #334155; width: 100%; transition: all 0.3s ease; }
-                    .alert-box.flash { background: #dc3545; border-color: #ff0844; transform: scale(1.05); box-shadow: 0 0 25px rgba(220, 53, 69, 0.8); }
-                    h3 { margin: 0 0 8px 0; font-size: 1.3rem; font-weight: 700; color: #ffca28; }
-                    p { font-size: 1rem; color: #e2e8f0; margin: 0; font-weight: 500; }
-                    .btn-form { background: linear-gradient(135deg, #0d6efd 0%, #0043a8 100%); color: white; border: none; padding: 12px 20px; border-radius: 50px; font-weight: 700; cursor: pointer; margin-top: 20px; font-size: 1.1rem; width: 100%; box-shadow: 0 4px 15px rgba(13, 110, 253, 0.4); }
-                    .btn-form:hover { opacity: 0.9; transform: translateY(-2px); }
-                `;
-                pipWindow.document.head.appendChild(style);
-
-                // HTML Content inside PiP
-                pipWindow.document.body.innerHTML = `
-                    <div id="pipAlertBox" class="alert-box">
-                        <h3>⚠️ PUC Alert</h3>
-                        <p id="pipText">गाड़ी की एंट्री करना मत भूलना!</p>
-                    </div>
-                    <button class="btn-form" id="openFormBtn">📝 Open Entry Form</button>
-                `;
-
-                // Logic: Bring Main Window to Front
-                pipWindow.document.getElementById('openFormBtn').addEventListener('click', () => {
-                    window.focus(); // Focus the main browser window
-                    pipWindow.close(); // Close floating window
-                });
-
-                // Logic: 10-Second Flashing Animation
-                const alertBox = pipWindow.document.getElementById('pipAlertBox');
-                const textElem = pipWindow.document.getElementById('pipText');
-                
-                pipInterval = pipWindow.setInterval(() => {
-                    alertBox.classList.add('flash');
-                    textElem.innerText = "🚨 जल्दी एंट्री करो भाई!";
-                    
-                    pipWindow.setTimeout(() => {
-                        alertBox.classList.remove('flash');
-                        textElem.innerText = "गाड़ी की एंट्री करना मत भूलना!";
-                    }, 1500); // Highlight stays for 1.5s
-                }, 10000); // Repeats every 10s
-
-                // Clear interval if closed
-                pipWindow.addEventListener('pagehide', () => {
-                    if (pipInterval) clearInterval(pipInterval);
-                    pipWindow = null;
-                });
-
-            } catch (error) {
-                console.error("PiP Error:", error);
-            }
-        }
-
         // ========== MAIN ENTRY LOGIC ==========
         window.toggleFuel = function() {
             const fuelSelect = document.getElementById('fuelType');
@@ -480,7 +430,6 @@
             else { fuelSelect.innerHTML = `<option value="Petrol">Petrol</option>`; }
         };
 
-        // SMART AUTO-FILL (VIP)
         window.autoFillAndHistory = function() {
             const vehicle = document.getElementById('vehicleNo').value.trim().toUpperCase();
             const badge = document.getElementById('vipBadge');
@@ -497,13 +446,10 @@
                       else { document.getElementById('fourW').click(); }
                       setTimeout(() => { document.getElementById('fuelType').value = d.fuel; }, 50);
                       badge.style.display = 'block';
-                  } else {
-                      badge.style.display = 'none';
-                  }
-              }).catch(e => console.log("AutoFill Error:", e));
+                  } else { badge.style.display = 'none'; }
+              }).catch(e => console.log(e));
         };
 
-        // MODAL LOGIC
         window.initiateSubmit = function() {
             const vehicle = document.getElementById('vehicleNo').value.trim().toUpperCase();
             const mobile = document.getElementById('mobileNo').value.trim();
@@ -511,7 +457,7 @@
             const fuel = document.getElementById('fuelType').value;
 
             if (!vehicle || mobile.length < 10) {
-                Swal.fire({ icon: 'error', title: 'Invalid Input', text: 'सही Vehicle No और Mobile No डालें!', confirmButtonColor: '#0d6efd' });
+                Swal.fire({ icon: 'error', title: 'Invalid Input', text: 'सही Vehicle No और Mobile No डालें!', confirmButtonColor: '#1e40af' });
                 return;
             }
 
@@ -520,13 +466,10 @@
             const staffContainer = document.getElementById('modalStaffContainer');
             staffContainer.innerHTML = '';
             if(globalStaffList.length === 0){
-                staffContainer.innerHTML = '<div class="col-12 text-danger small text-center">No staff found. Please add in Admin Panel.</div>';
+                staffContainer.innerHTML = '<div class="col-12 text-danger fw-bold text-center">No staff found. Please add in Admin Panel.</div>';
             } else {
                 globalStaffList.forEach(name => {
-                    staffContainer.innerHTML += `
-                        <div class="col-4">
-                            <div class="select-btn staff-opt p-3" onclick="selectStaff(this, '${name}')">${name}</div>
-                        </div>`;
+                    staffContainer.innerHTML += `<div class="col-6 col-md-4"><div class="select-btn staff-opt" onclick="selectStaff(this, '${name}')">${name}</div></div>`;
                 });
             }
             bsEntryModal.show();
@@ -534,14 +477,12 @@
 
         window.selectStaff = function(elem, name) {
             document.querySelectorAll('.staff-opt').forEach(el => el.classList.remove('active-staff'));
-            elem.classList.add('active-staff');
-            selectedStaff = name;
+            elem.classList.add('active-staff'); selectedStaff = name;
         };
 
         window.selectDuration = function(elem, months) {
             document.querySelectorAll('.duration-opt').forEach(el => el.classList.remove('active-duration'));
-            elem.classList.add('active-duration');
-            selectedDuration = months;
+            elem.classList.add('active-duration'); selectedDuration = months;
         };
 
         window.resetModalSelections = function() {
@@ -551,42 +492,93 @@
         };
 
         window.finalizeSubmit = function() {
-            if(!selectedStaff) return Swal.fire({ icon: 'warning', title: 'Missing Data', text: 'कृपया स्टाफ का नाम चुनें!' });
-            if(!selectedDuration) return Swal.fire({ icon: 'warning', title: 'Missing Data', text: 'कृपया 6 या 12 महीने चुनें!' });
+            if(!selectedStaff) return Swal.fire({ icon: 'warning', text: 'कृपया स्टाफ का नाम चुनें!' });
+            if(!selectedDuration) return Swal.fire({ icon: 'warning', text: 'कृपया 6 या 12 महीने चुनें!' });
 
             bsEntryModal.hide();
-            Swal.fire({ title: 'Saving Data...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
+            Swal.fire({ title: 'Saving Securely...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
 
             const today = new Date();
             const expiryDate = new Date(today);
             expiryDate.setMonth(expiryDate.getMonth() + selectedDuration);
             expiryDate.setDate(expiryDate.getDate() - 1); 
-            const finalExpiryStr = getLocalDate(expiryDate);
 
             db.collection(RECORDS_COLLECTION).add({
-                vehicleNo: pendingFormData.vehicle,
-                mobileNo: pendingFormData.mobile,
-                vehicleType: pendingFormData.type,
-                fuel: pendingFormData.fuel,
-                durationMonths: selectedDuration,
-                staffName: selectedStaff,
-                purchaseDate: getLocalDate(today),
-                expiryDate: finalExpiryStr, 
+                vehicleNo: pendingFormData.vehicle, mobileNo: pendingFormData.mobile, vehicleType: pendingFormData.type, fuel: pendingFormData.fuel,
+                durationMonths: selectedDuration, staffName: selectedStaff, purchaseDate: getLocalDate(today), expiryDate: getLocalDate(expiryDate), 
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             }).then(() => {
-                Swal.fire({ icon: 'success', title: 'Success!', text: 'PUC एंट्री सफलतापूर्वक हो गई है।', timer: 2000, showConfirmButton: false });
-                
-                document.getElementById('vehicleNo').value = '';
-                document.getElementById('mobileNo').value = '';
-                document.getElementById('vipBadge').style.display = 'none';
-                
-                resetModalSelections();
-                pendingFormData = {};
+                Swal.fire({ icon: 'success', title: 'Great Job!', text: 'PUC एंट्री सफलतापूर्वक हो गई है।', timer: 2000, showConfirmButton: false });
+                document.getElementById('vehicleNo').value = ''; document.getElementById('mobileNo').value = ''; document.getElementById('vipBadge').style.display = 'none';
+                resetModalSelections(); pendingFormData = {};
                 if(isAdminLoggedIn) loadDashboard();
-            }).catch(err => {
-                Swal.fire({ icon: 'error', title: 'Database Error', text: err.message });
-            });
+            }).catch(err => { Swal.fire({ icon: 'error', title: 'Database Error', text: err.message }); });
         };
+
+        // ========== ADVANCED BACKGROUND WORKER (Notification Trick) ==========
+        function initBackgroundWorker() {
+            // Create a Blob containing the Web Worker code. This runs in a completely separate thread.
+            const workerCode = `
+                let intervalTimer = null;
+                self.onmessage = function(e) {
+                    if (e.data === 'start') {
+                        intervalTimer = setInterval(() => {
+                            self.postMessage('triggerNotification');
+                        }, 30000); // Exact 30 seconds, not throttled by Chrome Tab Sleeping
+                    } else if (e.data === 'stop') {
+                        clearInterval(intervalTimer);
+                    }
+                };
+            `;
+            const blob = new Blob([workerCode], { type: 'application/javascript' });
+            backgroundWorker = new Worker(URL.createObjectURL(blob));
+
+            backgroundWorker.onmessage = function(e) {
+                if (e.data === 'triggerNotification') {
+                    showOSNotification();
+                }
+            };
+        }
+
+        window.toggleBackgroundWorker = function() {
+            const isChecked = document.getElementById('reminderToggle').checked;
+
+            if (isChecked) {
+                if (!("Notification" in window)) {
+                    Swal.fire({ icon: 'error', title: 'Not Supported', text: 'आपका ब्राउज़र डेस्कटॉप नोटिफिकेशन सपोर्ट नहीं करता।' });
+                    document.getElementById('reminderToggle').checked = false;
+                    return;
+                }
+
+                if (Notification.permission !== "granted") {
+                    Notification.requestPermission().then(permission => {
+                        if (permission === "granted") {
+                            backgroundWorker.postMessage('start');
+                            Swal.fire({ toast: true, position: 'bottom-end', icon: 'success', title: 'Background Alert Active', showConfirmButton: false, timer: 1500 });
+                        } else {
+                            Swal.fire({ icon: 'warning', title: 'Permission Denied', text: 'URL Bar के पास लॉक आइकॉन पर क्लिक करके Notifications Allow करें।' });
+                            document.getElementById('reminderToggle').checked = false;
+                        }
+                    });
+                } else {
+                    backgroundWorker.postMessage('start');
+                    Swal.fire({ toast: true, position: 'bottom-end', icon: 'success', title: 'Background Alert Active', showConfirmButton: false, timer: 1500 });
+                }
+            } else {
+                backgroundWorker.postMessage('stop');
+                Swal.fire({ toast: true, position: 'bottom-end', icon: 'info', title: 'Background Alert Disabled', showConfirmButton: false, timer: 1500 });
+            }
+        };
+
+        function showOSNotification() {
+            if (Notification.permission === "granted") {
+                const notif = new Notification("Shree Ganesh PUC Center", {
+                    body: "⚠️ भाई, गाड़ी की एंट्री करना मत भूलना! कस्टमर इंतजार कर रहा है।",
+                    requireInteraction: false
+                });
+                setTimeout(() => { notif.close(); }, 5000); 
+            }
+        }
 
         // ========== ADMIN LOGIC ==========
         window.toggleAdmin = function() {
@@ -595,20 +587,17 @@
             const btn = document.getElementById('adminToggleBtn');
             
             if (admin.classList.contains('d-none')) {
-                main.classList.add('d-none');
-                admin.classList.remove('d-none');
-                btn.innerHTML = '<i class="bi bi-arrow-left-circle-fill me-1"></i> Back to Form';
+                main.classList.add('d-none'); admin.classList.remove('d-none');
+                btn.innerHTML = '<i class="bi bi-arrow-left-circle-fill me-2"></i> Back to Form';
                 btn.classList.replace('btn-dark', 'btn-danger');
-                
                 if (!isAdminLoggedIn) {
                     document.getElementById('loginScreen').classList.remove('d-none');
                     document.getElementById('adminDashboard').classList.add('d-none');
                     checkPasswordExists();
                 } else { showDashboard(); }
             } else {
-                main.classList.remove('d-none');
-                admin.classList.add('d-none');
-                btn.innerHTML = '<i class="bi bi-shield-lock-fill me-1"></i> Admin Panel';
+                main.classList.remove('d-none'); admin.classList.add('d-none');
+                btn.innerHTML = '<i class="bi bi-shield-lock-fill me-2"></i> Admin Panel';
                 btn.classList.replace('btn-danger', 'btn-dark');
             }
         };
@@ -618,12 +607,12 @@
                 const doc = await db.collection(ADMIN_COLLECTION).doc('config').get();
                 if (doc.exists && doc.data().password) {
                     document.getElementById('passwordSetupMsg').innerText = 'Please Enter Password to access hub.';
-                    document.getElementById('passwordSetupMsg').className = 'text-muted small mb-4';
+                    document.getElementById('passwordSetupMsg').className = 'text-muted fw-bold small mb-4';
                 } else {
                     document.getElementById('passwordSetupMsg').innerText = '⚠️ First Time Setup: Create a new password.';
                     document.getElementById('passwordSetupMsg').className = 'text-danger fw-bold small mb-4';
                 }
-            } catch(e) { console.log("Firebase Auth Check Error:", e); }
+            } catch(e) { console.log(e); }
         }
 
         window.handleAdminAuth = async function() {
@@ -635,8 +624,7 @@
                 if (!doc.exists || !doc.data().password) {
                     await db.collection(ADMIN_COLLECTION).doc('config').set({ password: input }, {merge: true});
                     Swal.fire({ toast: true, icon: 'success', title: 'Password Created!', position: 'top', timer: 2000, showConfirmButton: false });
-                    document.getElementById('adminPasswordInput').value = '';
-                    isAdminLoggedIn = true; showDashboard();
+                    document.getElementById('adminPasswordInput').value = ''; isAdminLoggedIn = true; showDashboard();
                 } else {
                     if (input === doc.data().password) { isAdminLoggedIn = true; showDashboard(); } 
                     else { Swal.fire({ toast: true, icon: 'error', title: 'Incorrect Password!', position: 'top', timer: 2000, showConfirmButton: false }); }
@@ -645,16 +633,12 @@
         };
 
         function showDashboard() {
-            document.getElementById('loginScreen').classList.add('d-none');
-            document.getElementById('adminDashboard').classList.remove('d-none');
-            loadDashboard(); 
+            document.getElementById('loginScreen').classList.add('d-none'); document.getElementById('adminDashboard').classList.remove('d-none'); loadDashboard(); 
         }
 
-        window.logoutAdmin = function() {
-            isAdminLoggedIn = false; document.getElementById('adminPasswordInput').value = ''; toggleAdmin(); 
-        };
+        window.logoutAdmin = function() { isAdminLoggedIn = false; document.getElementById('adminPasswordInput').value = ''; toggleAdmin(); };
 
-        // ========== STAFF MANAGEMENT (ADMIN) ==========
+        // ========== STAFF MANAGEMENT ==========
         function fetchStaffList() {
             db.collection(ADMIN_COLLECTION).doc('staffConfig').get().then(doc => {
                 if(doc.exists && doc.data().list) { globalStaffList = doc.data().list; }
@@ -665,11 +649,7 @@
         function fetchStaffListAdmin() {
             const container = document.getElementById('adminStaffList'); container.innerHTML = '';
             globalStaffList.forEach((name, index) => {
-                container.innerHTML += `
-                    <li class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 border-bottom">
-                        <span class="fw-bold text-secondary"><i class="bi bi-person-badge text-primary me-2"></i> ${name}</span>
-                        <button class="btn btn-sm btn-outline-danger rounded-circle" onclick="removeStaff(${index})"><i class="bi bi-trash"></i></button>
-                    </li>`;
+                container.innerHTML += `<li class="list-group-item d-flex justify-content-between align-items-center px-3 py-3 border-bottom"><span class="fw-bold text-dark fs-5"><i class="bi bi-person-badge text-primary me-3"></i> ${name}</span><button class="btn btn-danger rounded-circle" onclick="removeStaff(${index})"><i class="bi bi-trash"></i></button></li>`;
             });
         }
 
@@ -679,8 +659,7 @@
             if(globalStaffList.includes(name)) return Swal.fire({ toast:true, icon:'warning', title:'Name already exists!', position:'top', showConfirmButton:false, timer:1500});
             globalStaffList.push(name);
             db.collection(ADMIN_COLLECTION).doc('staffConfig').set({ list: globalStaffList }, {merge: true}).then(() => {
-                input.value = ''; fetchStaffListAdmin();
-                Swal.fire({ toast:true, icon:'success', title:'Staff Added!', position:'top', showConfirmButton:false, timer:1500});
+                input.value = ''; fetchStaffListAdmin(); Swal.fire({ toast:true, icon:'success', title:'Staff Added!', position:'top', showConfirmButton:false, timer:1500});
             });
         };
 
@@ -698,8 +677,7 @@
 
         // ========== ADMIN TABS DATA ==========
         window.loadDashboard = function() {
-            const tFilter = document.getElementById('dashTimeFilter').value;
-            const todayStr = getLocalDate();
+            const tFilter = document.getElementById('dashTimeFilter').value; const todayStr = getLocalDate();
             let query = db.collection(RECORDS_COLLECTION);
             if (tFilter === 'today') { query = query.where('purchaseDate', '==', todayStr); }
 
@@ -720,14 +698,14 @@
             container.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary"></div></div>';
             
             db.collection(RECORDS_COLLECTION).where('purchaseDate', '==', todayStr).get().then(snap => {
-                if(snap.empty){ container.innerHTML = '<p class="text-muted small text-center mt-3">आज कोई एंट्री नहीं हुई है।</p>'; return; }
+                if(snap.empty){ container.innerHTML = '<p class="text-muted fw-bold text-center mt-3">आज कोई एंट्री नहीं हुई है।</p>'; return; }
                 let counts = {};
                 snap.forEach(doc => { const sName = doc.data().staffName || 'Unknown'; counts[sName] = (counts[sName] || 0) + 1; });
                 let sortedStaff = Object.entries(counts).sort((a, b) => b[1] - a[1]);
                 container.innerHTML = '';
                 sortedStaff.forEach(([name, count], index) => {
-                    let medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🔹';
-                    container.innerHTML += `<div class="d-flex justify-content-between align-items-center mb-3 bg-light p-3 rounded-3 border"><span class="fw-bold text-dark">${medal} ${name}</span><span class="badge bg-primary rounded-pill fs-6 px-3">${count} Entries</span></div>`;
+                    let medal = index === 0 ? '🏆' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🔹';
+                    container.innerHTML += `<div class="d-flex justify-content-between align-items-center mb-3 bg-white p-3 rounded-4 border"><span class="fw-bolder text-dark fs-5">${medal} ${name}</span><span class="badge bg-primary rounded-pill fs-5 px-4">${count}</span></div>`;
                 });
             });
         };
@@ -736,21 +714,21 @@
             const fromDate = document.getElementById('manageFrom').value, toDate = document.getElementById('manageTo').value;
             const tbody = document.getElementById('manageTableBody');
             if(!fromDate || !toDate) return;
-            tbody.innerHTML = '<tr><td colspan="6" class="text-primary py-4"><div class="spinner-border"></div></td></tr>';
+            tbody.innerHTML = '<tr><td colspan="6" class="text-primary py-5"><div class="spinner-border"></div></td></tr>';
             
             db.collection(RECORDS_COLLECTION).where('purchaseDate', '>=', fromDate).where('purchaseDate', '<=', toDate).get().then(snap => {
-                if (snap.empty) { tbody.innerHTML = '<tr><td colspan="6" class="text-muted py-4">No records found.</td></tr>'; return; }
+                if (snap.empty) { tbody.innerHTML = '<tr><td colspan="6" class="text-muted fw-bold py-5">No records found.</td></tr>'; return; }
                 let records = []; snap.forEach(doc => records.push({ id: doc.id, ...doc.data() }));
                 records.sort((a, b) => new Date(b.purchaseDate) - new Date(a.purchaseDate));
                 tbody.innerHTML = '';
                 records.forEach(d => {
-                    tbody.innerHTML += `<tr><td class="fw-bold text-dark">${d.vehicleNo}</td><td>${d.mobileNo} <i class="bi bi-pencil-square text-primary ms-2" style="cursor:pointer; font-size:1.1rem;" onclick="editMobile('${d.id}', '${d.mobileNo}')"></i></td><td><span class="badge bg-secondary">${d.vehicleType === '2 Wheeler' ? '2W' : '4W'} - ${d.fuel}</span></td><td><span class="fw-bold text-muted">${d.staffName || '-'}</span></td><td class="small text-muted">${d.purchaseDate}</td><td><button class="btn btn-sm btn-outline-danger rounded-circle" onclick="deleteRecord('${d.id}')"><i class="bi bi-trash"></i></button></td></tr>`;
+                    tbody.innerHTML += `<tr><td class="fw-bolder text-dark fs-6">${d.vehicleNo}</td><td><span class="fw-bold text-secondary">${d.mobileNo}</span> <i class="bi bi-pencil-square text-primary ms-2" style="cursor:pointer; font-size:1.2rem;" onclick="editMobile('${d.id}', '${d.mobileNo}')"></i></td><td><span class="badge bg-dark">${d.vehicleType === '2 Wheeler' ? '2W' : '4W'}</span><br><small class="fw-bold text-muted">${d.fuel}</small></td><td><span class="fw-bolder text-primary">${d.staffName || '-'}</span></td><td class="fw-bold text-muted">${d.purchaseDate}</td><td><button class="btn btn-danger rounded-circle" onclick="deleteRecord('${d.id}')"><i class="bi bi-trash"></i></button></td></tr>`;
                 });
             });
         };
 
         window.editMobile = function(docId, oldMobile) {
-            Swal.fire({ title: 'Update Mobile Number', input: 'number', inputValue: oldMobile, showCancelButton: true, confirmButtonText: 'Update', confirmButtonColor: '#0d6efd'
+            Swal.fire({ title: 'Update Mobile Number', input: 'number', inputValue: oldMobile, showCancelButton: true, confirmButtonText: 'Update', confirmButtonColor: '#1e40af'
             }).then((result) => {
                 if (result.isConfirmed && result.value && result.value !== oldMobile) {
                     db.collection(RECORDS_COLLECTION).doc(docId).update({ mobileNo: result.value }).then(() => { Swal.fire({ toast:true, icon:'success', title:'Number Updated!', position:'top', showConfirmButton:false, timer:1500}); loadManageData(); });
@@ -775,33 +753,33 @@
 
             db.collection(RECORDS_COLLECTION).where('expiryDate', '==', todayStr).get().then(snap => {
                 const container = document.getElementById('todayExpiryList'); container.innerHTML = '';
-                if (snap.empty) container.innerHTML = '<p class="text-muted small p-4 text-center border rounded">कोई गाड़ी Expire नहीं हो रही आज</p>';
+                if (snap.empty) container.innerHTML = '<p class="text-muted fw-bold p-4 text-center border rounded-4 bg-white">कोई गाड़ी Expire नहीं हो रही आज</p>';
                 else {
                     snap.forEach(doc => {
                         const d = doc.data(); const msg = `🚨 *PUC Expiry Alert*\n\nनमस्ते, आपकी गाड़ी *${d.vehicleNo}* का PUC आज खत्म हो रहा है! चालान से बचने के लिए तुरंत रिन्यू कराएं।\n\n🎁 *TyreXpert ऑफर:* अपना PUC रिन्यू कराएं और पाएं फ्री टायर्स एयर प्रेशर चेकअप!\n\n📍 *Shree Ganesh PUC Center*, पहली पुलिया, सेक्टर 6-7 रोड।`;
-                        container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-2 border rounded-3 p-3 bg-white"><span><strong class="fs-5">${d.vehicleNo}</strong> <br><small class="text-muted"><i class="bi bi-telephone-fill"></i> ${d.mobileNo}</small></span><button class="btn btn-success fw-bold rounded-pill px-3" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-whatsapp me-1"></i> Send</button></div>`;
+                        container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-3 border-0 rounded-4 p-4 bg-white shadow-sm"><span><strong class="fs-4 text-dark">${d.vehicleNo}</strong> <br><small class="text-muted fw-bold"><i class="bi bi-telephone-fill"></i> ${d.mobileNo}</small></span><button class="btn btn-success fw-bold rounded-pill px-4 py-2" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-whatsapp me-2"></i> Send</button></div>`;
                     });
                 }
             });
 
             db.collection(RECORDS_COLLECTION).where('expiryDate', '>', todayStr).where('expiryDate', '<=', futureStr).get().then(snap => {
                 const container = document.getElementById('upcomingExpiryList'); container.innerHTML = '';
-                if (snap.empty) container.innerHTML = '<p class="text-muted small p-4 text-center border rounded">अगले 5 दिनों में कोई Expiry नहीं</p>';
+                if (snap.empty) container.innerHTML = '<p class="text-muted fw-bold p-4 text-center border rounded-4 bg-white">अगले 5 दिनों में कोई Expiry नहीं</p>';
                 else {
                     snap.forEach(doc => {
                         const d = doc.data(); const msg = `⚠️ *PUC Advance Reminder*\n\nनमस्ते, आपकी गाड़ी *${d.vehicleNo}* का PUC ${d.expiryDate} को खत्म हो रहा है।\n\n🎁 *TyreXpert ऑफर:* समय से रिन्यू कराएं और पाएं फ्री एयर चेकअप।\n\n📍 *Shree Ganesh PUC Center*`;
-                        container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-2 border rounded-3 p-3 bg-white"><span><strong class="fs-5">${d.vehicleNo}</strong> <br><small class="text-danger fw-bold">Exp: ${d.expiryDate}</small></span><button class="btn btn-warning text-dark fw-bold rounded-pill px-3" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-whatsapp me-1"></i> Send</button></div>`;
+                        container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-3 border-0 rounded-4 p-4 bg-white shadow-sm"><span><strong class="fs-4 text-dark">${d.vehicleNo}</strong> <br><small class="text-danger fw-bold">Exp: ${d.expiryDate}</small></span><button class="btn btn-warning text-dark fw-bold rounded-pill px-4 py-2" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-whatsapp me-2"></i> Send</button></div>`;
                     });
                 }
             });
 
             db.collection(RECORDS_COLLECTION).where('expiryDate', '<=', past15Str).where('expiryDate', '>=', past6MStr).get().then(snap => {
                 const container = document.getElementById('lostExpiryList'); container.innerHTML = '';
-                if (snap.empty) container.innerHTML = '<p class="text-muted small p-4 text-center border rounded">No lost customers found recently.</p>';
+                if (snap.empty) container.innerHTML = '<p class="text-muted fw-bold p-4 text-center border rounded-4 bg-white">No lost customers found recently.</p>';
                 else {
                     snap.forEach(doc => {
                         const d = doc.data(); const msg = `💔 *TyreXpert Special Comeback Offer*\n\nनमस्ते सर, आपकी गाड़ी *${d.vehicleNo}* का PUC काफी समय से एक्सपायर है। बिना PUC गाड़ी चलाना रिस्की हो सकता है।\n\n🎁 *स्पेशल ऑफर:* आज ही हमारे सेंटर आएं, PUC बनवाएं और पाएं *फ्री कार/बाइक वाश कूपन या डिस्काउंट*!\n📍 *Shree Ganesh PUC Center*`;
-                        container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-2 border border-danger rounded-3 p-3 bg-white"><span><strong class="fs-5 text-dark">${d.vehicleNo}</strong> <br><small class="text-muted">Exp: ${d.expiryDate}</small></span><button class="btn btn-danger fw-bold rounded-pill px-3" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-gift-fill me-1"></i> Offer</button></div>`;
+                        container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-3 border border-danger rounded-4 p-4 bg-white shadow-sm"><span><strong class="fs-4 text-dark">${d.vehicleNo}</strong> <br><small class="text-muted fw-bold">Exp: ${d.expiryDate}</small></span><button class="btn btn-danger fw-bold rounded-pill px-4 py-2" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-gift-fill me-2"></i> Offer</button></div>`;
                     });
                 }
             });
