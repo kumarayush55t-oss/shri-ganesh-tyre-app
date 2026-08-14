@@ -79,6 +79,10 @@
         .btn-outline-dark { border: 2px solid #e2e8f0; color: #64748b; font-weight: 600; border-radius: 12px !important; margin: 0 5px; }
         .btn-check:checked + .btn-outline-dark { background: #0d6efd; color: #fff; border-color: #0d6efd; box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3); }
 
+        /* Floating PIP Button */
+        .btn-pip { background: #1e293b; color: white; font-weight: 700; border-radius: 50px; padding: 10px 25px; transition: 0.3s; border: none; box-shadow: 0 8px 15px rgba(30, 41, 59, 0.3); }
+        .btn-pip:hover { background: #0f172a; transform: translateY(-2px); }
+
         /* Admin Floating Button */
         .admin-link { position: fixed; bottom: 25px; right: 25px; z-index: 1050; box-shadow: 0 10px 25px rgba(0,0,0,0.2); border-radius: 50px; font-weight: 700; padding: 12px 25px; transition: 0.3s; border: none; }
         .admin-link:hover { transform: scale(1.05); }
@@ -103,12 +107,10 @@
         .stats-card { background: #fff; border-radius: 20px; padding: 25px 15px; border: 1px solid #e2e8f0; box-shadow: 0 10px 20px rgba(0,0,0,0.02); text-align: center; transition: 0.3s; }
         .stats-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(13, 110, 253, 0.08); border-color: #dbeafe; }
         
-        /* Table Styling */
         .table-modern { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
         .table-modern thead { background: #f1f5f9; color: #475569; }
         .table-modern th, .table-modern td { padding: 15px; vertical-align: middle; border-bottom: 1px solid #f1f5f9; }
         
-        /* Utility */
         .smooth-fade { animation: fadeIn 0.4s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -136,7 +138,14 @@
             <div class="p-4 p-md-5 position-relative bg-white">
                 <span id="vipBadge" class="vip-badge"><i class="bi bi-star-fill text-warning"></i> VIP Customer</span>
                 
-                <div class="row g-4 mt-2">
+                <!-- PIP / Floating Button -->
+                <div class="text-end mb-3">
+                    <button class="btn-pip" onclick="openPiPWindow()">
+                        <i class="bi bi-pip me-1"></i> Minimize (Float Mode)
+                    </button>
+                </div>
+
+                <div class="row g-4 mt-1">
                     <div class="col-md-6">
                         <div class="form-floating">
                             <input type="text" id="vehicleNo" class="form-control text-uppercase fw-bold text-primary" placeholder="HR12AB1234" onkeyup="autoFillAndHistory()" autocomplete="off"/>
@@ -172,19 +181,6 @@
                         <button class="btn btn-gradient w-100 py-3 fs-5 rounded-pill" onclick="initiateSubmit()">
                             <i class="bi bi-cloud-check-fill me-2"></i> Save & Continue
                         </button>
-                    </div>
-
-                    <!-- PC Notification Reminder Toggle -->
-                    <div class="col-12 mt-3 text-center">
-                        <div class="d-inline-flex align-items-center p-2 px-4 border rounded-pill bg-light shadow-sm">
-                            <div class="form-check form-switch m-0 p-0 d-flex align-items-center">
-                                <input class="form-check-input ms-0 me-2" type="checkbox" id="reminderToggle" style="cursor:pointer; width: 40px; height: 20px;" onchange="togglePCNotificationReminder()">
-                                <label class="form-check-label text-primary fw-bold" for="reminderToggle" style="cursor:pointer; font-size: 0.95rem; margin-top: 2px;">
-                                    🔔 PC Background Reminder (30s)
-                                </label>
-                            </div>
-                        </div>
-                        <div class="small text-muted mt-1">ऑन रहने पर, ब्राउज़र मिनीमाइज़ होने पर भी डेस्कटॉप नोटिफिकेशन आएगा।</div>
                     </div>
                 </div>
             </div>
@@ -265,8 +261,7 @@
             </ul>
 
             <div class="tab-content tab-content-admin">
-                
-                <!-- 1. Dashboard Overview -->
+                <!-- Dashboard Overview -->
                 <div class="tab-pane show active smooth-fade" id="tabDashboard">
                     <div class="row g-3 mb-4 align-items-end">
                         <div class="col-md-4">
@@ -285,7 +280,7 @@
                     </div>
                 </div>
 
-                <!-- 2. Staff Management & Analytics -->
+                <!-- Staff Management -->
                 <div class="tab-pane smooth-fade" id="tabStaff">
                     <div class="row g-4">
                         <div class="col-md-6">
@@ -310,7 +305,7 @@
                     </div>
                 </div>
 
-                <!-- 3. Manage Data & Edit -->
+                <!-- Manage Data -->
                 <div class="tab-pane smooth-fade" id="tabManage">
                     <div class="row g-3 align-items-end mb-4 bg-white p-3 rounded-4 shadow-sm border">
                         <div class="col-md-4"><label class="small text-muted fw-bold ms-1">From Date</label><input type="date" id="manageFrom" class="form-control" /></div>
@@ -329,7 +324,7 @@
                     </div>
                 </div>
 
-                <!-- 4. Reminders & Lost Customers -->
+                <!-- Reminders -->
                 <div class="tab-pane smooth-fade" id="tabReminder">
                     <ul class="nav nav-pills mb-4 bg-white p-2 rounded-pill shadow-sm border d-inline-flex" id="remSubTabs" role="tablist">
                         <li class="nav-item"><button class="nav-link active rounded-pill px-4 fw-bold" data-bs-toggle="pill" data-bs-target="#remToday">⚠️ आज Expire</button></li>
@@ -337,18 +332,8 @@
                         <li class="nav-item"><button class="nav-link rounded-pill px-4 text-danger fw-bold" data-bs-toggle="pill" data-bs-target="#remLost">💔 Lost Customers</button></li>
                     </ul>
                     <div class="tab-content">
-                        <!-- Today -->
-                        <div class="tab-pane show active" id="remToday">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <span class="small text-muted fw-bold"><i class="bi bi-info-circle"></i> Send will open WhatsApp</span>
-                            </div>
-                            <div id="todayExpiryList" class="list-group shadow-sm border-0"></div>
-                        </div>
-                        <!-- Upcoming -->
-                        <div class="tab-pane" id="remUpcoming">
-                            <div id="upcomingExpiryList" class="list-group shadow-sm border-0"></div>
-                        </div>
-                        <!-- Lost -->
+                        <div class="tab-pane show active" id="remToday"><div id="todayExpiryList" class="list-group shadow-sm border-0"></div></div>
+                        <div class="tab-pane" id="remUpcoming"><div id="upcomingExpiryList" class="list-group shadow-sm border-0"></div></div>
                         <div class="tab-pane" id="remLost">
                             <div class="alert alert-danger py-2 mb-3 small fw-bold text-center border-0 rounded-3">ये वो गाड़ियां हैं जिनका PUC 15 दिन से ज्यादा समय से एक्सपायर है। इन्हें Special Offer भेजें!</div>
                             <div id="lostExpiryList" class="list-group shadow-sm border-0"></div>
@@ -384,8 +369,9 @@
         let selectedStaff = "";
         let selectedDuration = 0;
         let pendingFormData = {};
-        let pcReminderTimer = null; // Timer for system notification
         let globalStaffList = [];
+        let pipWindow = null;
+        let pipInterval = null;
 
         function getLocalDate(dateObj = new Date()) {
             const year = dateObj.getFullYear();
@@ -405,7 +391,6 @@
 
             fetchStaffList();
 
-            // Bootstrap Tab Events
             const tabElements = document.querySelectorAll('button[data-bs-toggle="tab"]');
             tabElements.forEach(tab => {
                 tab.addEventListener('shown.bs.tab', event => {
@@ -418,6 +403,74 @@
                 });
             });
         });
+
+        // ========== FLOATING PIP WINDOW (OPTION A) ==========
+        async function openPiPWindow() {
+            if (!('documentPictureInPicture' in window)) {
+                Swal.fire({ icon: 'warning', title: 'Not Supported', text: 'आपका ब्राउज़र Floating Window सपोर्ट नहीं करता। कृपया Chrome को अपडेट करें।', confirmButtonColor: '#0d6efd' });
+                return;
+            }
+
+            try {
+                // Request a floating window
+                pipWindow = await documentPictureInPicture.requestWindow({
+                    width: 350,
+                    height: 250
+                });
+
+                // Styling for the PiP Window
+                const style = pipWindow.document.createElement('style');
+                style.textContent = `
+                    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@500;700&display=swap');
+                    body { font-family: 'Outfit', sans-serif; background: #0a192f; color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; margin: 0; text-align: center; padding: 20px; box-sizing: border-box; }
+                    .alert-box { background: #1e293b; padding: 20px; border-radius: 16px; border: 2px solid #334155; width: 100%; transition: all 0.3s ease; }
+                    .alert-box.flash { background: #dc3545; border-color: #ff0844; transform: scale(1.05); box-shadow: 0 0 25px rgba(220, 53, 69, 0.8); }
+                    h3 { margin: 0 0 8px 0; font-size: 1.3rem; font-weight: 700; color: #ffca28; }
+                    p { font-size: 1rem; color: #e2e8f0; margin: 0; font-weight: 500; }
+                    .btn-form { background: linear-gradient(135deg, #0d6efd 0%, #0043a8 100%); color: white; border: none; padding: 12px 20px; border-radius: 50px; font-weight: 700; cursor: pointer; margin-top: 20px; font-size: 1.1rem; width: 100%; box-shadow: 0 4px 15px rgba(13, 110, 253, 0.4); }
+                    .btn-form:hover { opacity: 0.9; transform: translateY(-2px); }
+                `;
+                pipWindow.document.head.appendChild(style);
+
+                // HTML Content inside PiP
+                pipWindow.document.body.innerHTML = `
+                    <div id="pipAlertBox" class="alert-box">
+                        <h3>⚠️ PUC Alert</h3>
+                        <p id="pipText">गाड़ी की एंट्री करना मत भूलना!</p>
+                    </div>
+                    <button class="btn-form" id="openFormBtn">📝 Open Entry Form</button>
+                `;
+
+                // Logic: Bring Main Window to Front
+                pipWindow.document.getElementById('openFormBtn').addEventListener('click', () => {
+                    window.focus(); // Focus the main browser window
+                    pipWindow.close(); // Close floating window
+                });
+
+                // Logic: 10-Second Flashing Animation
+                const alertBox = pipWindow.document.getElementById('pipAlertBox');
+                const textElem = pipWindow.document.getElementById('pipText');
+                
+                pipInterval = pipWindow.setInterval(() => {
+                    alertBox.classList.add('flash');
+                    textElem.innerText = "🚨 जल्दी एंट्री करो भाई!";
+                    
+                    pipWindow.setTimeout(() => {
+                        alertBox.classList.remove('flash');
+                        textElem.innerText = "गाड़ी की एंट्री करना मत भूलना!";
+                    }, 1500); // Highlight stays for 1.5s
+                }, 10000); // Repeats every 10s
+
+                // Clear interval if closed
+                pipWindow.addEventListener('pagehide', () => {
+                    if (pipInterval) clearInterval(pipInterval);
+                    pipWindow = null;
+                });
+
+            } catch (error) {
+                console.error("PiP Error:", error);
+            }
+        }
 
         // ========== MAIN ENTRY LOGIC ==========
         window.toggleFuel = function() {
@@ -464,7 +517,6 @@
 
             pendingFormData = { vehicle, mobile, type, fuel };
             
-            // Build Staff Buttons
             const staffContainer = document.getElementById('modalStaffContainer');
             staffContainer.innerHTML = '';
             if(globalStaffList.length === 0){
@@ -477,7 +529,6 @@
                         </div>`;
                 });
             }
-            
             bsEntryModal.show();
         };
 
@@ -525,7 +576,6 @@
             }).then(() => {
                 Swal.fire({ icon: 'success', title: 'Success!', text: 'PUC एंट्री सफलतापूर्वक हो गई है।', timer: 2000, showConfirmButton: false });
                 
-                // Form Reset
                 document.getElementById('vehicleNo').value = '';
                 document.getElementById('mobileNo').value = '';
                 document.getElementById('vipBadge').style.display = 'none';
@@ -538,55 +588,6 @@
             });
         };
 
-        // ========== PC BACKGROUND NOTIFICATION REMINDER (Web Notifications API) ==========
-        window.togglePCNotificationReminder = function() {
-            const isChecked = document.getElementById('reminderToggle').checked;
-
-            if (isChecked) {
-                // Browser support check
-                if (!("Notification" in window)) {
-                    Swal.fire({ icon: 'error', title: 'Not Supported', text: 'आपका ब्राउज़र डेस्कटॉप नोटिफिकेशन सपोर्ट नहीं करता।' });
-                    document.getElementById('reminderToggle').checked = false;
-                    return;
-                }
-
-                if (Notification.permission !== "granted") {
-                    Notification.requestPermission().then(permission => {
-                        if (permission === "granted") {
-                            startPCNotificationTimer();
-                            Swal.fire({ toast: true, position: 'bottom-end', icon: 'success', title: 'PC Notifications ON', showConfirmButton: false, timer: 1500 });
-                        } else {
-                            Swal.fire({ icon: 'warning', title: 'Permission Denied', text: 'PC Notifications के लिए ब्राउज़र से परमिशन Allow करें (URL Bar के पास)।' });
-                            document.getElementById('reminderToggle').checked = false;
-                        }
-                    });
-                } else {
-                    startPCNotificationTimer();
-                    Swal.fire({ toast: true, position: 'bottom-end', icon: 'success', title: 'PC Notifications ON', showConfirmButton: false, timer: 1500 });
-                }
-            } else {
-                clearInterval(pcReminderTimer);
-                pcReminderTimer = null;
-                Swal.fire({ toast: true, position: 'bottom-end', icon: 'info', title: 'PC Notifications OFF', showConfirmButton: false, timer: 1500 });
-            }
-        };
-
-        function startPCNotificationTimer() {
-            if (pcReminderTimer) clearInterval(pcReminderTimer);
-            
-            pcReminderTimer = setInterval(() => {
-                if (Notification.permission === "granted") {
-                    const notif = new Notification("Shree Ganesh PUC Center", {
-                        body: "⚠️ भाई, गाड़ी की एंट्री करना मत भूलना! कस्टमर इंतजार कर रहा है।",
-                        requireInteraction: false // Automatically dismisses on most OS
-                    });
-                    
-                    // Close after 5 seconds just in case OS doesn't auto-close
-                    setTimeout(() => { notif.close(); }, 5000); 
-                }
-            }, 30000); // 30 seconds interval
-        }
-
         // ========== ADMIN LOGIC ==========
         window.toggleAdmin = function() {
             const main = document.getElementById('mainSection');
@@ -594,7 +595,6 @@
             const btn = document.getElementById('adminToggleBtn');
             
             if (admin.classList.contains('d-none')) {
-                // Open Admin
                 main.classList.add('d-none');
                 admin.classList.remove('d-none');
                 btn.innerHTML = '<i class="bi bi-arrow-left-circle-fill me-1"></i> Back to Form';
@@ -604,11 +604,8 @@
                     document.getElementById('loginScreen').classList.remove('d-none');
                     document.getElementById('adminDashboard').classList.add('d-none');
                     checkPasswordExists();
-                } else { 
-                    showDashboard(); 
-                }
+                } else { showDashboard(); }
             } else {
-                // Close Admin
                 main.classList.remove('d-none');
                 admin.classList.add('d-none');
                 btn.innerHTML = '<i class="bi bi-shield-lock-fill me-1"></i> Admin Panel';
@@ -626,9 +623,7 @@
                     document.getElementById('passwordSetupMsg').innerText = '⚠️ First Time Setup: Create a new password.';
                     document.getElementById('passwordSetupMsg').className = 'text-danger fw-bold small mb-4';
                 }
-            } catch(e) {
-                console.log("Firebase Auth Check Error:", e);
-            }
+            } catch(e) { console.log("Firebase Auth Check Error:", e); }
         }
 
         window.handleAdminAuth = async function() {
@@ -643,16 +638,10 @@
                     document.getElementById('adminPasswordInput').value = '';
                     isAdminLoggedIn = true; showDashboard();
                 } else {
-                    if (input === doc.data().password) { 
-                        isAdminLoggedIn = true; 
-                        showDashboard(); 
-                    } else { 
-                        Swal.fire({ toast: true, icon: 'error', title: 'Incorrect Password!', position: 'top', timer: 2000, showConfirmButton: false }); 
-                    }
+                    if (input === doc.data().password) { isAdminLoggedIn = true; showDashboard(); } 
+                    else { Swal.fire({ toast: true, icon: 'error', title: 'Incorrect Password!', position: 'top', timer: 2000, showConfirmButton: false }); }
                 }
-            } catch(e) {
-                Swal.fire({ icon: 'error', title: 'Network Error', text: e.message });
-            }
+            } catch(e) { Swal.fire({ icon: 'error', title: 'Network Error', text: e.message }); }
         };
 
         function showDashboard() {
@@ -662,9 +651,7 @@
         }
 
         window.logoutAdmin = function() {
-            isAdminLoggedIn = false;
-            document.getElementById('adminPasswordInput').value = '';
-            toggleAdmin(); 
+            isAdminLoggedIn = false; document.getElementById('adminPasswordInput').value = ''; toggleAdmin(); 
         };
 
         // ========== STAFF MANAGEMENT (ADMIN) ==========
@@ -672,14 +659,11 @@
             db.collection(ADMIN_COLLECTION).doc('staffConfig').get().then(doc => {
                 if(doc.exists && doc.data().list) { globalStaffList = doc.data().list; }
                 else { globalStaffList = ["Laddu", "Haider", "Arwaz", "Ankit"]; } 
-            }).catch(() => {
-                globalStaffList = ["Laddu", "Haider", "Arwaz", "Ankit"];
-            });
+            }).catch(() => { globalStaffList = ["Laddu", "Haider", "Arwaz", "Ankit"]; });
         }
 
         function fetchStaffListAdmin() {
-            const container = document.getElementById('adminStaffList');
-            container.innerHTML = '';
+            const container = document.getElementById('adminStaffList'); container.innerHTML = '';
             globalStaffList.forEach((name, index) => {
                 container.innerHTML += `
                     <li class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 border-bottom">
@@ -690,11 +674,9 @@
         }
 
         window.addStaff = function() {
-            const input = document.getElementById('newStaffName');
-            const name = input.value.trim();
+            const input = document.getElementById('newStaffName'); const name = input.value.trim();
             if(!name) return;
             if(globalStaffList.includes(name)) return Swal.fire({ toast:true, icon:'warning', title:'Name already exists!', position:'top', showConfirmButton:false, timer:1500});
-            
             globalStaffList.push(name);
             db.collection(ADMIN_COLLECTION).doc('staffConfig').set({ list: globalStaffList }, {merge: true}).then(() => {
                 input.value = ''; fetchStaffListAdmin();
@@ -708,16 +690,13 @@
                 if (result.isConfirmed) {
                     globalStaffList.splice(index, 1);
                     db.collection(ADMIN_COLLECTION).doc('staffConfig').set({ list: globalStaffList }, {merge: true}).then(() => {
-                        fetchStaffListAdmin();
-                        Swal.fire({ toast:true, icon:'success', title:'Staff Removed!', position:'top', showConfirmButton:false, timer:1500});
+                        fetchStaffListAdmin(); Swal.fire({ toast:true, icon:'success', title:'Staff Removed!', position:'top', showConfirmButton:false, timer:1500});
                     });
                 }
             });
         };
 
         // ========== ADMIN TABS DATA ==========
-        
-        // 1. DASHBOARD
         window.loadDashboard = function() {
             const tFilter = document.getElementById('dashTimeFilter').value;
             const todayStr = getLocalDate();
@@ -727,95 +706,54 @@
             query.get().then(snap => {
                 let total = 0, twoW = 0, fourW = 0, p = 0, d = 0;
                 snap.forEach(doc => {
-                    const data = doc.data();
-                    total++;
+                    const data = doc.data(); total++;
                     if (data.vehicleType === '2 Wheeler') twoW++; else fourW++;
                     if (data.fuel === 'Petrol') p++; else if (data.fuel === 'Diesel') d++; 
                 });
-                document.getElementById('statTotal').innerText = total; 
-                document.getElementById('stat2W').innerText = twoW;
-                document.getElementById('stat4W').innerText = fourW; 
-                document.getElementById('statFuel').innerText = `${p} / ${d}`;
+                document.getElementById('statTotal').innerText = total; document.getElementById('stat2W').innerText = twoW;
+                document.getElementById('stat4W').innerText = fourW; document.getElementById('statFuel').innerText = `${p} / ${d}`;
             });
         };
 
-        // 2. STAFF ANALYTICS
         window.loadStaffAnalytics = function() {
-            const todayStr = getLocalDate();
-            const container = document.getElementById('staffAnalyticsContainer');
+            const todayStr = getLocalDate(); const container = document.getElementById('staffAnalyticsContainer');
             container.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary"></div></div>';
             
             db.collection(RECORDS_COLLECTION).where('purchaseDate', '==', todayStr).get().then(snap => {
                 if(snap.empty){ container.innerHTML = '<p class="text-muted small text-center mt-3">आज कोई एंट्री नहीं हुई है।</p>'; return; }
-                
                 let counts = {};
-                snap.forEach(doc => {
-                    const sName = doc.data().staffName || 'Unknown';
-                    counts[sName] = (counts[sName] || 0) + 1;
-                });
-
-                // Sort by performance
+                snap.forEach(doc => { const sName = doc.data().staffName || 'Unknown'; counts[sName] = (counts[sName] || 0) + 1; });
                 let sortedStaff = Object.entries(counts).sort((a, b) => b[1] - a[1]);
-
                 container.innerHTML = '';
                 sortedStaff.forEach(([name, count], index) => {
                     let medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🔹';
-                    container.innerHTML += `
-                        <div class="d-flex justify-content-between align-items-center mb-3 bg-light p-3 rounded-3 border">
-                            <span class="fw-bold text-dark">${medal} ${name}</span>
-                            <span class="badge bg-primary rounded-pill fs-6 px-3">${count} Entries</span>
-                        </div>`;
+                    container.innerHTML += `<div class="d-flex justify-content-between align-items-center mb-3 bg-light p-3 rounded-3 border"><span class="fw-bold text-dark">${medal} ${name}</span><span class="badge bg-primary rounded-pill fs-6 px-3">${count} Entries</span></div>`;
                 });
             });
         };
 
-        // 3. MANAGE DATA (With Edit/Delete)
         window.loadManageData = function() {
-            const fromDate = document.getElementById('manageFrom').value;
-            const toDate = document.getElementById('manageTo').value;
+            const fromDate = document.getElementById('manageFrom').value, toDate = document.getElementById('manageTo').value;
             const tbody = document.getElementById('manageTableBody');
-            
             if(!fromDate || !toDate) return;
             tbody.innerHTML = '<tr><td colspan="6" class="text-primary py-4"><div class="spinner-border"></div></td></tr>';
             
-            db.collection(RECORDS_COLLECTION)
-              .where('purchaseDate', '>=', fromDate).where('purchaseDate', '<=', toDate)
-              .get().then(snap => {
+            db.collection(RECORDS_COLLECTION).where('purchaseDate', '>=', fromDate).where('purchaseDate', '<=', toDate).get().then(snap => {
                 if (snap.empty) { tbody.innerHTML = '<tr><td colspan="6" class="text-muted py-4">No records found.</td></tr>'; return; }
-
-                let records = [];
-                snap.forEach(doc => records.push({ id: doc.id, ...doc.data() }));
+                let records = []; snap.forEach(doc => records.push({ id: doc.id, ...doc.data() }));
                 records.sort((a, b) => new Date(b.purchaseDate) - new Date(a.purchaseDate));
-
                 tbody.innerHTML = '';
                 records.forEach(d => {
-                    tbody.innerHTML += `
-                        <tr>
-                            <td class="fw-bold text-dark">${d.vehicleNo}</td>
-                            <td>${d.mobileNo} <i class="bi bi-pencil-square text-primary ms-2" style="cursor:pointer; font-size:1.1rem;" onclick="editMobile('${d.id}', '${d.mobileNo}')"></i></td>
-                            <td><span class="badge bg-secondary">${d.vehicleType === '2 Wheeler' ? '2W' : '4W'} - ${d.fuel}</span></td>
-                            <td><span class="fw-bold text-muted">${d.staffName || '-'}</span></td>
-                            <td class="small text-muted">${d.purchaseDate}</td>
-                            <td><button class="btn btn-sm btn-outline-danger rounded-circle" onclick="deleteRecord('${d.id}')"><i class="bi bi-trash"></i></button></td>
-                        </tr>`;
+                    tbody.innerHTML += `<tr><td class="fw-bold text-dark">${d.vehicleNo}</td><td>${d.mobileNo} <i class="bi bi-pencil-square text-primary ms-2" style="cursor:pointer; font-size:1.1rem;" onclick="editMobile('${d.id}', '${d.mobileNo}')"></i></td><td><span class="badge bg-secondary">${d.vehicleType === '2 Wheeler' ? '2W' : '4W'} - ${d.fuel}</span></td><td><span class="fw-bold text-muted">${d.staffName || '-'}</span></td><td class="small text-muted">${d.purchaseDate}</td><td><button class="btn btn-sm btn-outline-danger rounded-circle" onclick="deleteRecord('${d.id}')"><i class="bi bi-trash"></i></button></td></tr>`;
                 });
             });
         };
 
         window.editMobile = function(docId, oldMobile) {
-            Swal.fire({
-                title: 'Update Mobile Number',
-                input: 'number',
-                inputValue: oldMobile,
-                showCancelButton: true,
-                confirmButtonText: 'Update',
-                confirmButtonColor: '#0d6efd'
+            Swal.fire({ title: 'Update Mobile Number', input: 'number', inputValue: oldMobile, showCancelButton: true, confirmButtonText: 'Update', confirmButtonColor: '#0d6efd'
             }).then((result) => {
                 if (result.isConfirmed && result.value && result.value !== oldMobile) {
-                    db.collection(RECORDS_COLLECTION).doc(docId).update({ mobileNo: result.value }).then(() => {
-                        Swal.fire({ toast:true, icon:'success', title:'Number Updated!', position:'top', showConfirmButton:false, timer:1500});
-                        loadManageData();
-                    });
+                    db.collection(RECORDS_COLLECTION).doc(docId).update({ mobileNo: result.value }).then(() => { Swal.fire({ toast:true, icon:'success', title:'Number Updated!', position:'top', showConfirmButton:false, timer:1500}); loadManageData(); });
                 }
             });
         };
@@ -824,80 +762,49 @@
             Swal.fire({ title: 'Delete Record?', text: "यह वापस नहीं आएगा!", icon: 'warning', showCancelButton: true, confirmButtonText: 'Yes, Delete', confirmButtonColor: '#dc3545'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    db.collection(RECORDS_COLLECTION).doc(docId).delete().then(() => {
-                        Swal.fire({ toast:true, icon:'success', title:'Deleted!', position:'top', showConfirmButton:false, timer:1500});
-                        loadManageData(); loadDashboard(); loadStaffAnalytics();
-                    });
+                    db.collection(RECORDS_COLLECTION).doc(docId).delete().then(() => { Swal.fire({ toast:true, icon:'success', title:'Deleted!', position:'top', showConfirmButton:false, timer:1500}); loadManageData(); loadDashboard(); loadStaffAnalytics(); });
                 }
             });
         };
 
-        // 4. REMINDERS & LOST CUSTOMERS
         window.loadReminders = function() {
-            const today = new Date();
-            const todayStr = getLocalDate(today);
-            
-            const fDate = new Date(today); fDate.setDate(fDate.getDate() + 5);
-            const futureStr = getLocalDate(fDate);
-            
-            const past15Date = new Date(today); past15Date.setDate(past15Date.getDate() - 15);
-            const past15Str = getLocalDate(past15Date);
+            const todayStr = getLocalDate(new Date());
+            const fDate = new Date(); fDate.setDate(fDate.getDate() + 5); const futureStr = getLocalDate(fDate);
+            const past15Date = new Date(); past15Date.setDate(past15Date.getDate() - 15); const past15Str = getLocalDate(past15Date);
+            const past6Months = new Date(); past6Months.setMonth(past6Months.getMonth() - 6); const past6MStr = getLocalDate(past6Months);
 
-            // Today
             db.collection(RECORDS_COLLECTION).where('expiryDate', '==', todayStr).get().then(snap => {
                 const container = document.getElementById('todayExpiryList'); container.innerHTML = '';
                 if (snap.empty) container.innerHTML = '<p class="text-muted small p-4 text-center border rounded">कोई गाड़ी Expire नहीं हो रही आज</p>';
                 else {
                     snap.forEach(doc => {
-                        const d = doc.data();
-                        const msg = `🚨 *PUC Expiry Alert*\n\nनमस्ते, आपकी गाड़ी *${d.vehicleNo}* का PUC आज खत्म हो रहा है! चालान से बचने के लिए तुरंत रिन्यू कराएं।\n\n🎁 *TyreXpert ऑफर:* अपना PUC रिन्यू कराएं और पाएं फ्री टायर्स एयर प्रेशर चेकअप!\n\n📍 *Shree Ganesh PUC Center*, पहली पुलिया, सेक्टर 6-7 रोड।`;
-                        container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-2 border rounded-3 p-3 bg-white">
-                            <span><strong class="fs-5">${d.vehicleNo}</strong> <br><small class="text-muted"><i class="bi bi-telephone-fill"></i> ${d.mobileNo}</small></span> 
-                            <button class="btn btn-primary fw-bold rounded-pill px-3" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-whatsapp me-1"></i> Send</button>
-                        </div>`;
+                        const d = doc.data(); const msg = `🚨 *PUC Expiry Alert*\n\nनमस्ते, आपकी गाड़ी *${d.vehicleNo}* का PUC आज खत्म हो रहा है! चालान से बचने के लिए तुरंत रिन्यू कराएं।\n\n🎁 *TyreXpert ऑफर:* अपना PUC रिन्यू कराएं और पाएं फ्री टायर्स एयर प्रेशर चेकअप!\n\n📍 *Shree Ganesh PUC Center*, पहली पुलिया, सेक्टर 6-7 रोड।`;
+                        container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-2 border rounded-3 p-3 bg-white"><span><strong class="fs-5">${d.vehicleNo}</strong> <br><small class="text-muted"><i class="bi bi-telephone-fill"></i> ${d.mobileNo}</small></span><button class="btn btn-success fw-bold rounded-pill px-3" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-whatsapp me-1"></i> Send</button></div>`;
                     });
                 }
             });
 
-            // Upcoming
             db.collection(RECORDS_COLLECTION).where('expiryDate', '>', todayStr).where('expiryDate', '<=', futureStr).get().then(snap => {
                 const container = document.getElementById('upcomingExpiryList'); container.innerHTML = '';
                 if (snap.empty) container.innerHTML = '<p class="text-muted small p-4 text-center border rounded">अगले 5 दिनों में कोई Expiry नहीं</p>';
                 else {
                     snap.forEach(doc => {
-                        const d = doc.data();
-                        const msg = `⚠️ *PUC Advance Reminder*\n\nनमस्ते, आपकी गाड़ी *${d.vehicleNo}* का PUC ${d.expiryDate} को खत्म हो रहा है।\n\n🎁 *TyreXpert ऑफर:* समय से रिन्यू कराएं और पाएं फ्री एयर चेकअप।\n\n📍 *Shree Ganesh PUC Center*`;
-                        container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-2 border rounded-3 p-3 bg-white">
-                            <span><strong class="fs-5">${d.vehicleNo}</strong> <br><small class="text-danger fw-bold">Exp: ${d.expiryDate}</small></span> 
-                            <button class="btn btn-warning text-dark fw-bold rounded-pill px-3" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-whatsapp me-1"></i> Send</button>
-                        </div>`;
+                        const d = doc.data(); const msg = `⚠️ *PUC Advance Reminder*\n\nनमस्ते, आपकी गाड़ी *${d.vehicleNo}* का PUC ${d.expiryDate} को खत्म हो रहा है।\n\n🎁 *TyreXpert ऑफर:* समय से रिन्यू कराएं और पाएं फ्री एयर चेकअप।\n\n📍 *Shree Ganesh PUC Center*`;
+                        container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-2 border rounded-3 p-3 bg-white"><span><strong class="fs-5">${d.vehicleNo}</strong> <br><small class="text-danger fw-bold">Exp: ${d.expiryDate}</small></span><button class="btn btn-warning text-dark fw-bold rounded-pill px-3" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-whatsapp me-1"></i> Send</button></div>`;
                     });
                 }
             });
-
-            // Lost Customers
-            const past6Months = new Date(today); past6Months.setMonth(past6Months.getMonth() - 6);
-            const past6MStr = getLocalDate(past6Months);
 
             db.collection(RECORDS_COLLECTION).where('expiryDate', '<=', past15Str).where('expiryDate', '>=', past6MStr).get().then(snap => {
                 const container = document.getElementById('lostExpiryList'); container.innerHTML = '';
                 if (snap.empty) container.innerHTML = '<p class="text-muted small p-4 text-center border rounded">No lost customers found recently.</p>';
                 else {
                     snap.forEach(doc => {
-                        const d = doc.data();
-                        const msg = `💔 *TyreXpert Special Comeback Offer*\n\nनमस्ते सर, आपकी गाड़ी *${d.vehicleNo}* का PUC काफी समय से एक्सपायर है। बिना PUC गाड़ी चलाना रिस्की हो सकता है।\n\n🎁 *स्पेशल ऑफर:* आज ही हमारे सेंटर आएं, PUC बनवाएं और पाएं *फ्री कार/बाइक वाश कूपन या डिस्काउंट*!\n📍 *Shree Ganesh PUC Center*`;
-                        container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-2 border border-danger rounded-3 p-3 bg-white">
-                            <span><strong class="fs-5 text-dark">${d.vehicleNo}</strong> <br><small class="text-muted">Exp: ${d.expiryDate}</small></span> 
-                            <button class="btn btn-danger fw-bold rounded-pill px-3" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-gift-fill me-1"></i> Offer</button>
-                        </div>`;
+                        const d = doc.data(); const msg = `💔 *TyreXpert Special Comeback Offer*\n\nनमस्ते सर, आपकी गाड़ी *${d.vehicleNo}* का PUC काफी समय से एक्सपायर है। बिना PUC गाड़ी चलाना रिस्की हो सकता है।\n\n🎁 *स्पेशल ऑफर:* आज ही हमारे सेंटर आएं, PUC बनवाएं और पाएं *फ्री कार/बाइक वाश कूपन या डिस्काउंट*!\n📍 *Shree Ganesh PUC Center*`;
+                        container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-2 border border-danger rounded-3 p-3 bg-white"><span><strong class="fs-5 text-dark">${d.vehicleNo}</strong> <br><small class="text-muted">Exp: ${d.expiryDate}</small></span><button class="btn btn-danger fw-bold rounded-pill px-3" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-gift-fill me-1"></i> Offer</button></div>`;
                     });
                 }
             });
-        };
-
-        // Init
-        window.onload = function() {
-            toggleFuel();
         };
     </script>
 </body>
