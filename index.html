@@ -22,25 +22,26 @@
     <!-- SweetAlert2 (Premium Alerts) -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <!-- jsPDF & AutoTable for PDF Download -->
+    <!-- jsPDF & AutoTable -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 
     <style>
-        /* ================= ULTRA PREMIUM BLUE THEME ================= */
+        /* ================= ULTRA PREMIUM BLUE GLASS THEME ================= */
         :root {
             --primary-blue: #1e3c72;
             --secondary-blue: #2a5298;
             --accent-blue: #0d6efd;
             --light-blue: #e4f0fe;
-            --bg-color: #f4f7fc;
-            --text-dark: #1e293b;
-            --glass-bg: rgba(255, 255, 255, 0.95);
+            --bg-color: #f0f4f8;
+            --text-dark: #0f172a;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --btn-glow: rgba(13, 110, 253, 0.4);
         }
 
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
-            background: linear-gradient(135deg, var(--light-blue) 0%, var(--bg-color) 100%); 
+            background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%); 
             color: var(--text-dark); 
             min-height: 100vh;
             padding: 30px 0 80px 0;
@@ -54,7 +55,7 @@
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
             z-index: 999999; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            color: white; transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+            color: white; transition: opacity 0.4s ease, visibility 0.4s ease;
         }
         .splash-icon { font-size: 5rem; animation: bounceIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
         .splash-title { font-weight: 800; font-size: 2.2rem; margin-top: 15px; opacity: 0; animation: fadeUp 0.8s ease forwards 0.3s; }
@@ -63,14 +64,28 @@
         @keyframes bounceIn { 0% { transform: scale(0); opacity: 0; } 50% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
         @keyframes fadeUp { 0% { transform: translateY(30px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
 
+        /* ---------------- ALL BUTTONS 3D ANIMATIONS ---------------- */
+        button, .btn, .select-btn, .nav-link { 
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important; 
+            cursor: pointer; 
+        }
+        button:hover, .btn:hover { 
+            transform: translateY(-3px) scale(1.02); 
+            box-shadow: 0 10px 20px var(--btn-glow); 
+        }
+        button:active, .btn:active, .select-btn:active { 
+            transform: translateY(2px) scale(0.95) !important; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2) !important; 
+        }
+
         /* ---------------- UI CARDS (GLASSMORPHISM) ---------------- */
         .card-main { 
             background: var(--glass-bg); 
-            backdrop-filter: blur(20px); 
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(25px); 
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 1);
             border-radius: 28px; 
-            box-shadow: 0 20px 50px rgba(13, 110, 253, 0.08); 
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08); 
             overflow: hidden; 
         }
 
@@ -79,72 +94,59 @@
             color: white; padding: 35px 25px; text-align: center; position: relative; 
         }
         .gradient-header h2 { font-weight: 800; letter-spacing: 0.5px; margin: 0; text-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-        .brand-badge { background: rgba(255,255,255,0.2); backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.3); padding: 5px 15px; border-radius: 50px; font-size: 0.85rem; font-weight: 700; display: inline-block; margin-top: 10px; }
+        .brand-badge { background: rgba(255,255,255,0.2); backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.4); padding: 6px 18px; border-radius: 50px; font-size: 0.85rem; font-weight: 700; display: inline-block; margin-top: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
 
         /* ---------------- INPUTS ---------------- */
         .form-floating > label { color: #64748b; font-weight: 600; padding-left: 20px; }
-        .form-control, .form-select { border-radius: 16px; border: 2px solid #e2e8f0; background: #f8fafc; font-weight: 700; color: var(--text-dark); transition: all 0.3s ease; padding-left: 20px; }
-        .form-control:focus, .form-select:focus { background: #fff; box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15); border-color: var(--accent-blue); transform: translateY(-2px); }
+        .form-control, .form-select { border-radius: 16px; border: 2px solid #cbd5e1; background: rgba(255,255,255,0.9); font-weight: 700; color: var(--text-dark); transition: all 0.3s ease; padding-left: 20px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.02); }
+        .form-control:focus, .form-select:focus { background: #fff; box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15), inset 0 2px 5px rgba(0,0,0,0.01); border-color: var(--accent-blue); transform: translateY(-2px); }
 
-        /* ---------------- HISTORY ALERT BOX ---------------- */
-        #historyAlert { display: none; background: #fffbeb; border: 1px solid #fcd34d; border-radius: 16px; padding: 18px; margin-top: 10px; box-shadow: 0 10px 20px rgba(245, 158, 11, 0.05); animation: fadeUp 0.3s ease; }
+        /* ---------------- HISTORY ALERT BOX (FIXED) ---------------- */
+        #historyAlert { display: none; background: #fffbeb; border: 2px solid #fcd34d; border-radius: 16px; padding: 18px; margin-top: 10px; box-shadow: 0 8px 15px rgba(245, 158, 11, 0.15); animation: fadeUp 0.3s ease; }
 
-        /* ---------------- BUTTONS ---------------- */
-        button, .select-btn, .form-check-input { transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1) !important; cursor: pointer; }
-        button:active, .select-btn:active { transform: scale(0.95) !important; }
-
-        .btn-gradient { background: linear-gradient(135deg, var(--accent-blue) 0%, #0043a8 100%); color: white; border: none; font-weight: 800; font-size: 1.2rem; border-radius: 20px; box-shadow: 0 10px 25px rgba(13, 110, 253, 0.3); }
-        .btn-gradient:hover { box-shadow: 0 15px 35px rgba(13, 110, 253, 0.4); transform: translateY(-3px); color: white; }
-
-        /* ---------------- VEHICLE RADIO BUTTONS ---------------- */
-        .btn-outline-dark { border: 2px solid #e2e8f0; color: #64748b; font-weight: 700; background: #fff; border-radius: 14px !important; margin: 0 6px; }
-        .btn-check:checked + label[for="twoW"] { background: var(--accent-blue); color: #FFF; border-color: var(--accent-blue); box-shadow: 0 8px 20px rgba(13, 110, 253, 0.3); transform: scale(1.02); }
-        .btn-check:checked + label[for="fourW"] { background: #dc3545; color: #FFF; border-color: #dc3545; box-shadow: 0 8px 20px rgba(220, 53, 69, 0.3); transform: scale(1.02); }
+        /* ---------------- SPECIFIC BUTTONS ---------------- */
+        .btn-gradient { background: linear-gradient(135deg, var(--accent-blue) 0%, #0043a8 100%); color: white; border: none; font-weight: 800; font-size: 1.2rem; border-radius: 20px; box-shadow: 0 8px 20px var(--btn-glow); }
+        
+        .btn-outline-dark { border: 2px solid #cbd5e1; color: #64748b; font-weight: 700; background: #fff; border-radius: 16px !important; margin: 0 6px; }
+        .btn-check:checked + label[for="twoW"] { background: var(--accent-blue); color: #FFF; border-color: var(--accent-blue); box-shadow: 0 8px 20px rgba(13, 110, 253, 0.3); transform: scale(1.05) translateY(-2px); }
+        .btn-check:checked + label[for="fourW"] { background: #dc3545; color: #FFF; border-color: #dc3545; box-shadow: 0 8px 20px rgba(220, 53, 69, 0.3); transform: scale(1.05) translateY(-2px); }
 
         /* ---------------- GPAY STYLE SUCCESS ANIMATION ---------------- */
-        .gpay-success-popup { background: #00873E !important; border-radius: 24px !important; color: white !important; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .gpay-success-popup { background: #0f5132 !important; border-radius: 24px !important; color: white !important; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .gpay-success-popup .swal2-title { color: #ffffff !important; font-size: 2.2rem; font-weight: 800; }
-        .gpay-success-popup .swal2-html-container { color: rgba(255,255,255,0.9) !important; font-weight: 500; font-size: 1.1rem; }
-        .gpay-success-popup .swal2-success-ring { border-color: rgba(255,255,255,0.3) !important; }
+        .gpay-success-popup .swal2-html-container { color: rgba(255,255,255,0.9) !important; font-weight: 600; font-size: 1.2rem; }
+        .gpay-success-popup .swal2-success-ring { border-color: rgba(255,255,255,0.4) !important; }
         .gpay-success-popup .swal2-success-line-tip, .gpay-success-popup .swal2-success-line-long { background-color: #ffffff !important; }
         @keyframes popIn { 0% { transform: scale(0.6); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 
-        /* ---------------- SCAN ANIMATION (BLUE THEME) ---------------- */
-        .scan-scene { font-size: 4rem; display: flex; align-items: center; justify-content: center; position: relative; height: 120px; background: #f8fafc; border-radius: 20px; border: 1px solid #e2e8f0; }
-        .s-paper { position: absolute; color: #cbd5e1; }
-        .s-glass { position: absolute; color: var(--accent-blue); text-shadow: 0 5px 15px rgba(13, 110, 253, 0.3); animation: scanMove 1s infinite alternate ease-in-out; }
-        @keyframes scanMove { 0% { transform: translate(-30px, -20px) scale(1.1); } 100% { transform: translate(30px, 20px) scale(0.9); } }
-
         /* ---------------- OTHER UI ELEMENTS ---------------- */
-        .admin-link { position: fixed; bottom: 30px; right: 30px; background: var(--text-dark); color: white; z-index: 1050; box-shadow: 0 10px 25px rgba(0,0,0,0.2); border-radius: 50px; font-weight: 800; padding: 15px 30px; border: none; }
-        .admin-link:hover { background: var(--accent-blue); transform: scale(1.05); }
-        .vip-badge { position: absolute; right: 25px; top: -15px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #fff; font-size: 0.8rem; padding: 6px 15px; border-radius: 50px; font-weight: 800; box-shadow: 0 5px 15px rgba(217, 119, 6, 0.3); display: none; z-index: 10; }
+        .admin-link { position: fixed; bottom: 30px; right: 30px; background: var(--text-dark); color: white; z-index: 1050; box-shadow: 0 10px 25px rgba(0,0,0,0.3); border-radius: 50px; font-weight: 800; padding: 15px 30px; border: none; }
+        .admin-link:hover { background: var(--accent-blue); }
+        .vip-badge { position: absolute; right: 25px; top: -15px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #fff; font-size: 0.85rem; padding: 6px 18px; border-radius: 50px; font-weight: 800; box-shadow: 0 5px 15px rgba(217, 119, 6, 0.4); display: none; z-index: 10; animation: bounce 1.5s infinite alternate; }
+        @keyframes bounce { 0% { transform: translateY(0); } 100% { transform: translateY(-5px); } }
 
         /* ---------------- MODAL ---------------- */
-        .modal-content { border-radius: 28px; border: none; box-shadow: 0 25px 50px rgba(0,0,0,0.15); background: rgba(255,255,255,0.98); backdrop-filter: blur(15px); }
-        .select-btn { border: 2px solid #e2e8f0; background: #fff; color: #475569; border-radius: 18px; padding: 18px; font-weight: 800; font-size: 1.1rem; }
-        .select-btn.active-staff { border-color: var(--accent-blue); background: #eff6ff; color: var(--accent-blue); box-shadow: 0 8px 20px rgba(13, 110, 253, 0.15); transform: scale(1.02); }
-        .select-btn.active-duration { border-color: #10b981; background: #ecfdf5; color: #047857; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.15); transform: scale(1.02); }
+        .modal-content { border-radius: 28px; border: none; box-shadow: 0 25px 60px rgba(0,0,0,0.2); background: rgba(255,255,255,0.98); backdrop-filter: blur(20px); }
+        .select-btn { border: 2px solid #e2e8f0; background: #f8fafc; color: #475569; border-radius: 18px; padding: 18px; font-weight: 800; font-size: 1.1rem; }
+        .select-btn:hover { background: #fff; border-color: #cbd5e1; }
+        .select-btn.active-staff { border-color: var(--accent-blue); background: #eff6ff; color: var(--accent-blue); box-shadow: 0 8px 20px rgba(13, 110, 253, 0.2); transform: scale(1.05); }
+        .select-btn.active-duration { border-color: #10b981; background: #ecfdf5; color: #047857; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.2); transform: scale(1.05); }
 
         /* ---------------- ADMIN UI ---------------- */
         .admin-header { background: var(--text-dark); color: white; padding: 30px; border-radius: 28px 28px 0 0; }
         .nav-tabs { border-bottom: 2px solid #e2e8f0; padding: 0 25px; background: #fff; display: flex; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
         .nav-tabs::-webkit-scrollbar { display: none; }
-        .nav-tabs .nav-link { font-weight: 700; color: #64748b; padding: 18px 20px; border: none; white-space: nowrap; }
+        .nav-tabs .nav-link { font-weight: 700; color: #64748b; padding: 18px 20px; border: none; white-space: nowrap; border-radius: 0; }
+        .nav-tabs .nav-link:hover { color: var(--accent-blue); transform: translateY(-2px); }
         .nav-tabs .nav-link.active { color: var(--accent-blue); border-bottom: 4px solid var(--accent-blue); background: transparent; }
         .tab-content-admin { background: #f8fafc; padding: 35px; border-radius: 0 0 28px 28px; }
         
-        .stats-card { background: #fff; border-radius: 24px; padding: 30px 20px; border: 1px solid #e2e8f0; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.02); transition: 0.3s; }
-        .stats-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(13, 110, 253, 0.08); }
+        .stats-card { background: #fff; border-radius: 24px; padding: 30px 20px; border: 1px solid #e2e8f0; text-align: center; box-shadow: 0 8px 20px rgba(0,0,0,0.03); transition: 0.3s; }
+        .stats-card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(13, 110, 253, 0.1); border-color: #bfdbfe; }
         
-        .table-modern { background: white; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); overflow: hidden; font-size: 0.9rem; }
+        .table-modern { background: white; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); overflow: hidden; font-size: 0.9rem; }
         .table-modern th { background: #f1f5f9; color: #475569; padding: 15px 10px; font-weight: 700; border-bottom: none; }
-        .table-modern td { padding: 15px 10px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; color: #1e293b; font-weight: 600; }
-        
-        /* Custom Checkbox Toggle */
-        .toggle-wrapper { background: white; border: 2px solid #e2e8f0; border-radius: 50px; padding: 10px 20px; display: inline-flex; align-items: center; box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
-        .form-check-input { width: 40px !important; height: 20px !important; cursor: pointer; }
-        .form-check-input:checked { background-color: var(--accent-blue); border-color: var(--accent-blue); }
+        .table-modern td { padding: 15px 10px; border-bottom: 1px solid #f8fafc; vertical-align: middle; color: #1e293b; font-weight: 600; }
     </style>
 </head>
 <body>
@@ -153,7 +155,7 @@
     <div id="splashScreen">
         <div class="splash-icon">🛡️</div>
         <h2 class="splash-title text-center">Shree Ganesh PUC Center</h2>
-        <p class="splash-subtitle text-center mt-2">Smart Tracker v4.0<br>Powered by TyreXpert</p>
+        <p class="splash-subtitle text-center mt-2">Smart Tracker v4.1<br>Powered by TyreXpert</p>
     </div>
 
     <!-- Admin Floating Button -->
@@ -172,22 +174,22 @@
                 <div class="brand-badge"><i class="bi bi-award-fill text-warning me-1"></i> Partnered with TyreXpert</div>
             </div>
             
-            <div class="p-4 p-md-5 position-relative bg-white">
+            <div class="p-4 p-md-5 position-relative">
                 <span id="vipBadge" class="vip-badge"><i class="bi bi-star-fill me-1"></i> VIP Customer</span>
 
-                <!-- PREVIOUS HISTORY ALERT BOX -->
+                <!-- PREVIOUS HISTORY ALERT BOX (FIXED) -->
                 <div id="historyAlert"></div>
 
                 <div class="row g-4 mt-2">
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input type="text" id="vehicleNo" class="form-control text-uppercase text-primary" placeholder="HR12AB1234" onkeyup="autoFillAndHistory()" autocomplete="off"/>
+                            <input type="text" id="vehicleNo" class="form-control text-uppercase text-primary fw-bolder" placeholder="HR12AB1234" onkeyup="autoFillAndHistory()" autocomplete="off"/>
                             <label for="vehicleNo">Vehicle Number <span class="text-danger">*</span></label>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input type="number" id="mobileNo" class="form-control" placeholder="9876543210" autocomplete="off"/>
+                            <input type="number" id="mobileNo" class="form-control fw-bolder" placeholder="9876543210" autocomplete="off"/>
                             <label for="mobileNo">Mobile Number <span class="text-danger">*</span></label>
                         </div>
                     </div>
@@ -216,15 +218,14 @@
                         </button>
                     </div>
 
-                    <!-- PC Notification Reminder Toggle -->
+                    <!-- PC Notification Toggle -->
                     <div class="col-12 mt-4 text-center">
-                        <div class="toggle-wrapper">
-                            <input class="form-check-input ms-0 me-3" type="checkbox" id="reminderToggle" onchange="toggleBackgroundWorker()">
-                            <label class="form-check-label fw-bold mb-0 text-primary" for="reminderToggle" style="font-size: 0.95rem;">
+                        <div class="bg-white border rounded-pill py-2 px-4 d-inline-flex align-items-center shadow-sm">
+                            <input class="form-check-input ms-0 me-3 border-secondary" type="checkbox" id="reminderToggle" onchange="toggleBackgroundWorker()">
+                            <label class="form-check-label fw-bold mb-0 text-primary" for="reminderToggle" style="font-size: 0.95rem; cursor: pointer;">
                                 <i class="bi bi-bell-fill me-1 text-warning"></i> 30-Sec Background Alert
                             </label>
                         </div>
-                        <div class="small text-muted mt-2 fw-bold opacity-75">इसे ON रखें। ब्राउज़र मिनिमाइज़ होने पर भी डेस्कटॉप नोटिफिकेशन आएगा।</div>
                     </div>
                 </div>
             </div>
@@ -251,7 +252,7 @@
                         <div class="col-6"><div class="select-btn duration-opt" onclick="selectDuration(this, 12)">12 Months</div></div>
                     </div>
 
-                    <button class="btn btn-gradient w-100 py-3 mt-2" onclick="playSubmitAnimation()">
+                    <button class="btn btn-gradient w-100 py-3 mt-2" onclick="finalizeSubmitAndSave()">
                         Confirm & Save <i class="bi bi-arrow-right-circle-fill ms-2"></i>
                     </button>
                 </div>
@@ -270,10 +271,10 @@
             <h3 class="fw-bolder mb-2 text-dark">Admin Access</h3>
             <p id="passwordSetupMsg" class="text-muted fw-bold small mb-4">Verifying Security...</p>
             <div class="form-floating mb-4">
-                <input type="password" id="adminPasswordInput" class="form-control rounded-pill px-4 text-center" placeholder="Password" />
+                <input type="password" id="adminPasswordInput" class="form-control rounded-pill px-4 text-center fw-bold" placeholder="Password" />
                 <label class="ms-2 w-100 text-center">Enter Secure Password</label>
             </div>
-            <button class="btn btn-dark w-100 py-3 rounded-pill fw-bold fs-5" onclick="handleAdminAuth()">Authenticate</button>
+            <button class="btn btn-dark w-100 py-3 rounded-pill fw-bold fs-5 shadow-sm" onclick="handleAdminAuth()">Authenticate</button>
         </div>
 
         <!-- DASHBOARD -->
@@ -281,7 +282,7 @@
             <div class="admin-header d-flex justify-content-between align-items-center">
                 <h3 class="fw-bolder m-0"><i class="bi bi-pie-chart-fill text-warning me-2"></i> Business Hub</h3>
                 <div>
-                    <button class="btn btn-outline-light rounded-pill px-3 fw-bold me-2" onclick="changeAdminPassword()"><i class="bi bi-key-fill"></i></button>
+                    <button class="btn btn-outline-light rounded-pill px-3 fw-bold me-2 shadow-sm" onclick="changeAdminPassword()"><i class="bi bi-key-fill"></i></button>
                     <button class="btn btn-danger rounded-pill px-4 fw-bold shadow-sm" onclick="logoutAdmin()"><i class="bi bi-box-arrow-right me-1"></i> Logout</button>
                 </div>
             </div>
@@ -330,7 +331,7 @@
                             <div class="stats-card h-100 text-start bg-white">
                                 <div class="d-flex justify-content-between align-items-center mb-4">
                                     <h6 class="fw-bolder text-dark m-0"><i class="bi bi-graph-up-arrow me-2 text-success"></i> Today's Leaderboard</h6>
-                                    <button class="btn btn-sm btn-light border rounded-circle" onclick="playFetchAnimation(loadStaffAnalytics)"><i class="bi bi-arrow-clockwise"></i></button>
+                                    <button class="btn btn-sm btn-light border rounded-circle shadow-sm" onclick="playFetchAnimation(loadStaffAnalytics)"><i class="bi bi-arrow-clockwise"></i></button>
                                 </div>
                                 <div id="staffAnalyticsContainer"></div>
                             </div>
@@ -338,7 +339,7 @@
                     </div>
                 </div>
 
-                <!-- RECORDS TAB (With PDF) -->
+                <!-- RECORDS TAB -->
                 <div class="tab-pane" id="tabManage">
                     <div class="row g-3 align-items-end mb-4 stats-card text-start bg-white">
                         <div class="col-md-4"><label class="small text-muted fw-bold ms-1">From Date</label><input type="date" id="manageFrom" class="form-control bg-light" /></div>
@@ -349,16 +350,7 @@
                     <div class="table-responsive table-modern">
                         <table class="table mb-0 text-center align-middle bg-white" id="recordsTable">
                             <thead>
-                                <tr>
-                                    <th>Vehicle</th>
-                                    <th>Mobile</th>
-                                    <th>Type</th>
-                                    <th>Staff</th>
-                                    <th>Dur.</th>
-                                    <th>Create Date</th>
-                                    <th>Expiry Date</th>
-                                    <th>Del</th>
-                                </tr>
+                                <tr><th>Vehicle</th><th>Mobile</th><th>Type</th><th>Staff</th><th>Dur.</th><th>Created</th><th>Expiry</th><th>Del</th></tr>
                             </thead>
                             <tbody id="manageTableBody">
                                 <tr><td colspan="8" class="py-5 text-muted fw-bold">Select dates and click Fetch</td></tr>
@@ -402,7 +394,7 @@
     </div>
 
     <!-- ==========================================
-         JAVASCRIPT LOGIC
+         JAVASCRIPT LOGIC (100% FIXED)
     =========================================== -->
     <script>
         // ========== FIREBASE CONFIG ==========
@@ -428,7 +420,7 @@
         let pendingFormData = {};
         let backgroundWorker = null;
         let globalStaffList = [];
-        let currentFetchRecords = []; // Global array for PDF
+        let currentFetchRecords = []; 
 
         function getLocalDate(dateObj = new Date()) {
             const year = dateObj.getFullYear();
@@ -437,13 +429,13 @@
             return `${year}-${month}-${day}`;
         }
 
-        // DOM Ready: Reliable App Load
+        // 1. RELIABLE DOM LOAD
         document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 const splash = document.getElementById('splashScreen');
-                if (splash) { splash.style.opacity = '0'; splash.style.visibility = 'hidden'; setTimeout(() => splash.remove(), 600); }
+                if (splash) { splash.style.opacity = '0'; splash.style.visibility = 'hidden'; setTimeout(() => splash.remove(), 400); }
                 document.getElementById('mainSection').classList.remove('d-none');
-            }, 1800);
+            }, 1500);
 
             bsEntryModal = new bootstrap.Modal(document.getElementById('entryModal'));
             document.getElementById('todayDate').innerText = new Date().toLocaleDateString('hi-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -456,24 +448,58 @@
             toggleFuel();
         });
 
-        // ========== GPAY STYLE PAYMENT ANIMATION ==========
-        window.playSubmitAnimation = function() {
+        // ========== 2. FIX: DB SAVE & GREEN TICK LOGIC ==========
+        // Step A: Finalize & Save to DB First
+        window.finalizeSubmitAndSave = function() {
             if(!selectedStaff) return Swal.fire({ icon: 'warning', text: 'कृपया स्टाफ का नाम चुनें!' });
             if(!selectedDuration) return Swal.fire({ icon: 'warning', text: 'कृपया 6 या 12 महीने चुनें!' });
 
             bsEntryModal.hide();
 
-            // Direct GPay style success popup (No mechanic animation)
+            // Show Loading Indicator while saving
             Swal.fire({
-                title: 'SUCCESS!',
-                html: 'Data Saved Securely',
-                icon: 'success',
+                title: 'Saving Data...',
+                html: '<div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>',
                 showConfirmButton: false,
-                timer: 2000,
-                customClass: { popup: 'gpay-success-popup' },
-                didClose: () => {
-                    finalizeSubmitBackend(); 
-                }
+                allowOutsideClick: false
+            });
+
+            const today = new Date(); 
+            const expiryDate = new Date(today);
+            expiryDate.setMonth(expiryDate.getMonth() + selectedDuration); 
+            expiryDate.setDate(expiryDate.getDate() - 1); 
+            
+            // Save to Firebase
+            db.collection(RECORDS_COLLECTION).add({
+                vehicleNo: pendingFormData.vehicle, 
+                mobileNo: pendingFormData.mobile, 
+                vehicleType: pendingFormData.type, 
+                fuel: pendingFormData.fuel,
+                durationMonths: selectedDuration, 
+                staffName: selectedStaff, 
+                purchaseDate: getLocalDate(today), 
+                expiryDate: getLocalDate(expiryDate), 
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                // Step B: Show GPay Style Tick ON SUCCESS
+                Swal.fire({
+                    title: 'SUCCESS!',
+                    html: 'Data Saved Securely',
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    customClass: { popup: 'gpay-success-popup' }
+                });
+
+                // Clear Form
+                document.getElementById('vehicleNo').value = ''; 
+                document.getElementById('mobileNo').value = ''; 
+                document.getElementById('vipBadge').style.display = 'none'; 
+                document.getElementById('historyAlert').style.display = 'none';
+                resetModalSelections(); 
+                pendingFormData = {};
+            }).catch(err => {
+                Swal.fire('Error', err.message, 'error');
             });
         };
 
@@ -481,11 +507,11 @@
             Swal.fire({
                 title: '<span style="color:var(--accent-blue); font-weight:800;">Scanning Records...</span>',
                 html: `<div class="scan-scene mt-3"><div class="s-paper">📄</div><div class="s-glass">🔍</div></div>`,
-                showConfirmButton: false, timer: 1200
+                showConfirmButton: false, timer: 1000
             }).then(() => { if(callbackFunction) callbackFunction(); });
         };
 
-        // ========== MAIN ENTRY LOGIC ==========
+        // ========== 3. FIX: PREVIOUS HISTORY & AUTO-FILL ==========
         window.toggleFuel = function() {
             const fuelSelect = document.getElementById('fuelType');
             const isFour = document.getElementById('fourW').checked;
@@ -493,7 +519,6 @@
             else { fuelSelect.innerHTML = `<option value="Petrol">Petrol</option>`; }
         };
 
-        // PREVIOUS REPORT / HISTORY ALERT
         window.autoFillAndHistory = function() {
             const vehicle = document.getElementById('vehicleNo').value.trim().toUpperCase();
             const badge = document.getElementById('vipBadge');
@@ -501,19 +526,25 @@
             
             if (vehicle.length < 4) { badge.style.display = 'none'; historyAlert.style.display = 'none'; return; }
             
-            db.collection(RECORDS_COLLECTION).where('vehicleNo', '==', vehicle).orderBy('createdAt', 'desc').limit(1).get().then(snap => {
+            // Fix: Removed 'orderBy' to prevent missing index error. Sorting in JS.
+            db.collection(RECORDS_COLLECTION).where('vehicleNo', '==', vehicle).get().then(snap => {
                 if(!snap.empty){
-                    const d = snap.docs[0].data();
+                    // Client side sort to get newest
+                    let records = [];
+                    snap.forEach(doc => records.push(doc.data()));
+                    records.sort((a, b) => new Date(b.purchaseDate) - new Date(a.purchaseDate));
+
+                    const d = records[0];
+
                     document.getElementById('mobileNo').value = d.mobileNo;
-                    if(d.vehicleType === '2 Wheeler') document.getElementById('twoW').click(); else document.getElementById('fourW').click();
+                    if(d.vehicleType === '2 Wheeler') document.getElementById('twoW').click(); 
+                    else document.getElementById('fourW').click();
                     setTimeout(() => { document.getElementById('fuelType').value = d.fuel; }, 50);
                     
                     badge.style.display = 'block';
-                    
-                    // Show Clean Blue-Theme History Alert
                     historyAlert.innerHTML = `
                         <div class="d-flex justify-content-between align-items-center">
-                            <div><i class="bi bi-clock-history me-2 text-warning fs-5"></i><strong class="text-dark">Previous PUC Details</strong></div>
+                            <div><i class="bi bi-clock-history me-2 text-warning fs-5"></i><strong class="text-dark">Previous Details</strong></div>
                             <span class="badge bg-primary rounded-pill px-3">${d.durationMonths} Months</span>
                         </div>
                         <hr class="my-2 opacity-25">
@@ -527,7 +558,7 @@
                     badge.style.display = 'none'; 
                     historyAlert.style.display = 'none';
                 }
-            }).catch(e => console.log(e));
+            }).catch(e => console.error("History Fetch Error:", e));
         };
 
         window.initiateSubmit = function() {
@@ -545,20 +576,6 @@
         window.selectStaff = function(elem, name) { document.querySelectorAll('.staff-opt').forEach(el => el.classList.remove('active-staff')); elem.classList.add('active-staff'); selectedStaff = name; };
         window.selectDuration = function(elem, months) { document.querySelectorAll('.duration-opt').forEach(el => el.classList.remove('active-duration')); elem.classList.add('active-duration'); selectedDuration = months; };
         window.resetModalSelections = function() { selectedStaff = ""; selectedDuration = 0; document.querySelectorAll('.staff-opt').forEach(el => el.classList.remove('active-staff')); document.querySelectorAll('.duration-opt').forEach(el => el.classList.remove('active-duration')); };
-
-        window.finalizeSubmitBackend = function() {
-            const today = new Date(); const expiryDate = new Date(today);
-            expiryDate.setMonth(expiryDate.getMonth() + selectedDuration); expiryDate.setDate(expiryDate.getDate() - 1); 
-            
-            db.collection(RECORDS_COLLECTION).add({
-                vehicleNo: pendingFormData.vehicle, mobileNo: pendingFormData.mobile, vehicleType: pendingFormData.type, fuel: pendingFormData.fuel,
-                durationMonths: selectedDuration, staffName: selectedStaff, purchaseDate: getLocalDate(today), expiryDate: getLocalDate(expiryDate), createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            }).then(() => {
-                document.getElementById('vehicleNo').value = ''; document.getElementById('mobileNo').value = ''; 
-                document.getElementById('vipBadge').style.display = 'none'; document.getElementById('historyAlert').style.display = 'none';
-                resetModalSelections(); pendingFormData = {};
-            });
-        };
 
         // ========== BACKGROUND WORKER (PC Notification) ==========
         function initBackgroundWorker() {
@@ -615,18 +632,8 @@
         };
 
         window.changeAdminPassword = async function() {
-            const { value: newPassword } = await Swal.fire({
-                title: 'Change Password',
-                input: 'password',
-                inputLabel: 'Enter New Admin Password',
-                inputPlaceholder: 'New Password',
-                showCancelButton: true,
-                confirmButtonColor: '#0d6efd'
-            });
-            if (newPassword) {
-                await db.collection(ADMIN_COLLECTION).doc('config').update({ password: newPassword });
-                Swal.fire({ icon: 'success', title: 'Password Changed!', timer: 2000, showConfirmButton: false });
-            }
+            const { value: newPassword } = await Swal.fire({ title: 'Change Password', input: 'password', inputPlaceholder: 'New Password', showCancelButton: true, confirmButtonColor: '#0d6efd' });
+            if (newPassword) { await db.collection(ADMIN_COLLECTION).doc('config').update({ password: newPassword }); Swal.fire({ icon: 'success', title: 'Password Changed!', timer: 2000, showConfirmButton: false }); }
         };
 
         function showDashboard() { document.getElementById('loginScreen').classList.add('d-none'); document.getElementById('adminDashboard').classList.remove('d-none'); playFetchAnimation(loadDashboard); }
@@ -634,7 +641,7 @@
 
         // ========== STAFF MANAGEMENT ==========
         function fetchStaffList() { db.collection(ADMIN_COLLECTION).doc('staffConfig').get().then(doc => { globalStaffList = (doc.exists && doc.data().list) ? doc.data().list : ["Laddu", "Haider", "Arwaz", "Ankit"]; }).catch(() => { globalStaffList = ["Laddu", "Haider", "Arwaz", "Ankit"]; }); }
-        function fetchStaffListAdmin() { const container = document.getElementById('adminStaffList'); container.innerHTML = ''; globalStaffList.forEach((name, index) => { container.innerHTML += `<li class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 border-bottom"><span class="fw-bold text-dark"><i class="bi bi-person-badge text-primary me-2"></i> ${name}</span><button class="btn btn-sm btn-outline-danger rounded-circle" onclick="removeStaff(${index})"><i class="bi bi-trash"></i></button></li>`; }); }
+        function fetchStaffListAdmin() { const container = document.getElementById('adminStaffList'); container.innerHTML = ''; globalStaffList.forEach((name, index) => { container.innerHTML += `<li class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 border-bottom"><span class="fw-bold text-dark"><i class="bi bi-person-badge text-primary me-2"></i> ${name}</span><button class="btn btn-sm btn-outline-danger rounded-circle shadow-sm" onclick="removeStaff(${index})"><i class="bi bi-trash"></i></button></li>`; }); }
         window.addStaff = function() { const input = document.getElementById('newStaffName'); const name = input.value.trim(); if(!name || globalStaffList.includes(name)) return; globalStaffList.push(name); db.collection(ADMIN_COLLECTION).doc('staffConfig').set({ list: globalStaffList }, {merge: true}).then(() => { input.value = ''; fetchStaffListAdmin(); Swal.fire({ toast:true, icon:'success', title:'Added!', position:'top', showConfirmButton:false, timer:1500}); }); };
         window.removeStaff = function(index) { Swal.fire({ title: 'Delete?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#dc3545' }).then((r) => { if (r.isConfirmed) { globalStaffList.splice(index, 1); db.collection(ADMIN_COLLECTION).doc('staffConfig').set({ list: globalStaffList }, {merge: true}).then(() => { fetchStaffListAdmin(); }); } }); };
 
@@ -655,16 +662,15 @@
                 if(snap.empty){ container.innerHTML = '<p class="text-muted fw-bold text-center mt-3">No Entries Today</p>'; return; }
                 let counts = {}; snap.forEach(doc => { const sName = doc.data().staffName || 'Unknown'; counts[sName] = (counts[sName] || 0) + 1; });
                 let sortedStaff = Object.entries(counts).sort((a, b) => b[1] - a[1]); container.innerHTML = '';
-                sortedStaff.forEach(([name, count], index) => { let medal = index === 0 ? '🏆' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🔹'; container.innerHTML += `<div class="d-flex justify-content-between align-items-center mb-3 bg-light p-3 rounded-4 border"><span class="fw-bolder text-dark">${medal} ${name}</span><span class="badge bg-primary rounded-pill px-3">${count}</span></div>`; });
+                sortedStaff.forEach(([name, count], index) => { let medal = index === 0 ? '🏆' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🔹'; container.innerHTML += `<div class="d-flex justify-content-between align-items-center mb-3 bg-light p-3 rounded-4 border shadow-sm"><span class="fw-bolder text-dark">${medal} ${name}</span><span class="badge bg-primary rounded-pill px-3">${count}</span></div>`; });
             });
         };
 
-        // ADVANCED REPORTS: DURATION, EXPIRY, & GLOBAL VAR FOR PDF
         window.loadManageData = function() {
             const fromDate = document.getElementById('manageFrom').value, toDate = document.getElementById('manageTo').value; const tbody = document.getElementById('manageTableBody');
             if(!fromDate || !toDate) return;
             db.collection(RECORDS_COLLECTION).where('purchaseDate', '>=', fromDate).where('purchaseDate', '<=', toDate).get().then(snap => {
-                currentFetchRecords = []; // Reset global array
+                currentFetchRecords = []; 
                 if (snap.empty) { tbody.innerHTML = '<tr><td colspan="8" class="text-muted fw-bold py-5">No Records Found</td></tr>'; return; }
                 
                 snap.forEach(doc => currentFetchRecords.push({ id: doc.id, ...doc.data() })); 
@@ -687,47 +693,19 @@
             });
         };
 
-        // PDF DOWNLOAD FUNCTION
         window.downloadPDF = function() {
             if(currentFetchRecords.length === 0) return Swal.fire({ icon: 'error', text: 'No records to download!' });
-            
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            
-            doc.setFontSize(16);
-            doc.text("Shree Ganesh PUC Center - Business Report", 14, 20);
-            doc.setFontSize(10);
-            doc.text(`Report Generated On: ${getLocalDate()}`, 14, 28);
-            
-            const tableColumn = ["Vehicle No", "Mobile", "Type", "Fuel", "Staff", "Dur.", "Created", "Expiry"];
-            const tableRows = [];
-
-            currentFetchRecords.forEach(d => {
-                const rowData = [
-                    d.vehicleNo, d.mobileNo, d.vehicleType, d.fuel, d.staffName, 
-                    `${d.durationMonths}M`, d.purchaseDate, d.expiryDate
-                ];
-                tableRows.push(rowData);
-            });
-
-            doc.autoTable({
-                head: [tableColumn],
-                body: tableRows,
-                startY: 35,
-                theme: 'grid',
-                styles: { fontSize: 8 },
-                headStyles: { fillColor: [13, 110, 253] } // Blue header
-            });
-
+            const { jsPDF } = window.jspdf; const doc = new jsPDF();
+            doc.setFontSize(16); doc.text("Shree Ganesh PUC Center - Business Report", 14, 20); doc.setFontSize(10); doc.text(`Report Generated On: ${getLocalDate()}`, 14, 28);
+            const tableColumn = ["Vehicle No", "Mobile", "Type", "Fuel", "Staff", "Dur.", "Created", "Expiry"]; const tableRows = [];
+            currentFetchRecords.forEach(d => { tableRows.push([d.vehicleNo, d.mobileNo, d.vehicleType, d.fuel, d.staffName, `${d.durationMonths}M`, d.purchaseDate, d.expiryDate]); });
+            doc.autoTable({ head: [tableColumn], body: tableRows, startY: 35, theme: 'grid', styles: { fontSize: 8 }, headStyles: { fillColor: [13, 110, 253] } });
             doc.save(`PUC_Report_${getLocalDate()}.pdf`);
         };
 
-        // SEARCH PORTAL FUNCTION
         window.searchPortalData = function() {
-            const searchVal = document.getElementById('portalSearchInput').value.trim().toUpperCase();
-            const container = document.getElementById('portalResultContainer');
+            const searchVal = document.getElementById('portalSearchInput').value.trim().toUpperCase(); const container = document.getElementById('portalResultContainer');
             if(!searchVal) return;
-
             container.innerHTML = `<div class="text-center py-4"><div class="spinner-border text-primary"></div></div>`;
             
             Promise.all([
@@ -735,38 +713,14 @@
                 db.collection(RECORDS_COLLECTION).where('mobileNo', '==', searchVal).get()
             ]).then(snapshots => {
                 let resultsMap = new Map();
-                snapshots[0].forEach(doc => resultsMap.set(doc.id, doc.data()));
-                snapshots[1].forEach(doc => resultsMap.set(doc.id, doc.data()));
+                snapshots[0].forEach(doc => resultsMap.set(doc.id, doc.data())); snapshots[1].forEach(doc => resultsMap.set(doc.id, doc.data()));
 
-                if (resultsMap.size === 0) {
-                    container.innerHTML = '<p class="text-danger text-center py-4 fw-bold">No records found for this input.</p>';
-                    return;
-                }
+                if (resultsMap.size === 0) { container.innerHTML = '<p class="text-danger text-center py-4 fw-bold">No records found.</p>'; return; }
 
-                let arr = Array.from(resultsMap.values()).sort((a, b) => new Date(b.purchaseDate) - new Date(a.purchaseDate));
-                container.innerHTML = '';
-                
+                let arr = Array.from(resultsMap.values()).sort((a, b) => new Date(b.purchaseDate) - new Date(a.purchaseDate)); container.innerHTML = '';
                 arr.forEach(d => {
-                    let statusBadge = new Date(d.expiryDate) < new Date(getLocalDate()) 
-                        ? '<span class="badge bg-danger ms-2">EXPIRED</span>' 
-                        : '<span class="badge bg-success ms-2">ACTIVE</span>';
-
-                    container.innerHTML += `
-                        <div class="card mb-3 shadow-sm border-0" style="border-left: 5px solid var(--accent-blue) !important;">
-                            <div class="card-body">
-                                <h5 class="fw-bolder text-dark mb-1">${d.vehicleNo} ${statusBadge}</h5>
-                                <h6 class="text-primary fw-bold mb-3"><i class="bi bi-telephone-fill me-1"></i> ${d.mobileNo}</h6>
-                                <div class="row small fw-bold text-muted g-2">
-                                    <div class="col-6">Type: <span class="text-dark">${d.vehicleType}</span></div>
-                                    <div class="col-6">Fuel: <span class="text-dark">${d.fuel}</span></div>
-                                    <div class="col-6">Duration: <span class="text-primary">${d.durationMonths} Months</span></div>
-                                    <div class="col-6">Staff: <span class="text-dark">${d.staffName}</span></div>
-                                    <div class="col-6">Created: <span class="text-dark">${d.purchaseDate}</span></div>
-                                    <div class="col-6 text-danger">Expires: ${d.expiryDate}</div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
+                    let statusBadge = new Date(d.expiryDate) < new Date(getLocalDate()) ? '<span class="badge bg-danger ms-2">EXPIRED</span>' : '<span class="badge bg-success ms-2">ACTIVE</span>';
+                    container.innerHTML += `<div class="card mb-3 shadow-sm border-0" style="border-left: 5px solid var(--accent-blue) !important;"><div class="card-body"><h5 class="fw-bolder text-dark mb-1">${d.vehicleNo} ${statusBadge}</h5><h6 class="text-primary fw-bold mb-3"><i class="bi bi-telephone-fill me-1"></i> ${d.mobileNo}</h6><div class="row small fw-bold text-muted g-2"><div class="col-6">Type: <span class="text-dark">${d.vehicleType}</span></div><div class="col-6">Fuel: <span class="text-dark">${d.fuel}</span></div><div class="col-6">Duration: <span class="text-primary">${d.durationMonths} Months</span></div><div class="col-6">Staff: <span class="text-dark">${d.staffName}</span></div><div class="col-6">Created: <span class="text-dark">${d.purchaseDate}</span></div><div class="col-6 text-danger">Expires: ${d.expiryDate}</div></div></div></div>`;
                 });
             });
         };
