@@ -102,16 +102,21 @@
         .btn-check:checked + label[for="twoW"] { background: var(--accent-blue); color: #FFF; border-color: var(--accent-blue); box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4); transform: scale(1.05) translateY(-2px); }
         .btn-check:checked + label[for="fourW"] { background: #e11d48; color: #FFF; border-color: #e11d48; box-shadow: 0 8px 20px rgba(225, 29, 72, 0.4); transform: scale(1.05) translateY(-2px); }
 
-        /* ---------------- GPAY STYLE SUCCESS ANIMATION (FIXED) ---------------- */
-        .gpay-success-popup { background: #065f46 !important; border-radius: 28px !important; color: white !important; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 20px 50px rgba(6, 95, 70, 0.5) !important; }
-        .gpay-success-popup .swal2-title { color: #ffffff !important; font-size: 2.2rem; font-weight: 900; letter-spacing: 1px; }
-        .gpay-success-popup .swal2-html-container { color: rgba(255,255,255,0.9) !important; font-weight: 600; font-size: 1.2rem; }
-        .gpay-success-popup .swal2-success-ring { border-color: rgba(255,255,255,0.4) !important; }
-        .gpay-success-popup .swal2-success-line-tip, .gpay-success-popup .swal2-success-line-long { background-color: #ffffff !important; }
-        /* Add timer bar color */
-        .gpay-success-popup .swal2-timer-progress-bar { background: rgba(255,255,255,0.6) !important; }
+        /* ---------------- REAL SVG DRAWING PAYMENT TICK ANIMATION ---------------- */
+        .custom-payment-popup { background: #064e3b !important; border-radius: 28px !important; box-shadow: 0 20px 50px rgba(6, 78, 59, 0.5) !important; animation: popScaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .swal2-timer-progress-bar { background: rgba(255,255,255,0.5) !important; }
         
-        @keyframes popIn { 0% { transform: scale(0.6); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .gpay-svg { width: 130px; height: 130px; display: block; margin: 20px auto; }
+        .gpay-circle { fill: #10b981; transform-origin: 50% 50%; animation: circle-pop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .gpay-tick { fill: none; stroke: #ffffff; stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 100; stroke-dashoffset: 100; animation: draw-tick 0.5s ease-out 0.4s forwards; }
+        
+        @keyframes circle-pop { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes draw-tick { 0% { stroke-dashoffset: 100; } 100% { stroke-dashoffset: 0; } }
+        @keyframes popScaleIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        
+        /* Disappear (Zoom Out) Animation */
+        .custom-zoom-out { animation: zoomOutFast 0.4s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards !important; }
+        @keyframes zoomOutFast { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(0.4); opacity: 0; } }
 
         /* ---------------- SCAN ANIMATION ---------------- */
         .scan-scene { font-size: 4rem; display: flex; align-items: center; justify-content: center; position: relative; height: 120px; background: transparent; }
@@ -123,7 +128,7 @@
         .admin-link { position: fixed; bottom: 30px; right: 30px; background: var(--primary-blue); color: white; z-index: 1050; box-shadow: 0 10px 25px rgba(30, 58, 138, 0.4); border-radius: 50px; font-weight: 800; padding: 15px 30px; border: 1px solid rgba(255,255,255,0.3); backdrop-filter: blur(10px); }
         .vip-badge { position: absolute; right: 25px; top: -15px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #fff; font-size: 0.85rem; padding: 6px 18px; border-radius: 50px; font-weight: 800; box-shadow: 0 5px 15px rgba(217, 119, 6, 0.4); display: none; z-index: 10; animation: floatLiquid 3s infinite alternate; }
 
-        /* ---------------- MODAL ---------------- */
+        /* ---------------- MODAL (GLASS) ---------------- */
         .modal-content { border-radius: 32px; border: 1px solid rgba(255,255,255,0.6); box-shadow: 0 30px 60px rgba(0,0,0,0.2); background: rgba(255,255,255,0.85); backdrop-filter: blur(25px); }
         .select-btn { border: 2px solid rgba(255,255,255,0.8); background: rgba(255,255,255,0.6); color: #475569; border-radius: 20px; padding: 18px; font-weight: 800; font-size: 1.1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.03); backdrop-filter: blur(10px); }
         .select-btn:hover { background: #fff; border-color: #cbd5e1; }
@@ -254,7 +259,6 @@
                         <div class="col-6"><div class="select-btn duration-opt" onclick="selectDuration(this, 12)">12 Months</div></div>
                     </div>
 
-                    <!-- Calls the FIXED function -->
                     <button class="btn btn-gradient w-100 py-3 mt-2" onclick="finalizeSubmitAndSave()">
                         Confirm & Save <i class="bi bi-check-circle-fill ms-2"></i>
                     </button>
@@ -451,19 +455,14 @@
             toggleFuel();
         });
 
-        // ========== 2. 100% FIXED DB SAVE & GREEN TICK LOGIC ==========
+        // ========== 2. SVG DRAWING ANIMATION & SAVING LOGIC ==========
         window.finalizeSubmitAndSave = function() {
             if(!selectedStaff) return Swal.fire({ icon: 'warning', text: 'कृपया स्टाफ का नाम चुनें!' });
             if(!selectedDuration) return Swal.fire({ icon: 'warning', text: 'कृपया 6 या 12 महीने चुनें!' });
 
-            // 1. Hide Bootstrap Modal immediately
             bsEntryModal.hide();
 
-            // 2. Add a tiny delay (400ms) so Bootstrap's backdrop fades out completely before SweetAlert starts.
-            // This PREVENTS the freezing/stuck screen bug!
             setTimeout(() => {
-                
-                // Show Loading Alert
                 Swal.fire({
                     title: 'Saving Data...',
                     html: '<div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>',
@@ -476,7 +475,6 @@
                 expiryDate.setMonth(expiryDate.getMonth() + selectedDuration); 
                 expiryDate.setDate(expiryDate.getDate() - 1); 
                 
-                // Save to Firebase
                 db.collection(RECORDS_COLLECTION).add({
                     vehicleNo: pendingFormData.vehicle, 
                     mobileNo: pendingFormData.mobile, 
@@ -488,27 +486,35 @@
                     expiryDate: getLocalDate(expiryDate), 
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 }).then(() => {
+                    Swal.close();
                     
-                    // DO NOT USE Swal.close() here. It breaks the UI. 
-                    // Directly fire the next Swal to seamlessly replace the loading one.
-                    Swal.fire({
-                        title: 'SUCCESS!',
-                        html: 'Data Saved Securely',
-                        icon: 'success',
-                        showConfirmButton: false,
-                        timer: 2500, // 2.5 seconds
-                        timerProgressBar: true, // Shows a progress bar at bottom so you know it's closing
-                        allowOutsideClick: true, // Failsafe
-                        customClass: { popup: 'gpay-success-popup' }
-                    });
+                    // CUSTOM SVG DRAWING ANIMATION POPUP
+                    setTimeout(() => {
+                        Swal.fire({
+                            html: `
+                                <svg class="gpay-svg" viewBox="0 0 100 100">
+                                    <circle class="gpay-circle" cx="50" cy="50" r="45"></circle>
+                                    <path class="gpay-tick" d="M30 50 L45 65 L70 30"></path>
+                                </svg>
+                                <h1 style="color: #10b981; font-weight: 900; margin-top: 15px; letter-spacing:1px; font-family: 'Plus Jakarta Sans', sans-serif;">SUCCESS!</h1>
+                                <p style="color: rgba(255,255,255,0.9); font-size: 1.1rem; font-weight: 600;">Data Saved Securely</p>
+                            `,
+                            showConfirmButton: false,
+                            timer: 2500,
+                            timerProgressBar: true,
+                            allowOutsideClick: false, // Don't let it stuck on click
+                            customClass: { popup: 'custom-payment-popup' },
+                            showClass: { popup: '' }, // Handled by CSS
+                            hideClass: { popup: 'custom-zoom-out' } // Shrink out animation
+                        });
 
-                    // Clear Main Form Data
-                    document.getElementById('vehicleNo').value = ''; 
-                    document.getElementById('mobileNo').value = ''; 
-                    document.getElementById('vipBadge').style.display = 'none'; 
-                    document.getElementById('historyAlert').style.display = 'none';
-                    resetModalSelections(); 
-                    pendingFormData = {};
+                        document.getElementById('vehicleNo').value = ''; 
+                        document.getElementById('mobileNo').value = ''; 
+                        document.getElementById('vipBadge').style.display = 'none'; 
+                        document.getElementById('historyAlert').style.display = 'none';
+                        resetModalSelections(); 
+                        pendingFormData = {};
+                    }, 100);
 
                 }).catch(err => {
                     Swal.fire('Error', err.message, 'error');
@@ -539,14 +545,13 @@
             
             if (vehicle.length < 4) { badge.style.display = 'none'; historyAlert.style.display = 'none'; return; }
             
-            // Client side sorting to bypass Firebase Index requirements
             db.collection(RECORDS_COLLECTION).where('vehicleNo', '==', vehicle).get().then(snap => {
                 if(!snap.empty){
                     let records = [];
                     snap.forEach(doc => records.push(doc.data()));
                     records.sort((a, b) => new Date(b.purchaseDate) - new Date(a.purchaseDate));
 
-                    const d = records[0]; // Newest record
+                    const d = records[0]; 
 
                     document.getElementById('mobileNo').value = d.mobileNo;
                     if(d.vehicleType === '2 Wheeler') document.getElementById('twoW').click(); 
