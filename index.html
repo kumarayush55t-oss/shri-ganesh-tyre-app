@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Shree Ganesh PUC | Smart Tracker</title>
+    <title>Shree Ganesh Pollution Checking Center</title>
 
     <!-- Google Fonts: Plus Jakarta Sans for Premium Look -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
@@ -22,113 +22,126 @@
     <!-- SweetAlert2 (Premium Alerts) -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <!-- jsPDF & AutoTable for PDF Download -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
     <style>
-        /* ================= ULTRA PREMIUM BLUE THEME & ANIMATIONS ================= */
+        /* ================= HARD COLORS & NEON GLOW THEME ================= */
         :root {
+            --hard-blue: #0000FF;
+            --hard-cyan: #00FFFF;
+            --hard-red: #FF0000;
+            --hard-yellow: #FFFF00;
+            --hard-green: #00FF00;
+            --dark-green: #003300;
+            --dark-bg: #0a0a0a;
             --primary-blue: #1e40af;
-            --accent-blue: #3b82f6;
-            --light-blue: #eff6ff;
             --dark-blue: #0f172a;
-            --glass-bg: rgba(255, 255, 255, 0.95);
         }
 
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
-            background: linear-gradient(135deg, #e0e7ff 0%, #bae6fd 100%); 
-            color: var(--dark-blue); 
+            background: #0f172a; 
+            color: #ffffff; 
             min-height: 100vh;
             padding: 30px 0 80px 0;
             overflow-x: hidden;
         }
 
-        /* ---------------- SPLASH SCREEN ANIMATION ---------------- */
+        .container-custom { max-width: 800px; margin: auto; }
+        
+        /* SPLASH SCREEN */
         #splashScreen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(135deg, var(--dark-blue) 0%, var(--primary-blue) 100%);
             z-index: 999999; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            color: white; transition: opacity 0.8s ease-in-out, visibility 0.8s ease-in-out;
+            color: white; transition: opacity 0.6s ease-in-out, visibility 0.6s ease-in-out;
         }
         .splash-icon { font-size: 6rem; animation: bounceIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        .splash-title { font-weight: 800; font-size: 2.5rem; margin-top: 10px; opacity: 0; animation: fadeUp 1s ease forwards 0.5s; }
-        .splash-subtitle { font-weight: 500; color: #93c5fd; letter-spacing: 2px; opacity: 0; animation: fadeUp 1s ease forwards 0.8s; }
+        .splash-title { font-weight: 800; font-size: 2.5rem; margin-top: 10px; opacity: 0; animation: fadeUp 1s ease forwards 0.5s; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
+        .splash-subtitle { font-weight: 600; color: #93c5fd; letter-spacing: 2px; opacity: 0; animation: fadeUp 1s ease forwards 0.8s; }
         
         @keyframes bounceIn { 0% { transform: scale(0); opacity: 0; } 50% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
         @keyframes fadeUp { 0% { transform: translateY(20px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
 
-        /* ---------------- CUSTOM SWEETALERT ANIMATIONS (MECHANIC & SCANNER) ---------------- */
-        .mechanic-scene { font-size: 4.5rem; display: flex; align-items: center; justify-content: center; position: relative; height: 140px; }
-        .m-car { position: absolute; left: 20%; animation: carVibrate 0.5s infinite alternate; }
-        .m-smoke { position: absolute; left: 10%; top: 40px; font-size: 2rem; color: gray; animation: smokeFade 1s infinite forwards; }
-        .m-man { position: absolute; left: 50%; z-index: 2; transform: scaleX(-1); animation: checkPipe 1.5s infinite alternate; }
-        .m-thumb { position: absolute; left: 55%; top: -10px; opacity: 0; transform: scale(0); animation: popThumb 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.8s; font-size: 3.5rem; z-index: 3; }
-        
-        @keyframes carVibrate { 0% { transform: translateY(0); } 100% { transform: translateY(-3px); } }
-        @keyframes smokeFade { 0% { opacity: 1; transform: translateX(0) scale(1); } 100% { opacity: 0; transform: translateX(-30px) scale(2); } }
-        @keyframes checkPipe { 0% { transform: scaleX(-1) translateY(0) rotate(0deg); } 100% { transform: scaleX(-1) translateY(10px) rotate(15deg); } }
-        @keyframes popThumb { 100% { opacity: 1; transform: scale(1.2) translateY(-10px) rotate(-10deg); } }
+        /* UI CARDS */
+        .card-main { background: #1e293b; border: 2px solid #334155; border-radius: 28px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); overflow: hidden; }
+        .gradient-header { background: #0000FF; box-shadow: 0 0 30px rgba(0,0,255,0.6); color: white; padding: 35px 25px; text-align: center; position: relative; }
+        .gradient-header h2 { font-weight: 900; letter-spacing: 1px; margin: 0; text-shadow: 0 0 15px #00FFFF; }
 
-        .scan-scene { font-size: 5rem; display: flex; align-items: center; justify-content: center; position: relative; height: 120px; }
-        .s-paper { position: absolute; }
-        .s-glass { position: absolute; animation: scanMove 1.5s infinite alternate ease-in-out; }
-        @keyframes scanMove { 0% { transform: translate(-30px, -20px) scale(1.1); } 100% { transform: translate(30px, 20px) scale(0.9); } }
+        /* INPUTS */
+        .form-floating > label { color: #94a3b8; font-weight: 800; padding-left: 20px; }
+        .form-control, .form-select { border-radius: 16px; border: 2px solid #334155; background: #0f172a; font-weight: 800; color: #fff; transition: all 0.2s ease; padding-left: 20px; }
+        .form-control:focus, .form-select:focus { background: #000; box-shadow: 0 0 20px var(--hard-cyan); border-color: var(--hard-cyan); color: var(--hard-cyan); }
 
-        /* ---------------- BUTTON CLICK TRANSITIONS ---------------- */
-        button, .select-btn, .form-check-input, .nav-link { transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1) !important; }
-        button:active, .select-btn:active { transform: scale(0.92) !important; }
+        /* HISTORY ALERT BOX */
+        #historyAlert { display: none; background: rgba(255, 255, 0, 0.1); border: 2px solid var(--hard-yellow); border-radius: 16px; padding: 15px; margin-top: 10px; box-shadow: 0 0 20px rgba(255, 255, 0, 0.2); animation: fadeUp 0.3s ease; }
 
-        /* General App Styles */
-        .container-custom { max-width: 800px; margin: auto; }
-        .card-main { background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.8); border-radius: 28px; box-shadow: 0 25px 50px -12px rgba(30, 64, 175, 0.15); overflow: hidden; }
-        .gradient-header { background: linear-gradient(120deg, var(--dark-blue) 0%, var(--primary-blue) 100%); color: white; padding: 35px 25px; text-align: center; }
-        .gradient-header h2 { font-weight: 800; letter-spacing: -0.5px; margin: 0; }
-        
-        .form-floating > label { color: #64748b; font-weight: 600; padding-left: 20px; }
-        .form-control, .form-select { border-radius: 16px; border: 2px solid #e2e8f0; font-weight: 700; color: var(--dark-blue); padding-left: 20px; }
-        .form-control:focus, .form-select:focus { box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15); border-color: var(--accent-blue); transform: translateY(-2px); }
+        /* BUTTONS */
+        button, .select-btn, .form-check-input { transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important; cursor: pointer; }
+        button:active, .select-btn:active { transform: scale(0.9) !important; }
+        .btn-gradient { background: var(--hard-blue); color: white; border: 2px solid var(--hard-cyan); font-weight: 900; font-size: 1.3rem; border-radius: 20px; box-shadow: 0 0 20px var(--hard-blue); text-transform: uppercase; }
+        .btn-gradient:hover { box-shadow: 0 0 40px var(--hard-cyan); background: var(--hard-cyan); color: #000; border-color: #fff; }
 
+        /* VEHICLE RADIO BUTTONS */
+        .btn-outline-dark { border: 2px solid #475569; color: #cbd5e1; font-weight: 800; background: #1e293b; border-radius: 14px !important; margin: 0 6px; }
+        .btn-check:checked + label[for="twoW"] { background: var(--hard-blue); color: #FFF; border-color: var(--hard-cyan); box-shadow: 0 0 30px var(--hard-blue); }
+        .btn-check:checked + label[for="twoW"] i { animation: wheelie 0.4s infinite alternate ease-in-out; color: var(--hard-cyan) !important; text-shadow: 0 0 20px var(--hard-cyan); display: inline-block; }
+        @keyframes wheelie { 0% { transform: rotate(0deg) translateY(0); } 100% { transform: rotate(-25deg) translateY(-10px); } }
+
+        .btn-check:checked + label[for="fourW"] { background: var(--hard-red); color: #FFF; border-color: var(--hard-yellow); box-shadow: 0 0 30px var(--hard-red); }
+        .btn-check:checked + label[for="fourW"] i { animation: revving 0.1s infinite; color: var(--hard-yellow) !important; text-shadow: 0 0 20px var(--hard-yellow), 0 0 40px var(--hard-yellow); display: inline-block; }
+        @keyframes revving { 0% { transform: translateY(0); } 100% { transform: translateY(-4px) scale(1.02); } }
+
+        /* GPAY STYLE PAYMENT SUCCESS ANIMATION */
+        .hard-green-popup { border: 5px solid var(--hard-green) !important; box-shadow: 0 0 80px var(--hard-green) !important; background: var(--dark-green) !important; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .hard-green-popup .swal2-success-ring { border-color: rgba(0,255,0,0.5) !important; }
+        .hard-green-popup .swal2-success-line-tip, .hard-green-popup .swal2-success-line-long { background-color: var(--hard-green) !important; box-shadow: 0 0 20px var(--hard-green); }
+        .hard-green-popup .swal2-title { color: var(--hard-green) !important; text-shadow: 0 0 20px var(--hard-green); font-size: 2.5rem; }
+        @keyframes popIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+        /* SCAN ANIMATION */
+        .scan-scene { font-size: 5rem; display: flex; align-items: center; justify-content: center; position: relative; height: 140px; background: #000; border-radius: 20px; box-shadow: inset 0 0 50px var(--hard-cyan); }
+        .s-paper { position: absolute; color: #fff; text-shadow: 0 0 10px #fff; }
+        .s-glass { position: absolute; color: var(--hard-cyan); text-shadow: 0 0 20px var(--hard-blue); animation: scanMove 1s infinite alternate ease-in-out; }
+        @keyframes scanMove { 0% { transform: translate(-40px, -30px) scale(1.2); } 100% { transform: translate(40px, 30px) scale(0.8); } }
+
+        /* OTHERS */
+        .admin-link { position: fixed; bottom: 30px; right: 30px; background: var(--hard-red); color: white; z-index: 1050; box-shadow: 0 0 30px var(--hard-red); border-radius: 50px; font-weight: 900; padding: 15px 30px; border: 2px solid #fff; }
+        .admin-link:hover { background: #fff; color: var(--hard-red); border-color: var(--hard-red); }
         .vip-badge { position: absolute; right: 25px; top: -18px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #fff; font-size: 0.85rem; padding: 8px 20px; border-radius: 50px; font-weight: 800; display: none; z-index: 10; animation: bounce 1s infinite alternate; }
-        @keyframes bounce { 0% { transform: translateY(0); } 100% { transform: translateY(-5px); } }
 
-        .btn-gradient { background: linear-gradient(135deg, var(--accent-blue) 0%, var(--primary-blue) 100%); color: white; border: none; font-weight: 800; border-radius: 20px; box-shadow: 0 10px 25px rgba(30, 64, 175, 0.4); }
-        .btn-gradient:hover { box-shadow: 0 15px 35px rgba(30, 64, 175, 0.5); color: white; }
+        /* MODAL */
+        .modal-content { border-radius: 28px; border: 2px solid var(--hard-cyan); box-shadow: 0 0 60px rgba(0,255,255,0.3); background: #0a0a0a; color: #fff; }
+        .select-btn { border: 2px solid #334155; background: #1e293b; color: #fff; border-radius: 18px; padding: 18px; font-weight: 900; font-size: 1.1rem; }
+        .select-btn.active-staff { border-color: var(--hard-cyan); background: var(--hard-blue); color: #fff; box-shadow: 0 0 25px var(--hard-blue); transform: scale(1.1); }
+        .select-btn.active-duration { border-color: var(--hard-green); background: var(--dark-green); color: var(--hard-green); box-shadow: 0 0 25px var(--hard-green); transform: scale(1.1); text-shadow: 0 0 10px var(--hard-green); }
 
-        .btn-outline-dark { border: 2px solid #e2e8f0; color: #64748b; font-weight: 700; border-radius: 14px !important; margin: 0 6px; }
-        .btn-check:checked + .btn-outline-dark { background: var(--dark-blue); color: #fff; border-color: var(--dark-blue); box-shadow: 0 8px 20px rgba(15, 23, 42, 0.3); transform: scale(1.05); }
-
-        .toggle-wrapper { background: white; border: 2px solid #e2e8f0; border-radius: 50px; padding: 12px 25px; display: inline-flex; align-items: center; box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
-        .form-check-input:checked { background-color: var(--accent-blue); border-color: var(--accent-blue); box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); }
-
-        .btn-pip { background: #1e293b; color: white; font-weight: 700; border-radius: 50px; padding: 10px 25px; border: none; box-shadow: 0 8px 15px rgba(30, 41, 59, 0.3); }
-        .admin-link { position: fixed; bottom: 30px; right: 30px; background: var(--dark-blue); color: white; z-index: 1050; box-shadow: 0 15px 30px rgba(15, 23, 42, 0.4); border-radius: 50px; font-weight: 800; padding: 15px 30px; border: none; }
-
-        .modal-content { border-radius: 28px; box-shadow: 0 30px 60px rgba(0,0,0,0.3); background: rgba(255,255,255,0.98); backdrop-filter: blur(15px); }
-        .select-btn { border: 2px solid #e2e8f0; border-radius: 18px; padding: 18px; font-weight: 800; text-align: center; }
-        .select-btn.active-staff { border-color: var(--accent-blue); background: var(--light-blue); color: var(--primary-blue); transform: scale(1.05); }
-        .select-btn.active-duration { border-color: #10b981; background: #ecfdf5; color: #047857; transform: scale(1.05); }
-
-        .admin-header { background: var(--dark-blue); color: white; padding: 30px; border-radius: 28px 28px 0 0; }
-        .nav-tabs { border-bottom: 2px solid #e2e8f0; padding: 0 25px; background: white; }
-        .nav-tabs .nav-link { font-weight: 700; color: #64748b; padding: 18px 25px; border: none; }
-        .nav-tabs .nav-link.active { color: var(--accent-blue); border-bottom: 4px solid var(--accent-blue); }
-        .tab-content-admin { background: #f8fafc; padding: 35px; border-radius: 0 0 28px 28px; }
-        
-        .stats-card { background: #fff; border-radius: 24px; padding: 30px 20px; border: 1px solid #e2e8f0; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.02); }
-        .table-modern { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
-        .table-modern th, .table-modern td { padding: 15px; vertical-align: middle; border-bottom: 1px solid #f1f5f9; }
+        /* ADMIN UI */
+        .admin-header { background: var(--hard-blue); box-shadow: 0 0 30px var(--hard-blue); color: white; padding: 30px; border-radius: 28px 28px 0 0; }
+        .nav-tabs { border-bottom: 2px solid #334155; padding: 0 25px; background: #1e293b; display: flex; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+        .nav-tabs::-webkit-scrollbar { display: none; }
+        .nav-tabs .nav-link { font-weight: 800; color: #94a3b8; padding: 15px 20px; border: none; white-space: nowrap; }
+        .nav-tabs .nav-link.active { color: var(--hard-cyan); border-bottom: 4px solid var(--hard-cyan); background: transparent; text-shadow: 0 0 15px var(--hard-cyan); }
+        .tab-content-admin { background: #0f172a; padding: 35px; border-radius: 0 0 28px 28px; }
+        .stats-card { background: #1e293b; border-radius: 24px; padding: 30px 20px; border: 2px solid #334155; text-align: center; color: #fff; }
+        .table-modern { background: #1e293b; border-radius: 16px; color: #fff; font-size: 0.9rem; }
+        .table-modern th, .table-modern td { padding: 15px 10px; border-bottom: 1px solid #334155; background: #1e293b; color: #fff; vertical-align: middle; }
     </style>
 </head>
 <body>
 
-    <!-- 1. SPLASH SCREEN (STARTUP ANIMATION) -->
+    <!-- 1. SPLASH SCREEN -->
     <div id="splashScreen">
         <div class="splash-icon">🛡️</div>
-        <h2 class="splash-title">Shree Ganesh PUC Center</h2>
-        <p class="splash-subtitle">Smart Tracker by Ayush Anand • Powered by TyreXpert</p>
+        <h2 class="splash-title text-center">Shree Ganesh PUC Center</h2>
+        <p class="splash-subtitle text-center mt-2">Smart Tracker v4.0<br>Powered by TyreXpert</p>
     </div>
 
     <!-- Admin Floating Button -->
     <button id="adminToggleBtn" class="btn admin-link" onclick="toggleAdmin()">
-        <i class="bi bi-shield-lock-fill me-2"></i> Admin Panel
+        <i class="bi bi-shield-lock-fill me-2"></i> ADMIN PANEL
     </button>
 
     <!-- ==========================================
@@ -137,63 +150,60 @@
     <div id="mainSection" class="container container-custom d-none">
         <div class="card-main mt-3">
             <div class="gradient-header">
-                <h2>Shree Ganesh PUC Center</h2>
-                <p class="m-0 text-light opacity-75 mt-1 fw-bold" id="todayDate"></p>
+                <h2>SHREE GANESH PUC CENTER</h2>
+                <p class="m-0 text-light mt-1 fw-bold" id="todayDate"></p>
             </div>
             
-            <div class="p-4 p-md-5 position-relative bg-white">
-                <span id="vipBadge" class="vip-badge"><i class="bi bi-star-fill me-1"></i> VIP Customer</span>
-                
-                <div class="text-end mb-3">
-                    <button class="btn-pip" onclick="openPiPWindow()">
-                        <i class="bi bi-pip me-1"></i> Minimize (Float Mode)
-                    </button>
-                </div>
+            <div class="p-4 p-md-5 position-relative" style="background: #1e293b;">
+                <span id="vipBadge" class="vip-badge"><i class="bi bi-star-fill me-1"></i> VIP FOUND</span>
+
+                <!-- PREVIOUS HISTORY ALERT BOX -->
+                <div id="historyAlert"></div>
 
                 <div class="row g-4 mt-1">
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input type="text" id="vehicleNo" class="form-control text-uppercase fw-bold text-primary" placeholder="HR12AB1234" onkeyup="autoFillAndHistory()" autocomplete="off"/>
-                            <label for="vehicleNo">Vehicle Number <span class="text-danger">*</span></label>
+                            <input type="text" id="vehicleNo" class="form-control text-uppercase" placeholder="HR12AB1234" onkeyup="autoFillAndHistory()" autocomplete="off"/>
+                            <label for="vehicleNo">VEHICLE NUMBER <span class="text-danger">*</span></label>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input type="number" id="mobileNo" class="form-control fw-bold" placeholder="9876543210" autocomplete="off"/>
-                            <label for="mobileNo">Mobile Number <span class="text-danger">*</span></label>
+                            <input type="number" id="mobileNo" class="form-control" placeholder="9876543210" autocomplete="off"/>
+                            <label for="mobileNo">MOBILE NUMBER <span class="text-danger">*</span></label>
                         </div>
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label text-muted small fw-bold ms-2 mb-2">Vehicle Type</label>
+                        <label class="form-label text-light small fw-bold ms-2 mb-2">VEHICLE TYPE</label>
                         <div class="btn-group w-100" role="group">
                             <input type="radio" class="btn-check" name="vehicleType" id="twoW" value="2 Wheeler" checked onclick="toggleFuel()" />
-                            <label class="btn btn-outline-dark py-3" for="twoW"><i class="bi bi-bicycle me-2 fs-5"></i> 2 Wheeler</label>
+                            <label class="btn btn-outline-dark py-3" for="twoW"><i class="bi bi-bicycle me-2 fs-4"></i> 2 WHEELER</label>
                             
                             <input type="radio" class="btn-check" name="vehicleType" id="fourW" value="4 Wheeler" onclick="toggleFuel()" />
-                            <label class="btn btn-outline-dark py-3" for="fourW"><i class="bi bi-car-front me-2 fs-5"></i> 4 Wheeler</label>
+                            <label class="btn btn-outline-dark py-3" for="fourW"><i class="bi bi-car-front me-2 fs-4"></i> 4 WHEELER</label>
                         </div>
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label text-muted small fw-bold ms-2 mb-2">Fuel Type</label>
-                        <select id="fuelType" class="form-select" style="height: calc(4rem + 2px); font-size: 1.1rem;">
-                            <option value="Petrol">Petrol</option>
+                        <label class="form-label text-light small fw-bold ms-2 mb-2">FUEL TYPE</label>
+                        <select id="fuelType" class="form-select" style="height: calc(4rem + 2px); font-size: 1.2rem;">
+                            <option value="Petrol">PETROL</option>
                         </select>
                     </div>
 
                     <div class="col-12 mt-5">
-                        <button class="btn btn-gradient w-100 py-3 fs-4" onclick="initiateSubmit()">
-                            <i class="bi bi-send-check-fill me-2"></i> Save & Submit Entry
+                        <button class="btn btn-gradient w-100 py-3" onclick="initiateSubmit()">
+                            <i class="bi bi-send-check-fill me-2 fs-4"></i> SAVE & SUBMIT
                         </button>
                     </div>
 
-                    <!-- PC Notification Reminder -->
+                    <!-- PC Notification Reminder Toggle -->
                     <div class="col-12 mt-4 text-center">
-                        <div class="toggle-wrapper">
+                        <div class="toggle-wrapper" style="background: #1e293b; border-color: #334155;">
                             <input class="form-check-input ms-0 me-3" type="checkbox" id="reminderToggle" onchange="toggleBackgroundWorker()">
-                            <label class="form-check-label text-primary fw-bold mb-0" for="reminderToggle" style="cursor:pointer; font-size: 1rem;">
-                                <i class="bi bi-bell-fill text-warning me-1"></i> 30-Sec Background Alert
+                            <label class="form-check-label fw-bold mb-0" for="reminderToggle" style="color: var(--hard-cyan); font-size: 1rem;">
+                                <i class="bi bi-bell-fill me-1"></i> 30-SEC BACKGROUND ALERT
                             </label>
                         </div>
                     </div>
@@ -208,22 +218,22 @@
     <div class="modal fade" id="entryModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header bg-light border-0 py-4">
-                    <h4 class="modal-title fw-bolder text-center w-100" style="color: var(--dark-blue);">Finalize Entry</h4>
-                    <button type="button" class="btn-close fs-5" data-bs-dismiss="modal" aria-label="Close" onclick="resetModalSelections()"></button>
+                <div class="modal-header border-0 py-4" style="background: var(--hard-blue);">
+                    <h4 class="modal-title fw-bolder text-center w-100" style="color: #fff; text-shadow: 0 0 15px #00FFFF;">FINALIZE ENTRY</h4>
+                    <button type="button" class="btn-close btn-close-white fs-5" data-bs-dismiss="modal" aria-label="Close" onclick="resetModalSelections()"></button>
                 </div>
-                <div class="modal-body p-4 p-md-5">
-                    <h6 class="fw-bold mb-3 text-muted">1. Select Staff (किसने एंट्री की है?)</h6>
+                <div class="modal-body p-4 p-md-5" style="background: #0f172a;">
+                    <h6 class="fw-bold mb-3 text-light">1. SELECT STAFF</h6>
                     <div class="row g-3 mb-5" id="modalStaffContainer"></div>
 
-                    <h6 class="fw-bold mb-3 text-muted">2. Select Duration (कितने महीने?)</h6>
+                    <h6 class="fw-bold mb-3 text-light">2. DURATION (MONTHS)</h6>
                     <div class="row g-3 mb-5">
-                        <div class="col-6"><div class="select-btn duration-opt" onclick="selectDuration(this, 6)">6 Months</div></div>
-                        <div class="col-6"><div class="select-btn duration-opt" onclick="selectDuration(this, 12)">12 Months</div></div>
+                        <div class="col-6"><div class="select-btn duration-opt" onclick="selectDuration(this, 6)">6 MONTHS</div></div>
+                        <div class="col-6"><div class="select-btn duration-opt" onclick="selectDuration(this, 12)">12 MONTHS</div></div>
                     </div>
 
-                    <button class="btn btn-gradient w-100 py-3 fs-5 mt-2" onclick="playSubmitAnimation()">
-                        Confirm & Save Data <i class="bi bi-arrow-right-circle-fill ms-2"></i>
+                    <button class="btn btn-gradient w-100 py-3 mt-2" onclick="playSubmitAnimation()">
+                        CONFIRM DATA <i class="bi bi-check-circle-fill ms-2"></i>
                     </button>
                 </div>
             </div>
@@ -235,67 +245,73 @@
     =========================================== -->
     <div id="adminSection" class="container container-custom d-none">
         
+        <!-- LOGIN -->
         <div id="loginScreen" class="card-main p-5 mt-5 text-center" style="max-width: 450px; margin: auto;">
-            <div class="mb-4"><i class="bi bi-fingerprint text-primary" style="font-size: 4rem;"></i></div>
-            <h3 class="fw-bolder mb-2 text-dark">Admin Access</h3>
-            <p id="passwordSetupMsg" class="text-muted fw-bold small mb-4">Verifying Security Status...</p>
+            <div class="mb-4"><i class="bi bi-fingerprint" style="font-size: 5rem; color: var(--hard-cyan); text-shadow: 0 0 30px var(--hard-cyan);"></i></div>
+            <h3 class="fw-bolder mb-2 text-white">ADMIN ACCESS</h3>
+            <p id="passwordSetupMsg" class="text-light fw-bold small mb-4">Verifying Security...</p>
             <div class="form-floating mb-4">
                 <input type="password" id="adminPasswordInput" class="form-control rounded-pill px-4 text-center" placeholder="Password" />
-                <label class="ms-2 w-100 text-center">Enter Secure Password</label>
+                <label class="ms-2 w-100 text-center">ENTER SECURE PASSWORD</label>
             </div>
-            <button class="btn btn-gradient w-100 py-3 fs-5" onclick="handleAdminAuth()">Authenticate</button>
+            <button class="btn btn-gradient w-100 py-3" onclick="handleAdminAuth()">AUTHENTICATE</button>
         </div>
 
+        <!-- DASHBOARD -->
         <div id="adminDashboard" class="card-main d-none mt-2">
             <div class="admin-header d-flex justify-content-between align-items-center">
+                <h3 class="fw-bolder m-0" style="text-shadow: 0 0 15px #00FFFF;"><i class="bi bi-pie-chart-fill me-2"></i> BUSINESS HUB</h3>
                 <div>
-                    <h3 class="fw-bolder m-0"><i class="bi bi-pie-chart-fill text-warning me-2"></i> Business Hub</h3>
+                    <button class="btn btn-warning rounded-pill px-3 fw-bold me-2" onclick="changeAdminPassword()"><i class="bi bi-key-fill"></i> PWD</button>
+                    <button class="btn btn-danger rounded-pill px-3 fw-bold border-2 border-white" style="box-shadow: 0 0 20px #FF0000;" onclick="logoutAdmin()"><i class="bi bi-box-arrow-right"></i> LOGOUT</button>
                 </div>
-                <button class="btn btn-danger rounded-pill px-4 fw-bold" onclick="logoutAdmin()"><i class="bi bi-box-arrow-right me-2"></i>Logout</button>
             </div>
 
             <ul class="nav nav-tabs" id="adminTabs" role="tablist">
-                <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabDashboard">Overview</button></li>
-                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabStaff">Staff Mgmt</button></li>
-                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabManage" onclick="playFetchAnimation(loadManageData)">Edit Records</button></li>
-                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabReminder" onclick="playFetchAnimation(loadReminders)">Reminders</button></li>
+                <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabDashboard">OVERVIEW</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabStaff">STAFF</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabManage" onclick="playFetchAnimation(loadManageData)">RECORDS</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabSearch">SEARCH</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabReminder" onclick="playFetchAnimation(loadReminders)">REMINDERS</button></li>
             </ul>
 
             <div class="tab-content tab-content-admin">
+                <!-- OVERVIEW TAB -->
                 <div class="tab-pane show active" id="tabDashboard">
                     <div class="row g-3 mb-4 align-items-end">
                         <div class="col-md-5">
-                            <select id="dashTimeFilter" class="form-select shadow-sm" onchange="playFetchAnimation(loadDashboard)">
-                                <option value="today">Today (आज)</option>
-                                <option value="all_time">All Time (शुरू से)</option>
+                            <select id="dashTimeFilter" class="form-select" onchange="playFetchAnimation(loadDashboard)">
+                                <option value="today">TODAY</option>
+                                <option value="all_time">ALL TIME</option>
                             </select>
                         </div>
                     </div>
                     <div class="row g-4" id="dashboardStats">
-                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-2 small fw-bold">Total Entries</p><h1 id="statTotal" class="text-primary fw-bolder m-0">0</h1></div></div>
-                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-2 small fw-bold">2 Wheeler</p><h1 id="stat2W" class="text-success fw-bolder m-0">0</h1></div></div>
-                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-2 small fw-bold">4 Wheeler</p><h1 id="stat4W" class="text-danger fw-bolder m-0">0</h1></div></div>
-                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-2 small fw-bold">Fuel (P / D)</p><h3 id="statFuel" class="text-dark fw-bolder m-0 mt-2">0 / 0</h3></div></div>
+                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-light mb-2 fw-bold">TOTAL ENTRIES</p><h1 id="statTotal" style="color:var(--hard-cyan); text-shadow:0 0 20px var(--hard-cyan);" class="fw-bolder m-0">0</h1></div></div>
+                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-light mb-2 fw-bold">2 WHEELER</p><h1 id="stat2W" style="color:var(--hard-blue); text-shadow:0 0 20px var(--hard-blue);" class="fw-bolder m-0">0</h1></div></div>
+                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-light mb-2 fw-bold">4 WHEELER</p><h1 id="stat4W" style="color:var(--hard-red); text-shadow:0 0 20px var(--hard-red);" class="fw-bolder m-0">0</h1></div></div>
+                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-light mb-2 fw-bold">FUEL (P / D)</p><h3 id="statFuel" style="color:var(--hard-yellow); text-shadow:0 0 20px var(--hard-yellow);" class="fw-bolder m-0 mt-2">0 / 0</h3></div></div>
                     </div>
                 </div>
 
+                <!-- STAFF TAB -->
                 <div class="tab-pane" id="tabStaff">
                     <div class="row g-4">
                         <div class="col-md-6">
-                            <div class="bg-white p-4 rounded-4 shadow-sm border h-100">
-                                <h6 class="fw-bolder text-dark mb-4"><i class="bi bi-person-plus-fill text-primary me-2"></i> Manage Staff</h6>
-                                <div class="input-group mb-4 shadow-sm rounded-pill overflow-hidden border">
-                                    <input type="text" id="newStaffName" class="form-control border-0" placeholder="Enter Staff Name">
-                                    <button class="btn btn-primary fw-bold px-4 border-0" onclick="addStaff()">Add</button>
+                            <div class="stats-card h-100 text-start">
+                                <h6 class="fw-bolder text-light mb-4"><i class="bi bi-person-plus-fill me-2"></i> ADD STAFF</h6>
+                                <div class="input-group mb-4">
+                                    <input type="text" id="newStaffName" class="form-control" placeholder="NAME">
+                                    <button class="btn btn-primary fw-bold px-4" style="box-shadow: 0 0 15px var(--hard-blue);" onclick="addStaff()">ADD</button>
                                 </div>
                                 <ul class="list-group list-group-flush" id="adminStaffList"></ul>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="bg-white p-4 rounded-4 shadow-sm border h-100">
+                            <div class="stats-card h-100 text-start">
                                 <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <h6 class="fw-bolder text-dark m-0"><i class="bi bi-graph-up-arrow text-success me-2"></i> Today's Leaderboard</h6>
-                                    <button class="btn btn-sm btn-light border rounded-circle" onclick="playFetchAnimation(loadStaffAnalytics)"><i class="bi bi-arrow-clockwise"></i></button>
+                                    <h6 class="fw-bolder text-light m-0"><i class="bi bi-graph-up-arrow me-2 text-success"></i> LEADERBOARD</h6>
+                                    <button class="btn btn-sm btn-outline-light rounded-circle" onclick="playFetchAnimation(loadStaffAnalytics)"><i class="bi bi-arrow-clockwise"></i></button>
                                 </div>
                                 <div id="staffAnalyticsContainer"></div>
                             </div>
@@ -303,34 +319,60 @@
                     </div>
                 </div>
 
+                <!-- RECORDS TAB (Added Expiry, Duration & PDF) -->
                 <div class="tab-pane" id="tabManage">
-                    <div class="row g-3 align-items-end mb-4 bg-white p-4 rounded-4 shadow-sm border">
-                        <div class="col-md-4"><label class="small text-muted fw-bold ms-1">From Date</label><input type="date" id="manageFrom" class="form-control" /></div>
-                        <div class="col-md-4"><label class="small text-muted fw-bold ms-1">To Date</label><input type="date" id="manageTo" class="form-control" /></div>
-                        <div class="col-md-4"><button class="btn btn-dark w-100 fw-bold py-3 rounded-pill" onclick="playFetchAnimation(loadManageData)">Fetch Records</button></div>
+                    <div class="row g-3 align-items-end mb-4 stats-card text-start">
+                        <div class="col-md-4"><label class="small text-light fw-bold ms-1">FROM</label><input type="date" id="manageFrom" class="form-control" /></div>
+                        <div class="col-md-4"><label class="small text-light fw-bold ms-1">TO</label><input type="date" id="manageTo" class="form-control" /></div>
+                        <div class="col-md-2"><button class="btn btn-gradient w-100 py-3" onclick="playFetchAnimation(loadManageData)">FETCH</button></div>
+                        <div class="col-md-2"><button class="btn btn-danger w-100 py-3 fw-bold" style="border-radius:20px; box-shadow:0 0 20px red;" onclick="downloadPDF()"><i class="bi bi-file-earmark-pdf-fill"></i> PDF</button></div>
                     </div>
-                    <div class="table-responsive table-modern border rounded-4">
-                        <table class="table mb-0 text-center align-middle">
-                            <thead class="table-light">
-                                <tr><th>Vehicle</th><th>Mobile</th><th>Type/Fuel</th><th>Staff</th><th>Date</th><th>Action</th></tr>
+                    <div class="table-responsive table-modern">
+                        <table class="table mb-0 text-center align-middle" id="recordsTable">
+                            <thead style="background:#0f172a; color:#fff;">
+                                <tr>
+                                    <th>VEHICLE</th>
+                                    <th>MOBILE</th>
+                                    <th>TYPE</th>
+                                    <th>STAFF</th>
+                                    <th>DUR.</th>
+                                    <th>CREATE</th>
+                                    <th>EXPIRY</th>
+                                    <th>DEL</th>
+                                </tr>
                             </thead>
                             <tbody id="manageTableBody">
-                                <tr><td colspan="6" class="py-5 text-muted fw-bold">Select dates and click Fetch Records</td></tr>
+                                <tr><td colspan="8" class="py-5 text-muted fw-bold">Select dates and click Fetch Records</td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
+                <!-- SEARCH PORTAL TAB -->
+                <div class="tab-pane" id="tabSearch">
+                    <div class="stats-card text-start">
+                        <h5 class="fw-bolder text-light mb-4" style="text-shadow:0 0 10px var(--hard-cyan);"><i class="bi bi-search me-2"></i> SEARCH PORTAL</h5>
+                        <div class="input-group mb-4">
+                            <input type="text" id="portalSearchInput" class="form-control text-uppercase" placeholder="Enter Vehicle No. (e.g., HR12AB1234) or Mobile No.">
+                            <button class="btn btn-gradient px-4" onclick="playFetchAnimation(searchPortalData)">SEARCH</button>
+                        </div>
+                        <div id="portalResultContainer">
+                            <p class="text-muted text-center py-4 fw-bold">Search results will appear here...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- REMINDERS TAB -->
                 <div class="tab-pane" id="tabReminder">
-                    <ul class="nav nav-pills mb-4 bg-white p-2 rounded-pill shadow-sm border d-inline-flex" id="remSubTabs" role="tablist">
-                        <li class="nav-item"><button class="nav-link active rounded-pill px-4 fw-bold" data-bs-toggle="pill" data-bs-target="#remToday">⚠️ आज Expire</button></li>
-                        <li class="nav-item"><button class="nav-link rounded-pill px-4 fw-bold" data-bs-toggle="pill" data-bs-target="#remUpcoming">📅 5 दिन में</button></li>
-                        <li class="nav-item"><button class="nav-link rounded-pill px-4 text-danger fw-bold" data-bs-toggle="pill" data-bs-target="#remLost">💔 Lost Customers</button></li>
+                    <ul class="nav nav-pills mb-4 p-2 rounded-pill shadow-sm d-inline-flex flex-wrap" style="background:#1e293b; border: 2px solid #334155;" id="remSubTabs" role="tablist">
+                        <li class="nav-item"><button class="nav-link active rounded-pill px-3 fw-bold text-light" data-bs-toggle="pill" data-bs-target="#remToday">⚠️ TODAY</button></li>
+                        <li class="nav-item"><button class="nav-link rounded-pill px-3 fw-bold text-light" data-bs-toggle="pill" data-bs-target="#remUpcoming">📅 5 DAYS</button></li>
+                        <li class="nav-item"><button class="nav-link rounded-pill px-3 text-danger fw-bold" style="text-shadow:0 0 10px red;" data-bs-toggle="pill" data-bs-target="#remLost">💔 LOST</button></li>
                     </ul>
                     <div class="tab-content">
-                        <div class="tab-pane show active" id="remToday"><div id="todayExpiryList" class="list-group shadow-sm border-0"></div></div>
-                        <div class="tab-pane" id="remUpcoming"><div id="upcomingExpiryList" class="list-group shadow-sm border-0"></div></div>
-                        <div class="tab-pane" id="remLost"><div id="lostExpiryList" class="list-group shadow-sm border-0"></div></div>
+                        <div class="tab-pane show active" id="remToday"><div id="todayExpiryList" class="list-group border-0"></div></div>
+                        <div class="tab-pane" id="remUpcoming"><div id="upcomingExpiryList" class="list-group border-0"></div></div>
+                        <div class="tab-pane" id="remLost"><div id="lostExpiryList" class="list-group border-0"></div></div>
                     </div>
                 </div>
             </div>
@@ -364,8 +406,7 @@
         let pendingFormData = {};
         let backgroundWorker = null;
         let globalStaffList = [];
-        let pipWindow = null;
-        let pipInterval = null;
+        let currentFetchRecords = []; // Global array for PDF export
 
         function getLocalDate(dateObj = new Date()) {
             const year = dateObj.getFullYear();
@@ -374,109 +415,111 @@
             return `${year}-${month}-${day}`;
         }
 
-        // Initialize App & Handle Splash Screen
-        window.onload = function() {
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 const splash = document.getElementById('splashScreen');
-                splash.style.opacity = '0';
-                splash.style.visibility = 'hidden';
+                if (splash) { splash.style.opacity = '0'; splash.style.visibility = 'hidden'; setTimeout(() => splash.remove(), 600); }
                 document.getElementById('mainSection').classList.remove('d-none');
-                setTimeout(() => splash.remove(), 800);
-            }, 2500);
+            }, 2000);
 
             bsEntryModal = new bootstrap.Modal(document.getElementById('entryModal'));
-            document.getElementById('todayDate').innerText = new Date().toLocaleDateString('hi-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            document.getElementById('todayDate').innerText = new Date().toLocaleDateString('hi-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).toUpperCase();
+            
             document.getElementById('manageFrom').value = getLocalDate();
             document.getElementById('manageTo').value = getLocalDate();
 
             fetchStaffList();
             initBackgroundWorker();
             toggleFuel();
-        };
+        });
 
-        // ========== CUSTOM ANIMATIONS (MECHANIC & SCANNER) ==========
+        // ========== CUSTOM ANIMATIONS ==========
         window.playSubmitAnimation = function() {
-            if(!selectedStaff) return Swal.fire({ icon: 'warning', text: 'कृपया स्टाफ का नाम चुनें!' });
-            if(!selectedDuration) return Swal.fire({ icon: 'warning', text: 'कृपया 6 या 12 महीने चुनें!' });
+            if(!selectedStaff) return Swal.fire({ icon: 'warning', text: 'कृपया स्टाफ का नाम चुनें!', background: '#1e293b', color: '#fff' });
+            if(!selectedDuration) return Swal.fire({ icon: 'warning', text: 'कृपया 6 या 12 महीने चुनें!', background: '#1e293b', color: '#fff' });
 
             bsEntryModal.hide();
 
+            // DIRECT GPAY STYLE PAYMENT TICK ANIMATION
             Swal.fire({
-                title: 'Checking Pollution Levels...',
-                html: `
-                    <div class="mechanic-scene">
-                        <div class="m-smoke">💨</div>
-                        <div class="m-car">🚙</div>
-                        <div class="m-man">🧑‍🔧</div>
-                        <div class="m-thumb text-success">👍</div>
-                    </div>
-                    <div class="mt-4 fw-bold text-primary fs-5" id="pucStatusText">Testing Silencer Data...</div>
-                `,
+                title: '<h1 style="color:var(--hard-green); text-shadow: 0 0 30px var(--hard-green); font-weight:900; margin:0;">SUCCESS!</h1>',
+                text: 'DATA SAVING SECURELY...',
+                icon: 'success',
+                background: 'var(--dark-green)',
+                color: '#fff',
+                iconColor: 'var(--hard-green)',
                 showConfirmButton: false,
-                allowOutsideClick: false,
-                timer: 3500,
-                didOpen: () => {
-                    setTimeout(() => {
-                        const smoke = document.querySelector('.m-smoke');
-                        if(smoke) smoke.style.display = 'none'; // Smoke stops
-                        document.getElementById('pucStatusText').innerText = "PUC Pass! Generating Certificate...";
-                        document.getElementById('pucStatusText').className = "mt-4 fw-bold text-success fs-5";
-                    }, 1800);
+                timer: 1800,
+                customClass: { popup: 'hard-green-popup' },
+                didClose: () => {
+                    finalizeSubmitBackend(); 
                 }
-            }).then(() => {
-                finalizeSubmitBackend(); // Save to DB after animation
             });
         };
 
         window.playFetchAnimation = function(callbackFunction) {
             Swal.fire({
-                title: 'Fetching Data...',
-                html: `
-                    <div class="scan-scene">
-                        <div class="s-paper">📄</div>
-                        <div class="s-glass">🔍</div>
-                    </div>
-                    <div class="mt-3 text-muted fw-bold">Scanning Server Records...</div>
-                `,
-                showConfirmButton: false,
-                timer: 1500
-            }).then(() => {
-                if(callbackFunction) callbackFunction();
-            });
+                title: '<span style="color:var(--hard-blue); text-shadow: 0 0 20px var(--hard-blue); font-weight:900;">SCANNING RECORDS...</span>',
+                html: `<div class="scan-scene mt-3"><div class="s-paper">📄</div><div class="s-glass">🔍</div></div>`,
+                background: '#0a0a0a', showConfirmButton: false, timer: 1200
+            }).then(() => { if(callbackFunction) callbackFunction(); });
         };
 
         // ========== MAIN ENTRY LOGIC ==========
         window.toggleFuel = function() {
             const fuelSelect = document.getElementById('fuelType');
             const isFour = document.getElementById('fourW').checked;
-            if (isFour) { fuelSelect.innerHTML = `<option value="Petrol">Petrol</option><option value="Diesel">Diesel</option><option value="CNG">CNG</option>`; } 
-            else { fuelSelect.innerHTML = `<option value="Petrol">Petrol</option>`; }
+            if (isFour) { fuelSelect.innerHTML = `<option value="Petrol">PETROL</option><option value="Diesel">DIESEL</option><option value="CNG">CNG</option>`; } 
+            else { fuelSelect.innerHTML = `<option value="Petrol">PETROL</option>`; }
         };
 
+        // PREVIOUS REPORT / HISTORY ALERT
         window.autoFillAndHistory = function() {
             const vehicle = document.getElementById('vehicleNo').value.trim().toUpperCase();
             const badge = document.getElementById('vipBadge');
-            if (vehicle.length < 4) { badge.style.display = 'none'; return; }
+            const historyAlert = document.getElementById('historyAlert');
+            
+            if (vehicle.length < 4) { badge.style.display = 'none'; historyAlert.style.display = 'none'; return; }
+            
             db.collection(RECORDS_COLLECTION).where('vehicleNo', '==', vehicle).orderBy('createdAt', 'desc').limit(1).get().then(snap => {
                 if(!snap.empty){
                     const d = snap.docs[0].data();
                     document.getElementById('mobileNo').value = d.mobileNo;
                     if(d.vehicleType === '2 Wheeler') document.getElementById('twoW').click(); else document.getElementById('fourW').click();
                     setTimeout(() => { document.getElementById('fuelType').value = d.fuel; }, 50);
+                    
                     badge.style.display = 'block';
-                } else { badge.style.display = 'none'; }
+                    
+                    // Show History Alert
+                    historyAlert.innerHTML = `
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div><i class="bi bi-clock-history me-2 text-warning fs-5"></i><strong class="text-warning">PREVIOUS PUC DETAILS</strong></div>
+                            <span class="badge bg-dark border border-warning">${d.durationMonths} MONTHS</span>
+                        </div>
+                        <hr class="border-warning my-2 opacity-50">
+                        <div class="row text-light fw-bold small">
+                            <div class="col-6">MADE ON: <span class="text-info">${d.purchaseDate}</span></div>
+                            <div class="col-6 text-end">EXPIRED/EXPIRING: <span class="text-danger">${d.expiryDate}</span></div>
+                        </div>
+                    `;
+                    historyAlert.style.display = 'block';
+                } else { 
+                    badge.style.display = 'none'; 
+                    historyAlert.style.display = 'none';
+                }
             }).catch(e => console.log(e));
         };
 
         window.initiateSubmit = function() {
             const vehicle = document.getElementById('vehicleNo').value.trim().toUpperCase();
             const mobile = document.getElementById('mobileNo').value.trim();
-            if (!vehicle || mobile.length < 10) return Swal.fire({ icon: 'error', text: 'सही Vehicle No और Mobile No डालें!'});
+            if (!vehicle || mobile.length < 10) return Swal.fire({ icon: 'error', title: 'INVALID', text: 'Enter correct details!', background: '#1e293b', color: '#fff' });
             
             pendingFormData = { vehicle, mobile, type: document.querySelector('input[name="vehicleType"]:checked').value, fuel: document.getElementById('fuelType').value };
             
             const staffContainer = document.getElementById('modalStaffContainer'); staffContainer.innerHTML = '';
-            globalStaffList.forEach(name => { staffContainer.innerHTML += `<div class="col-6 col-md-4"><div class="select-btn staff-opt" onclick="selectStaff(this, '${name}')">${name}</div></div>`; });
+            globalStaffList.forEach(name => { staffContainer.innerHTML += `<div class="col-6"><div class="select-btn staff-opt" onclick="selectStaff(this, '${name}')">${name.toUpperCase()}</div></div>`; });
             bsEntryModal.show();
         };
 
@@ -492,41 +535,11 @@
                 vehicleNo: pendingFormData.vehicle, mobileNo: pendingFormData.mobile, vehicleType: pendingFormData.type, fuel: pendingFormData.fuel,
                 durationMonths: selectedDuration, staffName: selectedStaff, purchaseDate: getLocalDate(today), expiryDate: getLocalDate(expiryDate), createdAt: firebase.firestore.FieldValue.serverTimestamp()
             }).then(() => {
-                Swal.fire({ icon: 'success', title: 'Data Saved!', showConfirmButton: false, timer: 1500 });
-                document.getElementById('vehicleNo').value = ''; document.getElementById('mobileNo').value = ''; document.getElementById('vipBadge').style.display = 'none';
+                document.getElementById('vehicleNo').value = ''; document.getElementById('mobileNo').value = ''; 
+                document.getElementById('vipBadge').style.display = 'none'; document.getElementById('historyAlert').style.display = 'none';
                 resetModalSelections(); pendingFormData = {};
             });
         };
-
-        // ========== FLOATING PIP WINDOW (MINIMIZE MODE) ==========
-        async function openPiPWindow() {
-            if (!('documentPictureInPicture' in window)) return Swal.fire({ icon: 'warning', text: 'ब्राउज़र Floating Window सपोर्ट नहीं करता। Chrome का लेटेस्ट वर्ज़न इस्तेमाल करें।' });
-            try {
-                pipWindow = await documentPictureInPicture.requestWindow({ width: 380, height: 260 });
-                const style = pipWindow.document.createElement('style');
-                style.textContent = `
-                    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;800&display=swap');
-                    body { font-family: 'Plus Jakarta Sans', sans-serif; background: #0f172a; color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; margin: 0; text-align: center; padding: 20px; box-sizing: border-box; }
-                    .alert-box { background: #1e293b; padding: 25px; border-radius: 20px; border: 2px solid #334155; width: 100%; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-                    .alert-box.flash { background: #dc3545; border-color: #ff0844; transform: scale(1.1); box-shadow: 0 10px 30px rgba(220, 53, 69, 0.8); }
-                    h3 { margin: 0 0 10px 0; font-size: 1.5rem; font-weight: 800; color: #f59e0b; }
-                    p { font-size: 1.1rem; color: #f8fafc; margin: 0; font-weight: 600; }
-                    .btn-form { background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%); color: white; border: none; padding: 15px; border-radius: 50px; font-weight: 800; cursor: pointer; margin-top: 25px; font-size: 1.1rem; width: 100%; box-shadow: 0 8px 20px rgba(59, 130, 246, 0.5); transition: 0.2s; }
-                    .btn-form:active { transform: scale(0.95); }
-                `;
-                pipWindow.document.head.appendChild(style);
-                pipWindow.document.body.innerHTML = `<div id="pipAlertBox" class="alert-box"><h3>🛡️ TyreXpert PiP</h3><p id="pipText">Tracker Active in Background</p></div><button class="btn-form" id="openFormBtn">📝 Open Main Form</button>`;
-                
-                pipWindow.document.getElementById('openFormBtn').addEventListener('click', () => { window.focus(); pipWindow.close(); });
-                
-                const alertBox = pipWindow.document.getElementById('pipAlertBox'); const textElem = pipWindow.document.getElementById('pipText');
-                pipInterval = pipWindow.setInterval(() => {
-                    alertBox.classList.add('flash'); textElem.innerText = "🚨 कस्टमर इंतज़ार कर रहा है!";
-                    pipWindow.setTimeout(() => { alertBox.classList.remove('flash'); textElem.innerText = "Tracker Active"; }, 2000); 
-                }, 10000); 
-                pipWindow.addEventListener('pagehide', () => { if (pipInterval) clearInterval(pipInterval); pipWindow = null; });
-            } catch (error) { console.error("PiP Error:", error); }
-        }
 
         // ========== BACKGROUND WORKER (PC Notification) ==========
         function initBackgroundWorker() {
@@ -538,40 +551,40 @@
 
         window.toggleBackgroundWorker = function() {
             if (document.getElementById('reminderToggle').checked) {
-                if (!("Notification" in window)) return Swal.fire({ icon: 'error', text: 'ब्राउज़र डेस्कटॉप नोटिफिकेशन सपोर्ट नहीं करता।' });
+                if (!("Notification" in window)) return Swal.fire({ icon: 'error', text: 'Browser Notification not supported', background: '#1e293b', color: '#fff' });
                 if (Notification.permission !== "granted") {
                     Notification.requestPermission().then(p => {
-                        if (p === "granted") { backgroundWorker.postMessage('start'); Swal.fire({ toast: true, position: 'bottom-end', icon: 'success', title: 'Background Alert Active', showConfirmButton: false, timer: 1500 }); } 
+                        if (p === "granted") { backgroundWorker.postMessage('start'); Swal.fire({ toast: true, position: 'top', icon: 'success', title: 'Alert Active', showConfirmButton: false, timer: 1500, background: '#1e293b', color: '#fff' }); } 
                         else { document.getElementById('reminderToggle').checked = false; }
                     });
-                } else { backgroundWorker.postMessage('start'); Swal.fire({ toast: true, position: 'bottom-end', icon: 'success', title: 'Background Alert Active', showConfirmButton: false, timer: 1500 }); }
-            } else { backgroundWorker.postMessage('stop'); Swal.fire({ toast: true, position: 'bottom-end', icon: 'info', title: 'Alert Disabled', showConfirmButton: false, timer: 1500 }); }
+                } else { backgroundWorker.postMessage('start'); Swal.fire({ toast: true, position: 'top', icon: 'success', title: 'Alert Active', showConfirmButton: false, timer: 1500, background: '#1e293b', color: '#fff' }); }
+            } else { backgroundWorker.postMessage('stop'); Swal.fire({ toast: true, position: 'top', icon: 'info', title: 'Alert Disabled', showConfirmButton: false, timer: 1500, background: '#1e293b', color: '#fff' }); }
         };
 
         function showOSNotification() {
             if (Notification.permission === "granted") {
-                const notif = new Notification("Shree Ganesh PUC Center", { body: "⚠️ भाई, गाड़ी की एंट्री करना मत भूलना! कस्टमर इंतजार कर रहा है।", requireInteraction: false });
+                const notif = new Notification("Shree Ganesh PUC", { body: "⚠️ भाई, गाड़ी की एंट्री करना मत भूलना!", requireInteraction: false });
                 setTimeout(() => { notif.close(); }, 5000); 
             }
         }
 
-        // ========== ADMIN LOGIC ==========
+        // ========== ADMIN LOGIC & PASSWORD CHANGE ==========
         window.toggleAdmin = function() {
             const main = document.getElementById('mainSection'); const admin = document.getElementById('adminSection'); const btn = document.getElementById('adminToggleBtn');
             if (admin.classList.contains('d-none')) {
                 main.classList.add('d-none'); admin.classList.remove('d-none');
-                btn.innerHTML = '<i class="bi bi-arrow-left-circle-fill me-2"></i> Back to Form'; btn.classList.replace('btn-dark', 'btn-danger');
+                btn.innerHTML = '<i class="bi bi-arrow-left-circle-fill me-2"></i> BACK'; btn.style.background = 'var(--hard-red)'; btn.style.boxShadow = '0 0 30px var(--hard-red)';
                 if (!isAdminLoggedIn) { document.getElementById('loginScreen').classList.remove('d-none'); document.getElementById('adminDashboard').classList.add('d-none'); checkPasswordExists(); } 
                 else { showDashboard(); }
             } else {
                 main.classList.remove('d-none'); admin.classList.add('d-none');
-                btn.innerHTML = '<i class="bi bi-shield-lock-fill me-2"></i> Admin Panel'; btn.classList.replace('btn-danger', 'btn-dark');
+                btn.innerHTML = '<i class="bi bi-shield-lock-fill me-2"></i> ADMIN PANEL'; btn.style.background = 'var(--hard-blue)'; btn.style.boxShadow = '0 0 30px var(--hard-blue)';
             }
         };
 
         async function checkPasswordExists() {
             const doc = await db.collection(ADMIN_COLLECTION).doc('config').get();
-            document.getElementById('passwordSetupMsg').innerText = (doc.exists && doc.data().password) ? 'Please Enter Password to access hub.' : '⚠️ First Time Setup: Create a new password.';
+            document.getElementById('passwordSetupMsg').innerText = (doc.exists && doc.data().password) ? 'SYSTEM LOCKED' : 'CREATE NEW SECURE PASSWORD';
         }
 
         window.handleAdminAuth = async function() {
@@ -579,19 +592,36 @@
             if(!input) return;
             const doc = await db.collection(ADMIN_COLLECTION).doc('config').get();
             if (!doc.exists || !doc.data().password) { await db.collection(ADMIN_COLLECTION).doc('config').set({ password: input }, {merge: true}); document.getElementById('adminPasswordInput').value = ''; isAdminLoggedIn = true; showDashboard(); } 
-            else { if (input === doc.data().password) { isAdminLoggedIn = true; showDashboard(); } else { Swal.fire({ toast: true, icon: 'error', title: 'Incorrect Password!', position: 'top', timer: 2000, showConfirmButton: false }); } }
+            else { if (input === doc.data().password) { isAdminLoggedIn = true; showDashboard(); } else { Swal.fire({ toast: true, icon: 'error', title: 'Wrong Password!', position: 'top', timer: 2000, showConfirmButton: false, background: '#1e293b', color: '#fff' }); } }
+        };
+
+        window.changeAdminPassword = async function() {
+            const { value: newPassword } = await Swal.fire({
+                title: 'Change Password',
+                input: 'password',
+                inputLabel: 'Enter New Admin Password',
+                inputPlaceholder: 'New Password',
+                showCancelButton: true,
+                background: '#1e293b',
+                color: '#fff',
+                confirmButtonColor: '#0000FF'
+            });
+            if (newPassword) {
+                await db.collection(ADMIN_COLLECTION).doc('config').update({ password: newPassword });
+                Swal.fire({ icon: 'success', title: 'Password Changed!', background: '#1e293b', color: '#fff', timer: 2000, showConfirmButton: false });
+            }
         };
 
         function showDashboard() { document.getElementById('loginScreen').classList.add('d-none'); document.getElementById('adminDashboard').classList.remove('d-none'); playFetchAnimation(loadDashboard); }
         window.logoutAdmin = function() { isAdminLoggedIn = false; document.getElementById('adminPasswordInput').value = ''; toggleAdmin(); };
 
         // ========== STAFF MANAGEMENT ==========
-        function fetchStaffList() { db.collection(ADMIN_COLLECTION).doc('staffConfig').get().then(doc => { globalStaffList = (doc.exists && doc.data().list) ? doc.data().list : ["Laddu", "Haider", "Arwaz", "Ankit"]; }).catch(() => { globalStaffList = ["Laddu", "Haider", "Arwaz", "Ankit"]; }); }
-        function fetchStaffListAdmin() { const container = document.getElementById('adminStaffList'); container.innerHTML = ''; globalStaffList.forEach((name, index) => { container.innerHTML += `<li class="list-group-item d-flex justify-content-between align-items-center px-3 py-3 border-bottom"><span class="fw-bold text-dark fs-5"><i class="bi bi-person-badge text-primary me-3"></i> ${name}</span><button class="btn btn-danger rounded-circle" onclick="removeStaff(${index})"><i class="bi bi-trash"></i></button></li>`; }); }
-        window.addStaff = function() { const input = document.getElementById('newStaffName'); const name = input.value.trim(); if(!name || globalStaffList.includes(name)) return; globalStaffList.push(name); db.collection(ADMIN_COLLECTION).doc('staffConfig').set({ list: globalStaffList }, {merge: true}).then(() => { input.value = ''; fetchStaffListAdmin(); Swal.fire({ toast:true, icon:'success', title:'Staff Added!', position:'top', showConfirmButton:false, timer:1500}); }); };
-        window.removeStaff = function(index) { Swal.fire({ title: 'Remove Staff?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#dc3545' }).then((r) => { if (r.isConfirmed) { globalStaffList.splice(index, 1); db.collection(ADMIN_COLLECTION).doc('staffConfig').set({ list: globalStaffList }, {merge: true}).then(() => { fetchStaffListAdmin(); }); } }); };
+        function fetchStaffList() { db.collection(ADMIN_COLLECTION).doc('staffConfig').get().then(doc => { globalStaffList = (doc.exists && doc.data().list) ? doc.data().list : ["LADDU", "HAIDER", "ARWAZ", "ANKIT"]; }).catch(() => { globalStaffList = ["LADDU", "HAIDER", "ARWAZ", "ANKIT"]; }); }
+        function fetchStaffListAdmin() { const container = document.getElementById('adminStaffList'); container.innerHTML = ''; globalStaffList.forEach((name, index) => { container.innerHTML += `<li class="list-group-item d-flex justify-content-between align-items-center px-3 py-3 border-bottom border-secondary bg-transparent"><span class="fw-bold text-light fs-5"><i class="bi bi-person-badge text-primary me-3"></i> ${name}</span><button class="btn btn-danger rounded-circle shadow" onclick="removeStaff(${index})"><i class="bi bi-trash"></i></button></li>`; }); }
+        window.addStaff = function() { const input = document.getElementById('newStaffName'); const name = input.value.trim().toUpperCase(); if(!name || globalStaffList.includes(name)) return; globalStaffList.push(name); db.collection(ADMIN_COLLECTION).doc('staffConfig').set({ list: globalStaffList }, {merge: true}).then(() => { input.value = ''; fetchStaffListAdmin(); Swal.fire({ toast:true, icon:'success', title:'Added!', position:'top', showConfirmButton:false, timer:1500, background: '#1e293b', color: '#fff'}); }); };
+        window.removeStaff = function(index) { Swal.fire({ title: 'Delete?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#FF0000', background: '#1e293b', color: '#fff' }).then((r) => { if (r.isConfirmed) { globalStaffList.splice(index, 1); db.collection(ADMIN_COLLECTION).doc('staffConfig').set({ list: globalStaffList }, {merge: true}).then(() => { fetchStaffListAdmin(); }); } }); };
 
-        // ========== ADMIN TABS DATA ==========
+        // ========== ADMIN TABS DATA & PDF ==========
         window.loadDashboard = function() {
             const tFilter = document.getElementById('dashTimeFilter').value; const todayStr = getLocalDate();
             let query = db.collection(RECORDS_COLLECTION); if (tFilter === 'today') { query = query.where('purchaseDate', '==', todayStr); }
@@ -605,25 +635,129 @@
         window.loadStaffAnalytics = function() {
             const todayStr = getLocalDate(); const container = document.getElementById('staffAnalyticsContainer');
             db.collection(RECORDS_COLLECTION).where('purchaseDate', '==', todayStr).get().then(snap => {
-                if(snap.empty){ container.innerHTML = '<p class="text-muted fw-bold text-center mt-3">आज कोई एंट्री नहीं हुई है।</p>'; return; }
-                let counts = {}; snap.forEach(doc => { const sName = doc.data().staffName || 'Unknown'; counts[sName] = (counts[sName] || 0) + 1; });
+                if(snap.empty){ container.innerHTML = '<p class="text-muted fw-bold text-center mt-3">NO ENTRIES TODAY</p>'; return; }
+                let counts = {}; snap.forEach(doc => { const sName = doc.data().staffName || 'UNKNOWN'; counts[sName] = (counts[sName] || 0) + 1; });
                 let sortedStaff = Object.entries(counts).sort((a, b) => b[1] - a[1]); container.innerHTML = '';
-                sortedStaff.forEach(([name, count], index) => { let medal = index === 0 ? '🏆' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🔹'; container.innerHTML += `<div class="d-flex justify-content-between align-items-center mb-3 bg-white p-3 rounded-4 border"><span class="fw-bolder text-dark fs-5">${medal} ${name}</span><span class="badge bg-primary rounded-pill fs-5 px-4">${count}</span></div>`; });
+                sortedStaff.forEach(([name, count], index) => { let medal = index === 0 ? '🏆' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🔹'; container.innerHTML += `<div class="d-flex justify-content-between align-items-center mb-3 bg-dark p-3 rounded-4 border border-secondary"><span class="fw-bolder text-light fs-5">${medal} ${name}</span><span class="badge bg-primary rounded-pill fs-5 px-4 shadow">${count}</span></div>`; });
             });
         };
 
+        // ADDED: DURATION, EXPIRY, AND STORE IN GLOBAL VAR FOR PDF
         window.loadManageData = function() {
             const fromDate = document.getElementById('manageFrom').value, toDate = document.getElementById('manageTo').value; const tbody = document.getElementById('manageTableBody');
             if(!fromDate || !toDate) return;
             db.collection(RECORDS_COLLECTION).where('purchaseDate', '>=', fromDate).where('purchaseDate', '<=', toDate).get().then(snap => {
-                if (snap.empty) { tbody.innerHTML = '<tr><td colspan="6" class="text-muted fw-bold py-5">No records found.</td></tr>'; return; }
-                let records = []; snap.forEach(doc => records.push({ id: doc.id, ...doc.data() })); records.sort((a, b) => new Date(b.purchaseDate) - new Date(a.purchaseDate)); tbody.innerHTML = '';
-                records.forEach(d => { tbody.innerHTML += `<tr><td class="fw-bolder text-dark fs-6">${d.vehicleNo}</td><td><span class="fw-bold text-secondary">${d.mobileNo}</span> <i class="bi bi-pencil-square text-primary ms-2" style="cursor:pointer;" onclick="editMobile('${d.id}', '${d.mobileNo}')"></i></td><td><span class="badge bg-dark">${d.vehicleType === '2 Wheeler' ? '2W' : '4W'}</span><br><small class="fw-bold text-muted">${d.fuel}</small></td><td><span class="fw-bolder text-primary">${d.staffName || '-'}</span></td><td class="fw-bold text-muted">${d.purchaseDate}</td><td><button class="btn btn-danger rounded-circle" onclick="deleteRecord('${d.id}')"><i class="bi bi-trash"></i></button></td></tr>`; });
+                currentFetchRecords = []; // Reset global array
+                if (snap.empty) { tbody.innerHTML = '<tr><td colspan="8" class="text-muted fw-bold py-5">NO RECORDS FOUND</td></tr>'; return; }
+                
+                snap.forEach(doc => currentFetchRecords.push({ id: doc.id, ...doc.data() })); 
+                currentFetchRecords.sort((a, b) => new Date(b.purchaseDate) - new Date(a.purchaseDate)); 
+                tbody.innerHTML = '';
+                
+                currentFetchRecords.forEach(d => { 
+                    tbody.innerHTML += `
+                    <tr>
+                        <td class="fw-bolder text-light">${d.vehicleNo}</td>
+                        <td><span class="fw-bold text-primary">${d.mobileNo}</span> <i class="bi bi-pencil-square text-warning ms-1" style="cursor:pointer;" onclick="editMobile('${d.id}', '${d.mobileNo}')"></i></td>
+                        <td><span class="badge bg-dark border border-secondary">${d.vehicleType === '2 Wheeler' ? '2W' : '4W'}</span><br><small class="text-muted">${d.fuel}</small></td>
+                        <td class="fw-bolder text-info">${d.staffName || '-'}</td>
+                        <td class="fw-bold text-warning">${d.durationMonths || '-'}M</td>
+                        <td class="text-muted small">${d.purchaseDate}</td>
+                        <td class="text-danger fw-bold small">${d.expiryDate || '-'}</td>
+                        <td><button class="btn btn-sm btn-danger rounded-circle shadow" onclick="deleteRecord('${d.id}')"><i class="bi bi-trash"></i></button></td>
+                    </tr>`; 
+                });
             });
         };
 
-        window.editMobile = function(docId, oldMobile) { Swal.fire({ title: 'Update Mobile Number', input: 'number', inputValue: oldMobile, showCancelButton: true, confirmButtonText: 'Update' }).then((r) => { if (r.isConfirmed && r.value && r.value !== oldMobile) { db.collection(RECORDS_COLLECTION).doc(docId).update({ mobileNo: r.value }).then(() => { playFetchAnimation(loadManageData); }); } }); };
-        window.deleteRecord = function(docId) { Swal.fire({ title: 'Delete Record?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#dc3545' }).then((r) => { if (r.isConfirmed) { db.collection(RECORDS_COLLECTION).doc(docId).delete().then(() => { playFetchAnimation(loadManageData); }); } }); };
+        // PDF DOWNLOAD FUNCTION
+        window.downloadPDF = function() {
+            if(currentFetchRecords.length === 0) return Swal.fire({ icon: 'error', text: 'No records to download!', background: '#1e293b', color: '#fff' });
+            
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.setFontSize(18);
+            doc.text("Shree Ganesh PUC Center - Records", 14, 20);
+            doc.setFontSize(10);
+            doc.text(`Report Date: ${getLocalDate()}`, 14, 28);
+            
+            const tableColumn = ["Vehicle No", "Mobile", "Type", "Fuel", "Staff", "Dur.", "Created", "Expiry"];
+            const tableRows = [];
+
+            currentFetchRecords.forEach(d => {
+                const rowData = [
+                    d.vehicleNo, d.mobileNo, d.vehicleType, d.fuel, d.staffName, 
+                    `${d.durationMonths}M`, d.purchaseDate, d.expiryDate
+                ];
+                tableRows.push(rowData);
+            });
+
+            doc.autoTable({
+                head: [tableColumn],
+                body: tableRows,
+                startY: 35,
+                theme: 'grid',
+                styles: { fontSize: 8 },
+                headStyles: { fillColor: [30, 64, 175] }
+            });
+
+            doc.save(`PUC_Report_${getLocalDate()}.pdf`);
+        };
+
+        // SEARCH PORTAL FUNCTION
+        window.searchPortalData = function() {
+            const searchVal = document.getElementById('portalSearchInput').value.trim().toUpperCase();
+            const container = document.getElementById('portalResultContainer');
+            if(!searchVal) return;
+
+            container.innerHTML = `<div class="text-center py-4"><div class="spinner-border text-primary"></div></div>`;
+            
+            // Search by Vehicle No or Mobile No (We do two separate queries and merge client-side for simplicity)
+            Promise.all([
+                db.collection(RECORDS_COLLECTION).where('vehicleNo', '==', searchVal).get(),
+                db.collection(RECORDS_COLLECTION).where('mobileNo', '==', searchVal).get()
+            ]).then(snapshots => {
+                let resultsMap = new Map();
+                
+                snapshots[0].forEach(doc => resultsMap.set(doc.id, doc.data()));
+                snapshots[1].forEach(doc => resultsMap.set(doc.id, doc.data()));
+
+                if (resultsMap.size === 0) {
+                    container.innerHTML = '<p class="text-danger text-center py-4 fw-bold">NO RECORDS FOUND FOR THIS INPUT</p>';
+                    return;
+                }
+
+                let arr = Array.from(resultsMap.values()).sort((a, b) => new Date(b.purchaseDate) - new Date(a.purchaseDate));
+                container.innerHTML = '';
+                
+                arr.forEach(d => {
+                    let statusBadge = new Date(d.expiryDate) < new Date(getLocalDate()) 
+                        ? '<span class="badge bg-danger ms-2">EXPIRED</span>' 
+                        : '<span class="badge bg-success ms-2">ACTIVE</span>';
+
+                    container.innerHTML += `
+                        <div class="card mb-3 border-0" style="background:#0f172a; border-left: 5px solid var(--hard-cyan) !important;">
+                            <div class="card-body">
+                                <h4 class="fw-bolder text-light mb-1">${d.vehicleNo} ${statusBadge}</h4>
+                                <h6 class="text-primary fw-bold mb-3"><i class="bi bi-telephone-fill me-1"></i> ${d.mobileNo}</h6>
+                                <div class="row small fw-bold text-muted g-2">
+                                    <div class="col-6">TYPE: <span class="text-light">${d.vehicleType}</span></div>
+                                    <div class="col-6">FUEL: <span class="text-light">${d.fuel}</span></div>
+                                    <div class="col-6">DURATION: <span class="text-warning">${d.durationMonths} MONTHS</span></div>
+                                    <div class="col-6">STAFF: <span class="text-info">${d.staffName}</span></div>
+                                    <div class="col-6">CREATED: <span class="text-light">${d.purchaseDate}</span></div>
+                                    <div class="col-6 text-danger">EXPIRES: ${d.expiryDate}</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            });
+        };
+
+        window.editMobile = function(docId, oldMobile) { Swal.fire({ title: 'Update Mobile', input: 'number', inputValue: oldMobile, showCancelButton: true, confirmButtonColor: '#0000FF', background: '#1e293b', color: '#fff' }).then((r) => { if (r.isConfirmed && r.value && r.value !== oldMobile) { db.collection(RECORDS_COLLECTION).doc(docId).update({ mobileNo: r.value }).then(() => { playFetchAnimation(loadManageData); }); } }); };
+        window.deleteRecord = function(docId) { Swal.fire({ title: 'Delete?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#FF0000', background: '#1e293b', color: '#fff' }).then((r) => { if (r.isConfirmed) { db.collection(RECORDS_COLLECTION).doc(docId).delete().then(() => { playFetchAnimation(loadManageData); }); } }); };
 
         window.loadReminders = function() {
             const todayStr = getLocalDate(new Date()); const fDate = new Date(); fDate.setDate(fDate.getDate() + 5); const futureStr = getLocalDate(fDate);
@@ -632,20 +766,20 @@
 
             db.collection(RECORDS_COLLECTION).where('expiryDate', '==', todayStr).get().then(snap => {
                 const container = document.getElementById('todayExpiryList'); container.innerHTML = '';
-                if (snap.empty) container.innerHTML = '<p class="text-muted fw-bold p-4 text-center border rounded-4 bg-white">कोई गाड़ी Expire नहीं हो रही आज</p>';
-                else { snap.forEach(doc => { const d = doc.data(); const msg = `🚨 *PUC Expiry Alert*\n\nनमस्ते, आपकी गाड़ी *${d.vehicleNo}* का PUC आज खत्म हो रहा है! चालान से बचने के लिए तुरंत रिन्यू कराएं।\n\n📍 *Shree Ganesh PUC Center*`; container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-3 border-0 rounded-4 p-4 bg-white shadow-sm"><span><strong class="fs-4 text-dark">${d.vehicleNo}</strong><br><small>${d.mobileNo}</small></span><button class="btn btn-success fw-bold rounded-pill px-4 py-2" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-whatsapp me-2"></i> Send</button></div>`; }); }
+                if (snap.empty) container.innerHTML = '<p class="text-muted fw-bold p-4 text-center border border-secondary rounded-4 bg-dark">NO EXPIRY TODAY</p>';
+                else { snap.forEach(doc => { const d = doc.data(); const msg = `🚨 *PUC Expiry Alert*\n\nनमस्ते, आपकी गाड़ी *${d.vehicleNo}* का PUC आज खत्म हो रहा है! चालान से बचने के लिए तुरंत रिन्यू कराएं।\n\n📍 *Shree Ganesh PUC Center*`; container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-3 border border-secondary rounded-4 p-4 bg-dark shadow"><span><strong class="fs-4 text-light">${d.vehicleNo}</strong><br><small class="text-info">${d.mobileNo}</small></span><button class="btn btn-success fw-bold rounded-pill px-4 py-2" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-whatsapp me-2"></i> SEND</button></div>`; }); }
             });
 
             db.collection(RECORDS_COLLECTION).where('expiryDate', '>', todayStr).where('expiryDate', '<=', futureStr).get().then(snap => {
                 const container = document.getElementById('upcomingExpiryList'); container.innerHTML = '';
-                if (snap.empty) container.innerHTML = '<p class="text-muted fw-bold p-4 text-center border rounded-4 bg-white">अगले 5 दिनों में कोई Expiry नहीं</p>';
-                else { snap.forEach(doc => { const d = doc.data(); const msg = `⚠️ *PUC Advance Reminder*\n\nनमस्ते, आपकी गाड़ी *${d.vehicleNo}* का PUC ${d.expiryDate} को खत्म हो रहा है।`; container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-3 border-0 rounded-4 p-4 bg-white shadow-sm"><span><strong class="fs-4 text-dark">${d.vehicleNo}</strong><br><small class="text-danger fw-bold">Exp: ${d.expiryDate}</small></span><button class="btn btn-warning text-dark fw-bold rounded-pill px-4 py-2" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-whatsapp me-2"></i> Send</button></div>`; }); }
+                if (snap.empty) container.innerHTML = '<p class="text-muted fw-bold p-4 text-center border border-secondary rounded-4 bg-dark">NO EXPIRY IN 5 DAYS</p>';
+                else { snap.forEach(doc => { const d = doc.data(); const msg = `⚠️ *PUC Advance Reminder*\n\nनमस्ते, आपकी गाड़ी *${d.vehicleNo}* का PUC ${d.expiryDate} को खत्म हो रहा है।`; container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-3 border border-secondary rounded-4 p-4 bg-dark shadow"><span><strong class="fs-4 text-light">${d.vehicleNo}</strong><br><small class="text-warning fw-bold">Exp: ${d.expiryDate}</small></span><button class="btn btn-warning text-dark fw-bold rounded-pill px-4 py-2" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-whatsapp me-2"></i> SEND</button></div>`; }); }
             });
 
             db.collection(RECORDS_COLLECTION).where('expiryDate', '<=', past15Str).where('expiryDate', '>=', past6MStr).get().then(snap => {
                 const container = document.getElementById('lostExpiryList'); container.innerHTML = '';
-                if (snap.empty) container.innerHTML = '<p class="text-muted fw-bold p-4 text-center border rounded-4 bg-white">No lost customers found recently.</p>';
-                else { snap.forEach(doc => { const d = doc.data(); const msg = `💔 *TyreXpert Special Comeback Offer*\n\nनमस्ते सर, आपकी गाड़ी *${d.vehicleNo}* का PUC काफी समय से एक्सपायर है। आज ही आएं और पाएं स्पेशल डिस्काउंट!`; container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-3 border border-danger rounded-4 p-4 bg-white shadow-sm"><span><strong class="fs-4 text-dark">${d.vehicleNo}</strong><br><small>Exp: ${d.expiryDate}</small></span><button class="btn btn-danger fw-bold rounded-pill px-4 py-2" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-gift-fill me-2"></i> Offer</button></div>`; }); }
+                if (snap.empty) container.innerHTML = '<p class="text-muted fw-bold p-4 text-center border border-secondary rounded-4 bg-dark">NO LOST CUSTOMERS</p>';
+                else { snap.forEach(doc => { const d = doc.data(); const msg = `💔 *TyreXpert Comeback Offer*\n\nनमस्ते सर, आपकी गाड़ी *${d.vehicleNo}* का PUC एक्सपायर है। आज ही आएं और पाएं स्पेशल डिस्काउंट!`; container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-3 border border-danger rounded-4 p-4 bg-dark shadow"><span><strong class="fs-4 text-light">${d.vehicleNo}</strong><br><small class="text-danger fw-bold">Exp: ${d.expiryDate}</small></span><button class="btn btn-danger fw-bold rounded-pill px-4 py-2" style="box-shadow: 0 0 15px red;" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-gift-fill me-2"></i> OFFER</button></div>`; }); }
             });
         };
     </script>
