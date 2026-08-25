@@ -66,7 +66,7 @@
         @keyframes spinLight { 100% { transform: rotate(360deg); } }
 
         .ai-engine-inner {
-            background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); border-radius: 17px; padding: 15px 20px; width: 100%; z-index: 1;
+            background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); border-radius: 16px; padding: 15px 20px; width: 100%; z-index: 1;
             display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;
         }
 
@@ -161,8 +161,8 @@
     <!-- SPLASH SCREEN -->
     <div id="splashScreen">
         <div class="splash-icon">🛡️</div>
-        <h2 class="splash-title text-center">Shree Ganesh PUC Center</h2>
-        <p class="mt-2 text-center" style="font-weight: 800; letter-spacing: 2px;">PREDICTIVE AI v4.5</p>
+        <h2 class="splash-title text-center">Shree Ganesh PUC</h2>
+        <p class="mt-2 text-center" style="font-weight: 800; letter-spacing: 2px;">PREDICTIVE AI v4.6</p>
     </div>
 
     <button id="adminToggleBtn" class="btn admin-link cascade-item" style="animation-delay: 1s;" onclick="toggleAdmin()">
@@ -407,7 +407,7 @@
     </div>
 
     <!-- ==========================================
-         JAVASCRIPT LOGIC (AI + OPTIMIZED)
+         JAVASCRIPT LOGIC (AI OPTIMIZED)
     =========================================== -->
     <script>
         // ========== FIREBASE CONFIG ==========
@@ -463,7 +463,7 @@
             fetchStaffList();
         });
 
-        // ========== NEW: REAL AI ENGINE (WEATHER + SHIFTED RUSH) ==========
+        // ========== NEW: REAL AI ENGINE (TIME AWARENESS + DB HISTORY) ==========
         function initLiveClock() {
             setInterval(() => {
                 const now = new Date();
@@ -520,11 +520,9 @@
 
             // 3. AI PREDICTION: IS IT RAINING DURING PEAK HOUR?
             if(hourlyWeather && hourlyWeather.length > peakHour) {
-                // Approximate today's peak hour index in hourly array
                 const todayPeakIndex = peakHour; 
                 if(hourlyWeather[todayPeakIndex] >= 51 && hourlyWeather[todayPeakIndex] <= 99) {
                     isRainingDuringPeak = true;
-                    // Find when rain stops (Shifted Rush)
                     for(let h = peakHour + 1; h <= 20; h++) {
                         if(hourlyWeather[h] < 51) { shiftedHour = h; break; }
                     }
@@ -539,7 +537,7 @@
                 }
             });
 
-            // 4. LIVE UI UPDATER (EVERY SECOND)
+            // 4. LIVE UI UPDATER (EVERY SECOND) - FIXED TIME AWARENESS
             setInterval(() => {
                 const currentHour = new Date().getHours();
                 const isCurrentlyRaining = (currentWeatherCode >= 51 && currentWeatherCode <= 99);
@@ -558,11 +556,19 @@
                         glowClass = 'glow-blue';
                     }
                 } else {
-                    if (currentHour === peakHour || currentHour === peakHour + 1) {
+                    // NEW: TIME AWARENESS LOGIC
+                    if (currentHour < 8 || currentHour >= 21) { 
+                        // Assuming shop is closed between 9 PM and 8 AM
+                        primaryMsg = `🌙 Shop Closed (दुकान बंद है)। कल का रश: ${formatTime(peakHour)}`;
+                        glowClass = 'glow-blue';
+                    } else if (currentHour < peakHour) {
+                        primaryMsg = `☕ Normal Time (आज का रश ${formatTime(peakHour)} बजे शुरू होगा)`;
+                        glowClass = 'glow-yellow';
+                    } else if (currentHour === peakHour || currentHour === peakHour + 1) {
                         primaryMsg = `🔥 Heavy Rush Expected: ${formatTime(peakHour)} - ${formatTime(peakHour+2)} (तैयार रहें!)`;
                         glowClass = 'glow-red';
                     } else {
-                        primaryMsg = `☕ Normal Business Hours (नेक्स्ट रश ${formatTime(peakHour)} बजे)`;
+                        primaryMsg = `☕ Normal Time (आज का रश खत्म हो चुका है। कल: ${formatTime(peakHour)})`;
                         glowClass = 'glow-yellow';
                     }
                 }
