@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Shree Ganesh Pollution Checking Center | Ultimate AI</title>
+    <title>Shree Ganesh Pollution Checking Center | Real AI Edition</title>
 
     <!-- Google Fonts: Plus Jakarta Sans -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -56,7 +56,7 @@
 
         /* ---------------- ROTATING BLUE LIGHT PANEL (AI ENGINE) ---------------- */
         .ai-engine-wrapper {
-            position: relative; padding: 3px; border-radius: 20px; overflow: hidden; display: flex; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0, 255, 255, 0.2);
+            position: relative; padding: 4px; border-radius: 20px; overflow: hidden; display: flex; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0, 255, 255, 0.2);
         }
         .ai-engine-wrapper::before {
             content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
@@ -66,7 +66,7 @@
         @keyframes spinLight { 100% { transform: rotate(360deg); } }
 
         .ai-engine-inner {
-            background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); border-radius: 17px; padding: 15px 20px; width: 100%; z-index: 1;
+            background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); border-radius: 16px; padding: 15px 20px; width: 100%; z-index: 1;
             display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;
         }
 
@@ -118,8 +118,14 @@
         .custom-zoom-out { animation: zoomOutFast 0.3s forwards !important; }
         @keyframes zoomOutFast { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(0.5); opacity: 0; } }
 
+        /* ---------------- SCAN ANIMATION ---------------- */
+        .scan-scene { font-size: 4rem; display: flex; align-items: center; justify-content: center; position: relative; height: 120px; background: transparent; }
+        .s-paper { position: absolute; color: #cbd5e1; }
+        .s-glass { position: absolute; color: var(--accent-blue); text-shadow: 0 5px 15px rgba(37, 99, 235, 0.3); animation: scanMove 1s infinite alternate ease-in-out; }
+        @keyframes scanMove { 0% { transform: translate(-30px, -20px) scale(1.1); } 100% { transform: translate(30px, 20px) scale(0.9); } }
+
         /* ---------------- OTHERS ---------------- */
-        .admin-link { position: fixed; bottom: 30px; right: 30px; background: var(--primary-blue); color: white; z-index: 1050; box-shadow: 0 10px 25px rgba(30, 58, 138, 0.4); border-radius: 50px; font-weight: 800; padding: 15px 30px; border: 1px solid rgba(255,255,255,0.3); }
+        .admin-link { position: fixed; bottom: 30px; right: 30px; background: var(--primary-blue); color: white; z-index: 1050; box-shadow: 0 10px 25px rgba(30, 58, 138, 0.4); border-radius: 50px; font-weight: 800; padding: 15px 30px; border: 1px solid rgba(255,255,255,0.3); backdrop-filter: blur(10px); }
         .vip-badge { position: absolute; right: 25px; top: -15px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #fff; font-size: 0.85rem; padding: 6px 18px; border-radius: 50px; font-weight: 800; box-shadow: 0 5px 15px rgba(217, 119, 6, 0.4); display: none; z-index: 10; animation: floatLiquid 3s infinite alternate; }
 
         /* ---------------- MODAL & ADMIN ---------------- */
@@ -129,7 +135,7 @@
         .select-btn.active-duration { border-color: #059669; background: #059669; color: #fff; transform: scale(1.05); }
 
         .admin-header { background: rgba(30, 58, 138, 0.95); color: white; padding: 30px; border-radius: 32px 32px 0 0; }
-        .nav-tabs { border-bottom: 1px solid rgba(255,255,255,0.6); padding: 0 25px; background: rgba(255,255,255,0.6); display: flex; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+        .nav-tabs { border-bottom: 1px solid rgba(255,255,255,0.4); padding: 0 25px; background: rgba(255,255,255,0.6); display: flex; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; backdrop-filter: blur(10px); }
         .nav-tabs::-webkit-scrollbar { display: none; }
         .nav-tabs .nav-link { font-weight: 800; color: #64748b; padding: 18px 20px; border: none; white-space: nowrap; border-radius: 0; }
         .nav-tabs .nav-link.active { color: var(--accent-blue); border-bottom: 4px solid var(--accent-blue); background: transparent; }
@@ -137,13 +143,13 @@
         
         .stats-card { background: rgba(255,255,255,0.85); border-radius: 24px; padding: 25px 15px; text-align: center; box-shadow: 0 8px 20px rgba(0,0,0,0.03); border: 1px solid #fff; }
         .table-modern { background: rgba(255,255,255,0.9); border-radius: 20px; overflow: hidden; font-size: 0.9rem; }
-        .table-modern th { background: rgba(241,245,249,0.9); color: #475569; padding: 15px 10px; font-weight: 800; }
+        .table-modern th { background: rgba(241,245,249,0.9); color: #475569; padding: 15px 10px; font-weight: 800; border-bottom: none; }
         .table-modern td { padding: 15px 10px; border-bottom: 1px solid rgba(241,245,249,0.5); font-weight: 700; color: #1e293b; }
     </style>
 </head>
 <body>
 
-    <!-- LIQUID BACKGROUND -->
+    <!-- HIGH PERFORMANCE LIQUID BACKGROUND -->
     <div class="liquid-bg">
         <div class="blob blob-1"></div>
         <div class="blob blob-2"></div>
@@ -152,8 +158,8 @@
     <!-- SPLASH SCREEN -->
     <div id="splashScreen">
         <div class="splash-icon">🛡️</div>
-        <h2 class="splash-title text-center">Shree Ganesh PUC Center</h2>
-        <p class="mt-2 text-center" style="font-weight: 800; letter-spacing: 2px;">ULTIMATE AI EDITION v4.4</p>
+        <h2 class="splash-title text-center">Shree Ganesh PUC</h2>
+        <p class="mt-2 text-center" style="font-weight: 800; letter-spacing: 2px;">REAL AI EDITION v4.4</p>
     </div>
 
     <button id="adminToggleBtn" class="btn admin-link" onclick="toggleAdmin()">
@@ -171,7 +177,7 @@
                 <div class="d-flex flex-column">
                     <div id="lastEntryTimer" class="last-entry-badge"><i class="bi bi-stopwatch"></i> Last Entry: Syncing...</div>
                     <div id="aiStatus" class="ai-status-text glow-yellow">
-                        <div class="spinner-border spinner-border-sm me-2" role="status"></div> Weather & AI Syncing...
+                        <div class="spinner-border spinner-border-sm me-2" role="status"></div> Real-time AI Syncing...
                     </div>
                 </div>
                 <div id="liveClock" class="live-clock">00:00:00</div>
@@ -230,9 +236,9 @@
                     </div>
 
                     <div class="col-12 mt-3 text-center">
-                        <div class="bg-white border rounded-pill py-2 px-4 d-inline-flex align-items-center shadow-sm" style="background: rgba(255,255,255,0.7) !important;">
+                        <div class="bg-white border rounded-pill py-2 px-4 d-inline-flex align-items-center shadow-sm" style="background: rgba(255,255,255,0.7) !important; backdrop-filter: blur(10px);">
                             <input class="form-check-input ms-0 me-3 border-secondary" type="checkbox" id="reminderToggle" onchange="toggleBackgroundWorker()">
-                            <label class="form-check-label fw-bold mb-0 text-primary" for="reminderToggle">
+                            <label class="form-check-label fw-bold mb-0 text-primary" for="reminderToggle" style="font-size: 0.95rem; cursor: pointer;">
                                 <i class="bi bi-bell-fill me-1 text-warning"></i> 30-Sec Background Alert
                             </label>
                         </div>
@@ -271,7 +277,7 @@
     </div>
 
     <!-- ==========================================
-         ADMIN SECTION (100% FIXED)
+         ADMIN SECTION (100% RESTORED)
     =========================================== -->
     <div id="adminSection" class="container container-custom d-none">
         
@@ -295,17 +301,15 @@
                 </div>
             </div>
 
-            <!-- ALL TABS RESTORED -->
             <ul class="nav nav-tabs" id="adminTabs" role="tablist">
                 <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabDashboard">Overview</button></li>
                 <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabStaff">Staff Mgmt</button></li>
-                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabManage" onclick="playFetchAnimation(loadManageData)">Records</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabManage" onclick="playFetchAnimation(loadManageData)">Records & Analytics</button></li>
                 <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabSearch">Search Portal</button></li>
                 <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabReminder" onclick="playFetchAnimation(loadReminders)">Reminders</button></li>
             </ul>
 
             <div class="tab-content tab-content-admin">
-                <!-- 1. OVERVIEW -->
                 <div class="tab-pane show active" id="tabDashboard">
                     <div class="row g-3 mb-4">
                         <div class="col-md-5">
@@ -323,7 +327,6 @@
                     </div>
                 </div>
 
-                <!-- 2. STAFF -->
                 <div class="tab-pane" id="tabStaff">
                     <div class="row g-4">
                         <div class="col-md-6">
@@ -348,12 +351,11 @@
                     </div>
                 </div>
 
-                <!-- 3. RECORDS WITH ADVANCED ANALYTICS -->
                 <div class="tab-pane" id="tabManage">
                     <div class="row g-3 align-items-end mb-4 stats-card text-start bg-white">
                         <div class="col-md-4"><label class="small text-muted fw-bold ms-1">From Date</label><input type="date" id="manageFrom" class="form-control" /></div>
                         <div class="col-md-4"><label class="small text-muted fw-bold ms-1">To Date</label><input type="date" id="manageTo" class="form-control" /></div>
-                        <div class="col-md-2"><button class="btn btn-dark w-100 py-3 rounded-pill fw-bold shadow-sm" onclick="playFetchAnimation(loadManageData)">Fetch</button></div>
+                        <div class="col-md-2"><button class="btn btn-dark w-100 py-3 rounded-pill fw-bold shadow-sm" onclick="fetchRecordsData()">Fetch</button></div>
                         <div class="col-md-2"><button class="btn btn-danger w-100 py-3 fw-bold rounded-pill shadow-sm" onclick="downloadPDF()"><i class="bi bi-file-pdf-fill"></i> PDF</button></div>
                     </div>
                     
@@ -367,7 +369,6 @@
                     </div>
                 </div>
 
-                <!-- 4. SEARCH PORTAL RESTORED -->
                 <div class="tab-pane" id="tabSearch">
                     <div class="stats-card text-start bg-white">
                         <h5 class="fw-bolder text-dark mb-4"><i class="bi bi-search me-2 text-primary"></i> Customer Search Portal</h5>
@@ -381,7 +382,6 @@
                     </div>
                 </div>
 
-                <!-- 5. REMINDERS RESTORED -->
                 <div class="tab-pane" id="tabReminder">
                     <ul class="nav nav-pills mb-4 p-2 rounded-pill shadow-sm d-inline-flex flex-wrap border bg-white" id="remSubTabs" role="tablist">
                         <li class="nav-item"><button class="nav-link active rounded-pill px-4 fw-bold" data-bs-toggle="pill" data-bs-target="#remToday">⚠️ Today Expire</button></li>
@@ -392,17 +392,18 @@
                         <div class="tab-pane show active" id="remToday"><div id="todayExpiryList" class="list-group shadow-sm border-0"></div></div>
                         <div class="tab-pane" id="remUpcoming"><div id="upcomingExpiryList" class="list-group shadow-sm border-0"></div></div>
                         <div class="tab-pane" id="remLost">
-                            <div class="alert alert-danger py-2 mb-3 fw-bold text-center border-0 rounded-4 shadow-sm small">ये वो गाड़ियां हैं जिनका PUC 15 दिन से ज्यादा समय से एक्सपायर है। Special Offer भेजें!</div>
+                            <div class="alert alert-danger py-2 mb-3 fw-bold text-center border-0 rounded-4 shadow-sm small">ये वो गाड़ियां हैं जिनका PUC 15 दिन से ज्यादा समय से एक्सपायर है। इन्हें Special Offer भेजें!</div>
                             <div id="lostExpiryList" class="list-group shadow-sm border-0"></div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
 
     <!-- ==========================================
-         JAVASCRIPT LOGIC (PERFORMANCE OPTIMIZED + AI)
+         JAVASCRIPT LOGIC (AI OPTIMIZED)
     =========================================== -->
     <script>
         // ========== FIREBASE CONFIG ==========
@@ -454,17 +455,16 @@
 
             toggleFuel();
             initLiveClock();
-            initAIStatus(); 
+            initRealAIStatus(); // Starts Real AI DB Analysis
             fetchStaffList();
         });
 
-        // ========== NEW: LIVE CLOCK & AI ENGINE (WEATHER + RUSH) ==========
+        // ========== NEW: REAL AI ENGINE (WEATHER + DB HISTORY) ==========
         function initLiveClock() {
             setInterval(() => {
                 const now = new Date();
                 document.getElementById('liveClock').innerText = now.toLocaleTimeString('en-US', { hour12: true });
                 
-                // Update Last Entry Timer
                 if(lastEntryDateObj) {
                     const diffMins = Math.floor((now - lastEntryDateObj) / 60000);
                     const timerElem = document.getElementById('lastEntryTimer');
@@ -475,22 +475,47 @@
             }, 1000);
         }
 
-        async function initAIStatus() {
+        async function initRealAIStatus() {
             const aiStatusElem = document.getElementById('aiStatus');
             let isRaining = false;
+            let peakHour = 11; // Default fallback
             
-            // 1. Fetch Live Weather for Bahadurgarh (Lat: 28.68, Lon: 76.92)
+            // 1. LIVE WEATHER API (Bahadurgarh)
             try {
                 const weatherRes = await fetch('https://api.open-meteo.com/v1/forecast?latitude=28.68&longitude=76.92&current_weather=true');
                 const weatherData = await weatherRes.json();
                 const code = weatherData.current_weather.weathercode;
-                isRaining = (code >= 51 && code <= 99); // Rain or drizzle codes
-            } catch (error) { console.log("Weather API error"); }
+                isRaining = (code >= 51 && code <= 99); 
+            } catch (error) { console.log("Weather API skipped"); }
             
-            // 2. Predict Peak Hour (Smart logic for Sundays vs Weekdays)
-            const peakHour = getSmartPeakHourForToday();
+            // 2. REAL DB ANALYSIS FOR PAST WEEKLY TRENDS
+            try {
+                // Fetch recent 300 records to learn the trend without crashing DB
+                const snap = await db.collection(RECORDS_COLLECTION).orderBy('createdAt', 'desc').limit(300).get();
+                if(!snap.empty) {
+                    const currentDayOfWeek = new Date().getDay(); // 0=Sun, 1=Mon, etc.
+                    let hourCounts = {};
+                    
+                    snap.forEach(doc => {
+                        const data = doc.data();
+                        if(data.createdAt) {
+                            const dateObj = data.createdAt.toDate();
+                            // ONLY LOOK AT SAME DAY OF WEEK (e.g. Past Tuesdays)
+                            if(dateObj.getDay() === currentDayOfWeek) {
+                                const h = dateObj.getHours();
+                                hourCounts[h] = (hourCounts[h] || 0) + 1;
+                            }
+                        }
+                    });
+                    
+                    let maxCount = 0;
+                    for(let h in hourCounts) {
+                        if(hourCounts[h] > maxCount) { maxCount = hourCounts[h]; peakHour = parseInt(h); }
+                    }
+                }
+            } catch(e) { console.log("AI Analysis Fallback used"); peakHour = (new Date().getDay() === 0) ? 13 : 11; }
 
-            // 3. Listen to DB for Last Entry
+            // 3. LISTEN TO LAST ENTRY CONTINUOUSLY
             db.collection(RECORDS_COLLECTION).orderBy('createdAt', 'desc').limit(1).onSnapshot(snap => {
                 if(!snap.empty) {
                     const data = snap.docs[0].data();
@@ -498,7 +523,7 @@
                 }
             });
 
-            // 4. Update Status Live based on Time & Weather
+            // 4. LIVE UI UPDATER
             setInterval(() => {
                 const currentHour = new Date().getHours();
                 
@@ -515,11 +540,6 @@
             }, 1000);
         }
 
-        function getSmartPeakHourForToday() {
-            const day = new Date().getDay(); // 0 = Sunday
-            return (day === 0) ? 13 : 11; // Sundays rush at 1 PM, Mon-Sat rush at 11 AM
-        }
-
         // ========== 2. SVG DRAWING ANIMATION & SAVING LOGIC ==========
         window.finalizeSubmitAndSave = function() {
             if(!selectedStaff) return Swal.fire({ icon: 'warning', text: 'कृपया स्टाफ का नाम चुनें!' });
@@ -528,11 +548,7 @@
             bsEntryModal.hide();
 
             setTimeout(() => {
-                Swal.fire({
-                    title: 'Saving Data...',
-                    html: '<div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>',
-                    showConfirmButton: false, allowOutsideClick: false
-                });
+                Swal.fire({ title: 'Saving Data...', html: '<div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>', showConfirmButton: false, allowOutsideClick: false });
 
                 const today = new Date(); const expiryDate = new Date(today);
                 expiryDate.setMonth(expiryDate.getMonth() + selectedDuration); expiryDate.setDate(expiryDate.getDate() - 1); 
@@ -557,7 +573,7 @@
                         });
                         document.getElementById('vehicleNo').value = ''; document.getElementById('mobileNo').value = ''; document.getElementById('vipBadge').style.display = 'none'; document.getElementById('historyAlert').style.display = 'none';
                         resetModalSelections(); pendingFormData = {};
-                        lastEntryDateObj = new Date(); // Instant update
+                        lastEntryDateObj = new Date(); // Instant UI update
                     }, 100);
                 }).catch(err => { Swal.fire('Error', err.message, 'error'); });
             }, 300); 
@@ -567,7 +583,7 @@
             Swal.fire({
                 title: '<span style="color:var(--accent-blue); font-weight:800;">Scanning Records...</span>',
                 html: `<div class="scan-scene mt-3"><div class="s-paper">📄</div><div class="s-glass">🔍</div></div>`,
-                showConfirmButton: false, timer: 800, background: 'rgba(255,255,255,0.9)', backdrop: 'rgba(0,0,0,0.4)'
+                showConfirmButton: false, timer: 1000, background: 'rgba(255,255,255,0.9)', backdrop: 'rgba(0,0,0,0.4)'
             }).then(() => { if(callbackFunction) callbackFunction(); });
         };
 
@@ -728,7 +744,7 @@
             db.collection(RECORDS_COLLECTION).where('purchaseDate', '>=', fromDate).where('purchaseDate', '<=', toDate).get().then(snap => {
                 currentFetchRecords = []; 
                 if (snap.empty) { 
-                    tbody.innerHTML = '<tr><td colspan="8" class="text-muted fw-bold py-5">No Records Found</td></tr>'; 
+                    tbody.innerHTML = '<tr><td colspan="7" class="text-muted fw-bold py-5">No Records Found</td></tr>'; 
                     if(analyticsContainer) analyticsContainer.innerHTML = '';
                     return; 
                 }
@@ -756,7 +772,7 @@
 
                 tbody.innerHTML = '';
                 currentFetchRecords.forEach(d => { 
-                    tbody.innerHTML += `<tr><td class="fw-bolder text-dark">${d.vehicleNo}</td><td><span class="fw-bold">${d.mobileNo}</span> <i class="bi bi-pencil-square text-primary ms-1" style="cursor:pointer;" onclick="editMobile('${d.id}', '${d.mobileNo}')"></i></td><td><span class="badge bg-secondary">${d.vehicleType === '2 Wheeler' ? '2W' : '4W'}</span><br><small class="text-muted">${d.fuel}</small></td><td class="fw-bold text-muted">${d.staffName || '-'}</td><td class="fw-bold text-primary">${d.durationMonths || '-'}M</td><td class="text-muted small">${d.purchaseDate}</td><td class="text-danger fw-bold small">${d.expiryDate || '-'}</td><td><button class="btn btn-sm btn-outline-danger rounded-circle shadow-sm" onclick="deleteRecord('${d.id}')"><i class="bi bi-trash"></i></button></td></tr>`; 
+                    tbody.innerHTML += `<tr><td class="fw-bolder text-dark">${d.vehicleNo}</td><td><span class="fw-bold">${d.mobileNo}</span> <i class="bi bi-pencil-square text-primary ms-1" style="cursor:pointer;" onclick="editMobile('${d.id}', '${d.mobileNo}')"></i></td><td><span class="badge bg-secondary">${d.vehicleType === '2 Wheeler' ? '2W' : '4W'}</span><br><small class="text-muted">${d.fuel}</small></td><td class="fw-bold text-muted">${d.staffName || '-'}</td><td class="fw-bold text-primary">${d.durationMonths || '-'}M</td><td class="text-muted small">${d.purchaseDate}</td><td><button class="btn btn-sm btn-outline-danger rounded-circle shadow-sm" onclick="deleteRecord('${d.id}')"><i class="bi bi-trash"></i></button></td></tr>`; 
                 });
             });
         };
@@ -765,13 +781,12 @@
             if(currentFetchRecords.length === 0) return Swal.fire({ icon: 'error', text: 'No records to download!' });
             const { jsPDF } = window.jspdf; const doc = new jsPDF();
             doc.setFontSize(16); doc.text("Shree Ganesh PUC Center - Business Report", 14, 20); doc.setFontSize(10); doc.text(`Report Generated On: ${getLocalDate()}`, 14, 28);
-            const tableColumn = ["Vehicle No", "Mobile", "Type", "Fuel", "Staff", "Dur.", "Created", "Expiry"]; const tableRows = [];
-            currentFetchRecords.forEach(d => { tableRows.push([d.vehicleNo, d.mobileNo, d.vehicleType, d.fuel, d.staffName, `${d.durationMonths}M`, d.purchaseDate, d.expiryDate]); });
-            doc.autoTable({ head: [tableColumn], body: tableRows, startY: 35, theme: 'grid', styles: { fontSize: 8 }, headStyles: { fillColor: [13, 110, 253] } });
+            const tableColumn = ["Vehicle No", "Mobile", "Type", "Fuel", "Staff", "Dur.", "Created"]; const tableRows = [];
+            currentFetchRecords.forEach(d => { tableRows.push([d.vehicleNo, d.mobileNo, d.vehicleType, d.fuel, d.staffName, `${d.durationMonths}M`, d.purchaseDate]); });
+            doc.autoTable({ head: [tableColumn], body: tableRows, startY: 35, theme: 'grid', styles: { fontSize: 8 }, headStyles: { fillColor: [30, 58, 138] } });
             doc.save(`PUC_Report_${getLocalDate()}.pdf`);
         };
 
-        // RESTORED: SEARCH PORTAL
         window.searchPortalData = function() {
             const searchVal = document.getElementById('portalSearchInput').value.trim().toUpperCase(); const container = document.getElementById('portalResultContainer');
             if(!searchVal) return;
@@ -797,7 +812,6 @@
         window.editMobile = function(docId, oldMobile) { Swal.fire({ title: 'Update Mobile', input: 'number', inputValue: oldMobile, showCancelButton: true, confirmButtonColor: '#0d6efd' }).then((r) => { if (r.isConfirmed && r.value && r.value !== oldMobile) { db.collection(RECORDS_COLLECTION).doc(docId).update({ mobileNo: r.value }).then(() => { playFetchAnimation(loadManageData); }); } }); };
         window.deleteRecord = function(docId) { Swal.fire({ title: 'Delete?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#dc3545' }).then((r) => { if (r.isConfirmed) { db.collection(RECORDS_COLLECTION).doc(docId).delete().then(() => { playFetchAnimation(loadManageData); }); } }); };
 
-        // RESTORED: REMINDERS
         window.loadReminders = function() {
             const todayStr = getLocalDate(new Date()); const fDate = new Date(); fDate.setDate(fDate.getDate() + 5); const futureStr = getLocalDate(fDate);
             const past15Date = new Date(); past15Date.setDate(past15Date.getDate() - 15); const past15Str = getLocalDate(past15Date);
