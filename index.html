@@ -55,21 +55,12 @@
         .blob-2 { bottom: -20%; right: -10%; width: 60vw; height: 60vw; background: #60a5fa; animation-delay: -5s; }
         .blob-3 { top: 30%; left: 40%; width: 40vw; height: 40vw; background: #93c5fd; animation-duration: 25s; }
 
-        @keyframes floatLiquid {
-            0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(100px, 50px) scale(1.1); }
-            100% { transform: translate(-50px, 100px) scale(0.9); }
-        }
+        @keyframes floatLiquid { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(100px, 50px) scale(1.1); } 100% { transform: translate(-50px, 100px) scale(0.9); } }
 
         .container-custom { max-width: 850px; margin: auto; position: relative; z-index: 1; }
         
         /* ---------------- SPLASH SCREEN ---------------- */
-        #splashScreen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, var(--primary-blue) 0%, #3b82f6 100%);
-            z-index: 999999; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            color: white; transition: opacity 0.4s ease, visibility 0.4s ease;
-        }
+        #splashScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, var(--primary-blue) 0%, #3b82f6 100%); z-index: 999999; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; transition: opacity 0.4s ease, visibility 0.4s ease; }
         .splash-icon { font-size: 5rem; animation: bounceIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
         .splash-title { font-weight: 800; font-size: 2.2rem; margin-top: 15px; opacity: 0; animation: fadeUp 0.8s ease forwards 0.3s; }
         .splash-subtitle { font-weight: 600; color: #bae6fd; opacity: 0; animation: fadeUp 0.8s ease forwards 0.6s; }
@@ -77,23 +68,34 @@
         @keyframes bounceIn { 0% { transform: scale(0); opacity: 0; } 50% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
         @keyframes fadeUp { 0% { transform: translateY(30px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
 
-        /* ---------------- ALL BUTTONS 3D ANIMATIONS ---------------- */
+        /* ---------------- ALL BUTTONS & UI ANIMATIONS ---------------- */
         button, .btn, .select-btn, .nav-link, .form-check-input { transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important; cursor: pointer; }
         button:hover, .btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3); }
         button:active, .btn:active, .select-btn:active { transform: translateY(2px) scale(0.95) !important; box-shadow: 0 2px 5px rgba(0,0,0,0.2) !important; }
 
-        /* ---------------- UI CARDS (LIQUID GLASSMORPHISM) ---------------- */
-        .card-main { background: var(--glass-bg); backdrop-filter: blur(35px); -webkit-backdrop-filter: blur(35px); border: 1px solid var(--glass-border); border-radius: 32px; box-shadow: var(--glass-shadow), inset 0 0 0 1px rgba(255, 255, 255, 0.5); overflow: hidden; }
+        .card-main { background: var(--glass-bg); backdrop-filter: blur(35px); -webkit-backdrop-filter: blur(35px); border: 1px solid var(--glass-border); border-radius: 32px; box-shadow: var(--glass-shadow), inset 0 0 0 1px rgba(255, 255, 255, 0.5); overflow: hidden; animation: floatCard 6s ease-in-out infinite alternate; }
+        @keyframes floatCard { 0% { transform: translateY(0); } 100% { transform: translateY(-8px); } }
+
         .gradient-header { background: rgba(30, 58, 138, 0.85); backdrop-filter: blur(10px); color: white; padding: 35px 25px; text-align: center; position: relative; border-bottom: 1px solid rgba(255,255,255,0.2); }
         .gradient-header h2 { font-weight: 800; margin: 0; text-shadow: 0 4px 10px rgba(0,0,0,0.3); }
         .brand-badge { background: rgba(255,255,255,0.2); backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.4); padding: 6px 18px; border-radius: 50px; font-size: 0.85rem; font-weight: 700; display: inline-block; margin-top: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+
+        /* --- CLOCK & TIMERS --- */
+        .live-clock { font-family: monospace; font-size: 1.3rem; font-weight: 900; color: #00ffff; text-shadow: 0 0 15px rgba(0,255,255,0.8); background: rgba(0,0,0,0.3); padding: 5px 15px; border-radius: 50px; border: 1px solid rgba(0,255,255,0.3); display: inline-block; animation: pulseClock 2s infinite alternate; }
+        @keyframes pulseClock { from { box-shadow: 0 0 5px rgba(0,255,255,0.2); } to { box-shadow: 0 0 20px rgba(0,255,255,0.6); } }
+
+        .info-badges { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; }
+        .timer-badge { background: rgba(30, 58, 138, 0.1); border: 2px solid rgba(37, 99, 235, 0.3); color: var(--primary-blue); font-weight: 800; border-radius: 20px; padding: 8px 15px; font-size: 0.85rem; backdrop-filter: blur(5px); transition: 0.4s; }
+        
+        /* RUSH HOUR RED GLOW */
+        .rush-active { background: rgba(220, 53, 69, 0.15) !important; border-color: #ff0000 !important; color: #ff0000 !important; animation: redGlow 1s infinite alternate !important; }
+        @keyframes redGlow { from { box-shadow: 0 0 10px rgba(255,0,0,0.3), inset 0 0 5px rgba(255,0,0,0.2); text-shadow: 0 0 5px rgba(255,0,0,0.5); } to { box-shadow: 0 0 30px rgba(255,0,0,0.8), inset 0 0 15px rgba(255,0,0,0.5); text-shadow: 0 0 15px rgba(255,0,0,1); transform: scale(1.05); } }
 
         /* ---------------- INPUTS ---------------- */
         .form-floating > label { color: #475569; font-weight: 700; padding-left: 20px; }
         .form-control, .form-select { border-radius: 18px; border: 1px solid rgba(255,255,255,0.8); background: rgba(255,255,255,0.6); font-weight: 800; color: var(--primary-blue); padding-left: 20px; box-shadow: inset 0 4px 10px rgba(0,0,0,0.03); backdrop-filter: blur(10px); }
         .form-control:focus, .form-select:focus { background: rgba(255,255,255,0.9); box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2), inset 0 2px 5px rgba(0,0,0,0.01); border-color: var(--accent-blue); transform: translateY(-2px); color: var(--primary-blue); }
 
-        /* ---------------- HISTORY ALERT BOX ---------------- */
         #historyAlert { display: none; background: rgba(255, 251, 235, 0.8); backdrop-filter: blur(15px); border: 1px solid #fcd34d; border-radius: 20px; padding: 18px; margin-top: 10px; box-shadow: 0 8px 15px rgba(245, 158, 11, 0.15); animation: fadeUp 0.4s ease; }
 
         /* ---------------- BUTTONS ---------------- */
@@ -102,19 +104,15 @@
         .btn-check:checked + label[for="twoW"] { background: var(--accent-blue); color: #FFF; border-color: var(--accent-blue); box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4); transform: scale(1.05) translateY(-2px); }
         .btn-check:checked + label[for="fourW"] { background: #e11d48; color: #FFF; border-color: #e11d48; box-shadow: 0 8px 20px rgba(225, 29, 72, 0.4); transform: scale(1.05) translateY(-2px); }
 
-        /* ---------------- REAL SVG DRAWING PAYMENT TICK ANIMATION ---------------- */
+        /* ---------------- SVG PAYMENT SUCCESS ---------------- */
         .custom-payment-popup { background: #064e3b !important; border-radius: 28px !important; box-shadow: 0 20px 50px rgba(6, 78, 59, 0.5) !important; animation: popScaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .swal2-timer-progress-bar { background: rgba(255,255,255,0.5) !important; }
-        
         .gpay-svg { width: 130px; height: 130px; display: block; margin: 20px auto; }
         .gpay-circle { fill: #10b981; transform-origin: 50% 50%; animation: circle-pop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
         .gpay-tick { fill: none; stroke: #ffffff; stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 100; stroke-dashoffset: 100; animation: draw-tick 0.5s ease-out 0.4s forwards; }
-        
         @keyframes circle-pop { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
         @keyframes draw-tick { 0% { stroke-dashoffset: 100; } 100% { stroke-dashoffset: 0; } }
         @keyframes popScaleIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-        
-        /* Disappear (Zoom Out) Animation */
         .custom-zoom-out { animation: zoomOutFast 0.4s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards !important; }
         @keyframes zoomOutFast { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(0.4); opacity: 0; } }
 
@@ -124,11 +122,14 @@
         .s-glass { position: absolute; color: var(--accent-blue); text-shadow: 0 5px 15px rgba(37, 99, 235, 0.3); animation: scanMove 1s infinite alternate ease-in-out; }
         @keyframes scanMove { 0% { transform: translate(-30px, -20px) scale(1.1); } 100% { transform: translate(30px, 20px) scale(0.9); } }
 
-        /* ---------------- OTHER UI ELEMENTS ---------------- */
+        /* ---------------- CASCADE ANIMATION (LISTS/TABLES) ---------------- */
+        .cascade-item { opacity: 0; animation: fadeUp 0.4s ease forwards; }
+
+        /* ---------------- OTHERS ---------------- */
         .admin-link { position: fixed; bottom: 30px; right: 30px; background: var(--primary-blue); color: white; z-index: 1050; box-shadow: 0 10px 25px rgba(30, 58, 138, 0.4); border-radius: 50px; font-weight: 800; padding: 15px 30px; border: 1px solid rgba(255,255,255,0.3); backdrop-filter: blur(10px); }
         .vip-badge { position: absolute; right: 25px; top: -15px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #fff; font-size: 0.85rem; padding: 6px 18px; border-radius: 50px; font-weight: 800; box-shadow: 0 5px 15px rgba(217, 119, 6, 0.4); display: none; z-index: 10; animation: floatLiquid 3s infinite alternate; }
 
-        /* ---------------- MODAL (GLASS) ---------------- */
+        /* ---------------- MODAL ---------------- */
         .modal-content { border-radius: 32px; border: 1px solid rgba(255,255,255,0.6); box-shadow: 0 30px 60px rgba(0,0,0,0.2); background: rgba(255,255,255,0.85); backdrop-filter: blur(25px); }
         .select-btn { border: 2px solid rgba(255,255,255,0.8); background: rgba(255,255,255,0.6); color: #475569; border-radius: 20px; padding: 18px; font-weight: 800; font-size: 1.1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.03); backdrop-filter: blur(10px); }
         .select-btn:hover { background: #fff; border-color: #cbd5e1; }
@@ -162,11 +163,11 @@
     <div id="splashScreen">
         <div class="splash-icon">🛡️</div>
         <h2 class="splash-title text-center">Shree Ganesh PUC Center</h2>
-        <p class="splash-subtitle text-center mt-2">Smart Tracker v4.1<br>Powered by TyreXpert</p>
+        <p class="splash-subtitle text-center mt-2">Smart Tracker v4.2<br>Powered by TyreXpert</p>
     </div>
 
     <!-- Admin Floating Button -->
-    <button id="adminToggleBtn" class="btn admin-link" onclick="toggleAdmin()">
+    <button id="adminToggleBtn" class="btn admin-link cascade-item" style="animation-delay: 1s;" onclick="toggleAdmin()">
         <i class="bi bi-shield-lock-fill me-2"></i> Admin Panel
     </button>
 
@@ -174,34 +175,43 @@
          MAIN ENTRY SECTION
     =========================================== -->
     <div id="mainSection" class="container container-custom d-none">
-        <div class="card-main mt-3">
-            <div class="gradient-header">
-                <h2>Shree Ganesh PUC Center</h2>
-                <p class="m-0 text-light opacity-75 mt-1 fw-bold" id="todayDate"></p>
-                <div class="brand-badge"><i class="bi bi-award-fill text-warning me-1"></i> Smart Tracker by Ayush Anand</div>
+        <div class="card-main mt-3 cascade-item">
+            <div class="gradient-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div class="text-start">
+                    <h2>Shree Ganesh PUC</h2>
+                    <p class="m-0 text-light opacity-75 mt-1 fw-bold" id="todayDate"></p>
+                </div>
+                <!-- LIVE CLOCK -->
+                <div id="liveClock" class="live-clock">00:00:00</div>
             </div>
             
             <div class="p-4 p-md-5 position-relative">
                 <span id="vipBadge" class="vip-badge"><i class="bi bi-star-fill me-1"></i> VIP Customer</span>
 
+                <!-- NEW: LAST ENTRY & RUSH INDICATOR -->
+                <div class="info-badges">
+                    <div id="lastEntryTimer" class="timer-badge">⏱️ Last Entry: Fetching...</div>
+                    <div id="rushIndicator" class="timer-badge">🔥 Peak Rush: Fetching...</div>
+                </div>
+
                 <!-- PREVIOUS HISTORY ALERT BOX -->
                 <div id="historyAlert"></div>
 
-                <div class="row g-4 mt-2">
-                    <div class="col-md-6">
+                <div class="row g-4 mt-1">
+                    <div class="col-md-6 cascade-item" style="animation-delay: 0.1s;">
                         <div class="form-floating">
                             <input type="text" id="vehicleNo" class="form-control text-uppercase text-primary fw-bolder fs-5" placeholder="HR12AB1234" onkeyup="autoFillAndHistory()" autocomplete="off"/>
                             <label for="vehicleNo">Vehicle Number <span class="text-danger">*</span></label>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 cascade-item" style="animation-delay: 0.2s;">
                         <div class="form-floating">
                             <input type="number" id="mobileNo" class="form-control fw-bolder fs-5" placeholder="9876543210" autocomplete="off"/>
                             <label for="mobileNo">Mobile Number <span class="text-danger">*</span></label>
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-6 cascade-item" style="animation-delay: 0.3s;">
                         <label class="form-label text-muted small fw-bold ms-2 mb-2">Vehicle Type</label>
                         <div class="btn-group w-100" role="group">
                             <input type="radio" class="btn-check" name="vehicleType" id="twoW" value="2 Wheeler" checked onclick="toggleFuel()" />
@@ -212,21 +222,21 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-6 cascade-item" style="animation-delay: 0.4s;">
                         <label class="form-label text-muted small fw-bold ms-2 mb-2">Fuel Type</label>
                         <select id="fuelType" class="form-select" style="height: calc(4.2rem + 2px); font-size: 1.1rem;">
                             <option value="Petrol">Petrol</option>
                         </select>
                     </div>
 
-                    <div class="col-12 mt-5">
+                    <div class="col-12 mt-5 cascade-item" style="animation-delay: 0.5s;">
                         <button class="btn btn-gradient w-100 py-3" onclick="initiateSubmit()">
                             <i class="bi bi-send-check-fill me-2 fs-5"></i> Save Entry Securely
                         </button>
                     </div>
 
                     <!-- PC Notification Reminder Toggle -->
-                    <div class="col-12 mt-4 text-center">
+                    <div class="col-12 mt-4 text-center cascade-item" style="animation-delay: 0.6s;">
                         <div class="bg-white border rounded-pill py-2 px-4 d-inline-flex align-items-center shadow-sm" style="background: rgba(255,255,255,0.7) !important; backdrop-filter: blur(10px);">
                             <input class="form-check-input ms-0 me-3 border-secondary" type="checkbox" id="reminderToggle" onchange="toggleBackgroundWorker()">
                             <label class="form-check-label fw-bold mb-0 text-primary" for="reminderToggle" style="font-size: 0.95rem; cursor: pointer;">
@@ -270,7 +280,7 @@
     <!-- ==========================================
          ADMIN SECTION
     =========================================== -->
-    <div id="adminSection" class="container container-custom d-none">
+    <div id="adminSection" class="container container-custom d-none cascade-item">
         
         <!-- LOGIN -->
         <div id="loginScreen" class="card-main p-5 mt-5 text-center" style="max-width: 450px; margin: auto;">
@@ -297,7 +307,7 @@
             <ul class="nav nav-tabs" id="adminTabs" role="tablist">
                 <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabDashboard">Overview</button></li>
                 <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabStaff">Staff Mgmt</button></li>
-                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabManage" onclick="playFetchAnimation(loadManageData)">Records</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabManage" onclick="playFetchAnimation(loadManageData)">Records & Analytics</button></li>
                 <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabSearch">Search Portal</button></li>
                 <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabReminder" onclick="playFetchAnimation(loadReminders)">Reminders</button></li>
             </ul>
@@ -314,10 +324,10 @@
                         </div>
                     </div>
                     <div class="row g-4" id="dashboardStats">
-                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-2 fw-bold small">TOTAL ENTRIES</p><h2 id="statTotal" class="text-primary fw-bolder m-0">0</h2></div></div>
-                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-2 fw-bold small">2 WHEELER</p><h2 id="stat2W" class="text-success fw-bolder m-0">0</h2></div></div>
-                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-2 fw-bold small">4 WHEELER</p><h2 id="stat4W" class="text-danger fw-bolder m-0">0</h2></div></div>
-                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-2 fw-bold small">FUEL (P / D)</p><h4 id="statFuel" class="text-dark fw-bolder m-0 mt-2">0 / 0</h4></div></div>
+                        <div class="col-md-3 col-6 cascade-item" style="animation-delay: 0.1s;"><div class="stats-card"><p class="text-muted mb-2 fw-bold small">TOTAL ENTRIES</p><h2 id="statTotal" class="text-primary fw-bolder m-0">0</h2></div></div>
+                        <div class="col-md-3 col-6 cascade-item" style="animation-delay: 0.2s;"><div class="stats-card"><p class="text-muted mb-2 fw-bold small">2 WHEELER</p><h2 id="stat2W" class="text-success fw-bolder m-0">0</h2></div></div>
+                        <div class="col-md-3 col-6 cascade-item" style="animation-delay: 0.3s;"><div class="stats-card"><p class="text-muted mb-2 fw-bold small">4 WHEELER</p><h2 id="stat4W" class="text-danger fw-bolder m-0">0</h2></div></div>
+                        <div class="col-md-3 col-6 cascade-item" style="animation-delay: 0.4s;"><div class="stats-card"><p class="text-muted mb-2 fw-bold small">FUEL (P / D)</p><h4 id="statFuel" class="text-dark fw-bolder m-0 mt-2">0 / 0</h4></div></div>
                     </div>
                 </div>
 
@@ -325,7 +335,7 @@
                 <div class="tab-pane" id="tabStaff">
                     <div class="row g-4">
                         <div class="col-md-6">
-                            <div class="stats-card h-100 text-start">
+                            <div class="stats-card h-100 text-start bg-white">
                                 <h6 class="fw-bolder text-dark mb-4"><i class="bi bi-person-plus-fill me-2 text-primary"></i> Add Staff</h6>
                                 <div class="input-group mb-4 shadow-sm rounded-pill overflow-hidden border">
                                     <input type="text" id="newStaffName" class="form-control border-0" style="background: rgba(255,255,255,0.8);" placeholder="Enter Staff Name">
@@ -335,7 +345,7 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="stats-card h-100 text-start">
+                            <div class="stats-card h-100 text-start bg-white">
                                 <div class="d-flex justify-content-between align-items-center mb-4">
                                     <h6 class="fw-bolder text-dark m-0"><i class="bi bi-graph-up-arrow me-2 text-success"></i> Today's Leaderboard</h6>
                                     <button class="btn btn-sm btn-light border rounded-circle shadow-sm" onclick="playFetchAnimation(loadStaffAnalytics)"><i class="bi bi-arrow-clockwise"></i></button>
@@ -346,18 +356,22 @@
                     </div>
                 </div>
 
-                <!-- RECORDS TAB -->
+                <!-- RECORDS & ANALYTICS TAB (NEW FEATURES ADDED) -->
                 <div class="tab-pane" id="tabManage">
-                    <div class="row g-3 align-items-end mb-4 stats-card text-start">
-                        <div class="col-md-4"><label class="small text-muted fw-bold ms-1">From Date</label><input type="date" id="manageFrom" class="form-control" /></div>
-                        <div class="col-md-4"><label class="small text-muted fw-bold ms-1">To Date</label><input type="date" id="manageTo" class="form-control" /></div>
+                    <div class="row g-3 align-items-end mb-4 stats-card text-start bg-white cascade-item">
+                        <div class="col-md-4"><label class="small text-muted fw-bold ms-1">From Date</label><input type="date" id="manageFrom" class="form-control bg-light" /></div>
+                        <div class="col-md-4"><label class="small text-muted fw-bold ms-1">To Date</label><input type="date" id="manageTo" class="form-control bg-light" /></div>
                         <div class="col-md-2"><button class="btn btn-dark w-100 py-3 rounded-pill fw-bold shadow-sm" onclick="playFetchAnimation(loadManageData)">Fetch</button></div>
                         <div class="col-md-2"><button class="btn btn-danger w-100 py-3 fw-bold rounded-pill shadow-sm" onclick="downloadPDF()"><i class="bi bi-file-pdf-fill"></i> PDF</button></div>
                     </div>
+                    
+                    <!-- NEW ADVANCED RANGE ANALYTICS CONTAINER -->
+                    <div id="rangeAnalyticsContainer" class="mb-4"></div>
+
                     <div class="table-responsive table-modern">
                         <table class="table mb-0 text-center align-middle" id="recordsTable">
                             <thead>
-                                <tr><th>Vehicle</th><th>Mobile</th><th>Type</th><th>Staff</th><th>Dur.</th><th>Created</th><th>Expiry</th><th>Del</th></tr>
+                                <tr><th>Vehicle</th><th>Mobile</th><th>Type</th><th>Staff</th><th>Dur.</th><th>Create Date</th><th>Expiry Date</th><th>Del</th></tr>
                             </thead>
                             <tbody id="manageTableBody">
                                 <tr><td colspan="8" class="py-5 text-muted fw-bold">Select dates and click Fetch</td></tr>
@@ -368,7 +382,7 @@
 
                 <!-- SEARCH PORTAL TAB -->
                 <div class="tab-pane" id="tabSearch">
-                    <div class="stats-card text-start">
+                    <div class="stats-card text-start bg-white">
                         <h5 class="fw-bolder text-dark mb-4"><i class="bi bi-search me-2 text-primary"></i> Customer Search Portal</h5>
                         <div class="input-group mb-4 shadow-sm rounded-pill overflow-hidden border">
                             <input type="text" id="portalSearchInput" class="form-control border-0 text-uppercase px-4" style="background: rgba(255,255,255,0.8);" placeholder="Enter Vehicle No. (e.g., HR12AB1234) or Mobile No.">
@@ -428,6 +442,8 @@
         let backgroundWorker = null;
         let globalStaffList = [];
         let currentFetchRecords = []; 
+        let lastEntryDateObj = null;
+        let historicalPeakHour = -1;
 
         function getLocalDate(dateObj = new Date()) {
             const year = dateObj.getFullYear();
@@ -436,7 +452,7 @@
             return `${year}-${month}-${day}`;
         }
 
-        // 1. RELIABLE DOM LOAD
+        // 1. RELIABLE DOM LOAD & NEW LIVE FEATURES
         document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 const splash = document.getElementById('splashScreen');
@@ -453,7 +469,72 @@
             fetchStaffList();
             initBackgroundWorker();
             toggleFuel();
+            initLiveClock();
+            fetchLastEntryAndRushHour();
         });
+
+        // ========== NEW: LIVE CLOCK & RUSH HOUR LOGIC ==========
+        function initLiveClock() {
+            setInterval(() => {
+                const now = new Date();
+                document.getElementById('liveClock').innerText = now.toLocaleTimeString('en-US', { hour12: true });
+                
+                // Update Last Entry Timer String
+                if(lastEntryDateObj) {
+                    const diffMs = now - lastEntryDateObj;
+                    const diffMins = Math.floor(diffMs / 60000);
+                    const timerElem = document.getElementById('lastEntryTimer');
+                    if(diffMins === 0) timerElem.innerHTML = '⏱️ Last Entry: <span class="text-success">Just now</span>';
+                    else if(diffMins < 60) timerElem.innerHTML = `⏱️ Last Entry: <span class="text-primary">${diffMins} min ago</span>`;
+                    else timerElem.innerHTML = `⏱️ Last Entry: <span class="text-danger">${Math.floor(diffMins/60)} hr ago</span>`;
+                }
+
+                // Check Rush Hour Glow Live
+                const currentHour = now.getHours();
+                const rushElem = document.getElementById('rushIndicator');
+                if(historicalPeakHour !== -1 && currentHour === historicalPeakHour) {
+                    rushElem.classList.add('rush-active');
+                } else {
+                    rushElem.classList.remove('rush-active');
+                }
+            }, 1000);
+        }
+
+        function fetchLastEntryAndRushHour() {
+            // Get last 150 records to determine rush hour and last entry
+            db.collection(RECORDS_COLLECTION).orderBy('createdAt', 'desc').limit(150).onSnapshot(snap => {
+                if(!snap.empty) {
+                    // Update Last Entry
+                    const newestData = snap.docs[0].data();
+                    lastEntryDateObj = newestData.createdAt ? newestData.createdAt.toDate() : new Date();
+
+                    // Calculate Rush Hour from these records
+                    let hourCounts = {};
+                    snap.forEach(doc => {
+                        const d = doc.data().createdAt?.toDate();
+                        if(d) {
+                            const h = d.getHours();
+                            hourCounts[h] = (hourCounts[h] || 0) + 1;
+                        }
+                    });
+                    
+                    let maxHour = -1; let maxCount = 0;
+                    for(let h in hourCounts) {
+                        if(hourCounts[h] > maxCount) { maxCount = hourCounts[h]; maxHour = parseInt(h); }
+                    }
+                    
+                    if(maxHour !== -1) {
+                        historicalPeakHour = maxHour;
+                        const ampm = maxHour >= 12 ? 'PM' : 'AM';
+                        const displayHour = maxHour % 12 || 12;
+                        const nextHour = (maxHour+1) % 12 || 12;
+                        const nextAmpm = (maxHour+1) >= 12 && (maxHour+1) < 24 ? 'PM' : 'AM';
+                        
+                        document.getElementById('rushIndicator').innerHTML = `🔥 Peak Rush: <span>${displayHour} ${ampm} - ${nextHour} ${nextAmpm}</span>`;
+                    }
+                }
+            });
+        }
 
         // ========== 2. SVG DRAWING ANIMATION & SAVING LOGIC ==========
         window.finalizeSubmitAndSave = function() {
@@ -466,28 +547,17 @@
                 Swal.fire({
                     title: 'Saving Data...',
                     html: '<div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>',
-                    showConfirmButton: false,
-                    allowOutsideClick: false
+                    showConfirmButton: false, allowOutsideClick: false
                 });
 
-                const today = new Date(); 
-                const expiryDate = new Date(today);
-                expiryDate.setMonth(expiryDate.getMonth() + selectedDuration); 
-                expiryDate.setDate(expiryDate.getDate() - 1); 
+                const today = new Date(); const expiryDate = new Date(today);
+                expiryDate.setMonth(expiryDate.getMonth() + selectedDuration); expiryDate.setDate(expiryDate.getDate() - 1); 
                 
                 db.collection(RECORDS_COLLECTION).add({
-                    vehicleNo: pendingFormData.vehicle, 
-                    mobileNo: pendingFormData.mobile, 
-                    vehicleType: pendingFormData.type, 
-                    fuel: pendingFormData.fuel,
-                    durationMonths: selectedDuration, 
-                    staffName: selectedStaff, 
-                    purchaseDate: getLocalDate(today), 
-                    expiryDate: getLocalDate(expiryDate), 
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    vehicleNo: pendingFormData.vehicle, mobileNo: pendingFormData.mobile, vehicleType: pendingFormData.type, fuel: pendingFormData.fuel,
+                    durationMonths: selectedDuration, staffName: selectedStaff, purchaseDate: getLocalDate(today), expiryDate: getLocalDate(expiryDate), createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 }).then(() => {
                     Swal.close();
-                    
                     // CUSTOM SVG DRAWING ANIMATION POPUP
                     setTimeout(() => {
                         Swal.fire({
@@ -499,26 +569,15 @@
                                 <h1 style="color: #10b981; font-weight: 900; margin-top: 15px; letter-spacing:1px; font-family: 'Plus Jakarta Sans', sans-serif;">SUCCESS!</h1>
                                 <p style="color: rgba(255,255,255,0.9); font-size: 1.1rem; font-weight: 600;">Data Saved Securely</p>
                             `,
-                            showConfirmButton: false,
-                            timer: 2500,
-                            timerProgressBar: true,
-                            allowOutsideClick: false, // Don't let it stuck on click
-                            customClass: { popup: 'custom-payment-popup' },
-                            showClass: { popup: '' }, // Handled by CSS
-                            hideClass: { popup: 'custom-zoom-out' } // Shrink out animation
+                            showConfirmButton: false, timer: 2500, timerProgressBar: true, allowOutsideClick: false,
+                            customClass: { popup: 'custom-payment-popup' }, showClass: { popup: '' }, hideClass: { popup: 'custom-zoom-out' }
                         });
-
-                        document.getElementById('vehicleNo').value = ''; 
-                        document.getElementById('mobileNo').value = ''; 
-                        document.getElementById('vipBadge').style.display = 'none'; 
-                        document.getElementById('historyAlert').style.display = 'none';
-                        resetModalSelections(); 
-                        pendingFormData = {};
+                        document.getElementById('vehicleNo').value = ''; document.getElementById('mobileNo').value = ''; document.getElementById('vipBadge').style.display = 'none'; document.getElementById('historyAlert').style.display = 'none';
+                        resetModalSelections(); pendingFormData = {};
+                        // Manually trigger last entry update for instant feedback
+                        lastEntryDateObj = new Date();
                     }, 100);
-
-                }).catch(err => {
-                    Swal.fire('Error', err.message, 'error');
-                });
+                }).catch(err => { Swal.fire('Error', err.message, 'error'); });
             }, 400); 
         };
 
@@ -547,15 +606,12 @@
             
             db.collection(RECORDS_COLLECTION).where('vehicleNo', '==', vehicle).get().then(snap => {
                 if(!snap.empty){
-                    let records = [];
-                    snap.forEach(doc => records.push(doc.data()));
+                    let records = []; snap.forEach(doc => records.push(doc.data()));
                     records.sort((a, b) => new Date(b.purchaseDate) - new Date(a.purchaseDate));
-
                     const d = records[0]; 
 
                     document.getElementById('mobileNo').value = d.mobileNo;
-                    if(d.vehicleType === '2 Wheeler') document.getElementById('twoW').click(); 
-                    else document.getElementById('fourW').click();
+                    if(d.vehicleType === '2 Wheeler') document.getElementById('twoW').click(); else document.getElementById('fourW').click();
                     setTimeout(() => { document.getElementById('fuelType').value = d.fuel; }, 50);
                     
                     badge.style.display = 'block';
@@ -571,10 +627,7 @@
                         </div>
                     `;
                     historyAlert.style.display = 'block';
-                } else { 
-                    badge.style.display = 'none'; 
-                    historyAlert.style.display = 'none';
-                }
+                } else { badge.style.display = 'none'; historyAlert.style.display = 'none'; }
             }).catch(e => console.error("History Fetch Error:", e));
         };
 
@@ -586,7 +639,9 @@
             pendingFormData = { vehicle, mobile, type: document.querySelector('input[name="vehicleType"]:checked').value, fuel: document.getElementById('fuelType').value };
             
             const staffContainer = document.getElementById('modalStaffContainer'); staffContainer.innerHTML = '';
-            globalStaffList.forEach(name => { staffContainer.innerHTML += `<div class="col-6"><div class="select-btn staff-opt" onclick="selectStaff(this, '${name}')">${name}</div></div>`; });
+            globalStaffList.forEach((name, i) => { 
+                staffContainer.innerHTML += `<div class="col-6 cascade-item" style="animation-delay: ${i*0.1}s;"><div class="select-btn staff-opt" onclick="selectStaff(this, '${name}')">${name}</div></div>`; 
+            });
             bsEntryModal.show();
         };
 
@@ -658,11 +713,11 @@
 
         // ========== STAFF MANAGEMENT ==========
         function fetchStaffList() { db.collection(ADMIN_COLLECTION).doc('staffConfig').get().then(doc => { globalStaffList = (doc.exists && doc.data().list) ? doc.data().list : ["Laddu", "Haider", "Arwaz", "Ankit"]; }).catch(() => { globalStaffList = ["Laddu", "Haider", "Arwaz", "Ankit"]; }); }
-        function fetchStaffListAdmin() { const container = document.getElementById('adminStaffList'); container.innerHTML = ''; globalStaffList.forEach((name, index) => { container.innerHTML += `<li class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 border-bottom bg-transparent"><span class="fw-bold text-dark"><i class="bi bi-person-badge text-primary me-2"></i> ${name}</span><button class="btn btn-sm btn-outline-danger rounded-circle shadow-sm" onclick="removeStaff(${index})"><i class="bi bi-trash"></i></button></li>`; }); }
+        function fetchStaffListAdmin() { const container = document.getElementById('adminStaffList'); container.innerHTML = ''; globalStaffList.forEach((name, index) => { container.innerHTML += `<li class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 border-bottom bg-transparent cascade-item" style="animation-delay:${index*0.1}s;"><span class="fw-bold text-dark"><i class="bi bi-person-badge text-primary me-2"></i> ${name}</span><button class="btn btn-sm btn-outline-danger rounded-circle shadow-sm" onclick="removeStaff(${index})"><i class="bi bi-trash"></i></button></li>`; }); }
         window.addStaff = function() { const input = document.getElementById('newStaffName'); const name = input.value.trim(); if(!name || globalStaffList.includes(name)) return; globalStaffList.push(name); db.collection(ADMIN_COLLECTION).doc('staffConfig').set({ list: globalStaffList }, {merge: true}).then(() => { input.value = ''; fetchStaffListAdmin(); Swal.fire({ toast:true, icon:'success', title:'Added!', position:'top', showConfirmButton:false, timer:1500}); }); };
         window.removeStaff = function(index) { Swal.fire({ title: 'Delete?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#dc3545' }).then((r) => { if (r.isConfirmed) { globalStaffList.splice(index, 1); db.collection(ADMIN_COLLECTION).doc('staffConfig').set({ list: globalStaffList }, {merge: true}).then(() => { fetchStaffListAdmin(); }); } }); };
 
-        // ========== ADMIN TABS DATA & PDF ==========
+        // ========== ADMIN TABS DATA: ADVANCED ANALYTICS ==========
         window.loadDashboard = function() {
             const tFilter = document.getElementById('dashTimeFilter').value; const todayStr = getLocalDate();
             let query = db.collection(RECORDS_COLLECTION); if (tFilter === 'today') { query = query.where('purchaseDate', '==', todayStr); }
@@ -679,27 +734,74 @@
                 if(snap.empty){ container.innerHTML = '<p class="text-muted fw-bold text-center mt-3">No Entries Today</p>'; return; }
                 let counts = {}; snap.forEach(doc => { const sName = doc.data().staffName || 'Unknown'; counts[sName] = (counts[sName] || 0) + 1; });
                 let sortedStaff = Object.entries(counts).sort((a, b) => b[1] - a[1]); container.innerHTML = '';
-                sortedStaff.forEach(([name, count], index) => { let medal = index === 0 ? '🏆' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🔹'; container.innerHTML += `<div class="d-flex justify-content-between align-items-center mb-3 bg-light p-3 rounded-4 border shadow-sm"><span class="fw-bolder text-dark">${medal} ${name}</span><span class="badge bg-primary rounded-pill px-3">${count}</span></div>`; });
+                sortedStaff.forEach(([name, count], index) => { let medal = index === 0 ? '🏆' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🔹'; container.innerHTML += `<div class="d-flex justify-content-between align-items-center mb-3 bg-light p-3 rounded-4 border shadow-sm cascade-item" style="animation-delay:${index*0.1}s;"><span class="fw-bolder text-dark">${medal} ${name}</span><span class="badge bg-primary rounded-pill px-3">${count}</span></div>`; });
             });
         };
 
         window.loadManageData = function() {
-            const fromDate = document.getElementById('manageFrom').value, toDate = document.getElementById('manageTo').value; const tbody = document.getElementById('manageTableBody');
+            const fromDate = document.getElementById('manageFrom').value, toDate = document.getElementById('manageTo').value; 
+            const tbody = document.getElementById('manageTableBody');
+            const analyticsContainer = document.getElementById('rangeAnalyticsContainer');
+            
             if(!fromDate || !toDate) return;
             db.collection(RECORDS_COLLECTION).where('purchaseDate', '>=', fromDate).where('purchaseDate', '<=', toDate).get().then(snap => {
                 currentFetchRecords = []; 
-                if (snap.empty) { tbody.innerHTML = '<tr><td colspan="8" class="text-muted fw-bold py-5">No Records Found</td></tr>'; return; }
+                if (snap.empty) { 
+                    tbody.innerHTML = '<tr><td colspan="8" class="text-muted fw-bold py-5">No Records Found</td></tr>'; 
+                    analyticsContainer.innerHTML = '';
+                    return; 
+                }
                 
-                snap.forEach(doc => currentFetchRecords.push({ id: doc.id, ...doc.data() })); 
+                let staffStats = {}; let tot2w = 0, tot4w = 0;
+                
+                snap.forEach(doc => {
+                    const data = doc.data();
+                    currentFetchRecords.push({ id: doc.id, ...data });
+                    
+                    // Advanced Analytics Calculation
+                    let sName = data.staffName || 'Unknown';
+                    if(!staffStats[sName]) staffStats[sName] = { total: 0, w2: 0, w4: 0 };
+                    staffStats[sName].total++;
+                    if(data.vehicleType === '2 Wheeler') { tot2w++; staffStats[sName].w2++; }
+                    else { tot4w++; staffStats[sName].w4++; }
+                }); 
+                
                 currentFetchRecords.sort((a, b) => new Date(b.purchaseDate) - new Date(a.purchaseDate)); 
-                tbody.innerHTML = '';
                 
-                currentFetchRecords.forEach(d => { 
+                // Build Advanced Analytics UI
+                let analyticsHtml = `
+                    <div class="row g-3 cascade-item">
+                        <div class="col-12">
+                            <div class="d-flex justify-content-between bg-primary text-white p-3 rounded-4 shadow-sm fw-bold">
+                                <span><i class="bi bi-bar-chart-fill me-2"></i> Range Total: ${currentFetchRecords.length}</span>
+                                <span>🚲 2W: ${tot2w} &nbsp;|&nbsp; 🚗 4W: ${tot4w}</span>
+                            </div>
+                        </div>
+                `;
+                for(let s in staffStats) {
+                    analyticsHtml += `
+                        <div class="col-md-6 col-lg-4">
+                            <div class="bg-white border rounded-4 p-3 shadow-sm text-center">
+                                <h6 class="fw-bolder text-primary mb-2">${s} <span class="badge bg-dark rounded-pill float-end">${staffStats[s].total}</span></h6>
+                                <div class="d-flex justify-content-around small fw-bold text-muted mt-2 border-top pt-2">
+                                    <span>2W: <span class="text-success">${staffStats[s].w2}</span></span>
+                                    <span>4W: <span class="text-danger">${staffStats[s].w4}</span></span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                analyticsHtml += `</div>`;
+                analyticsContainer.innerHTML = analyticsHtml;
+
+                // Build Table
+                tbody.innerHTML = '';
+                currentFetchRecords.forEach((d, i) => { 
                     tbody.innerHTML += `
-                    <tr>
+                    <tr class="cascade-item" style="animation-delay: ${i*0.05}s;">
                         <td class="fw-bolder text-dark">${d.vehicleNo}</td>
                         <td><span class="fw-bold">${d.mobileNo}</span> <i class="bi bi-pencil-square text-primary ms-1" style="cursor:pointer;" onclick="editMobile('${d.id}', '${d.mobileNo}')"></i></td>
-                        <td><span class="badge bg-secondary">${d.vehicleType === '2 Wheeler' ? '2W' : '4W'}</span><br><small class="text-muted">${d.fuel}</small></td>
+                        <td><span class="badge bg-secondary">${d.vehicleType === '2 Wheeler' ? '2W' : '4W'}</span></td>
                         <td class="fw-bold text-muted">${d.staffName || '-'}</td>
                         <td class="fw-bold text-primary">${d.durationMonths || '-'}M</td>
                         <td class="text-muted small">${d.purchaseDate}</td>
@@ -735,9 +837,9 @@
                 if (resultsMap.size === 0) { container.innerHTML = '<p class="text-danger text-center py-4 fw-bold">No records found.</p>'; return; }
 
                 let arr = Array.from(resultsMap.values()).sort((a, b) => new Date(b.purchaseDate) - new Date(a.purchaseDate)); container.innerHTML = '';
-                arr.forEach(d => {
+                arr.forEach((d, i) => {
                     let statusBadge = new Date(d.expiryDate) < new Date(getLocalDate()) ? '<span class="badge bg-danger ms-2">EXPIRED</span>' : '<span class="badge bg-success ms-2">ACTIVE</span>';
-                    container.innerHTML += `<div class="card mb-3 shadow-sm border-0" style="border-left: 5px solid var(--accent-blue) !important; background: rgba(255,255,255,0.7); backdrop-filter: blur(10px);"><div class="card-body"><h5 class="fw-bolder text-dark mb-1">${d.vehicleNo} ${statusBadge}</h5><h6 class="text-primary fw-bold mb-3"><i class="bi bi-telephone-fill me-1"></i> ${d.mobileNo}</h6><div class="row small fw-bold text-muted g-2"><div class="col-6">Type: <span class="text-dark">${d.vehicleType}</span></div><div class="col-6">Fuel: <span class="text-dark">${d.fuel}</span></div><div class="col-6">Duration: <span class="text-primary">${d.durationMonths} Months</span></div><div class="col-6">Staff: <span class="text-dark">${d.staffName}</span></div><div class="col-6">Created: <span class="text-dark">${d.purchaseDate}</span></div><div class="col-6 text-danger">Expires: ${d.expiryDate}</div></div></div></div>`;
+                    container.innerHTML += `<div class="card mb-3 shadow-sm border-0 cascade-item" style="border-left: 5px solid var(--accent-blue) !important; background: rgba(255,255,255,0.7); backdrop-filter: blur(10px); animation-delay:${i*0.1}s;"><div class="card-body"><h5 class="fw-bolder text-dark mb-1">${d.vehicleNo} ${statusBadge}</h5><h6 class="text-primary fw-bold mb-3"><i class="bi bi-telephone-fill me-1"></i> ${d.mobileNo}</h6><div class="row small fw-bold text-muted g-2"><div class="col-6">Type: <span class="text-dark">${d.vehicleType}</span></div><div class="col-6">Fuel: <span class="text-dark">${d.fuel}</span></div><div class="col-6">Duration: <span class="text-primary">${d.durationMonths} Months</span></div><div class="col-6">Staff: <span class="text-dark">${d.staffName}</span></div><div class="col-6">Created: <span class="text-dark">${d.purchaseDate}</span></div><div class="col-6 text-danger">Expires: ${d.expiryDate}</div></div></div></div>`;
                 });
             });
         };
@@ -753,19 +855,19 @@
             db.collection(RECORDS_COLLECTION).where('expiryDate', '==', todayStr).get().then(snap => {
                 const container = document.getElementById('todayExpiryList'); container.innerHTML = '';
                 if (snap.empty) container.innerHTML = '<p class="text-muted fw-bold p-4 text-center border rounded-4 bg-light">No Expiry Today</p>';
-                else { snap.forEach(doc => { const d = doc.data(); const msg = `🚨 *PUC Expiry Alert*\n\nनमस्ते, आपकी गाड़ी *${d.vehicleNo}* का PUC आज खत्म हो रहा है! चालान से बचने के लिए तुरंत रिन्यू कराएं।\n\n📍 *Shree Ganesh PUC Center*`; container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-3 border-0 rounded-4 p-4 shadow-sm"><span><strong class="fs-5 text-dark">${d.vehicleNo}</strong><br><small class="text-muted">${d.mobileNo}</small></span><button class="btn btn-success fw-bold rounded-pill px-4 py-2" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-whatsapp me-1"></i> Send</button></div>`; }); }
+                else { snap.forEach((doc, i) => { const d = doc.data(); const msg = `🚨 *PUC Expiry Alert*\n\nनमस्ते, आपकी गाड़ी *${d.vehicleNo}* का PUC आज खत्म हो रहा है! चालान से बचने के लिए तुरंत रिन्यू कराएं।\n\n📍 *Shree Ganesh PUC Center*`; container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-3 border-0 rounded-4 p-4 shadow-sm cascade-item" style="animation-delay:${i*0.1}s;"><span><strong class="fs-5 text-dark">${d.vehicleNo}</strong><br><small class="text-muted">${d.mobileNo}</small></span><button class="btn btn-success fw-bold rounded-pill px-4 py-2" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-whatsapp me-1"></i> Send</button></div>`; }); }
             });
 
             db.collection(RECORDS_COLLECTION).where('expiryDate', '>', todayStr).where('expiryDate', '<=', futureStr).get().then(snap => {
                 const container = document.getElementById('upcomingExpiryList'); container.innerHTML = '';
                 if (snap.empty) container.innerHTML = '<p class="text-muted fw-bold p-4 text-center border rounded-4 bg-light">No Expiry in 5 Days</p>';
-                else { snap.forEach(doc => { const d = doc.data(); const msg = `⚠️ *PUC Advance Reminder*\n\nनमस्ते, आपकी गाड़ी *${d.vehicleNo}* का PUC ${d.expiryDate} को खत्म हो रहा है।`; container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-3 border-0 rounded-4 p-4 shadow-sm"><span><strong class="fs-5 text-dark">${d.vehicleNo}</strong><br><small class="text-danger fw-bold">Exp: ${d.expiryDate}</small></span><button class="btn btn-warning text-dark fw-bold rounded-pill px-4 py-2" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-whatsapp me-1"></i> Send</button></div>`; }); }
+                else { snap.forEach((doc, i) => { const d = doc.data(); const msg = `⚠️ *PUC Advance Reminder*\n\nनमस्ते, आपकी गाड़ी *${d.vehicleNo}* का PUC ${d.expiryDate} को खत्म हो रहा है।`; container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-3 border-0 rounded-4 p-4 shadow-sm cascade-item" style="animation-delay:${i*0.1}s;"><span><strong class="fs-5 text-dark">${d.vehicleNo}</strong><br><small class="text-danger fw-bold">Exp: ${d.expiryDate}</small></span><button class="btn btn-warning text-dark fw-bold rounded-pill px-4 py-2" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-whatsapp me-1"></i> Send</button></div>`; }); }
             });
 
             db.collection(RECORDS_COLLECTION).where('expiryDate', '<=', past15Str).where('expiryDate', '>=', past6MStr).get().then(snap => {
                 const container = document.getElementById('lostExpiryList'); container.innerHTML = '';
                 if (snap.empty) container.innerHTML = '<p class="text-muted fw-bold p-4 text-center border rounded-4 bg-light">No Lost Customers</p>';
-                else { snap.forEach(doc => { const d = doc.data(); const msg = `💔 *TyreXpert Comeback Offer*\n\nनमस्ते सर, आपकी गाड़ी *${d.vehicleNo}* का PUC एक्सपायर है। आज ही आएं और पाएं स्पेशल डिस्काउंट!`; container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-3 border-start border-danger border-4 rounded-4 p-4 shadow-sm"><span><strong class="fs-5 text-dark">${d.vehicleNo}</strong><br><small class="text-danger fw-bold">Exp: ${d.expiryDate}</small></span><button class="btn btn-danger fw-bold rounded-pill px-4 py-2" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-gift-fill me-1"></i> Offer</button></div>`; }); }
+                else { snap.forEach((doc, i) => { const d = doc.data(); const msg = `💔 *TyreXpert Comeback Offer*\n\nनमस्ते सर, आपकी गाड़ी *${d.vehicleNo}* का PUC एक्सपायर है। आज ही आएं और पाएं स्पेशल डिस्काउंट!`; container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-3 border-start border-danger border-4 rounded-4 p-4 shadow-sm cascade-item" style="animation-delay:${i*0.1}s;"><span><strong class="fs-5 text-dark">${d.vehicleNo}</strong><br><small class="text-danger fw-bold">Exp: ${d.expiryDate}</small></span><button class="btn btn-danger fw-bold rounded-pill px-4 py-2" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-gift-fill me-1"></i> Offer</button></div>`; }); }
             });
         };
     </script>
