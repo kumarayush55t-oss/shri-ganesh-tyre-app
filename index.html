@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Shree Ganesh Pollution Checking Center | Predictive AI</title>
+    <title>Shree Ganesh PUC | Advanced AI Tracker</title>
 
     <!-- Google Fonts: Plus Jakarta Sans -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -66,20 +66,19 @@
         @keyframes spinLight { 100% { transform: rotate(360deg); } }
 
         .ai-engine-inner {
-            background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); border-radius: 16px; padding: 15px 20px; width: 100%; z-index: 1;
+            background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); border-radius: 16px; padding: 18px 20px; width: 100%; z-index: 1;
             display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;
         }
 
-        .live-clock { font-family: monospace; font-size: 1.3rem; font-weight: 900; color: #00ffff; text-shadow: 0 0 10px rgba(0,255,255,0.8); background: rgba(0,0,0,0.4); padding: 5px 15px; border-radius: 50px; border: 1px solid rgba(0,255,255,0.3); }
-        .ai-status-text { font-size: 0.95rem; font-weight: 800; color: #fff; line-height: 1.4; transition: color 0.3s; margin-top: 5px;}
-        .last-entry-badge { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 50px; font-size: 0.85rem; color: #cbd5e1; font-weight: 700; margin-bottom: 5px; display: inline-block; }
+        .live-clock { font-family: monospace; font-size: 1.4rem; font-weight: 900; color: #00ffff; text-shadow: 0 0 10px rgba(0,255,255,0.8); background: rgba(0,0,0,0.4); padding: 5px 15px; border-radius: 50px; border: 1px solid rgba(0,255,255,0.3); }
+        .ai-status-text { font-size: 1.1rem; font-weight: 900; color: #fff; line-height: 1.4; transition: color 0.3s; margin-top: 5px;}
         
         /* Status Glow Colors */
         .glow-red { color: #ff3333 !important; text-shadow: 0 0 15px #ff0000; animation: pulseRed 1s infinite alternate; }
         .glow-blue { color: #33ccff !important; text-shadow: 0 0 15px #00ffff; }
         .glow-yellow { color: #ffcc00 !important; text-shadow: 0 0 15px #ffcc00; }
         
-        @keyframes pulseRed { from { transform: scale(1); box-shadow: 0 0 10px rgba(255,0,0,0.2); } to { transform: scale(1.01); box-shadow: 0 0 20px rgba(255,0,0,0.6); } }
+        @keyframes pulseRed { from { transform: scale(1); box-shadow: 0 0 10px rgba(255,0,0,0.2); } to { transform: scale(1.02); box-shadow: 0 0 20px rgba(255,0,0,0.6); } }
 
         /* ---------------- MAIN UI CARDS ---------------- */
         .card-main { background: var(--glass-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid var(--glass-border); border-radius: 28px; box-shadow: var(--glass-shadow); overflow: hidden; animation: floatCard 6s ease-in-out infinite alternate; }
@@ -156,9 +155,7 @@
     <div class="liquid-bg">
         <div class="blob blob-1"></div>
         <div class="blob blob-2"></div>
-    </div>
-
-    <!-- SPLASH SCREEN -->
+    </div><!-- SPLASH SCREEN -->
     <div id="splashScreen">
         <div class="splash-icon">🛡️</div>
         <h2 class="splash-title text-center">Shree Ganesh PUC</h2>
@@ -170,7 +167,7 @@
     </button>
 
     <!-- ==========================================
-         MAIN ENTRY SECTION
+         MAIN ENTRY SECTION (ADVANCED AI UI)
     =========================================== -->
     <div id="mainSection" class="container container-custom d-none">
         
@@ -178,9 +175,9 @@
         <div class="ai-engine-wrapper mt-3 cascade-item">
             <div class="ai-engine-inner">
                 <div class="d-flex flex-column">
-                    <div id="lastEntryTimer" class="last-entry-badge"><i class="bi bi-stopwatch"></i> Last Entry: Syncing...</div>
+                    <div id="lastEntryTimer" class="last-entry-badge"><i class="bi bi-stopwatch"></i> Last Entry: AI Syncing...</div>
                     <div id="aiStatus" class="ai-status-text glow-yellow">
-                        <div class="spinner-border spinner-border-sm me-2" role="status"></div> Weather & AI Syncing...
+                        <div class="spinner-border spinner-border-sm me-2" role="status"></div> Live Weather & AI Syncing...
                     </div>
                 </div>
                 <div id="liveClock" class="live-clock">00:00:00</div>
@@ -280,7 +277,7 @@
     </div>
 
     <!-- ==========================================
-         ADMIN SECTION (100x FASTER)
+         ADMIN SECTION (100x FASTER & ADVANCED)
     =========================================== -->
     <div id="adminSection" class="container container-custom d-none cascade-item">
         
@@ -314,6 +311,7 @@
             </ul>
 
             <div class="tab-content tab-content-admin">
+                <!-- OVERVIEW TAB -->
                 <div class="tab-pane show active" id="tabDashboard">
                     <div class="row g-3 mb-4">
                         <div class="col-md-5">
@@ -331,6 +329,7 @@
                     </div>
                 </div>
 
+                <!-- STAFF TAB -->
                 <div class="tab-pane" id="tabStaff">
                     <div class="row g-4">
                         <div class="col-md-6 cascade-item">
@@ -355,6 +354,7 @@
                     </div>
                 </div>
 
+                <!-- RECORDS & ANALYTICS TAB -->
                 <div class="tab-pane" id="tabManage">
                     <div class="row g-3 align-items-end mb-4 stats-card text-start bg-white cascade-item">
                         <div class="col-md-4"><label class="small text-muted fw-bold ms-1">From Date</label><input type="date" id="manageFrom" class="form-control" /></div>
@@ -373,6 +373,7 @@
                     </div>
                 </div>
 
+                <!-- SEARCH PORTAL TAB -->
                 <div class="tab-pane" id="tabSearch">
                     <div class="stats-card text-start bg-white cascade-item">
                         <h5 class="fw-bolder text-dark mb-4"><i class="bi bi-search me-2 text-primary"></i> Customer Search Portal</h5>
@@ -386,6 +387,7 @@
                     </div>
                 </div>
 
+                <!-- REMINDERS TAB -->
                 <div class="tab-pane" id="tabReminder">
                     <ul class="nav nav-pills mb-4 p-2 rounded-pill shadow-sm d-inline-flex flex-wrap border bg-white cascade-item" id="remSubTabs" role="tablist">
                         <li class="nav-item"><button class="nav-link active rounded-pill px-4 fw-bold" data-bs-toggle="pill" data-bs-target="#remToday">⚠️ Today Expire</button></li>
@@ -404,10 +406,8 @@
 
             </div>
         </div>
-    </div>
-
-    <!-- ==========================================
-         JAVASCRIPT LOGIC (AI OPTIMIZED)
+    </div><!-- ==========================================
+         JAVASCRIPT LOGIC (ADVANCED AI + OPTIMIZED)
     =========================================== -->
     <script>
         // ========== FIREBASE CONFIG ==========
@@ -459,11 +459,11 @@
 
             toggleFuel();
             initLiveClock();
-            initRealAIStatus(); // Starts Real AI Weather + Shifted Rush Logic
+            initRealAIStatus(); // Starts Real AI Machine Learning (Outlier Rejection + Weather)
             fetchStaffList();
         });
 
-        // ========== NEW: REAL AI ENGINE (TIME AWARENESS + DB HISTORY) ==========
+        // ========== NEW: REAL AI ENGINE (TIME AWARENESS + DB MACHINE LEARNING) ==========
         function initLiveClock() {
             setInterval(() => {
                 const now = new Date();
@@ -481,7 +481,7 @@
 
         async function initRealAIStatus() {
             const aiStatusElem = document.getElementById('aiStatus');
-            let peakHour = (new Date().getDay() === 0) ? 13 : 11; // Default fallback: 1 PM Sun, 11 AM Mon-Sat
+            let peakHour = (new Date().getDay() === 0) ? 13 : 11; // Default fallback
             let shiftedHour = -1;
             let isRainingDuringPeak = false;
             let currentWeatherCode = 0;
@@ -492,37 +492,47 @@
                 const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=28.68&longitude=76.92&current_weather=true&hourly=weathercode');
                 const weatherData = await res.json();
                 currentWeatherCode = weatherData.current_weather.weathercode;
-                hourlyWeather = weatherData.hourly.weathercode; // Array of 168 hours
+                hourlyWeather = weatherData.hourly.weathercode; 
             } catch (e) { console.log("Weather API skipped"); }
             
-            // 2. FETCH REAL PAST HISTORY TO FIND ACTUAL RUSH HOUR
+            // 2. TRUE MACHINE LEARNING (OUTLIER REJECTION & CONSISTENCY CHECK)
             try {
-                const snap = await db.collection(RECORDS_COLLECTION).orderBy('createdAt', 'desc').limit(300).get();
+                // Fetch last 600 records (approx 1 month) to find CONSISTENT patterns, ignoring 1-day spikes
+                const snap = await db.collection(RECORDS_COLLECTION).orderBy('createdAt', 'desc').limit(600).get();
                 if(!snap.empty) {
                     const currentDayOfWeek = new Date().getDay(); 
-                    let hourCounts = {};
+                    let hourConsistency = {}; // Stores how many DISTINCT DATES an hour had entries
+                    
                     snap.forEach(doc => {
                         const data = doc.data();
                         if(data.createdAt) {
                             const dateObj = data.createdAt.toDate();
                             if(dateObj.getDay() === currentDayOfWeek) {
+                                const dateStr = dateObj.toDateString();
                                 const h = dateObj.getHours();
-                                hourCounts[h] = (hourCounts[h] || 0) + 1;
+                                if(!hourConsistency[h]) hourConsistency[h] = new Set();
+                                hourConsistency[h].add(dateStr); // Add unique date
                             }
                         }
                     });
-                    let maxCount = 0;
-                    for(let h in hourCounts) {
-                        if(hourCounts[h] > maxCount) { maxCount = hourCounts[h]; peakHour = parseInt(h); }
+                    
+                    let maxConsistentDays = 0;
+                    for(let h in hourConsistency) {
+                        // The hour that appears on the MOST number of unique days is the TRUE PEAK
+                        if(hourConsistency[h].size > maxConsistentDays) { 
+                            maxConsistentDays = hourConsistency[h].size; 
+                            peakHour = parseInt(h); 
+                        }
                     }
                 }
-            } catch(e) { console.log("DB analysis skipped, using fallback."); }
+            } catch(e) { console.log("DB ML analysis skipped, using fallback."); }
 
             // 3. AI PREDICTION: IS IT RAINING DURING PEAK HOUR?
             if(hourlyWeather && hourlyWeather.length > peakHour) {
                 const todayPeakIndex = peakHour; 
                 if(hourlyWeather[todayPeakIndex] >= 51 && hourlyWeather[todayPeakIndex] <= 99) {
                     isRainingDuringPeak = true;
+                    // Find when rain stops for Shifted Rush
                     for(let h = peakHour + 1; h <= 20; h++) {
                         if(hourlyWeather[h] < 51) { shiftedHour = h; break; }
                     }
@@ -541,7 +551,6 @@
             setInterval(() => {
                 const currentHour = new Date().getHours();
                 const isCurrentlyRaining = (currentWeatherCode >= 51 && currentWeatherCode <= 99);
-                
                 const formatTime = (h) => { let ampm = h >= 12 ? 'PM' : 'AM'; let hr = h % 12 || 12; return `${hr}:00 ${ampm}`; };
 
                 let primaryMsg = ""; let glowClass = "";
@@ -550,15 +559,13 @@
                     if (shiftedHour !== -1) {
                         primaryMsg = `🌧️ ${formatTime(peakHour)} बारिश है। <br><span class="text-warning">💡 Shifted Rush: कस्टमर ${formatTime(shiftedHour)} के बाद आएंगे!</span>`;
                         glowClass = 'glow-blue';
-                        if(currentHour >= shiftedHour && currentHour < shiftedHour+2) glowClass = 'glow-red'; // Shifted rush is active
+                        if(currentHour >= shiftedHour && currentHour < shiftedHour+2) glowClass = 'glow-red'; 
                     } else {
                         primaryMsg = `🌧️ आज दिन भर बारिश का मौसम है, काम स्लो रहेगा।`;
                         glowClass = 'glow-blue';
                     }
                 } else {
-                    // NEW: TIME AWARENESS LOGIC
                     if (currentHour < 8 || currentHour >= 21) { 
-                        // Assuming shop is closed between 9 PM and 8 AM
                         primaryMsg = `🌙 Shop Closed (दुकान बंद है)। कल का रश: ${formatTime(peakHour)}`;
                         glowClass = 'glow-blue';
                     } else if (currentHour < peakHour) {
@@ -573,7 +580,10 @@
                     }
                 }
 
-                if (isCurrentlyRaining) glowClass = 'glow-blue'; // Override color if currently raining
+                if (isCurrentlyRaining) {
+                    primaryMsg = `🌧️ Live Rain Detected: काम स्लो रहेगा। (Next Rush: ${formatTime(peakHour)})`;
+                    glowClass = 'glow-blue'; 
+                }
 
                 aiStatusElem.innerHTML = primaryMsg;
                 aiStatusElem.className = 'ai-status-text ' + glowClass;
@@ -803,7 +813,6 @@
                 
                 currentFetchRecords.sort((a, b) => new Date(b.purchaseDate) - new Date(a.purchaseDate)); 
                 
-                // Fast Analytics Render
                 if(analyticsContainer) {
                     let analyticsHtml = `<div class="row g-3 cascade-item"><div class="col-12"><div class="d-flex justify-content-between bg-primary text-white p-3 rounded-4 shadow-sm fw-bold"><span><i class="bi bi-bar-chart-fill me-2"></i> Range Total: ${currentFetchRecords.length}</span><span>🚲 2W: ${tot2w} &nbsp;|&nbsp; 🚗 4W: ${tot4w}</span></div></div>`;
                     for(let s in staffStats) {
@@ -812,7 +821,6 @@
                     analyticsContainer.innerHTML = analyticsHtml + `</div>`;
                 }
 
-                // Super Fast Table Render (Batching)
                 let tableHtml = '';
                 currentFetchRecords.forEach((d, i) => { 
                     tableHtml += `<tr class="cascade-item" style="animation-delay:${Math.min(i*0.02, 0.5)}s;">
