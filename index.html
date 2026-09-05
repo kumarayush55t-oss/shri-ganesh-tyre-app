@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Shree Ganesh Pollution Checking Center | Ultimate AI</title>
+    <title>Smart Tracker by Ayush Anand | TyreXpert</title>
 
     <!-- Google Fonts: Plus Jakarta Sans -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -27,118 +27,96 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 
     <style>
-        /* ================= HIGH PERFORMANCE LIQUID THEME ================= */
+        /* ================= HIGH PERFORMANCE THEME ================= */
         :root {
-            --primary-blue: #1e3a8a; --accent-blue: #2563eb; --light-blue: #bfdbfe;
-            --text-dark: #0f172a; --glass-bg: rgba(255, 255, 255, 0.65);
-            --glass-border: rgba(255, 255, 255, 0.8); --glass-shadow: 0 10px 30px rgba(30, 58, 138, 0.1);
+            --primary-blue: #0f172a; 
+            --accent-blue: #2563eb; 
+            --light-blue: #eff6ff;
+            --text-dark: #0f172a; 
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.9); 
+            --glass-shadow: 0 8px 32px rgba(15, 23, 42, 0.08);
         }
 
-        body { font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text-dark); min-height: 100vh; padding: 20px 0 80px 0; overflow-x: hidden; margin: 0; background-color: #e0e7ff; }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            color: var(--text-dark); 
+            min-height: 100vh; 
+            padding: 20px 0 80px 0; 
+            overflow-x: hidden; 
+            margin: 0; 
+            background-color: var(--light-blue); 
+        }
 
-        /* --- OPTIMIZED LIQUID BACKGROUND --- */
+        /* --- OPTIMIZED LIQUID BACKGROUND (High FPS) --- */
         .liquid-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; overflow: hidden; pointer-events: none; background: #e0e7ff; }
-        .blob { position: absolute; border-radius: 50%; opacity: 0.6; animation: floatLiquid 20s infinite alternate ease-in-out; transform: translate3d(0,0,0); }
-        .blob-1 { top: -20%; left: -10%; width: 60vw; height: 60vw; background: radial-gradient(circle, #60a5fa 0%, transparent 70%); }
-        .blob-2 { bottom: -20%; right: -10%; width: 70vw; height: 70vw; background: radial-gradient(circle, #93c5fd 0%, transparent 70%); animation-delay: -5s; }
+        .blob { position: absolute; border-radius: 50%; opacity: 0.4; filter: blur(60px); will-change: transform; animation: floatLiquid 25s infinite alternate linear; }
+        .blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: #60a5fa; }
+        .blob-2 { bottom: -10%; right: -10%; width: 60vw; height: 60vw; background: #93c5fd; animation-delay: -5s; }
 
-        @keyframes floatLiquid { 0% { transform: translate3d(0, 0, 0) scale(1); } 100% { transform: translate3d(50px, 80px, 0) scale(1.1); } }
+        @keyframes floatLiquid { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(30px, 40px) scale(1.05); } }
 
         .container-custom { max-width: 850px; margin: auto; position: relative; z-index: 1; }
         
         /* ---------------- SPLASH SCREEN ---------------- */
-        #splashScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, var(--primary-blue) 0%, #3b82f6 100%); z-index: 999999; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; transition: opacity 0.4s ease, visibility 0.4s ease; }
-        .splash-icon { font-size: 5rem; animation: bounceIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        .splash-title { font-weight: 800; font-size: 2.2rem; margin-top: 15px; opacity: 0; animation: fadeUp 0.8s ease forwards 0.3s; text-align:center; }
-        
-        @keyframes bounceIn { 0% { transform: scale(0); opacity: 0; } 50% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
-        @keyframes fadeUp { 0% { transform: translateY(30px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+        #splashScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--primary-blue); z-index: 999999; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .splash-title { font-weight: 900; font-size: 2.5rem; margin-top: 15px; letter-spacing: -1px; text-align:center; }
+        .splash-subtitle { font-weight: 600; color: #94a3b8; letter-spacing: 2px; }
 
-        /* ---------------- ROTATING BLUE LIGHT PANEL (AI ENGINE) ---------------- */
-        .ai-engine-wrapper {
-            position: relative; padding: 3px; border-radius: 20px; overflow: hidden; display: flex; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0, 255, 255, 0.2);
-        }
-        .ai-engine-wrapper::before {
-            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: conic-gradient(from 0deg, transparent 70%, #00ffff 80%, #2563eb 100%);
-            animation: spinLight 2.5s linear infinite; z-index: 0;
-        }
-        @keyframes spinLight { 100% { transform: rotate(360deg); } }
-
-        .ai-engine-inner {
-            background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); border-radius: 17px; padding: 15px 20px; width: 100%; z-index: 1;
-            display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;
-        }
-
-        .live-clock { font-family: monospace; font-size: 1.3rem; font-weight: 900; color: #00ffff; text-shadow: 0 0 10px rgba(0,255,255,0.8); background: rgba(0,0,0,0.4); padding: 5px 15px; border-radius: 50px; border: 1px solid rgba(0,255,255,0.3); }
-        .ai-status-text { font-size: 1rem; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 8px; transition: color 0.3s; margin-top: 5px;}
-        .last-entry-badge { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 50px; font-size: 0.85rem; color: #cbd5e1; font-weight: 700; margin-bottom: 5px; display: inline-block; }
-        
-        /* Status Glow Colors */
-        .glow-red { color: #ff3333 !important; text-shadow: 0 0 15px #ff0000; animation: pulseRed 1s infinite alternate; }
-        .glow-blue { color: #33ccff !important; text-shadow: 0 0 15px #00ffff; }
-        .glow-yellow { color: #ffcc00 !important; text-shadow: 0 0 15px #ffcc00; }
-        
-        @keyframes pulseRed { from { transform: scale(1); box-shadow: 0 0 10px rgba(255,0,0,0.2); } to { transform: scale(1.02); box-shadow: 0 0 20px rgba(255,0,0,0.6); } }
+        /* ---------------- STATUS PANEL (Fast UI) ---------------- */
+        .status-panel { background: #fff; border-radius: 16px; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--glass-shadow); margin-bottom: 20px; border: 1px solid rgba(0,0,0,0.05); }
+        .live-clock { font-family: monospace; font-size: 1.2rem; font-weight: 800; color: var(--primary-blue); background: var(--light-blue); padding: 5px 12px; border-radius: 8px; }
+        .last-entry-badge { font-size: 0.9rem; color: #475569; font-weight: 700; display: flex; align-items: center; gap: 8px; }
 
         /* ---------------- MAIN UI CARDS ---------------- */
-        .card-main { background: var(--glass-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid var(--glass-border); border-radius: 28px; box-shadow: var(--glass-shadow); overflow: hidden; animation: floatCard 6s ease-in-out infinite alternate; }
-        @keyframes floatCard { 0% { transform: translateY(0); } 100% { transform: translateY(-5px); } }
-
-        .gradient-header { background: rgba(30, 58, 138, 0.9); color: white; padding: 25px 25px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.2); }
-        .gradient-header h2 { font-weight: 800; margin: 0; text-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .card-main { background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); border-radius: 24px; box-shadow: var(--glass-shadow); overflow: hidden; }
+        
+        .gradient-header { background: var(--primary-blue); color: white; padding: 25px 25px; text-align: center; }
+        .gradient-header h2 { font-weight: 800; margin: 0; font-size: 2rem; letter-spacing: -0.5px; }
 
         /* ---------------- INPUTS ---------------- */
-        .form-floating > label { color: #475569; font-weight: 700; padding-left: 20px; }
-        .form-control, .form-select { border-radius: 18px; border: 2px solid rgba(255,255,255,0.8); background: rgba(255,255,255,0.7); font-weight: 800; color: var(--primary-blue); padding-left: 20px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.02); }
-        .form-control:focus, .form-select:focus { background: #fff; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2); border-color: var(--accent-blue); transform: translateY(-2px); }
+        .form-floating > label { color: #64748b; font-weight: 600; padding-left: 20px; }
+        .form-control, .form-select { border-radius: 16px; border: 2px solid #e2e8f0; background: #f8fafc; font-weight: 800; color: var(--primary-blue); padding-left: 20px; transition: all 0.2s; box-shadow: none; }
+        .form-control:focus, .form-select:focus { background: #fff; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); border-color: var(--accent-blue); }
 
-        #historyAlert { display: none; background: rgba(255, 251, 235, 0.9); border: 1px solid #fcd34d; border-radius: 20px; padding: 15px; margin-top: 10px; box-shadow: 0 5px 15px rgba(245, 158, 11, 0.1); animation: fadeUp 0.3s ease; }
+        #historyAlert { display: none; background: #fef3c7; border: 1px solid #fde68a; border-radius: 16px; padding: 15px; margin-top: 10px; color: #92400e; }
 
         /* ---------------- BUTTONS ---------------- */
-        button, .btn, .select-btn, .form-check-input { transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1) !important; cursor: pointer; }
-        button:hover, .btn:hover { transform: translateY(-2px) scale(1.01); box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3); }
-        button:active, .btn:active, .select-btn:active { transform: translateY(2px) scale(0.96) !important; }
+        button, .btn, .select-btn, .form-check-input { transition: transform 0.15s, box-shadow 0.15s !important; cursor: pointer; }
+        button:hover, .btn:hover { transform: translateY(-1px); }
+        button:active, .btn:active { transform: translateY(1px) scale(0.98) !important; }
 
-        .btn-gradient { background: linear-gradient(135deg, var(--accent-blue) 0%, #1d4ed8 100%); color: white; border: none; font-weight: 800; font-size: 1.2rem; border-radius: 20px; box-shadow: 0 8px 20px rgba(37,99,235,0.4); }
-        .btn-outline-dark { border: 2px solid rgba(255,255,255,0.8); color: #475569; font-weight: 800; background: rgba(255,255,255,0.6); border-radius: 16px !important; margin: 0 6px; }
-        .btn-check:checked + label[for="twoW"] { background: var(--accent-blue); color: #FFF; border-color: var(--accent-blue); box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4); transform: scale(1.05); }
-        .btn-check:checked + label[for="fourW"] { background: #e11d48; color: #FFF; border-color: #e11d48; box-shadow: 0 8px 20px rgba(225, 29, 72, 0.4); transform: scale(1.05); }
+        .btn-gradient { background: var(--accent-blue); color: white; border: none; font-weight: 700; font-size: 1.1rem; border-radius: 16px; box-shadow: 0 4px 12px rgba(37,99,235,0.2); }
+        .btn-gradient:hover { background: #1d4ed8; color: white; }
+        .btn-outline-dark { border: 2px solid #e2e8f0; color: #475569; font-weight: 700; background: #fff; border-radius: 14px !important; margin: 0 4px; }
+        .btn-check:checked + label[for="twoW"] { background: var(--accent-blue); color: #FFF; border-color: var(--accent-blue); }
+        .btn-check:checked + label[for="fourW"] { background: #0f172a; color: #FFF; border-color: #0f172a; }
 
-        /* ---------------- SVG PAYMENT SUCCESS ---------------- */
-        .custom-payment-popup { background: #064e3b !important; border-radius: 28px !important; box-shadow: 0 20px 50px rgba(6, 78, 59, 0.5) !important; animation: popScaleIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .swal2-timer-progress-bar { background: rgba(255,255,255,0.5) !important; }
-        .gpay-svg { width: 130px; height: 130px; display: block; margin: 20px auto; }
-        .gpay-circle { fill: #10b981; transform-origin: 50% 50%; animation: circle-pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        .gpay-tick { fill: none; stroke: #ffffff; stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 100; stroke-dashoffset: 100; animation: draw-tick 0.4s ease-out 0.4s forwards; }
-        
-        @keyframes circle-pop { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-        @keyframes draw-tick { 0% { stroke-dashoffset: 100; } 100% { stroke-dashoffset: 0; } }
-        @keyframes popScaleIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-        .custom-zoom-out { animation: zoomOutFast 0.3s forwards !important; }
-        @keyframes zoomOutFast { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(0.5); opacity: 0; } }
+        /* ---------------- ADMIN & MODALS ---------------- */
+        .admin-link { position: fixed; bottom: 30px; right: 30px; background: var(--primary-blue); color: white; z-index: 1050; box-shadow: 0 10px 25px rgba(15, 23, 42, 0.3); border-radius: 50px; font-weight: 700; padding: 12px 24px; border: none; }
+        .modal-content { border-radius: 24px; border: none; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .select-btn { border: 2px solid #e2e8f0; background: #f8fafc; color: #475569; border-radius: 16px; padding: 15px; font-weight: 700; text-align: center; transition: 0.2s; }
+        .select-btn.active-staff { border-color: var(--accent-blue); background: var(--accent-blue); color: #fff; }
+        .select-btn.active-duration { border-color: #059669; background: #059669; color: #fff; }
 
-        /* ---------------- OTHERS ---------------- */
-        .admin-link { position: fixed; bottom: 30px; right: 30px; background: var(--primary-blue); color: white; z-index: 1050; box-shadow: 0 10px 25px rgba(30, 58, 138, 0.4); border-radius: 50px; font-weight: 800; padding: 15px 30px; border: 1px solid rgba(255,255,255,0.3); }
-        .vip-badge { position: absolute; right: 25px; top: -15px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #fff; font-size: 0.85rem; padding: 6px 18px; border-radius: 50px; font-weight: 800; box-shadow: 0 5px 15px rgba(217, 119, 6, 0.4); display: none; z-index: 10; animation: floatLiquid 3s infinite alternate; }
-
-        /* ---------------- MODAL & ADMIN ---------------- */
-        .modal-content { border-radius: 32px; border: 1px solid rgba(255,255,255,0.6); box-shadow: 0 30px 60px rgba(0,0,0,0.2); background: rgba(255,255,255,0.95); backdrop-filter: blur(15px); }
-        .select-btn { border: 2px solid rgba(255,255,255,0.8); background: rgba(255,255,255,0.8); color: #475569; border-radius: 20px; padding: 18px; font-weight: 800; font-size: 1.1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
-        .select-btn.active-staff { border-color: var(--accent-blue); background: var(--accent-blue); color: #fff; transform: scale(1.05); }
-        .select-btn.active-duration { border-color: #059669; background: #059669; color: #fff; transform: scale(1.05); }
-
-        .admin-header { background: rgba(30, 58, 138, 0.95); color: white; padding: 30px; border-radius: 32px 32px 0 0; }
-        .nav-tabs { border-bottom: 1px solid rgba(255,255,255,0.6); padding: 0 25px; background: rgba(255,255,255,0.6); display: flex; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+        .admin-header { background: var(--primary-blue); color: white; padding: 25px; border-radius: 24px 24px 0 0; }
+        .nav-tabs { border-bottom: 1px solid #e2e8f0; padding: 0 20px; background: #fff; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
         .nav-tabs::-webkit-scrollbar { display: none; }
-        .nav-tabs .nav-link { font-weight: 800; color: #64748b; padding: 18px 20px; border: none; white-space: nowrap; border-radius: 0; }
-        .nav-tabs .nav-link.active { color: var(--accent-blue); border-bottom: 4px solid var(--accent-blue); background: transparent; }
-        .tab-content-admin { background: rgba(255,255,255,0.5); padding: 30px; border-radius: 0 0 32px 32px; }
+        .nav-tabs .nav-link { font-weight: 700; color: #64748b; padding: 15px 20px; border: none; border-radius: 0; }
+        .nav-tabs .nav-link.active { color: var(--accent-blue); border-bottom: 3px solid var(--accent-blue); background: transparent; }
         
-        .stats-card { background: rgba(255,255,255,0.85); border-radius: 24px; padding: 25px 15px; text-align: center; box-shadow: 0 8px 20px rgba(0,0,0,0.03); border: 1px solid #fff; }
-        .table-modern { background: rgba(255,255,255,0.9); border-radius: 20px; overflow: hidden; font-size: 0.9rem; }
-        .table-modern th { background: rgba(241,245,249,0.9); color: #475569; padding: 15px 10px; font-weight: 800; }
-        .table-modern td { padding: 15px 10px; border-bottom: 1px solid rgba(241,245,249,0.5); font-weight: 700; color: #1e293b; }
+        .tab-content-admin { background: #fff; padding: 25px; border-radius: 0 0 24px 24px; }
+        .stats-card { background: #f8fafc; border-radius: 16px; padding: 20px; text-align: center; border: 1px solid #e2e8f0; }
+        
+        .table-modern { background: #fff; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; font-size: 0.9rem; }
+        .table-modern th { background: #f1f5f9; color: #475569; padding: 12px; font-weight: 700; border-bottom: 2px solid #e2e8f0; }
+        .table-modern td { padding: 12px; border-bottom: 1px solid #f1f5f9; font-weight: 600; color: #1e293b; vertical-align: middle; }
+
+        /* ---------------- SLEEK LOADERS ---------------- */
+        .sleek-loader { display: none; width: 40px; height: 40px; border: 4px solid #e2e8f0; border-top-color: var(--accent-blue); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 20px auto; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        .vip-badge { position: absolute; right: 20px; top: -15px; background: #f59e0b; color: #fff; font-size: 0.8rem; padding: 6px 16px; border-radius: 50px; font-weight: 800; box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3); display: none; z-index: 10; }
     </style>
 </head>
 <body>
@@ -151,9 +129,8 @@
 
     <!-- SPLASH SCREEN -->
     <div id="splashScreen">
-        <div class="splash-icon">🛡️</div>
-        <h2 class="splash-title text-center">Shree Ganesh PUC Center</h2>
-        <p class="mt-2 text-center" style="font-weight: 800; letter-spacing: 2px;">ULTIMATE AI EDITION v4.4</p>
+        <h1 class="splash-title">TyreXpert</h1>
+        <p class="splash-subtitle">Smart Tracker by Ayush Anand</p>
     </div>
 
     <button id="adminToggleBtn" class="btn admin-link" onclick="toggleAdmin()">
@@ -165,28 +142,23 @@
     =========================================== -->
     <div id="mainSection" class="container container-custom d-none">
         
-        <!-- AI PREDICTION & CLOCK PANEL (ROTATING BLUE LIGHT) -->
-        <div class="ai-engine-wrapper mt-3">
-            <div class="ai-engine-inner">
-                <div class="d-flex flex-column">
-                    <div id="lastEntryTimer" class="last-entry-badge"><i class="bi bi-stopwatch"></i> Last Entry: Syncing...</div>
-                    <div id="aiStatus" class="ai-status-text glow-yellow">
-                        <div class="spinner-border spinner-border-sm me-2" role="status"></div> Weather & AI Syncing...
-                    </div>
-                </div>
-                <div id="liveClock" class="live-clock">00:00:00</div>
+        <!-- STATUS PANEL -->
+        <div class="status-panel mt-3">
+            <div id="lastEntryTimer" class="last-entry-badge">
+                <i class="bi bi-stopwatch text-primary"></i> <span>Last Entry: Syncing...</span>
             </div>
+            <div id="liveClock" class="live-clock">00:00</div>
         </div>
 
         <div class="card-main">
             <div class="gradient-header">
-                <h2>Shree Ganesh PUC Center</h2>
-                <p class="m-0 text-light opacity-75 mt-1 fw-bold" id="todayDate"></p>
-                <div class="brand-badge"><i class="bi bi-award-fill text-warning me-1"></i> Smart Tracker by Ayush Anand</div>
+                <h2>TyreXpert</h2>
+                <p class="m-0 text-light opacity-75 mt-1 fw-bold fs-6" id="todayDate"></p>
+                <div class="mt-2 badge bg-light text-dark fw-bold px-3 py-1 rounded-pill">Smart Tracker by Ayush Anand</div>
             </div>
             
             <div class="p-4 p-md-5 position-relative">
-                <span id="vipBadge" class="vip-badge"><i class="bi bi-star-fill me-1"></i> VIP Customer</span>
+                <span id="vipBadge" class="vip-badge"><i class="bi bi-star-fill me-1"></i> Returning Customer</span>
 
                 <!-- PREVIOUS HISTORY ALERT BOX -->
                 <div id="historyAlert"></div>
@@ -230,10 +202,10 @@
                     </div>
 
                     <div class="col-12 mt-3 text-center">
-                        <div class="bg-white border rounded-pill py-2 px-4 d-inline-flex align-items-center shadow-sm" style="background: rgba(255,255,255,0.7) !important;">
+                        <div class="bg-light border rounded-pill py-2 px-4 d-inline-flex align-items-center">
                             <input class="form-check-input ms-0 me-3 border-secondary" type="checkbox" id="reminderToggle" onchange="toggleBackgroundWorker()">
-                            <label class="form-check-label fw-bold mb-0 text-primary" for="reminderToggle">
-                                <i class="bi bi-bell-fill me-1 text-warning"></i> 30-Sec Background Alert
+                            <label class="form-check-label fw-bold mb-0 text-secondary" for="reminderToggle">
+                                <i class="bi bi-bell-fill me-1"></i> 30-Sec Background Alert
                             </label>
                         </div>
                     </div>
@@ -248,16 +220,16 @@
     <div class="modal fade" id="entryModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header border-0 py-4" style="background: rgba(255,255,255,0.5);">
-                    <h4 class="modal-title fw-bolder text-center w-100 text-primary">Finalize Entry</h4>
+                <div class="modal-header border-0 py-4">
+                    <h5 class="modal-title fw-bolder text-center w-100 text-primary">Finalize Entry</h5>
                     <button type="button" class="btn-close fs-5" data-bs-dismiss="modal" onclick="resetModalSelections()"></button>
                 </div>
-                <div class="modal-body p-4 p-md-5">
+                <div class="modal-body p-4 pt-0">
                     <h6 class="fw-bold mb-3 text-muted">1. Select Staff</h6>
-                    <div class="row g-3 mb-5" id="modalStaffContainer"></div>
+                    <div class="row g-3 mb-4" id="modalStaffContainer"></div>
 
                     <h6 class="fw-bold mb-3 text-muted">2. Duration</h6>
-                    <div class="row g-3 mb-5">
+                    <div class="row g-3 mb-4">
                         <div class="col-6"><div class="select-btn duration-opt" onclick="selectDuration(this, 6)">6 Months</div></div>
                         <div class="col-6"><div class="select-btn duration-opt" onclick="selectDuration(this, 12)">12 Months</div></div>
                     </div>
@@ -271,12 +243,12 @@
     </div>
 
     <!-- ==========================================
-         ADMIN SECTION (100% FIXED)
+         ADMIN SECTION
     =========================================== -->
     <div id="adminSection" class="container container-custom d-none">
         
         <div id="loginScreen" class="card-main p-5 mt-5 text-center" style="max-width: 450px; margin: auto;">
-            <div class="mb-4"><i class="bi bi-shield-lock-fill text-primary" style="font-size: 4rem;"></i></div>
+            <div class="mb-4"><i class="bi bi-shield-lock-fill text-primary" style="font-size: 3rem;"></i></div>
             <h3 class="fw-bolder mb-2 text-dark">Admin Access</h3>
             <p id="passwordSetupMsg" class="text-muted fw-bold small mb-4">Verifying Security...</p>
             <div class="form-floating mb-4">
@@ -288,38 +260,72 @@
 
         <div id="adminDashboard" class="card-main d-none mt-2">
             <div class="admin-header d-flex justify-content-between align-items-center">
-                <h3 class="fw-bolder m-0"><i class="bi bi-pie-chart-fill text-warning me-2"></i> Business Hub</h3>
+                <h3 class="fw-bolder m-0"><i class="bi bi-bar-chart-line-fill me-2"></i> Business Hub</h3>
                 <div>
-                    <button class="btn btn-outline-light rounded-pill px-3 fw-bold me-2 shadow-sm" onclick="changeAdminPassword()"><i class="bi bi-key-fill"></i></button>
-                    <button class="btn btn-danger rounded-pill px-4 fw-bold shadow-sm" onclick="logoutAdmin()"><i class="bi bi-box-arrow-right me-1"></i> Logout</button>
+                    <button class="btn btn-light rounded-pill px-3 fw-bold me-2" onclick="changeAdminPassword()"><i class="bi bi-key-fill text-dark"></i></button>
+                    <button class="btn btn-danger rounded-pill px-4 fw-bold" onclick="logoutAdmin()"><i class="bi bi-box-arrow-right me-1"></i> Logout</button>
                 </div>
             </div>
 
-            <!-- ALL TABS RESTORED -->
             <ul class="nav nav-tabs" id="adminTabs" role="tablist">
-                <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabDashboard">Overview</button></li>
+                <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabDashboard">Overview & Peak</button></li>
                 <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabStaff">Staff Mgmt</button></li>
-                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabManage" onclick="playFetchAnimation(loadManageData)">Records</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabManage" onclick="loadManageData()">Records</button></li>
                 <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabSearch">Search Portal</button></li>
-                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabReminder" onclick="playFetchAnimation(loadReminders)">Reminders</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabReminder" onclick="loadReminders()">Reminders</button></li>
             </ul>
 
             <div class="tab-content tab-content-admin">
-                <!-- 1. OVERVIEW -->
+                <!-- 1. OVERVIEW & PEAK HOUR ANALYTICS -->
                 <div class="tab-pane show active" id="tabDashboard">
+                    <!-- Standard Overview -->
                     <div class="row g-3 mb-4">
                         <div class="col-md-5">
-                            <select id="dashTimeFilter" class="form-select bg-white shadow-sm" onchange="fetchDashboardData()">
-                                <option value="today">Today (आज)</option>
-                                <option value="all_time">All Time (शुरू से)</option>
+                            <select id="dashTimeFilter" class="form-select bg-white" onchange="fetchDashboardData()">
+                                <option value="today">Today</option>
+                                <option value="all_time">All Time</option>
                             </select>
                         </div>
                     </div>
-                    <div class="row g-4" id="dashboardStats">
-                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-2 fw-bold small">ENTRIES</p><h2 id="statTotal" class="text-primary fw-bolder m-0">0</h2></div></div>
-                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-2 fw-bold small">2 WHEELER</p><h2 id="stat2W" class="text-success fw-bolder m-0">0</h2></div></div>
-                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-2 fw-bold small">4 WHEELER</p><h2 id="stat4W" class="text-danger fw-bolder m-0">0</h2></div></div>
-                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-2 fw-bold small">FUEL (P / D)</p><h4 id="statFuel" class="text-dark fw-bolder m-0 mt-2">0 / 0</h4></div></div>
+                    <div class="row g-3 mb-5" id="dashboardStats">
+                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-1 fw-bold small">ENTRIES</p><h3 id="statTotal" class="text-primary fw-bolder m-0">0</h3></div></div>
+                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-1 fw-bold small">2 WHEELER</p><h3 id="stat2W" class="text-success fw-bolder m-0">0</h3></div></div>
+                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-1 fw-bold small">4 WHEELER</p><h3 id="stat4W" class="text-danger fw-bolder m-0">0</h3></div></div>
+                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-1 fw-bold small">FUEL (P/D)</p><h5 id="statFuel" class="text-dark fw-bolder m-0 mt-1">0 / 0</h5></div></div>
+                    </div>
+
+                    <!-- Peak Hour Analytics Feature -->
+                    <div class="stats-card text-start">
+                        <h5 class="fw-bolder mb-3"><i class="bi bi-graph-up-arrow text-primary me-2"></i> Peak Hour Analytics</h5>
+                        <div class="row g-2 align-items-end mb-3">
+                            <div class="col-md-3">
+                                <label class="small fw-bold text-muted mb-1">From Date</label>
+                                <input type="date" id="peakFromDate" class="form-control form-control-sm">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="small fw-bold text-muted mb-1">To Date</label>
+                                <input type="date" id="peakToDate" class="form-control form-control-sm">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="small fw-bold text-muted mb-1">Day of Week</label>
+                                <select id="peakDaySelect" class="form-select form-select-sm">
+                                    <option value="all">All Days</option>
+                                    <option value="1">Monday</option>
+                                    <option value="2">Tuesday</option>
+                                    <option value="3">Wednesday</option>
+                                    <option value="4">Thursday</option>
+                                    <option value="5">Friday</option>
+                                    <option value="6">Saturday</option>
+                                    <option value="0">Sunday</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-primary btn-sm w-100 fw-bold py-2" onclick="calculatePeakHour()">Analyze</button>
+                            </div>
+                        </div>
+                        <div id="peakHourResult" class="alert alert-primary border-0 fw-bold m-0 text-center">
+                            Calculating...
+                        </div>
                     </div>
                 </div>
 
@@ -328,19 +334,19 @@
                     <div class="row g-4">
                         <div class="col-md-6">
                             <div class="stats-card h-100 text-start bg-white">
-                                <h6 class="fw-bolder text-dark mb-4"><i class="bi bi-person-plus-fill me-2 text-primary"></i> Add Staff</h6>
-                                <div class="input-group mb-4 shadow-sm rounded-pill overflow-hidden border">
-                                    <input type="text" id="newStaffName" class="form-control border-0" style="background: rgba(255,255,255,0.8);" placeholder="Enter Staff Name">
-                                    <button class="btn btn-primary fw-bold px-4 border-0" onclick="addStaff()">Add</button>
+                                <h6 class="fw-bolder text-dark mb-3"><i class="bi bi-person-plus-fill me-2 text-primary"></i> Add Staff</h6>
+                                <div class="input-group mb-4 rounded-3 overflow-hidden border">
+                                    <input type="text" id="newStaffName" class="form-control border-0 bg-light" placeholder="Enter Staff Name">
+                                    <button class="btn btn-primary fw-bold px-4" onclick="addStaff()">Add</button>
                                 </div>
                                 <ul class="list-group list-group-flush" id="adminStaffList"></ul>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="stats-card h-100 text-start bg-white">
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <h6 class="fw-bolder text-dark m-0"><i class="bi bi-graph-up-arrow me-2 text-success"></i> Today's Leaderboard</h6>
-                                    <button class="btn btn-sm btn-light border rounded-circle shadow-sm" onclick="playFetchAnimation(loadStaffAnalytics)"><i class="bi bi-arrow-clockwise"></i></button>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h6 class="fw-bolder text-dark m-0"><i class="bi bi-award me-2 text-success"></i> Today's Leaderboard</h6>
+                                    <button class="btn btn-sm btn-light border" onclick="loadStaffAnalytics()"><i class="bi bi-arrow-clockwise"></i></button>
                                 </div>
                                 <div id="staffAnalyticsContainer"></div>
                             </div>
@@ -348,52 +354,52 @@
                     </div>
                 </div>
 
-                <!-- 3. RECORDS WITH ADVANCED ANALYTICS -->
+                <!-- 3. RECORDS -->
                 <div class="tab-pane" id="tabManage">
-                    <div class="row g-3 align-items-end mb-4 stats-card text-start bg-white">
-                        <div class="col-md-4"><label class="small text-muted fw-bold ms-1">From Date</label><input type="date" id="manageFrom" class="form-control" /></div>
-                        <div class="col-md-4"><label class="small text-muted fw-bold ms-1">To Date</label><input type="date" id="manageTo" class="form-control" /></div>
-                        <div class="col-md-2"><button class="btn btn-dark w-100 py-3 rounded-pill fw-bold shadow-sm" onclick="playFetchAnimation(loadManageData)">Fetch</button></div>
-                        <div class="col-md-2"><button class="btn btn-danger w-100 py-3 fw-bold rounded-pill shadow-sm" onclick="downloadPDF()"><i class="bi bi-file-pdf-fill"></i> PDF</button></div>
+                    <div class="row g-2 align-items-end mb-4 stats-card text-start bg-white p-3">
+                        <div class="col-md-4"><label class="small text-muted fw-bold">From Date</label><input type="date" id="manageFrom" class="form-control" /></div>
+                        <div class="col-md-4"><label class="small text-muted fw-bold">To Date</label><input type="date" id="manageTo" class="form-control" /></div>
+                        <div class="col-md-2"><button class="btn btn-dark w-100 py-2 fw-bold" onclick="loadManageData()">Fetch</button></div>
+                        <div class="col-md-2"><button class="btn btn-outline-danger w-100 py-2 fw-bold" onclick="downloadPDF()"><i class="bi bi-file-pdf-fill"></i> PDF</button></div>
                     </div>
                     
                     <div id="rangeAnalyticsContainer" class="mb-4"></div>
-
                     <div class="table-responsive table-modern">
-                        <table class="table mb-0 text-center align-middle" id="recordsTable">
+                        <table class="table mb-0 text-center" id="recordsTable">
                             <thead><tr><th>Vehicle</th><th>Mobile</th><th>Type</th><th>Staff</th><th>Dur.</th><th>Date</th><th>Del</th></tr></thead>
-                            <tbody id="manageTableBody"><tr><td colspan="7" class="py-5 text-muted fw-bold">Select dates and click Fetch</td></tr></tbody>
+                            <tbody id="manageTableBody"><tr><td colspan="7" class="py-4 text-muted fw-bold">Select dates and click Fetch</td></tr></tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- 4. SEARCH PORTAL RESTORED -->
+                <!-- 4. SEARCH PORTAL -->
                 <div class="tab-pane" id="tabSearch">
                     <div class="stats-card text-start bg-white">
                         <h5 class="fw-bolder text-dark mb-4"><i class="bi bi-search me-2 text-primary"></i> Customer Search Portal</h5>
-                        <div class="input-group mb-4 shadow-sm rounded-pill overflow-hidden border">
-                            <input type="text" id="portalSearchInput" class="form-control border-0 text-uppercase px-4" style="background: rgba(255,255,255,0.8);" placeholder="Enter Vehicle No. (e.g., HR12AB1234) or Mobile No.">
-                            <button class="btn btn-primary px-4 fw-bold border-0" onclick="playFetchAnimation(searchPortalData)">SEARCH</button>
+                        <div class="input-group mb-4 rounded-pill overflow-hidden border p-1 bg-light">
+                            <input type="text" id="portalSearchInput" class="form-control border-0 text-uppercase bg-transparent shadow-none" placeholder="Enter Vehicle No. (e.g., HR12...)">
+                            <button class="btn btn-primary rounded-pill px-4 fw-bold" onclick="searchPortalData()">SEARCH</button>
                         </div>
+                        <div id="searchLoader" class="sleek-loader"></div>
                         <div id="portalResultContainer">
                             <p class="text-muted text-center py-4 fw-bold">Search results will appear here...</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- 5. REMINDERS RESTORED -->
+                <!-- 5. REMINDERS -->
                 <div class="tab-pane" id="tabReminder">
-                    <ul class="nav nav-pills mb-4 p-2 rounded-pill shadow-sm d-inline-flex flex-wrap border bg-white" id="remSubTabs" role="tablist">
-                        <li class="nav-item"><button class="nav-link active rounded-pill px-4 fw-bold" data-bs-toggle="pill" data-bs-target="#remToday">⚠️ Today Expire</button></li>
-                        <li class="nav-item"><button class="nav-link rounded-pill px-4 fw-bold text-dark" data-bs-toggle="pill" data-bs-target="#remUpcoming">📅 In 5 Days</button></li>
-                        <li class="nav-item"><button class="nav-link rounded-pill px-4 text-danger fw-bold" data-bs-toggle="pill" data-bs-target="#remLost">💔 Lost Customers</button></li>
+                    <ul class="nav nav-pills mb-4 p-1 rounded-pill bg-light d-inline-flex flex-wrap border" id="remSubTabs">
+                        <li class="nav-item"><button class="nav-link active rounded-pill fw-bold" data-bs-toggle="pill" data-bs-target="#remToday">Today Expire</button></li>
+                        <li class="nav-item"><button class="nav-link rounded-pill fw-bold text-dark" data-bs-toggle="pill" data-bs-target="#remUpcoming">In 5 Days</button></li>
+                        <li class="nav-item"><button class="nav-link rounded-pill text-danger fw-bold" data-bs-toggle="pill" data-bs-target="#remLost">Lost Customers</button></li>
                     </ul>
                     <div class="tab-content">
-                        <div class="tab-pane show active" id="remToday"><div id="todayExpiryList" class="list-group shadow-sm border-0"></div></div>
-                        <div class="tab-pane" id="remUpcoming"><div id="upcomingExpiryList" class="list-group shadow-sm border-0"></div></div>
+                        <div class="tab-pane show active" id="remToday"><div id="todayExpiryList" class="list-group"></div></div>
+                        <div class="tab-pane" id="remUpcoming"><div id="upcomingExpiryList" class="list-group"></div></div>
                         <div class="tab-pane" id="remLost">
-                            <div class="alert alert-danger py-2 mb-3 fw-bold text-center border-0 rounded-4 shadow-sm small">ये वो गाड़ियां हैं जिनका PUC 15 दिन से ज्यादा समय से एक्सपायर है। Special Offer भेजें!</div>
-                            <div id="lostExpiryList" class="list-group shadow-sm border-0"></div>
+                            <div class="alert alert-danger py-2 mb-3 fw-bold text-center border-0 small">Expiring > 15 days ago. Send offers!</div>
+                            <div id="lostExpiryList" class="list-group"></div>
                         </div>
                     </div>
                 </div>
@@ -402,7 +408,7 @@
     </div>
 
     <!-- ==========================================
-         JAVASCRIPT LOGIC (PERFORMANCE OPTIMIZED + AI)
+         JAVASCRIPT LOGIC
     =========================================== -->
     <script>
         // ========== FIREBASE CONFIG ==========
@@ -442,136 +448,98 @@
         document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 const splash = document.getElementById('splashScreen');
-                if (splash) { splash.style.opacity = '0'; splash.style.visibility = 'hidden'; setTimeout(() => splash.remove(), 400); }
+                if (splash) { splash.style.opacity = '0'; splash.style.visibility = 'hidden'; setTimeout(() => splash.remove(), 300); }
                 document.getElementById('mainSection').classList.remove('d-none');
-            }, 800); 
+            }, 500); 
 
             bsEntryModal = new bootstrap.Modal(document.getElementById('entryModal'));
-            document.getElementById('todayDate').innerText = new Date().toLocaleDateString('hi-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            document.getElementById('todayDate').innerText = new Date().toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
             
-            document.getElementById('manageFrom').value = getLocalDate();
-            document.getElementById('manageTo').value = getLocalDate();
+            const todayStr = getLocalDate();
+            document.getElementById('manageFrom').value = todayStr;
+            document.getElementById('manageTo').value = todayStr;
+
+            // Setup default dates for Peak Hour Analytics
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            const yesterdayStr = getLocalDate(yesterday);
+            document.getElementById('peakFromDate').value = yesterdayStr;
+            document.getElementById('peakToDate').value = yesterdayStr;
 
             toggleFuel();
             initLiveClock();
-            initAIStatus(); 
+            initLastEntryListener();
             fetchStaffList();
         });
 
-        // ========== NEW: LIVE CLOCK & AI ENGINE (WEATHER + RUSH) ==========
+        // ========== LIVE CLOCK & LAST ENTRY ==========
         function initLiveClock() {
             setInterval(() => {
                 const now = new Date();
-                document.getElementById('liveClock').innerText = now.toLocaleTimeString('en-US', { hour12: true });
+                document.getElementById('liveClock').innerText = now.toLocaleTimeString('en-US', { hour12: true, hour: '2-digit', minute: '2-digit' });
                 
                 // Update Last Entry Timer
                 if(lastEntryDateObj) {
                     const diffMins = Math.floor((now - lastEntryDateObj) / 60000);
                     const timerElem = document.getElementById('lastEntryTimer');
-                    if(diffMins === 0) timerElem.innerHTML = '<i class="bi bi-stopwatch"></i> Last Entry: <span class="text-success ms-1">Just now</span>';
-                    else if(diffMins < 60) timerElem.innerHTML = `<i class="bi bi-stopwatch"></i> Last Entry: <span class="text-primary ms-1">${diffMins} min ago</span>`;
-                    else timerElem.innerHTML = `<i class="bi bi-stopwatch"></i> Last Entry: <span class="text-danger ms-1">${Math.floor(diffMins/60)} hr ago</span>`;
+                    if(diffMins === 0) timerElem.innerHTML = '<i class="bi bi-stopwatch text-success"></i> <span class="fw-bold">Just now</span>';
+                    else if(diffMins < 60) timerElem.innerHTML = `<i class="bi bi-stopwatch text-primary"></i> <span>${diffMins} min ago</span>`;
+                    else timerElem.innerHTML = `<i class="bi bi-stopwatch text-muted"></i> <span>${Math.floor(diffMins/60)} hr ago</span>`;
                 }
-            }, 1000);
+            }, 10000); // Check every 10 seconds for performance
         }
 
-        async function initAIStatus() {
-            const aiStatusElem = document.getElementById('aiStatus');
-            let isRaining = false;
-            
-            // 1. Fetch Live Weather for Bahadurgarh (Lat: 28.68, Lon: 76.92)
-            try {
-                const weatherRes = await fetch('https://api.open-meteo.com/v1/forecast?latitude=28.68&longitude=76.92&current_weather=true');
-                const weatherData = await weatherRes.json();
-                const code = weatherData.current_weather.weathercode;
-                isRaining = (code >= 51 && code <= 99); // Rain or drizzle codes
-            } catch (error) { console.log("Weather API error"); }
-            
-            // 2. Predict Peak Hour (Smart logic for Sundays vs Weekdays)
-            const peakHour = getSmartPeakHourForToday();
-
-            // 3. Listen to DB for Last Entry
+        function initLastEntryListener() {
+            // Listen to DB for Last Entry
             db.collection(RECORDS_COLLECTION).orderBy('createdAt', 'desc').limit(1).onSnapshot(snap => {
                 if(!snap.empty) {
                     const data = snap.docs[0].data();
                     lastEntryDateObj = data.createdAt ? data.createdAt.toDate() : new Date();
                 }
             });
-
-            // 4. Update Status Live based on Time & Weather
-            setInterval(() => {
-                const currentHour = new Date().getHours();
-                
-                if(isRaining) {
-                    aiStatusElem.innerHTML = `<i class="bi bi-cloud-rain-fill me-2 fs-5"></i> Bad Weather: Expect Slow Business`;
-                    aiStatusElem.className = 'ai-status-text glow-blue';
-                } else if (currentHour === peakHour) {
-                    aiStatusElem.innerHTML = `<i class="bi bi-fire me-2 fs-5"></i> Peak Rush Hour: Get Ready!`;
-                    aiStatusElem.className = 'ai-status-text glow-red';
-                } else {
-                    aiStatusElem.innerHTML = `<i class="bi bi-cup-hot-fill me-2 fs-5"></i> Normal Business Hours`;
-                    aiStatusElem.className = 'ai-status-text glow-yellow';
-                }
-            }, 1000);
         }
 
-        function getSmartPeakHourForToday() {
-            const day = new Date().getDay(); // 0 = Sunday
-            return (day === 0) ? 13 : 11; // Sundays rush at 1 PM, Mon-Sat rush at 11 AM
-        }
-
-        // ========== 2. SVG DRAWING ANIMATION & SAVING LOGIC ==========
+        // ========== SAVING LOGIC ==========
         window.finalizeSubmitAndSave = function() {
-            if(!selectedStaff) return Swal.fire({ icon: 'warning', text: 'कृपया स्टाफ का नाम चुनें!' });
-            if(!selectedDuration) return Swal.fire({ icon: 'warning', text: 'कृपया 6 या 12 महीने चुनें!' });
+            if(!selectedStaff) return Swal.fire({ icon: 'warning', text: 'Please select a staff member!' });
+            if(!selectedDuration) return Swal.fire({ icon: 'warning', text: 'Please select duration!' });
 
             bsEntryModal.hide();
 
-            setTimeout(() => {
-                Swal.fire({
-                    title: 'Saving Data...',
-                    html: '<div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>',
-                    showConfirmButton: false, allowOutsideClick: false
-                });
-
-                const today = new Date(); const expiryDate = new Date(today);
-                expiryDate.setMonth(expiryDate.getMonth() + selectedDuration); expiryDate.setDate(expiryDate.getDate() - 1); 
-                
-                db.collection(RECORDS_COLLECTION).add({
-                    vehicleNo: pendingFormData.vehicle, mobileNo: pendingFormData.mobile, vehicleType: pendingFormData.type, fuel: pendingFormData.fuel,
-                    durationMonths: selectedDuration, staffName: selectedStaff, purchaseDate: getLocalDate(today), expiryDate: getLocalDate(expiryDate), createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                }).then(() => {
-                    Swal.close();
-                    setTimeout(() => {
-                        Swal.fire({
-                            html: `
-                                <svg class="gpay-svg" viewBox="0 0 100 100">
-                                    <circle class="gpay-circle" cx="50" cy="50" r="45"></circle>
-                                    <path class="gpay-tick" d="M30 50 L45 65 L70 30"></path>
-                                </svg>
-                                <h1 style="color: #10b981; font-weight: 900; margin-top: 15px; letter-spacing:1px;">SUCCESS!</h1>
-                                <p style="color: rgba(255,255,255,0.9); font-size: 1.1rem; font-weight: 600;">Data Saved</p>
-                            `,
-                            showConfirmButton: false, timer: 2000, timerProgressBar: true, allowOutsideClick: true,
-                            customClass: { popup: 'custom-payment-popup' }, showClass: { popup: '' }, hideClass: { popup: 'custom-zoom-out' }
-                        });
-                        document.getElementById('vehicleNo').value = ''; document.getElementById('mobileNo').value = ''; document.getElementById('vipBadge').style.display = 'none'; document.getElementById('historyAlert').style.display = 'none';
-                        resetModalSelections(); pendingFormData = {};
-                        lastEntryDateObj = new Date(); // Instant update
-                    }, 100);
-                }).catch(err => { Swal.fire('Error', err.message, 'error'); });
-            }, 300); 
-        };
-
-        window.playFetchAnimation = function(callbackFunction) {
             Swal.fire({
-                title: '<span style="color:var(--accent-blue); font-weight:800;">Scanning Records...</span>',
-                html: `<div class="scan-scene mt-3"><div class="s-paper">📄</div><div class="s-glass">🔍</div></div>`,
-                showConfirmButton: false, timer: 800, background: 'rgba(255,255,255,0.9)', backdrop: 'rgba(0,0,0,0.4)'
-            }).then(() => { if(callbackFunction) callbackFunction(); });
+                title: 'Saving Data...',
+                html: '<div class="sleek-loader" style="display:block; margin: 20px auto;"></div>',
+                showConfirmButton: false, allowOutsideClick: false
+            });
+
+            const today = new Date(); 
+            const expiryDate = new Date(today);
+            expiryDate.setMonth(expiryDate.getMonth() + selectedDuration); 
+            expiryDate.setDate(expiryDate.getDate() - 1); 
+            
+            db.collection(RECORDS_COLLECTION).add({
+                vehicleNo: pendingFormData.vehicle, 
+                mobileNo: pendingFormData.mobile, 
+                vehicleType: pendingFormData.type, 
+                fuel: pendingFormData.fuel,
+                durationMonths: selectedDuration, 
+                staffName: selectedStaff, 
+                purchaseDate: getLocalDate(today), 
+                expiryDate: getLocalDate(expiryDate), 
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                Swal.fire({ icon: 'success', title: 'Saved Successfully', timer: 1500, showConfirmButton: false });
+                document.getElementById('vehicleNo').value = ''; 
+                document.getElementById('mobileNo').value = ''; 
+                document.getElementById('vipBadge').style.display = 'none'; 
+                document.getElementById('historyAlert').style.display = 'none';
+                resetModalSelections(); 
+                pendingFormData = {};
+                lastEntryDateObj = new Date();
+            }).catch(err => { Swal.fire('Error', err.message, 'error'); });
         };
 
-        // ========== 3. PREVIOUS HISTORY & AUTO-FILL ==========
+        // ========== PREVIOUS HISTORY & AUTO-FILL ==========
         window.toggleFuel = function() {
             const fuelSelect = document.getElementById('fuelType');
             const isFour = document.getElementById('fourW').checked;
@@ -599,13 +567,11 @@
                     badge.style.display = 'block';
                     historyAlert.innerHTML = `
                         <div class="d-flex justify-content-between align-items-center">
-                            <div><i class="bi bi-clock-history me-2 text-warning fs-5"></i><strong class="text-dark">Previous Details</strong></div>
-                            <span class="badge bg-primary rounded-pill px-3">${d.durationMonths} Months</span>
+                            <div><i class="bi bi-clock-history me-1"></i> <strong>History Found</strong></div>
+                            <span class="badge bg-primary">${d.durationMonths} Months</span>
                         </div>
-                        <hr class="my-2 opacity-25">
-                        <div class="row text-muted fw-bold small">
-                            <div class="col-6">Made On: <span class="text-dark">${d.purchaseDate}</span></div>
-                            <div class="col-6 text-end">Expiry: <span class="text-danger">${d.expiryDate}</span></div>
+                        <div class="mt-2 text-dark small fw-bold">
+                            Date: ${d.purchaseDate} &nbsp;|&nbsp; Exp: <span class="text-danger">${d.expiryDate}</span>
                         </div>
                     `;
                     historyAlert.style.display = 'block';
@@ -631,7 +597,7 @@
         window.selectDuration = function(elem, months) { document.querySelectorAll('.duration-opt').forEach(el => el.classList.remove('active-duration')); elem.classList.add('active-duration'); selectedDuration = months; };
         window.resetModalSelections = function() { selectedStaff = ""; selectedDuration = 0; document.querySelectorAll('.staff-opt').forEach(el => el.classList.remove('active-staff')); document.querySelectorAll('.duration-opt').forEach(el => el.classList.remove('active-duration')); };
 
-        // ========== BACKGROUND WORKER (PC Notification) ==========
+        // ========== BACKGROUND WORKER ==========
         function initBackgroundWorker() {
             const workerCode = `let intervalTimer = null; self.onmessage = function(e) { if (e.data === 'start') { intervalTimer = setInterval(() => { self.postMessage('triggerNotification'); }, 30000); } else if (e.data === 'stop') { clearInterval(intervalTimer); } };`;
             const blob = new Blob([workerCode], { type: 'application/javascript' });
@@ -640,6 +606,7 @@
         }
 
         window.toggleBackgroundWorker = function() {
+            if(!backgroundWorker) initBackgroundWorker();
             if (document.getElementById('reminderToggle').checked) {
                 if (!("Notification" in window)) return Swal.fire({ icon: 'error', text: 'Browser Notification not supported' });
                 if (Notification.permission !== "granted") {
@@ -653,7 +620,7 @@
 
         function showOSNotification() {
             if (Notification.permission === "granted") {
-                const notif = new Notification("Shree Ganesh PUC", { body: "⚠️ भाई, गाड़ी की एंट्री करना मत भूलना!", requireInteraction: false });
+                const notif = new Notification("TyreXpert Alert", { body: "Please ensure all entries are recorded!", requireInteraction: false });
                 setTimeout(() => { notif.close(); }, 5000); 
             }
         }
@@ -665,7 +632,7 @@
                 main.classList.add('d-none'); admin.classList.remove('d-none');
                 btn.innerHTML = '<i class="bi bi-arrow-left-circle-fill me-1"></i> Back'; 
                 if (!isAdminLoggedIn) { document.getElementById('loginScreen').classList.remove('d-none'); document.getElementById('adminDashboard').classList.add('d-none'); checkPasswordExists(); } 
-                else { fetchDashboardData(); }
+                else { fetchDashboardData(); calculatePeakHour(); }
             } else {
                 main.classList.remove('d-none'); admin.classList.add('d-none');
                 btn.innerHTML = '<i class="bi bi-shield-lock-fill me-1"></i> Admin Panel'; 
@@ -681,12 +648,12 @@
             const input = document.getElementById('adminPasswordInput').value;
             if(!input) return;
             const doc = await db.collection(ADMIN_COLLECTION).doc('config').get();
-            if (!doc.exists || !doc.data().password) { await db.collection(ADMIN_COLLECTION).doc('config').set({ password: input }, {merge: true}); document.getElementById('adminPasswordInput').value = ''; isAdminLoggedIn = true; fetchDashboardData(); document.getElementById('loginScreen').classList.add('d-none'); document.getElementById('adminDashboard').classList.remove('d-none'); } 
-            else { if (input === doc.data().password) { isAdminLoggedIn = true; fetchDashboardData(); document.getElementById('loginScreen').classList.add('d-none'); document.getElementById('adminDashboard').classList.remove('d-none'); } else { Swal.fire({ toast: true, icon: 'error', title: 'Wrong Password!', position: 'top', timer: 2000, showConfirmButton: false }); } }
+            if (!doc.exists || !doc.data().password) { await db.collection(ADMIN_COLLECTION).doc('config').set({ password: input }, {merge: true}); document.getElementById('adminPasswordInput').value = ''; isAdminLoggedIn = true; fetchDashboardData(); calculatePeakHour(); document.getElementById('loginScreen').classList.add('d-none'); document.getElementById('adminDashboard').classList.remove('d-none'); } 
+            else { if (input === doc.data().password) { isAdminLoggedIn = true; fetchDashboardData(); calculatePeakHour(); document.getElementById('loginScreen').classList.add('d-none'); document.getElementById('adminDashboard').classList.remove('d-none'); } else { Swal.fire({ toast: true, icon: 'error', title: 'Wrong Password!', position: 'top', timer: 2000, showConfirmButton: false }); } }
         };
 
         window.changeAdminPassword = async function() {
-            const { value: newPassword } = await Swal.fire({ title: 'Change Password', input: 'password', inputPlaceholder: 'New Password', showCancelButton: true, confirmButtonColor: '#0d6efd' });
+            const { value: newPassword } = await Swal.fire({ title: 'Change Password', input: 'password', inputPlaceholder: 'New Password', showCancelButton: true });
             if (newPassword) { await db.collection(ADMIN_COLLECTION).doc('config').update({ password: newPassword }); Swal.fire({ icon: 'success', title: 'Password Changed!', timer: 2000, showConfirmButton: false }); }
         };
 
@@ -694,11 +661,11 @@
 
         // ========== STAFF MANAGEMENT ==========
         function fetchStaffList() { db.collection(ADMIN_COLLECTION).doc('staffConfig').get().then(doc => { globalStaffList = (doc.exists && doc.data().list) ? doc.data().list : ["Laddu", "Haider", "Arwaz", "Ankit"]; }).catch(() => { globalStaffList = ["Laddu", "Haider", "Arwaz", "Ankit"]; }); }
-        function fetchStaffListAdmin() { const container = document.getElementById('adminStaffList'); container.innerHTML = ''; globalStaffList.forEach((name, index) => { container.innerHTML += `<li class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 border-bottom bg-transparent"><span class="fw-bold text-dark"><i class="bi bi-person-badge text-primary me-2"></i> ${name}</span><button class="btn btn-sm btn-outline-danger rounded-circle shadow-sm" onclick="removeStaff(${index})"><i class="bi bi-trash"></i></button></li>`; }); }
+        function fetchStaffListAdmin() { const container = document.getElementById('adminStaffList'); container.innerHTML = ''; globalStaffList.forEach((name, index) => { container.innerHTML += `<li class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 border-bottom"><span class="fw-bold text-dark"><i class="bi bi-person-fill text-primary me-2"></i> ${name}</span><button class="btn btn-sm btn-light border rounded-circle text-danger" onclick="removeStaff(${index})"><i class="bi bi-trash"></i></button></li>`; }); }
         window.addStaff = function() { const input = document.getElementById('newStaffName'); const name = input.value.trim(); if(!name || globalStaffList.includes(name)) return; globalStaffList.push(name); db.collection(ADMIN_COLLECTION).doc('staffConfig').set({ list: globalStaffList }, {merge: true}).then(() => { input.value = ''; fetchStaffListAdmin(); Swal.fire({ toast:true, icon:'success', title:'Added!', position:'top', showConfirmButton:false, timer:1500}); }); };
-        window.removeStaff = function(index) { Swal.fire({ title: 'Delete?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#dc3545' }).then((r) => { if (r.isConfirmed) { globalStaffList.splice(index, 1); db.collection(ADMIN_COLLECTION).doc('staffConfig').set({ list: globalStaffList }, {merge: true}).then(() => { fetchStaffListAdmin(); }); } }); };
+        window.removeStaff = function(index) { Swal.fire({ title: 'Delete?', icon: 'warning', showCancelButton: true }).then((r) => { if (r.isConfirmed) { globalStaffList.splice(index, 1); db.collection(ADMIN_COLLECTION).doc('staffConfig').set({ list: globalStaffList }, {merge: true}).then(() => { fetchStaffListAdmin(); }); } }); };
 
-        // ========== ADMIN TABS DATA & PDF ==========
+        // ========== ADMIN DASHBOARD & PEAK HOUR ==========
         window.fetchDashboardData = function() {
             const tFilter = document.getElementById('dashTimeFilter').value; const todayStr = getLocalDate();
             let query = db.collection(RECORDS_COLLECTION); if (tFilter === 'today') { query = query.where('purchaseDate', '==', todayStr); }
@@ -707,56 +674,101 @@
                 snap.forEach(doc => { const data = doc.data(); total++; if (data.vehicleType === '2 Wheeler') twoW++; else fourW++; if (data.fuel === 'Petrol') p++; else if (data.fuel === 'Diesel') d++; });
                 document.getElementById('statTotal').innerText = total; document.getElementById('stat2W').innerText = twoW; document.getElementById('stat4W').innerText = fourW; document.getElementById('statFuel').innerText = `${p} / ${d}`;
             });
+            loadStaffAnalytics();
+        };
+
+        window.calculatePeakHour = async function() {
+            const fromDate = document.getElementById('peakFromDate').value;
+            const toDate = document.getElementById('peakToDate').value;
+            const dayFilter = document.getElementById('peakDaySelect').value;
+            const resultDiv = document.getElementById('peakHourResult');
+            
+            if(!fromDate || !toDate) return;
+            resultDiv.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Analyzing data...';
+
+            try {
+                const snap = await db.collection(RECORDS_COLLECTION)
+                    .where('purchaseDate', '>=', fromDate)
+                    .where('purchaseDate', '<=', toDate)
+                    .get();
+
+                if(snap.empty) {
+                    resultDiv.innerHTML = 'No entries found in this date range.';
+                    return;
+                }
+
+                let hourCounts = new Array(24).fill(0);
+                let validRecordsCount = 0;
+
+                snap.forEach(doc => {
+                    const data = doc.data();
+                    if(data.createdAt) {
+                        const dateObj = data.createdAt.toDate();
+                        const recordDay = dateObj.getDay().toString(); // 0-6
+                        
+                        // Apply Day of Week filter
+                        if (dayFilter === 'all' || dayFilter === recordDay) {
+                            hourCounts[dateObj.getHours()]++;
+                            validRecordsCount++;
+                        }
+                    }
+                });
+
+                if(validRecordsCount === 0) {
+                    resultDiv.innerHTML = 'No data matching selected day of the week in this range.';
+                    return;
+                }
+
+                const maxCount = Math.max(...hourCounts);
+                const peakHourStart = hourCounts.indexOf(maxCount);
+                
+                // Format AM/PM
+                const formatHour = (h) => {
+                    let ampm = h >= 12 ? 'PM' : 'AM';
+                    let hr = h % 12;
+                    if(hr === 0) hr = 12;
+                    return `${hr} ${ampm}`;
+                };
+
+                const timeString = `${formatHour(peakHourStart)} - ${formatHour((peakHourStart + 1) % 24)}`;
+                resultDiv.innerHTML = `Most busy time was <strong>${timeString}</strong> with <strong class="text-success">${maxCount}</strong> entries.`;
+
+            } catch (err) {
+                resultDiv.innerHTML = 'Error calculating data.';
+                console.error(err);
+            }
         };
 
         window.loadStaffAnalytics = function() {
             const todayStr = getLocalDate(); const container = document.getElementById('staffAnalyticsContainer');
             db.collection(RECORDS_COLLECTION).where('purchaseDate', '==', todayStr).get().then(snap => {
-                if(snap.empty){ container.innerHTML = '<p class="text-muted fw-bold text-center mt-3">No Entries Today</p>'; return; }
+                if(snap.empty){ container.innerHTML = '<p class="text-muted fw-bold small text-center mt-3">No Entries Today</p>'; return; }
                 let counts = {}; snap.forEach(doc => { const sName = doc.data().staffName || 'Unknown'; counts[sName] = (counts[sName] || 0) + 1; });
                 let sortedStaff = Object.entries(counts).sort((a, b) => b[1] - a[1]); container.innerHTML = '';
-                sortedStaff.forEach(([name, count], index) => { let medal = index === 0 ? '🏆' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🔹'; container.innerHTML += `<div class="d-flex justify-content-between align-items-center mb-3 bg-light p-3 rounded-4 border shadow-sm"><span class="fw-bolder text-dark">${medal} ${name}</span><span class="badge bg-primary rounded-pill px-3">${count}</span></div>`; });
+                sortedStaff.forEach(([name, count], index) => { let medal = index === 0 ? '🏆' : '🔹'; container.innerHTML += `<div class="d-flex justify-content-between align-items-center mb-2 bg-light p-2 rounded border"><span class="fw-bolder text-dark">${medal} ${name}</span><span class="badge bg-primary px-3 rounded-pill">${count}</span></div>`; });
             });
         };
 
         window.loadManageData = function() {
             const fromDate = document.getElementById('manageFrom').value, toDate = document.getElementById('manageTo').value; 
             const tbody = document.getElementById('manageTableBody');
-            const analyticsContainer = document.getElementById('rangeAnalyticsContainer');
             
             if(!fromDate || !toDate) return;
+            tbody.innerHTML = '<tr><td colspan="7"><div class="sleek-loader" style="display:block;"></div></td></tr>';
+
             db.collection(RECORDS_COLLECTION).where('purchaseDate', '>=', fromDate).where('purchaseDate', '<=', toDate).get().then(snap => {
                 currentFetchRecords = []; 
                 if (snap.empty) { 
-                    tbody.innerHTML = '<tr><td colspan="8" class="text-muted fw-bold py-5">No Records Found</td></tr>'; 
-                    if(analyticsContainer) analyticsContainer.innerHTML = '';
+                    tbody.innerHTML = '<tr><td colspan="7" class="text-muted fw-bold py-4">No Records Found</td></tr>'; 
                     return; 
                 }
                 
-                let staffStats = {}; let tot2w = 0, tot4w = 0;
-                snap.forEach(doc => {
-                    const data = doc.data();
-                    currentFetchRecords.push({ id: doc.id, ...data });
-                    let sName = data.staffName || 'Unknown';
-                    if(!staffStats[sName]) staffStats[sName] = { total: 0, w2: 0, w4: 0 };
-                    staffStats[sName].total++;
-                    if(data.vehicleType === '2 Wheeler') { tot2w++; staffStats[sName].w2++; } else { tot4w++; staffStats[sName].w4++; }
-                }); 
-                
+                snap.forEach(doc => { currentFetchRecords.push({ id: doc.id, ...doc.data() }); }); 
                 currentFetchRecords.sort((a, b) => new Date(b.purchaseDate) - new Date(a.purchaseDate)); 
                 
-                // Advanced Range Analytics HTML
-                if(analyticsContainer) {
-                    let analyticsHtml = `<div class="row g-3"><div class="col-12"><div class="d-flex justify-content-between bg-primary text-white p-3 rounded-4 shadow-sm fw-bold"><span><i class="bi bi-bar-chart-fill me-2"></i> Range Total: ${currentFetchRecords.length}</span><span>🚲 2W: ${tot2w} &nbsp;|&nbsp; 🚗 4W: ${tot4w}</span></div></div>`;
-                    for(let s in staffStats) {
-                        analyticsHtml += `<div class="col-md-6 col-lg-4"><div class="bg-white border rounded-4 p-3 shadow-sm text-center"><h6 class="fw-bolder text-primary mb-2">${s} <span class="badge bg-dark rounded-pill float-end">${staffStats[s].total}</span></h6><div class="d-flex justify-content-around small fw-bold text-muted mt-2 border-top pt-2"><span>2W: <span class="text-success">${staffStats[s].w2}</span></span><span>4W: <span class="text-danger">${staffStats[s].w4}</span></span></div></div></div>`;
-                    }
-                    analyticsContainer.innerHTML = analyticsHtml + `</div>`;
-                }
-
                 tbody.innerHTML = '';
                 currentFetchRecords.forEach(d => { 
-                    tbody.innerHTML += `<tr><td class="fw-bolder text-dark">${d.vehicleNo}</td><td><span class="fw-bold">${d.mobileNo}</span> <i class="bi bi-pencil-square text-primary ms-1" style="cursor:pointer;" onclick="editMobile('${d.id}', '${d.mobileNo}')"></i></td><td><span class="badge bg-secondary">${d.vehicleType === '2 Wheeler' ? '2W' : '4W'}</span><br><small class="text-muted">${d.fuel}</small></td><td class="fw-bold text-muted">${d.staffName || '-'}</td><td class="fw-bold text-primary">${d.durationMonths || '-'}M</td><td class="text-muted small">${d.purchaseDate}</td><td class="text-danger fw-bold small">${d.expiryDate || '-'}</td><td><button class="btn btn-sm btn-outline-danger rounded-circle shadow-sm" onclick="deleteRecord('${d.id}')"><i class="bi bi-trash"></i></button></td></tr>`; 
+                    tbody.innerHTML += `<tr><td class="fw-bolder text-dark">${d.vehicleNo}</td><td><span class="fw-bold">${d.mobileNo}</span> <i class="bi bi-pencil-square text-primary ms-1" style="cursor:pointer;" onclick="editMobile('${d.id}', '${d.mobileNo}')"></i></td><td><span class="badge bg-secondary">${d.vehicleType === '2 Wheeler' ? '2W' : '4W'}</span></td><td class="fw-bold text-muted">${d.staffName || '-'}</td><td class="fw-bold text-primary">${d.durationMonths || '-'}M</td><td class="text-muted small">${d.purchaseDate}</td><td><button class="btn btn-sm btn-light text-danger" onclick="deleteRecord('${d.id}')"><i class="bi bi-trash"></i></button></td></tr>`; 
                 });
             });
         };
@@ -764,61 +776,68 @@
         window.downloadPDF = function() {
             if(currentFetchRecords.length === 0) return Swal.fire({ icon: 'error', text: 'No records to download!' });
             const { jsPDF } = window.jspdf; const doc = new jsPDF();
-            doc.setFontSize(16); doc.text("Shree Ganesh PUC Center - Business Report", 14, 20); doc.setFontSize(10); doc.text(`Report Generated On: ${getLocalDate()}`, 14, 28);
-            const tableColumn = ["Vehicle No", "Mobile", "Type", "Fuel", "Staff", "Dur.", "Created", "Expiry"]; const tableRows = [];
-            currentFetchRecords.forEach(d => { tableRows.push([d.vehicleNo, d.mobileNo, d.vehicleType, d.fuel, d.staffName, `${d.durationMonths}M`, d.purchaseDate, d.expiryDate]); });
-            doc.autoTable({ head: [tableColumn], body: tableRows, startY: 35, theme: 'grid', styles: { fontSize: 8 }, headStyles: { fillColor: [13, 110, 253] } });
-            doc.save(`PUC_Report_${getLocalDate()}.pdf`);
+            doc.setFontSize(16); doc.text("TyreXpert - Business Report", 14, 20); doc.setFontSize(10); doc.text(`Report Generated On: ${getLocalDate()}`, 14, 28);
+            const tableColumn = ["Vehicle No", "Mobile", "Type", "Staff", "Dur.", "Created", "Expiry"]; const tableRows = [];
+            currentFetchRecords.forEach(d => { tableRows.push([d.vehicleNo, d.mobileNo, d.vehicleType, d.staffName, `${d.durationMonths}M`, d.purchaseDate, d.expiryDate]); });
+            doc.autoTable({ head: [tableColumn], body: tableRows, startY: 35, theme: 'grid', styles: { fontSize: 8 }, headStyles: { fillColor: [37, 99, 235] } });
+            doc.save(`TyreXpert_Report_${getLocalDate()}.pdf`);
         };
 
-        // RESTORED: SEARCH PORTAL
+        // ========== FAST SEARCH PORTAL ==========
         window.searchPortalData = function() {
-            const searchVal = document.getElementById('portalSearchInput').value.trim().toUpperCase(); const container = document.getElementById('portalResultContainer');
+            const searchVal = document.getElementById('portalSearchInput').value.trim().toUpperCase(); 
+            const container = document.getElementById('portalResultContainer');
+            const loader = document.getElementById('searchLoader');
+
             if(!searchVal) return;
-            container.innerHTML = `<div class="text-center py-4"><div class="spinner-border text-primary"></div></div>`;
+            container.innerHTML = '';
+            loader.style.display = 'block';
             
             Promise.all([
                 db.collection(RECORDS_COLLECTION).where('vehicleNo', '==', searchVal).get(),
                 db.collection(RECORDS_COLLECTION).where('mobileNo', '==', searchVal).get()
             ]).then(snapshots => {
+                loader.style.display = 'none';
                 let resultsMap = new Map();
-                snapshots[0].forEach(doc => resultsMap.set(doc.id, doc.data())); snapshots[1].forEach(doc => resultsMap.set(doc.id, doc.data()));
+                snapshots[0].forEach(doc => resultsMap.set(doc.id, doc.data())); 
+                snapshots[1].forEach(doc => resultsMap.set(doc.id, doc.data()));
 
-                if (resultsMap.size === 0) { container.innerHTML = '<p class="text-danger text-center py-4 fw-bold">No records found for this input.</p>'; return; }
+                if (resultsMap.size === 0) { container.innerHTML = '<p class="text-danger text-center py-4 fw-bold">No records found.</p>'; return; }
 
-                let arr = Array.from(resultsMap.values()).sort((a, b) => new Date(b.purchaseDate) - new Date(a.purchaseDate)); container.innerHTML = '';
+                let arr = Array.from(resultsMap.values()).sort((a, b) => new Date(b.purchaseDate) - new Date(a.purchaseDate)); 
                 arr.forEach(d => {
                     let statusBadge = new Date(d.expiryDate) < new Date(getLocalDate()) ? '<span class="badge bg-danger ms-2">EXPIRED</span>' : '<span class="badge bg-success ms-2">ACTIVE</span>';
-                    container.innerHTML += `<div class="card mb-3 shadow-sm border-0" style="border-left: 5px solid var(--accent-blue) !important; background: rgba(255,255,255,0.7); backdrop-filter: blur(10px);"><div class="card-body"><h5 class="fw-bolder text-dark mb-1">${d.vehicleNo} ${statusBadge}</h5><h6 class="text-primary fw-bold mb-3"><i class="bi bi-telephone-fill me-1"></i> ${d.mobileNo}</h6><div class="row small fw-bold text-muted g-2"><div class="col-6">Type: <span class="text-dark">${d.vehicleType}</span></div><div class="col-6">Fuel: <span class="text-dark">${d.fuel}</span></div><div class="col-6">Duration: <span class="text-primary">${d.durationMonths} Months</span></div><div class="col-6">Staff: <span class="text-dark">${d.staffName}</span></div><div class="col-6">Created: <span class="text-dark">${d.purchaseDate}</span></div><div class="col-6 text-danger">Expires: ${d.expiryDate}</div></div></div></div>`;
+                    container.innerHTML += `<div class="card mb-3 shadow-sm border p-3 rounded-4"><h5 class="fw-bolder text-dark mb-1">${d.vehicleNo} ${statusBadge}</h5><h6 class="text-primary fw-bold mb-3"><i class="bi bi-telephone-fill me-1"></i> ${d.mobileNo}</h6><div class="row small fw-bold text-muted g-2"><div class="col-6">Type: <span class="text-dark">${d.vehicleType}</span></div><div class="col-6">Duration: <span class="text-primary">${d.durationMonths} Months</span></div><div class="col-6">Created: <span class="text-dark">${d.purchaseDate}</span></div><div class="col-6 text-danger">Expires: ${d.expiryDate}</div></div></div>`;
                 });
             });
         };
 
-        window.editMobile = function(docId, oldMobile) { Swal.fire({ title: 'Update Mobile', input: 'number', inputValue: oldMobile, showCancelButton: true, confirmButtonColor: '#0d6efd' }).then((r) => { if (r.isConfirmed && r.value && r.value !== oldMobile) { db.collection(RECORDS_COLLECTION).doc(docId).update({ mobileNo: r.value }).then(() => { playFetchAnimation(loadManageData); }); } }); };
-        window.deleteRecord = function(docId) { Swal.fire({ title: 'Delete?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#dc3545' }).then((r) => { if (r.isConfirmed) { db.collection(RECORDS_COLLECTION).doc(docId).delete().then(() => { playFetchAnimation(loadManageData); }); } }); };
+        window.editMobile = function(docId, oldMobile) { Swal.fire({ title: 'Update Mobile', input: 'number', inputValue: oldMobile, showCancelButton: true }).then((r) => { if (r.isConfirmed && r.value && r.value !== oldMobile) { db.collection(RECORDS_COLLECTION).doc(docId).update({ mobileNo: r.value }).then(() => { loadManageData(); }); } }); };
+        window.deleteRecord = function(docId) { Swal.fire({ title: 'Delete?', icon: 'warning', showCancelButton: true }).then((r) => { if (r.isConfirmed) { db.collection(RECORDS_COLLECTION).doc(docId).delete().then(() => { loadManageData(); }); } }); };
 
-        // RESTORED: REMINDERS
+        // ========== REMINDERS ==========
         window.loadReminders = function() {
-            const todayStr = getLocalDate(new Date()); const fDate = new Date(); fDate.setDate(fDate.getDate() + 5); const futureStr = getLocalDate(fDate);
+            const todayStr = getLocalDate(new Date()); 
+            const fDate = new Date(); fDate.setDate(fDate.getDate() + 5); const futureStr = getLocalDate(fDate);
             const past15Date = new Date(); past15Date.setDate(past15Date.getDate() - 15); const past15Str = getLocalDate(past15Date);
             const past6Months = new Date(); past6Months.setMonth(past6Months.getMonth() - 6); const past6MStr = getLocalDate(past6Months);
 
             db.collection(RECORDS_COLLECTION).where('expiryDate', '==', todayStr).get().then(snap => {
                 const container = document.getElementById('todayExpiryList'); container.innerHTML = '';
-                if (snap.empty) container.innerHTML = '<p class="text-muted fw-bold p-4 text-center border rounded-4 bg-light">No Expiry Today</p>';
-                else { snap.forEach(doc => { const d = doc.data(); const msg = `🚨 *PUC Expiry Alert*\n\nनमस्ते, आपकी गाड़ी *${d.vehicleNo}* का PUC आज खत्म हो रहा है! चालान से बचने के लिए तुरंत रिन्यू कराएं।\n\n📍 *Shree Ganesh PUC Center*`; container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-3 border-0 rounded-4 p-4 shadow-sm"><span><strong class="fs-5 text-dark">${d.vehicleNo}</strong><br><small class="text-muted">${d.mobileNo}</small></span><button class="btn btn-success fw-bold rounded-pill px-4 py-2" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-whatsapp me-1"></i> Send</button></div>`; }); }
+                if (snap.empty) container.innerHTML = '<p class="text-muted fw-bold p-3 text-center bg-light rounded">No Expiry Today</p>';
+                else { snap.forEach(doc => { const d = doc.data(); const msg = `🚨 *PUC Expiry Alert*\n\nनमस्ते, आपकी गाड़ी *${d.vehicleNo}* का PUC आज खत्म हो रहा है! चालान से बचने के लिए तुरंत रिन्यू कराएं।\n\n📍 *TyreXpert*`; container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-2 border rounded p-3 bg-light"><span><strong class="text-dark">${d.vehicleNo}</strong><br><small class="text-muted">${d.mobileNo}</small></span><button class="btn btn-sm btn-success fw-bold px-3" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')">Send</button></div>`; }); }
             });
 
             db.collection(RECORDS_COLLECTION).where('expiryDate', '>', todayStr).where('expiryDate', '<=', futureStr).get().then(snap => {
                 const container = document.getElementById('upcomingExpiryList'); container.innerHTML = '';
-                if (snap.empty) container.innerHTML = '<p class="text-muted fw-bold p-4 text-center border rounded-4 bg-light">No Expiry in 5 Days</p>';
-                else { snap.forEach(doc => { const d = doc.data(); const msg = `⚠️ *PUC Advance Reminder*\n\nनमस्ते, आपकी गाड़ी *${d.vehicleNo}* का PUC ${d.expiryDate} को खत्म हो रहा है।`; container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-3 border-0 rounded-4 p-4 shadow-sm"><span><strong class="fs-5 text-dark">${d.vehicleNo}</strong><br><small class="text-danger fw-bold">Exp: ${d.expiryDate}</small></span><button class="btn btn-warning text-dark fw-bold rounded-pill px-4 py-2" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-whatsapp me-1"></i> Send</button></div>`; }); }
+                if (snap.empty) container.innerHTML = '<p class="text-muted fw-bold p-3 text-center bg-light rounded">No Expiry in 5 Days</p>';
+                else { snap.forEach(doc => { const d = doc.data(); const msg = `⚠️ *PUC Advance Reminder*\n\nनमस्ते, आपकी गाड़ी *${d.vehicleNo}* का PUC ${d.expiryDate} को खत्म हो रहा है।`; container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-2 border rounded p-3 bg-light"><span><strong class="text-dark">${d.vehicleNo}</strong><br><small class="text-danger fw-bold">Exp: ${d.expiryDate}</small></span><button class="btn btn-sm btn-warning text-dark fw-bold px-3" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')">Send</button></div>`; }); }
             });
 
             db.collection(RECORDS_COLLECTION).where('expiryDate', '<=', past15Str).where('expiryDate', '>=', past6MStr).get().then(snap => {
                 const container = document.getElementById('lostExpiryList'); container.innerHTML = '';
-                if (snap.empty) container.innerHTML = '<p class="text-muted fw-bold p-4 text-center border rounded-4 bg-light">No Lost Customers</p>';
-                else { snap.forEach(doc => { const d = doc.data(); const msg = `💔 *TyreXpert Comeback Offer*\n\nनमस्ते सर, आपकी गाड़ी *${d.vehicleNo}* का PUC एक्सपायर है। आज ही आएं और पाएं स्पेशल डिस्काउंट!`; container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-3 border-start border-danger border-4 rounded-4 p-4 shadow-sm"><span><strong class="fs-5 text-dark">${d.vehicleNo}</strong><br><small class="text-danger fw-bold">Exp: ${d.expiryDate}</small></span><button class="btn btn-danger fw-bold rounded-pill px-4 py-2" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-gift-fill me-1"></i> Offer</button></div>`; }); }
+                if (snap.empty) container.innerHTML = '<p class="text-muted fw-bold p-3 text-center bg-light rounded">No Lost Customers</p>';
+                else { snap.forEach(doc => { const d = doc.data(); const msg = `💔 *TyreXpert Comeback Offer*\n\nनमस्ते सर, आपकी गाड़ी *${d.vehicleNo}* का PUC एक्सपायर है। आज ही आएं और पाएं स्पेशल डिस्काउंट!`; container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-2 border-start border-danger border-4 rounded p-3 bg-light"><span><strong class="text-dark">${d.vehicleNo}</strong><br><small class="text-danger fw-bold">Exp: ${d.expiryDate}</small></span><button class="btn btn-sm btn-danger fw-bold px-3" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')">Offer</button></div>`; }); }
             });
         };
     </script>
