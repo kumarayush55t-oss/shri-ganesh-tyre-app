@@ -59,7 +59,7 @@
 
         .container-custom { max-width: 850px; margin: auto; position: relative; z-index: 1; }
         
-        /* ---------------- ORIGINAL SPLASH SCREEN (Restored & Polished) ---------------- */
+        /* ---------------- ORIGINAL SPLASH SCREEN ---------------- */
         #splashScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, var(--primary-blue) 0%, #3b82f6 100%); z-index: 999999; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; transition: opacity 0.5s ease, visibility 0.5s ease; }
         .splash-icon { font-size: 5.5rem; animation: bounceIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; text-shadow: 0 10px 20px rgba(0,0,0,0.2); }
         .splash-title { font-weight: 900; font-size: 2.5rem; margin-top: 15px; opacity: 0; animation: fadeUp 0.8s ease forwards 0.3s; text-align:center; letter-spacing: -1px; }
@@ -107,7 +107,7 @@
         @keyframes circle-pop { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
         @keyframes draw-tick { 0% { stroke-dashoffset: 100; } 100% { stroke-dashoffset: 0; } }
         @keyframes popScaleIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-        .custom-zoom-out { animation: zoomOutFast 0.3s forwards !important; }
+        .custom-zoom-out { animation: zoomOutFast 0.2s forwards !important; }
         @keyframes zoomOutFast { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(0.8); opacity: 0; } }
 
         /* ---------------- ADMIN & MODALS ---------------- */
@@ -132,7 +132,7 @@
 
         .vip-badge { position: absolute; right: 25px; top: -15px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #fff; font-size: 0.85rem; padding: 8px 20px; border-radius: 50px; font-weight: 800; box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4); display: none; z-index: 10; border: 2px solid #fff; }
 
-        /* --- IMPROVED SEARCH LOADER --- */
+        /* --- IMPROVED FAST SEARCH LOADER --- */
         .sleek-loader-container { display: none; text-align: center; padding: 30px 0; }
         .dot-pulse { position: relative; left: -9999px; width: 10px; height: 10px; border-radius: 5px; background-color: var(--accent-blue); color: var(--accent-blue); box-shadow: 9999px 0 0 -5px var(--accent-blue); animation: dot-pulse 1.5s infinite linear; animation-delay: 0.25s; margin: 0 auto; }
         .dot-pulse::before, .dot-pulse::after { content: ''; display: inline-block; position: absolute; top: 0; width: 10px; height: 10px; border-radius: 5px; background-color: var(--accent-blue); color: var(--accent-blue); }
@@ -319,7 +319,6 @@
                         <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-2 fw-bold small text-uppercase">Fuel (P / D)</p><h4 id="statFuel" class="text-dark fw-bolder m-0 mt-2">0 / 0</h4></div></div>
                     </div>
                     
-                    <!-- Leaderboard quick view -->
                     <div class="stats-card text-start">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h5 class="fw-bolder text-dark m-0"><i class="bi bi-award me-2 text-warning"></i> Today's Leaderboard</h5>
@@ -329,7 +328,7 @@
                     </div>
                 </div>
 
-                <!-- 1.5 PEAK HOUR ANALYTICS (NEW FEATURE) -->
+                <!-- 1.5 PEAK HOUR ANALYTICS -->
                 <div class="tab-pane" id="tabPeakHour">
                     <div class="stats-card text-start">
                         <h4 class="fw-bolder mb-4 text-primary"><i class="bi bi-graph-up-arrow me-2"></i> Advanced Peak Hour Analysis</h4>
@@ -434,7 +433,7 @@
     </div>
 
     <!-- ==========================================
-         JAVASCRIPT LOGIC (Optimized)
+         JAVASCRIPT LOGIC (Highly Optimized)
     =========================================== -->
     <script>
         // ========== FIREBASE CONFIG ==========
@@ -448,7 +447,12 @@
             appId: "1:160818771446:web:e55f1bfc308c504efb03d7"
         };
         if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
+        
+        // --- OPTIMIZATION 1: ENABLE CACHE ---
         const db = firebase.firestore();
+        db.enablePersistence().catch(function(err) {
+            console.log("Firebase Cache Error:", err.code);
+        });
         
         const ADMIN_COLLECTION = 'adminSettings';
         const RECORDS_COLLECTION = 'pucRecords';
@@ -503,7 +507,6 @@
                 const now = new Date();
                 document.getElementById('liveClock').innerText = now.toLocaleTimeString('en-US', { hour12: true });
                 
-                // Update Last Entry Timer
                 if(lastEntryDateObj) {
                     const diffMins = Math.floor((now - lastEntryDateObj) / 60000);
                     const timerElem = document.getElementById('lastEntryTimer');
@@ -511,11 +514,10 @@
                     else if(diffMins < 60) timerElem.innerHTML = `<i class="bi bi-stopwatch-fill text-primary fs-5"></i> <span>${diffMins} min ago</span>`;
                     else timerElem.innerHTML = `<i class="bi bi-stopwatch-fill text-muted fs-5"></i> <span>${Math.floor(diffMins/60)} hr ago</span>`;
                 }
-            }, 10000); // Check every 10 seconds for performance
+            }, 5000);
         }
 
         function initLastEntryListener() {
-            // Listen to DB for Last Entry
             db.collection(RECORDS_COLLECTION).orderBy('createdAt', 'desc').limit(1).onSnapshot(snap => {
                 if(!snap.empty) {
                     const data = snap.docs[0].data();
@@ -524,58 +526,46 @@
             });
         }
 
-        // ========== SAVING LOGIC (Smooth SVG popup) ==========
+        // ========== SAVING LOGIC ==========
         window.finalizeSubmitAndSave = function() {
             if(!selectedStaff) return Swal.fire({ icon: 'warning', text: 'Please select a staff member!' });
             if(!selectedDuration) return Swal.fire({ icon: 'warning', text: 'Please select duration!' });
 
             bsEntryModal.hide();
+            Swal.fire({
+                title: 'Saving Securely...',
+                html: '<div class="dot-pulse mt-4 mb-4" style="margin:auto;"></div>',
+                showConfirmButton: false, allowOutsideClick: false,
+                background: '#fff', backdrop: 'rgba(0,0,0,0.5)'
+            });
 
-            setTimeout(() => {
+            const today = new Date(); 
+            const expiryDate = new Date(today);
+            expiryDate.setMonth(expiryDate.getMonth() + selectedDuration); 
+            expiryDate.setDate(expiryDate.getDate() - 1); 
+            
+            db.collection(RECORDS_COLLECTION).add({
+                vehicleNo: pendingFormData.vehicle, mobileNo: pendingFormData.mobile, vehicleType: pendingFormData.type, fuel: pendingFormData.fuel,
+                durationMonths: selectedDuration, staffName: selectedStaff, purchaseDate: getLocalDate(today), expiryDate: getLocalDate(expiryDate), 
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
                 Swal.fire({
-                    title: 'Saving Securely...',
-                    html: '<div class="dot-pulse mt-4 mb-4" style="margin:auto;"></div>',
-                    showConfirmButton: false, allowOutsideClick: false,
-                    background: '#fff', backdrop: 'rgba(0,0,0,0.5)'
+                    html: `
+                        <svg class="gpay-svg" viewBox="0 0 100 100">
+                            <circle class="gpay-circle" cx="50" cy="50" r="45"></circle>
+                            <path class="gpay-tick" d="M30 50 L45 65 L70 30"></path>
+                        </svg>
+                        <h2 style="color: #10b981; font-weight: 900; margin-top: 15px;">SUCCESS</h2>
+                        <p style="color: #475569; font-weight: 600;">Data Saved Fast</p>
+                    `,
+                    showConfirmButton: false, timer: 1500,
+                    customClass: { popup: 'custom-payment-popup' }, showClass: { popup: '' }, hideClass: { popup: 'custom-zoom-out' }
                 });
-
-                const today = new Date(); 
-                const expiryDate = new Date(today);
-                expiryDate.setMonth(expiryDate.getMonth() + selectedDuration); 
-                expiryDate.setDate(expiryDate.getDate() - 1); 
-                
-                db.collection(RECORDS_COLLECTION).add({
-                    vehicleNo: pendingFormData.vehicle, 
-                    mobileNo: pendingFormData.mobile, 
-                    vehicleType: pendingFormData.type, 
-                    fuel: pendingFormData.fuel,
-                    durationMonths: selectedDuration, 
-                    staffName: selectedStaff, 
-                    purchaseDate: getLocalDate(today), 
-                    expiryDate: getLocalDate(expiryDate), 
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                }).then(() => {
-                    Swal.close();
-                    setTimeout(() => {
-                        Swal.fire({
-                            html: `
-                                <svg class="gpay-svg" viewBox="0 0 100 100">
-                                    <circle class="gpay-circle" cx="50" cy="50" r="45"></circle>
-                                    <path class="gpay-tick" d="M30 50 L45 65 L70 30"></path>
-                                </svg>
-                                <h2 style="color: #10b981; font-weight: 900; margin-top: 15px;">SUCCESS</h2>
-                                <p style="color: #475569; font-weight: 600;">Data Saved</p>
-                            `,
-                            showConfirmButton: false, timer: 2000, timerProgressBar: true,
-                            customClass: { popup: 'custom-payment-popup' }, showClass: { popup: '' }, hideClass: { popup: 'custom-zoom-out' }
-                        });
-                        document.getElementById('vehicleNo').value = ''; document.getElementById('mobileNo').value = ''; 
-                        document.getElementById('vipBadge').style.display = 'none'; document.getElementById('historyAlert').style.display = 'none';
-                        resetModalSelections(); pendingFormData = {};
-                        lastEntryDateObj = new Date();
-                    }, 100);
-                }).catch(err => { Swal.fire('Error', err.message, 'error'); });
-            }, 300);
+                document.getElementById('vehicleNo').value = ''; document.getElementById('mobileNo').value = ''; 
+                document.getElementById('vipBadge').style.display = 'none'; document.getElementById('historyAlert').style.display = 'none';
+                resetModalSelections(); pendingFormData = {};
+                lastEntryDateObj = new Date();
+            }).catch(err => { Swal.fire('Error', err.message, 'error'); });
         };
 
         // ========== PREVIOUS HISTORY & AUTO-FILL ==========
@@ -601,7 +591,7 @@
 
                     document.getElementById('mobileNo').value = d.mobileNo;
                     if(d.vehicleType === '2 Wheeler') document.getElementById('twoW').click(); else document.getElementById('fourW').click();
-                    setTimeout(() => { document.getElementById('fuelType').value = d.fuel; }, 50);
+                    setTimeout(() => { document.getElementById('fuelType').value = d.fuel; }, 10); // optimized timeout
                     
                     badge.style.display = 'block';
                     historyAlert.innerHTML = `
@@ -626,10 +616,12 @@
             
             pendingFormData = { vehicle, mobile, type: document.querySelector('input[name="vehicleType"]:checked').value, fuel: document.getElementById('fuelType').value };
             
-            const staffContainer = document.getElementById('modalStaffContainer'); staffContainer.innerHTML = '';
+            // OPTIMIZATION 2: Single DOM update
+            let modalHTML = '';
             globalStaffList.forEach((name) => { 
-                staffContainer.innerHTML += `<div class="col-6"><div class="select-btn staff-opt shadow-sm" onclick="selectStaff(this, '${name}')">${name}</div></div>`; 
+                modalHTML += `<div class="col-6"><div class="select-btn staff-opt shadow-sm" onclick="selectStaff(this, '${name}')">${name}</div></div>`; 
             });
+            document.getElementById('modalStaffContainer').innerHTML = modalHTML;
             bsEntryModal.show();
         };
 
@@ -701,23 +693,32 @@
 
         // ========== STAFF MANAGEMENT ==========
         function fetchStaffList() { db.collection(ADMIN_COLLECTION).doc('staffConfig').get().then(doc => { globalStaffList = (doc.exists && doc.data().list) ? doc.data().list : ["Laddu", "Haider", "Arwaz", "Ankit"]; }).catch(() => { globalStaffList = ["Laddu", "Haider", "Arwaz", "Ankit"]; }); }
-        function fetchStaffListAdmin() { const container = document.getElementById('adminStaffList'); container.innerHTML = ''; globalStaffList.forEach((name, index) => { container.innerHTML += `<li class="list-group-item d-flex justify-content-between align-items-center px-4 py-3 bg-transparent"><span class="fw-bolder text-dark fs-5"><i class="bi bi-person-badge text-primary me-3"></i> ${name}</span><button class="btn btn-sm btn-outline-danger rounded-circle shadow-sm" onclick="removeStaff(${index})"><i class="bi bi-trash"></i></button></li>`; }); }
+        function fetchStaffListAdmin() { 
+            let html = '';
+            globalStaffList.forEach((name, index) => { 
+                html += `<li class="list-group-item d-flex justify-content-between align-items-center px-4 py-3 bg-transparent"><span class="fw-bolder text-dark fs-5"><i class="bi bi-person-badge text-primary me-3"></i> ${name}</span><button class="btn btn-sm btn-outline-danger rounded-circle shadow-sm" onclick="removeStaff(${index})"><i class="bi bi-trash"></i></button></li>`; 
+            });
+            document.getElementById('adminStaffList').innerHTML = html;
+        }
         window.addStaff = function() { const input = document.getElementById('newStaffName'); const name = input.value.trim(); if(!name || globalStaffList.includes(name)) return; globalStaffList.push(name); db.collection(ADMIN_COLLECTION).doc('staffConfig').set({ list: globalStaffList }, {merge: true}).then(() => { input.value = ''; fetchStaffListAdmin(); Swal.fire({ toast:true, icon:'success', title:'Added!', position:'top', showConfirmButton:false, timer:1500}); }); };
         window.removeStaff = function(index) { Swal.fire({ title: 'Delete?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#dc3545' }).then((r) => { if (r.isConfirmed) { globalStaffList.splice(index, 1); db.collection(ADMIN_COLLECTION).doc('staffConfig').set({ list: globalStaffList }, {merge: true}).then(() => { fetchStaffListAdmin(); }); } }); };
 
-        // ========== ADMIN DASHBOARD & ADVANCED PEAK HOUR ==========
+        // ========== ADMIN DASHBOARD ==========
         window.fetchDashboardData = function() {
             const tFilter = document.getElementById('dashTimeFilter').value; const todayStr = getLocalDate();
             let query = db.collection(RECORDS_COLLECTION); if (tFilter === 'today') { query = query.where('purchaseDate', '==', todayStr); }
             query.get().then(snap => {
-                let total = 0, twoW = 0, fourW = 0, p = 0, d = 0;
-                snap.forEach(doc => { const data = doc.data(); total++; if (data.vehicleType === '2 Wheeler') twoW++; else fourW++; if (data.fuel === 'Petrol') p++; else if (data.fuel === 'Diesel') d++; });
-                document.getElementById('statTotal').innerText = total; document.getElementById('stat2W').innerText = twoW; document.getElementById('stat4W').innerText = fourW; document.getElementById('statFuel').innerText = `${p} / ${d}`;
+                let twoW = 0, fourW = 0, p = 0, d = 0;
+                // OPTIMIZATION 3: Using snap.size for total count instantly
+                document.getElementById('statTotal').innerText = snap.size;
+                snap.forEach(doc => { const data = doc.data(); if (data.vehicleType === '2 Wheeler') twoW++; else fourW++; if (data.fuel === 'Petrol') p++; else if (data.fuel === 'Diesel') d++; });
+                document.getElementById('stat2W').innerText = twoW; document.getElementById('stat4W').innerText = fourW; document.getElementById('statFuel').innerText = `${p} / ${d}`;
             });
             loadStaffAnalytics();
             fetchStaffListAdmin();
         };
 
+        // ========== ADVANCED PEAK HOUR (Day-wise & Average) ==========
         window.calculatePeakHour = async function() {
             const fromDate = document.getElementById('peakFromDate').value;
             const toDate = document.getElementById('peakToDate').value;
@@ -766,16 +767,16 @@
                     return `${hr} ${ampm}`;
                 };
 
-                let html = '<h5 class="fw-bolder mb-3 text-dark">Day-wise Breakdown</h5><ul class="list-group list-group-flush border rounded-4 overflow-hidden mb-4 shadow-sm">';
+                // OPTIMIZATION 4: Building complete HTML string before DOM injection
+                let htmlStr = '<h5 class="fw-bolder mb-3 text-dark">Day-wise Breakdown</h5><ul class="list-group list-group-flush border rounded-4 overflow-hidden mb-4 shadow-sm">';
                 
-                // Calculate peak for each specific date
                 const sortedDates = Object.keys(dailyData).sort();
                 sortedDates.forEach(date => {
                     const hoursArr = dailyData[date];
                     const maxCount = Math.max(...hoursArr);
                     if(maxCount > 0) {
                         const peakHourStart = hoursArr.indexOf(maxCount);
-                        html += `<li class="list-group-item d-flex justify-content-between align-items-center py-3">
+                        htmlStr += `<li class="list-group-item d-flex justify-content-between align-items-center py-3">
                             <span class="fw-bolder text-dark"><i class="bi bi-calendar-check text-primary me-2"></i> ${date}</span>
                             <div class="text-end">
                                 <span class="badge bg-light text-primary border border-primary fs-6 px-3 py-2 shadow-sm">${formatHour(peakHourStart)} - ${formatHour((peakHourStart+1)%24)}</span>
@@ -784,20 +785,19 @@
                         </li>`;
                     }
                 });
-                html += '</ul>';
+                htmlStr += '</ul>';
 
-                // Calculate overall average peak
                 const overallMax = Math.max(...totalHourCounts);
                 const overallPeakHour = totalHourCounts.indexOf(overallMax);
 
-                html += `<div class="alert alert-primary border-0 shadow text-center p-4 rounded-4 position-relative overflow-hidden">
+                htmlStr += `<div class="alert alert-primary border-0 shadow text-center p-4 rounded-4 position-relative overflow-hidden">
                     <div class="position-absolute opacity-10" style="right:-20px; top:-20px; font-size:6rem;"><i class="bi bi-lightning-fill"></i></div>
                     <p class="mb-2 fw-bold text-uppercase tracking-wide small"><i class="bi bi-stars text-warning me-1"></i> Overall Average Peak Time</p>
                     <h2 class="fw-black text-dark m-0 display-5">${formatHour(overallPeakHour)} - ${formatHour((overallPeakHour+1)%24)}</h2>
                     <p class="mt-2 mb-0 fw-bold text-muted small">Max Avg Volume: ${overallMax} गाड़ियां</p>
                 </div>`;
 
-                resultDiv.innerHTML = html;
+                resultDiv.innerHTML = htmlStr;
 
             } catch (err) {
                 console.error(err);
@@ -810,11 +810,14 @@
             db.collection(RECORDS_COLLECTION).where('purchaseDate', '==', todayStr).get().then(snap => {
                 if(snap.empty){ container.innerHTML = '<p class="text-muted fw-bold small text-center mt-4">No Entries Today</p>'; return; }
                 let counts = {}; snap.forEach(doc => { const sName = doc.data().staffName || 'Unknown'; counts[sName] = (counts[sName] || 0) + 1; });
-                let sortedStaff = Object.entries(counts).sort((a, b) => b[1] - a[1]); container.innerHTML = '';
-                sortedStaff.forEach(([name, count], index) => { let medal = index === 0 ? '🏆' : index === 1 ? '🥈' : '🔹'; container.innerHTML += `<div class="d-flex justify-content-between align-items-center mb-2 bg-light p-3 rounded-3 border"><span class="fw-bolder text-dark fs-5">${medal} ${name}</span><span class="badge bg-primary px-4 py-2 fs-6 rounded-pill shadow-sm">${count}</span></div>`; });
+                let sortedStaff = Object.entries(counts).sort((a, b) => b[1] - a[1]); 
+                let htmlStr = '';
+                sortedStaff.forEach(([name, count], index) => { let medal = index === 0 ? '🏆' : index === 1 ? '🥈' : '🔹'; htmlStr += `<div class="d-flex justify-content-between align-items-center mb-2 bg-light p-3 rounded-3 border"><span class="fw-bolder text-dark fs-5">${medal} ${name}</span><span class="badge bg-primary px-4 py-2 fs-6 rounded-pill shadow-sm">${count}</span></div>`; });
+                container.innerHTML = htmlStr;
             });
         };
 
+        // ========== RECORDS FETCH (Massive Speedup) ==========
         window.loadManageData = function() {
             const fromDate = document.getElementById('manageFrom').value, toDate = document.getElementById('manageTo').value; 
             const tbody = document.getElementById('manageTableBody');
@@ -832,10 +835,12 @@
                 snap.forEach(doc => { currentFetchRecords.push({ id: doc.id, ...doc.data() }); }); 
                 currentFetchRecords.sort((a, b) => new Date(b.purchaseDate) - new Date(a.purchaseDate)); 
                 
-                tbody.innerHTML = '';
+                // OPTIMIZATION 5: Build string first, insert once (No more lagging loops)
+                let tableHTML = '';
                 currentFetchRecords.forEach(d => { 
-                    tbody.innerHTML += `<tr><td class="fw-bolder text-dark">${d.vehicleNo}</td><td><span class="fw-bold">${d.mobileNo}</span> <i class="bi bi-pencil-square text-primary ms-1" style="cursor:pointer;" onclick="editMobile('${d.id}', '${d.mobileNo}')"></i></td><td><span class="badge bg-secondary px-2 py-1">${d.vehicleType === '2 Wheeler' ? '2W' : '4W'}</span><br><small class="text-muted">${d.fuel}</small></td><td class="fw-bold text-muted">${d.staffName || '-'}</td><td class="fw-bolder text-primary">${d.durationMonths || '-'}M</td><td class="text-muted small fw-bold">${d.purchaseDate}</td><td><button class="btn btn-sm btn-outline-danger rounded-circle shadow-sm" onclick="deleteRecord('${d.id}')"><i class="bi bi-trash"></i></button></td></tr>`; 
+                    tableHTML += `<tr><td class="fw-bolder text-dark">${d.vehicleNo}</td><td><span class="fw-bold">${d.mobileNo}</span> <i class="bi bi-pencil-square text-primary ms-1" style="cursor:pointer;" onclick="editMobile('${d.id}', '${d.mobileNo}')"></i></td><td><span class="badge bg-secondary px-2 py-1">${d.vehicleType === '2 Wheeler' ? '2W' : '4W'}</span><br><small class="text-muted">${d.fuel}</small></td><td class="fw-bold text-muted">${d.staffName || '-'}</td><td class="fw-bolder text-primary">${d.durationMonths || '-'}M</td><td class="text-muted small fw-bold">${d.purchaseDate}</td><td><button class="btn btn-sm btn-outline-danger rounded-circle shadow-sm" onclick="deleteRecord('${d.id}')"><i class="bi bi-trash"></i></button></td></tr>`; 
                 });
+                tbody.innerHTML = tableHTML;
             });
         };
 
@@ -871,17 +876,19 @@
                 if (resultsMap.size === 0) { container.innerHTML = '<div class="alert alert-danger text-center fw-bold border-0 shadow-sm mt-3"><i class="bi bi-exclamation-triangle-fill me-2"></i> No records found.</div>'; return; }
 
                 let arr = Array.from(resultsMap.values()).sort((a, b) => new Date(b.purchaseDate) - new Date(a.purchaseDate)); 
+                let htmlStr = '';
                 arr.forEach(d => {
                     let statusBadge = new Date(d.expiryDate) < new Date(getLocalDate()) ? '<span class="badge bg-danger ms-2 px-3 shadow-sm">EXPIRED</span>' : '<span class="badge bg-success ms-2 px-3 shadow-sm">ACTIVE</span>';
-                    container.innerHTML += `<div class="card mb-4 shadow-sm border-0 rounded-4" style="border-left: 6px solid var(--accent-blue) !important;"><div class="card-body p-4"><h4 class="fw-black text-dark mb-2">${d.vehicleNo} ${statusBadge}</h4><h5 class="text-primary fw-bolder mb-4"><i class="bi bi-telephone-fill me-2"></i> ${d.mobileNo}</h5><div class="row small fw-bold text-muted g-3"><div class="col-6">Type: <span class="text-dark">${d.vehicleType}</span></div><div class="col-6">Duration: <span class="text-primary">${d.durationMonths} Months</span></div><div class="col-6">Created: <span class="text-dark">${d.purchaseDate}</span></div><div class="col-6 text-danger">Expires: ${d.expiryDate}</div></div></div></div>`;
+                    htmlStr += `<div class="card mb-4 shadow-sm border-0 rounded-4" style="border-left: 6px solid var(--accent-blue) !important;"><div class="card-body p-4"><h4 class="fw-black text-dark mb-2">${d.vehicleNo} ${statusBadge}</h4><h5 class="text-primary fw-bolder mb-4"><i class="bi bi-telephone-fill me-2"></i> ${d.mobileNo}</h5><div class="row small fw-bold text-muted g-3"><div class="col-6">Type: <span class="text-dark">${d.vehicleType}</span></div><div class="col-6">Duration: <span class="text-primary">${d.durationMonths} Months</span></div><div class="col-6">Created: <span class="text-dark">${d.purchaseDate}</span></div><div class="col-6 text-danger">Expires: ${d.expiryDate}</div></div></div></div>`;
                 });
+                container.innerHTML = htmlStr;
             });
         };
 
         window.editMobile = function(docId, oldMobile) { Swal.fire({ title: 'Update Mobile', input: 'number', inputValue: oldMobile, showCancelButton: true, confirmButtonColor: '#2563eb' }).then((r) => { if (r.isConfirmed && r.value && r.value !== oldMobile) { db.collection(RECORDS_COLLECTION).doc(docId).update({ mobileNo: r.value }).then(() => { loadManageData(); }); } }); };
         window.deleteRecord = function(docId) { Swal.fire({ title: 'Delete?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#dc3545' }).then((r) => { if (r.isConfirmed) { db.collection(RECORDS_COLLECTION).doc(docId).delete().then(() => { loadManageData(); }); } }); };
 
-        // ========== REMINDERS ==========
+        // ========== REMINDERS (Optimized String Rendering) ==========
         window.loadReminders = function() {
             const todayStr = getLocalDate(new Date()); 
             const fDate = new Date(); fDate.setDate(fDate.getDate() + 5); const futureStr = getLocalDate(fDate);
@@ -889,21 +896,27 @@
             const past6Months = new Date(); past6Months.setMonth(past6Months.getMonth() - 6); const past6MStr = getLocalDate(past6Months);
 
             db.collection(RECORDS_COLLECTION).where('expiryDate', '==', todayStr).get().then(snap => {
-                const container = document.getElementById('todayExpiryList'); container.innerHTML = '';
-                if (snap.empty) container.innerHTML = '<div class="alert alert-light text-center fw-bold border py-4 text-muted"><i class="bi bi-emoji-smile fs-3 d-block mb-2"></i> No Expiry Today</div>';
-                else { snap.forEach(doc => { const d = doc.data(); const msg = `🚨 *PUC Expiry Alert*\n\nनमस्ते, आपकी गाड़ी *${d.vehicleNo}* का PUC आज खत्म हो रहा है! चालान से बचने के लिए तुरंत रिन्यू कराएं।\n\n📍 *Shree Ganesh PUC Center*`; container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-3 border-0 rounded-4 p-4 shadow-sm bg-white"><span><strong class="fs-5 text-dark">${d.vehicleNo}</strong><br><small class="text-muted fw-bold">${d.mobileNo}</small></span><button class="btn btn-success fw-bold rounded-pill px-4 shadow-sm" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-whatsapp me-2"></i> Send</button></div>`; }); }
+                const container = document.getElementById('todayExpiryList'); 
+                if (snap.empty) { container.innerHTML = '<div class="alert alert-light text-center fw-bold border py-4 text-muted"><i class="bi bi-emoji-smile fs-3 d-block mb-2"></i> No Expiry Today</div>'; return;}
+                let htmlStr = '';
+                snap.forEach(doc => { const d = doc.data(); const msg = `🚨 *PUC Expiry Alert*\n\nनमस्ते, आपकी गाड़ी *${d.vehicleNo}* का PUC आज खत्म हो रहा है! चालान से बचने के लिए तुरंत रिन्यू कराएं।\n\n📍 *Shree Ganesh PUC Center*`; htmlStr += `<div class="list-group-item d-flex justify-content-between align-items-center mb-3 border-0 rounded-4 p-4 shadow-sm bg-white"><span><strong class="fs-5 text-dark">${d.vehicleNo}</strong><br><small class="text-muted fw-bold">${d.mobileNo}</small></span><button class="btn btn-success fw-bold rounded-pill px-4 shadow-sm" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-whatsapp me-2"></i> Send</button></div>`; });
+                container.innerHTML = htmlStr;
             });
 
             db.collection(RECORDS_COLLECTION).where('expiryDate', '>', todayStr).where('expiryDate', '<=', futureStr).get().then(snap => {
-                const container = document.getElementById('upcomingExpiryList'); container.innerHTML = '';
-                if (snap.empty) container.innerHTML = '<div class="alert alert-light text-center fw-bold border py-4 text-muted"><i class="bi bi-emoji-smile fs-3 d-block mb-2"></i> No Expiry in 5 Days</div>';
-                else { snap.forEach(doc => { const d = doc.data(); const msg = `⚠️ *PUC Advance Reminder*\n\nनमस्ते, आपकी गाड़ी *${d.vehicleNo}* का PUC ${d.expiryDate} को खत्म हो रहा है।`; container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-3 border-0 rounded-4 p-4 shadow-sm bg-white"><span><strong class="fs-5 text-dark">${d.vehicleNo}</strong><br><small class="text-danger fw-bold">Exp: ${d.expiryDate}</small></span><button class="btn btn-warning text-dark fw-bold rounded-pill px-4 shadow-sm" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-whatsapp me-2"></i> Send</button></div>`; }); }
+                const container = document.getElementById('upcomingExpiryList'); 
+                if (snap.empty) { container.innerHTML = '<div class="alert alert-light text-center fw-bold border py-4 text-muted"><i class="bi bi-emoji-smile fs-3 d-block mb-2"></i> No Expiry in 5 Days</div>'; return;}
+                let htmlStr = '';
+                snap.forEach(doc => { const d = doc.data(); const msg = `⚠️ *PUC Advance Reminder*\n\nनमस्ते, आपकी गाड़ी *${d.vehicleNo}* का PUC ${d.expiryDate} को खत्म हो रहा है।`; htmlStr += `<div class="list-group-item d-flex justify-content-between align-items-center mb-3 border-0 rounded-4 p-4 shadow-sm bg-white"><span><strong class="fs-5 text-dark">${d.vehicleNo}</strong><br><small class="text-danger fw-bold">Exp: ${d.expiryDate}</small></span><button class="btn btn-warning text-dark fw-bold rounded-pill px-4 shadow-sm" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-whatsapp me-2"></i> Send</button></div>`; });
+                container.innerHTML = htmlStr;
             });
 
             db.collection(RECORDS_COLLECTION).where('expiryDate', '<=', past15Str).where('expiryDate', '>=', past6MStr).get().then(snap => {
-                const container = document.getElementById('lostExpiryList'); container.innerHTML = '';
-                if (snap.empty) container.innerHTML = '<div class="alert alert-light text-center fw-bold border py-4 text-muted"><i class="bi bi-emoji-smile fs-3 d-block mb-2"></i> No Lost Customers</div>';
-                else { snap.forEach(doc => { const d = doc.data(); const msg = `💔 *Shree Ganesh PUC Offer*\n\nनमस्ते सर, आपकी गाड़ी *${d.vehicleNo}* का PUC एक्सपायर है। आज ही आएं और पाएं स्पेशल डिस्काउंट!`; container.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center mb-3 border-start border-danger border-4 rounded-4 p-4 shadow-sm bg-white"><span><strong class="fs-5 text-dark">${d.vehicleNo}</strong><br><small class="text-danger fw-bold">Exp: ${d.expiryDate}</small></span><button class="btn btn-danger fw-bold rounded-pill px-4 shadow-sm" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-gift-fill me-2"></i> Offer</button></div>`; }); }
+                const container = document.getElementById('lostExpiryList');
+                if (snap.empty) { container.innerHTML = '<div class="alert alert-light text-center fw-bold border py-4 text-muted"><i class="bi bi-emoji-smile fs-3 d-block mb-2"></i> No Lost Customers</div>'; return;}
+                let htmlStr = '';
+                snap.forEach(doc => { const d = doc.data(); const msg = `💔 *Shree Ganesh PUC Offer*\n\nनमस्ते सर, आपकी गाड़ी *${d.vehicleNo}* का PUC एक्सपायर है। आज ही आएं और पाएं स्पेशल डिस्काउंट!`; htmlStr += `<div class="list-group-item d-flex justify-content-between align-items-center mb-3 border-start border-danger border-4 rounded-4 p-4 shadow-sm bg-white"><span><strong class="fs-5 text-dark">${d.vehicleNo}</strong><br><small class="text-danger fw-bold">Exp: ${d.expiryDate}</small></span><button class="btn btn-danger fw-bold rounded-pill px-4 shadow-sm" onclick="window.open('https://wa.me/91${d.mobileNo}?text=${encodeURIComponent(msg)}', '_blank')"><i class="bi bi-gift-fill me-2"></i> Offer</button></div>`; });
+                container.innerHTML = htmlStr;
             });
         };
     </script>
