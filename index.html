@@ -30,117 +30,145 @@
         /* ================= HIGH PERFORMANCE & PREMIUM BLUE/WHITE THEME ================= */
         :root {
             --primary-blue: #1e3a8a; 
+            --primary-dark: #0f172a;
             --accent-blue: #2563eb; 
-            --light-bg: #f0f4f8;
+            --accent-indigo: #4f46e5;
+            --light-bg: #eef2f7;
             --text-dark: #0f172a; 
-            --card-bg: rgba(255, 255, 255, 0.95);
-            --border-color: rgba(37, 99, 235, 0.15);
-            --shadow-soft: 0 10px 40px rgba(30, 58, 138, 0.08);
-            --shadow-hover: 0 15px 50px rgba(37, 99, 235, 0.15);
+            --card-bg: rgba(255, 255, 255, 0.96);
+            --border-color: rgba(37, 99, 235, 0.14);
+            --shadow-soft: 0 12px 36px rgba(15, 23, 42, 0.07);
+            --shadow-hover: 0 18px 48px rgba(37, 99, 235, 0.14);
         }
 
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
             color: var(--text-dark); 
             min-height: 100vh; 
-            padding: 20px 0 80px 0; 
+            padding: 16px 0 90px 0; 
             overflow-x: hidden; 
             margin: 0; 
             background-color: var(--light-bg); 
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- SMOOTH LIQUID BACKGROUND (Optimized for High FPS) --- */
+        /* --- SMOOTH LIQUID BACKGROUND (GPU-Accelerated) --- */
         .liquid-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; overflow: hidden; pointer-events: none; }
-        .blob { position: absolute; border-radius: 50%; opacity: 0.5; will-change: transform; animation: floatLiquid 20s infinite alternate ease-in-out; filter: blur(50px); }
-        .blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: #93c5fd; }
-        .blob-2 { bottom: -10%; right: -10%; width: 60vw; height: 60vw; background: #bfdbfe; animation-delay: -5s; }
-        @keyframes floatLiquid { 0% { transform: translate3d(0, 0, 0) scale(1); } 100% { transform: translate3d(40px, 60px, 0) scale(1.1); } }
+        .blob { position: absolute; border-radius: 50%; opacity: 0.45; will-change: transform; animation: floatLiquid 22s infinite alternate ease-in-out; filter: blur(60px); }
+        .blob-1 { top: -12%; left: -10%; width: 48vw; height: 48vw; background: #93c5fd; }
+        .blob-2 { bottom: -12%; right: -10%; width: 55vw; height: 55vw; background: #c7d2fe; animation-delay: -6s; }
+        @keyframes floatLiquid { 0% { transform: translate3d(0, 0, 0) scale(1); } 100% { transform: translate3d(35px, 50px, 0) scale(1.08); } }
 
-        .container-custom { max-width: 850px; margin: auto; position: relative; z-index: 1; }
+        .container-custom { max-width: 900px; margin: auto; position: relative; z-index: 1; padding: 0 12px; }
         
-        /* ---------------- ORIGINAL SPLASH SCREEN ---------------- */
-        #splashScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, var(--primary-blue) 0%, #3b82f6 100%); z-index: 999999; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; transition: opacity 0.5s ease, visibility 0.5s ease; }
-        .splash-icon { font-size: 5.5rem; animation: bounceIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; text-shadow: 0 10px 20px rgba(0,0,0,0.2); }
-        .splash-title { font-weight: 900; font-size: 2.5rem; margin-top: 15px; opacity: 0; animation: fadeUp 0.8s ease forwards 0.3s; text-align:center; letter-spacing: -1px; }
-        .splash-subtitle { font-weight: 700; font-size: 1rem; opacity: 0; animation: fadeUp 0.8s ease forwards 0.5s; letter-spacing: 3px; color: #bfdbfe; }
+        /* ---------------- FAST SPLASH SCREEN ---------------- */
+        #splashScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, var(--primary-blue) 0%, #3b82f6 100%); z-index: 999999; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; transition: opacity 0.25s ease, visibility 0.25s ease; }
+        .splash-icon { font-size: 4.5rem; animation: bounceIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; text-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .splash-title { font-weight: 900; font-size: 2.2rem; margin-top: 12px; opacity: 0; animation: fadeUp 0.3s ease forwards 0.08s; text-align:center; letter-spacing: -1px; padding: 0 16px; }
+        .splash-subtitle { font-weight: 700; font-size: 0.95rem; opacity: 0; animation: fadeUp 0.3s ease forwards 0.15s; letter-spacing: 3px; color: #bfdbfe; }
         
-        @keyframes bounceIn { 0% { transform: scale(0); opacity: 0; } 50% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
-        @keyframes fadeUp { 0% { transform: translateY(30px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+        @keyframes bounceIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes fadeUp { 0% { transform: translateY(16px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
 
         /* ---------------- TOP STATUS PANEL ---------------- */
-        .status-panel { background: #fff; border-radius: 20px; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-soft); margin-bottom: 24px; border: 1px solid var(--border-color); }
-        .live-clock { font-family: monospace; font-size: 1.3rem; font-weight: 800; color: var(--accent-blue); background: #eff6ff; padding: 6px 16px; border-radius: 12px; border: 1px solid #dbeafe; }
-        .last-entry-badge { font-size: 0.95rem; color: #475569; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+        .status-panel { background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); border-radius: 20px; padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-soft); margin-bottom: 18px; border: 1px solid rgba(255,255,255,0.8); gap: 10px; flex-wrap: wrap; }
+        .live-clock { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 1.05rem; font-weight: 800; color: var(--accent-blue); background: #eff6ff; padding: 6px 12px; border-radius: 12px; border: 1px solid #dbeafe; }
+        .last-entry-badge { font-size: 0.9rem; color: #475569; font-weight: 700; display: flex; align-items: center; gap: 7px; }
+        .today-pill-2w { font-size: 0.88rem; font-weight: 900; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #ffffff; border: 1px solid #047857; padding: 6px 14px; border-radius: 999px; display: inline-flex; align-items: center; gap: 5px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35); }
+        .today-pill-4w { font-size: 0.88rem; font-weight: 900; background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: #ffffff; border: 1px solid #b91c1c; padding: 6px 14px; border-radius: 999px; display: inline-flex; align-items: center; gap: 5px; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35); }
 
         /* ---------------- MAIN UI CARDS ---------------- */
-        .card-main { background: var(--card-bg); backdrop-filter: blur(20px); border: 1px solid #ffffff; border-radius: 28px; box-shadow: var(--shadow-soft); overflow: hidden; transition: box-shadow 0.3s ease; }
+        .card-main { background: var(--card-bg); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.9); border-radius: 28px; box-shadow: var(--shadow-soft); overflow: hidden; transition: box-shadow 0.25s ease; }
         .card-main:hover { box-shadow: var(--shadow-hover); }
         
-        .gradient-header { background: linear-gradient(135deg, var(--primary-blue) 0%, var(--accent-blue) 100%); color: white; padding: 30px 25px; text-align: center; position: relative; overflow: hidden; }
-        .gradient-header::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%); animation: spinLight 10s linear infinite; pointer-events: none; }
+        .gradient-header { background: linear-gradient(135deg, var(--primary-blue) 0%, var(--accent-blue) 55%, var(--accent-indigo) 100%); color: white; padding: 26px 24px; text-align: center; position: relative; overflow: hidden; }
+        .gradient-header::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 55%); animation: spinLight 14s linear infinite; pointer-events: none; }
         @keyframes spinLight { 100% { transform: rotate(360deg); } }
-        .gradient-header h2 { font-weight: 900; margin: 0; font-size: 2.2rem; letter-spacing: -1px; text-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .gradient-header h2 { font-weight: 900; margin: 0; font-size: 2rem; letter-spacing: -0.8px; text-shadow: 0 4px 12px rgba(0,0,0,0.18); }
 
         /* ---------------- INPUTS & FORMS ---------------- */
-        .form-floating > label { color: #64748b; font-weight: 700; padding-left: 22px; }
-        .form-control, .form-select { border-radius: 18px; border: 2px solid #e2e8f0; background: #f8fafc; font-weight: 800; color: var(--primary-blue); padding-left: 22px; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); }
-        .form-control:focus, .form-select:focus { background: #fff; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15); border-color: var(--accent-blue); transform: translateY(-2px); }
+        .form-floating > label { color: #64748b; font-weight: 700; padding-left: 20px; }
+        .form-control, .form-select { border-radius: 16px; border: 2px solid #e2e8f0; background: #f8fafc; font-weight: 800; color: var(--primary-blue); padding-left: 20px; transition: all 0.2s ease; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); }
+        .form-control:focus, .form-select:focus { background: #fff; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.14); border-color: var(--accent-blue); }
 
-        #historyAlert { display: none; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 20px; padding: 18px; margin-top: 10px; color: var(--primary-blue); animation: fadeUp 0.3s ease; }
+        .digit-badge { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 0.78rem; font-weight: 800; padding: 4px 10px; border-radius: 999px; pointer-events: none; z-index: 5; }
+        .digit-pending { background: #f1f5f9; color: #64748b; }
+        .digit-ok { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+        .digit-err { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+
+        #historyAlert { display: none; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 18px; padding: 16px; margin-bottom: 14px; color: var(--primary-blue); animation: fadeUp 0.2s ease; }
+        #duplicateAlert { display: none; background: linear-gradient(135deg, #fef2f2 0%, #fff1f2 100%); border: 2px solid #fca5a5; border-radius: 18px; padding: 14px 18px; margin-bottom: 14px; color: #991b1b; animation: fadeUp 0.2s ease; box-shadow: 0 6px 18px rgba(220, 38, 38, 0.1); }
 
         /* ---------------- BUTTONS ---------------- */
-        button, .btn, .select-btn, .form-check-input { transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1) !important; cursor: pointer; }
-        button:hover, .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2); }
-        button:active, .btn:active { transform: translateY(1px) scale(0.97) !important; }
+        button, .btn, .select-btn, .form-check-input { transition: all 0.18s cubic-bezier(0.25, 0.8, 0.25, 1) !important; cursor: pointer; }
+        button:hover, .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(37, 99, 235, 0.18); }
+        button:active, .btn:active { transform: translateY(1px) scale(0.98) !important; }
 
-        .btn-gradient { background: linear-gradient(135deg, var(--accent-blue) 0%, #1d4ed8 100%); color: white; border: none; font-weight: 800; font-size: 1.2rem; border-radius: 20px; box-shadow: 0 8px 20px rgba(37,99,235,0.3); }
-        .btn-outline-dark { border: 2px solid #e2e8f0; color: #475569; font-weight: 800; background: #fff; border-radius: 16px !important; margin: 0 5px; }
-        .btn-check:checked + label[for="twoW"] { background: var(--accent-blue); color: #FFF; border-color: var(--accent-blue); box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3); transform: scale(1.02); }
-        .btn-check:checked + label[for="fourW"] { background: #0f172a; color: #FFF; border-color: #0f172a; box-shadow: 0 8px 20px rgba(15, 23, 42, 0.3); transform: scale(1.02); }
+        .btn-gradient { background: linear-gradient(135deg, var(--accent-blue) 0%, #1d4ed8 100%); color: white; border: none; font-weight: 800; font-size: 1.15rem; border-radius: 18px; box-shadow: 0 8px 20px rgba(37,99,235,0.28); }
+        .btn-outline-dark { border: 2px solid #e2e8f0; color: #475569; font-weight: 800; background: #fff; border-radius: 16px !important; margin: 0 4px; }
+        .btn-check:checked + label[for="twoW"] { background: var(--accent-blue); color: #FFF; border-color: var(--accent-blue); box-shadow: 0 8px 20px rgba(37, 99, 235, 0.28); }
+        .btn-check:checked + label[for="fourW"] { background: #0f172a; color: #FFF; border-color: #0f172a; box-shadow: 0 8px 20px rgba(15, 23, 42, 0.28); }
+
+        .fuel-pill-label { border: 2px solid #e2e8f0; color: #475569; font-weight: 800; background: #fff; border-radius: 14px !important; margin: 0 3px; padding: 14px 10px; font-size: 1rem; }
+        .btn-check:checked + .fuel-pill-label { background: #059669; color: #fff; border-color: #059669; box-shadow: 0 6px 16px rgba(5, 150, 105, 0.25); }
+
+        /* ---------------- RECENT 3 ENTRIES STRIP ---------------- */
+        .recent-strip-card { background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); border-radius: 22px; padding: 16px 20px; border: 1px solid rgba(255,255,255,0.9); box-shadow: var(--shadow-soft); margin-top: 18px; }
+        .recent-item { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
 
         /* ---------------- SVG PAYMENT SUCCESS ---------------- */
-        .custom-payment-popup { background: #fff !important; border-radius: 32px !important; box-shadow: 0 25px 50px rgba(0,0,0,0.15) !important; animation: popScaleIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 1px solid #e2e8f0; }
-        .gpay-svg { width: 120px; height: 120px; display: block; margin: 15px auto; }
-        .gpay-circle { fill: #10b981; transform-origin: 50% 50%; animation: circle-pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        .gpay-tick { fill: none; stroke: #ffffff; stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 100; stroke-dashoffset: 100; animation: draw-tick 0.4s ease-out 0.4s forwards; }
+        .custom-payment-popup { background: #fff !important; border-radius: 28px !important; box-shadow: 0 25px 50px rgba(0,0,0,0.15) !important; animation: popScaleIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 1px solid #e2e8f0; }
+        .gpay-svg { width: 110px; height: 110px; display: block; margin: 10px auto; }
+        .gpay-circle { fill: #10b981; transform-origin: 50% 50%; animation: circle-pop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .gpay-tick { fill: none; stroke: #ffffff; stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 100; stroke-dashoffset: 100; animation: draw-tick 0.3s ease-out 0.25s forwards; }
         @keyframes circle-pop { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
         @keyframes draw-tick { 0% { stroke-dashoffset: 100; } 100% { stroke-dashoffset: 0; } }
-        @keyframes popScaleIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-        .custom-zoom-out { animation: zoomOutFast 0.2s forwards !important; }
-        @keyframes zoomOutFast { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(0.8); opacity: 0; } }
+        @keyframes popScaleIn { 0% { transform: scale(0.7); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .custom-zoom-out { animation: zoomOutFast 0.15s forwards !important; }
+        @keyframes zoomOutFast { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(0.85); opacity: 0; } }
 
         /* ---------------- ADMIN & MODALS ---------------- */
-        .admin-link { position: fixed; bottom: 30px; right: 30px; background: var(--primary-blue); color: white; z-index: 1050; box-shadow: 0 10px 30px rgba(30, 58, 138, 0.4); border-radius: 50px; font-weight: 800; padding: 15px 30px; border: 2px solid rgba(255,255,255,0.2); backdrop-filter: blur(5px); }
-        .modal-content { border-radius: 32px; border: none; box-shadow: 0 30px 60px rgba(0,0,0,0.15); }
-        .select-btn { border: 2px solid #e2e8f0; background: #f8fafc; color: #475569; border-radius: 20px; padding: 18px; font-weight: 800; text-align: center; transition: 0.2s; font-size: 1.1rem; }
-        .select-btn.active-staff { border-color: var(--accent-blue); background: var(--accent-blue); color: #fff; transform: scale(1.05); }
-        .select-btn.active-duration { border-color: #059669; background: #059669; color: #fff; transform: scale(1.05); }
+        .admin-link { position: fixed; bottom: 22px; right: 22px; background: linear-gradient(135deg, var(--primary-blue), #1d4ed8); color: white; z-index: 1050; box-shadow: 0 10px 28px rgba(30, 58, 138, 0.38); border-radius: 50px; font-weight: 800; padding: 13px 26px; border: 2px solid rgba(255,255,255,0.25); backdrop-filter: blur(8px); }
+        .modal-content { border-radius: 28px; border: none; box-shadow: 0 30px 60px rgba(0,0,0,0.18); }
+        .select-btn { border: 2px solid #e2e8f0; background: #f8fafc; color: #475569; border-radius: 16px; padding: 14px; font-weight: 800; text-align: center; transition: 0.18s; font-size: 1rem; }
+        .select-btn.active-staff { border-color: var(--accent-blue); background: var(--accent-blue); color: #fff; transform: scale(1.03); box-shadow: 0 6px 16px rgba(37,99,235,0.25); }
+        .select-btn.active-duration { border-color: #059669; background: #059669; color: #fff; transform: scale(1.03); box-shadow: 0 6px 16px rgba(5,150,105,0.25); }
 
-        .admin-header { background: var(--primary-blue); color: white; padding: 30px; border-radius: 28px 28px 0 0; }
-        .nav-tabs { border-bottom: 2px solid #e2e8f0; padding: 0 25px; background: #fff; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+        .admin-header { background: linear-gradient(135deg, var(--primary-blue) 0%, #1d4ed8 100%); color: white; padding: 24px 28px; border-radius: 28px 28px 0 0; }
+        .nav-tabs { border-bottom: 2px solid #e2e8f0; padding: 0 18px; background: #fff; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; gap: 4px; }
         .nav-tabs::-webkit-scrollbar { display: none; }
-        .nav-tabs .nav-link { font-weight: 800; color: #64748b; padding: 18px 20px; border: none; border-radius: 0; white-space: nowrap; }
+        .nav-tabs .nav-link { font-weight: 800; color: #64748b; padding: 16px 16px; border: none; border-radius: 0; white-space: nowrap; font-size: 0.92rem; }
         .nav-tabs .nav-link.active { color: var(--accent-blue); border-bottom: 4px solid var(--accent-blue); background: transparent; }
         
-        .tab-content-admin { background: #fff; padding: 30px; border-radius: 0 0 28px 28px; }
-        .stats-card { background: #fff; border-radius: 24px; padding: 25px; text-align: center; border: 1px solid #e2e8f0; box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
+        .tab-content-admin { background: #fff; padding: 24px; border-radius: 0 0 28px 28px; }
+        .stats-card { background: #fff; border-radius: 22px; padding: 20px; text-align: center; border: 1px solid #e2e8f0; box-shadow: 0 4px 14px rgba(0,0,0,0.025); }
+        .kpi-tile { background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%); border-radius: 20px; padding: 18px; text-align: center; border: 1px solid #e2e8f0; transition: transform 0.2s ease; }
+        .kpi-tile:hover { transform: translateY(-2px); border-color: #bfdbfe; }
         
-        .table-modern { background: #fff; border-radius: 20px; overflow: hidden; border: 1px solid #e2e8f0; font-size: 0.95rem; }
-        .table-modern th { background: #f8fafc; color: #475569; padding: 16px; font-weight: 800; border-bottom: 2px solid #e2e8f0; }
-        .table-modern td { padding: 16px; border-bottom: 1px solid #f1f5f9; font-weight: 700; color: #1e293b; vertical-align: middle; }
+        .table-modern { background: #fff; border-radius: 18px; overflow: hidden; border: 1px solid #e2e8f0; font-size: 0.9rem; }
+        .table-modern th { background: #f8fafc; color: #475569; padding: 14px 12px; font-weight: 800; border-bottom: 2px solid #e2e8f0; white-space: nowrap; }
+        .table-modern td { padding: 13px 12px; border-bottom: 1px solid #f1f5f9; font-weight: 700; color: #1e293b; vertical-align: middle; }
 
-        .vip-badge { position: absolute; right: 25px; top: -15px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #fff; font-size: 0.85rem; padding: 8px 20px; border-radius: 50px; font-weight: 800; box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4); display: none; z-index: 10; border: 2px solid #fff; }
+        .staff-row-card { cursor: pointer; transition: all 0.18s ease; }
+        .staff-row-card:hover { background: #eff6ff !important; border-color: #93c5fd !important; transform: translateX(3px); }
 
-        /* --- IMPROVED FAST SEARCH LOADER --- */
-        .sleek-loader-container { display: none; text-align: center; padding: 30px 0; }
-        .dot-pulse { position: relative; left: -9999px; width: 10px; height: 10px; border-radius: 5px; background-color: var(--accent-blue); color: var(--accent-blue); box-shadow: 9999px 0 0 -5px var(--accent-blue); animation: dot-pulse 1.5s infinite linear; animation-delay: 0.25s; margin: 0 auto; }
+        .vip-badge { position: absolute; right: 24px; top: -15px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #fff; font-size: 0.85rem; padding: 7px 18px; border-radius: 50px; font-weight: 800; box-shadow: 0 8px 20px rgba(245, 158, 11, 0.35); display: none; z-index: 10; border: 2px solid #fff; }
+
+        /* --- FAST SEARCH LOADER --- */
+        .sleek-loader-container { display: none; text-align: center; padding: 24px 0; }
+        .dot-pulse { position: relative; left: -9999px; width: 10px; height: 10px; border-radius: 5px; background-color: var(--accent-blue); color: var(--accent-blue); box-shadow: 9999px 0 0 -5px var(--accent-blue); animation: dot-pulse 1.2s infinite linear; animation-delay: 0.2s; margin: 0 auto; }
         .dot-pulse::before, .dot-pulse::after { content: ''; display: inline-block; position: absolute; top: 0; width: 10px; height: 10px; border-radius: 5px; background-color: var(--accent-blue); color: var(--accent-blue); }
-        .dot-pulse::before { box-shadow: 9984px 0 0 -5px var(--accent-blue); animation: dot-pulse-before 1.5s infinite linear; animation-delay: 0s; }
-        .dot-pulse::after { box-shadow: 10014px 0 0 -5px var(--accent-blue); animation: dot-pulse-after 1.5s infinite linear; animation-delay: 0.5s; }
+        .dot-pulse::before { box-shadow: 9984px 0 0 -5px var(--accent-blue); animation: dot-pulse-before 1.2s infinite linear; animation-delay: 0s; }
+        .dot-pulse::after { box-shadow: 10014px 0 0 -5px var(--accent-blue); animation: dot-pulse-after 1.2s infinite linear; animation-delay: 0.4s; }
         @keyframes dot-pulse-before { 0% { box-shadow: 9984px 0 0 -5px var(--accent-blue); } 30% { box-shadow: 9984px 0 0 2px var(--accent-blue); } 60%, 100% { box-shadow: 9984px 0 0 -5px var(--accent-blue); } }
         @keyframes dot-pulse { 0% { box-shadow: 9999px 0 0 -5px var(--accent-blue); } 30% { box-shadow: 9999px 0 0 2px var(--accent-blue); } 60%, 100% { box-shadow: 9999px 0 0 -5px var(--accent-blue); } }
         @keyframes dot-pulse-after { 0% { box-shadow: 10014px 0 0 -5px var(--accent-blue); } 30% { box-shadow: 10014px 0 0 2px var(--accent-blue); } 60%, 100% { box-shadow: 10014px 0 0 -5px var(--accent-blue); } }
+
+        @media (max-width: 576px) {
+            .gradient-header h2 { font-size: 1.65rem; }
+            .tab-content-admin { padding: 16px; }
+            .admin-link { bottom: 16px; right: 16px; padding: 11px 20px; font-size: 0.92rem; }
+        }
     </style>
 </head>
 <body>
@@ -151,7 +179,7 @@
         <div class="blob blob-2"></div>
     </div>
 
-    <!-- ORIGINAL STYLE SPLASH SCREEN -->
+    <!-- FAST SPLASH SCREEN -->
     <div id="splashScreen">
         <div class="splash-icon">🛡️</div>
         <h2 class="splash-title">Shree Ganesh PUC Center</h2>
@@ -167,12 +195,16 @@
     =========================================== -->
     <div id="mainSection" class="container container-custom d-none">
         
-        <!-- STATUS PANEL -->
-        <div class="status-panel mt-3">
+        <!-- STATUS PANEL (With Live Bike + Car Counter) -->
+        <div class="status-panel mt-2">
             <div id="lastEntryTimer" class="last-entry-badge">
                 <i class="bi bi-stopwatch-fill text-primary fs-5"></i> <span>Last Entry: Syncing...</span>
             </div>
-            <div id="liveClock" class="live-clock">00:00:00</div>
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+                <span id="today2WBadge" class="today-pill-2w" title="Today 2 Wheelers"><i class="bi bi-bicycle fs-6"></i> 2W: 0</span>
+                <span id="today4WBadge" class="today-pill-4w" title="Today 4 Wheelers"><i class="bi bi-car-front-fill"></i> 4W: 0</span>
+                <div id="liveClock" class="live-clock">00:00:00</div>
+            </div>
         </div>
 
         <div class="card-main">
@@ -185,20 +217,24 @@
             <div class="p-4 p-md-5 position-relative">
                 <span id="vipBadge" class="vip-badge"><i class="bi bi-star-fill me-1"></i> VIP Customer</span>
 
+                <!-- SAME-DAY DUPLICATE ALERT BOX -->
+                <div id="duplicateAlert"></div>
+
                 <!-- PREVIOUS HISTORY ALERT BOX -->
                 <div id="historyAlert"></div>
 
                 <div class="row g-4 mt-1">
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input type="text" id="vehicleNo" class="form-control text-uppercase text-primary fw-bolder fs-4" placeholder="HR12AB1234" onkeyup="autoFillAndHistory()" autocomplete="off"/>
+                            <input type="text" id="vehicleNo" class="form-control text-uppercase text-primary fw-bolder fs-4" placeholder="HR12AB1234" oninput="handleVehicleInput()" onkeydown="if(event.key==='Enter'){event.preventDefault(); document.getElementById('mobileNo').focus();}" autocomplete="off"/>
                             <label for="vehicleNo">Vehicle Number <span class="text-danger">*</span></label>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-floating">
-                            <input type="number" id="mobileNo" class="form-control fw-bolder fs-4" placeholder="9876543210" autocomplete="off"/>
+                        <div class="form-floating position-relative">
+                            <input type="tel" inputmode="numeric" maxlength="10" id="mobileNo" class="form-control fw-bolder fs-4" style="padding-right: 85px;" placeholder="9876543210" oninput="updateMobileCounter()" onkeydown="if(event.key==='Enter'){event.preventDefault(); initiateSubmit();}" autocomplete="off"/>
                             <label for="mobileNo">Mobile Number <span class="text-danger">*</span></label>
+                            <span id="mobileDigitBadge" class="digit-badge digit-pending">0/10</span>
                         </div>
                     </div>
 
@@ -214,10 +250,10 @@
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label text-muted small fw-bolder ms-2 mb-2 text-uppercase tracking-wide">Fuel Type</label>
-                        <select id="fuelType" class="form-select" style="height: calc(4.6rem); font-size: 1.2rem;">
-                            <option value="Petrol">Petrol</option>
-                        </select>
+                        <label class="form-label text-muted small fw-bolder ms-2 mb-2 text-uppercase tracking-wide">Fuel Type (1-Tap)</label>
+                        <div id="fuelButtonsGroup" class="btn-group w-100" role="group">
+                            <!-- Populated dynamically by toggleFuel() -->
+                        </div>
                     </div>
 
                     <div class="col-12 mt-4">
@@ -228,7 +264,7 @@
 
                     <div class="col-12 mt-3 text-center">
                         <div class="bg-white border rounded-pill py-2 px-4 d-inline-flex align-items-center shadow-sm">
-                            <input class="form-check-input ms-0 me-3 border-secondary" style="width: 1.5rem; height: 1.5rem;" type="checkbox" id="reminderToggle" onchange="toggleBackgroundWorker()">
+                            <input class="form-check-input ms-0 me-3 border-secondary" style="width: 1.4rem; height: 1.4rem;" type="checkbox" id="reminderToggle" onchange="toggleBackgroundWorker()">
                             <label class="form-check-label fw-bold mb-0 text-primary" for="reminderToggle">
                                 <i class="bi bi-bell-fill me-1 text-warning"></i> 30-Sec Background Alert
                             </label>
@@ -236,6 +272,15 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- LAST 3 ENTRIES QUICK-FIX STRIP -->
+        <div id="recentEntriesStrip" class="recent-strip-card d-none">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="fw-bolder text-dark small text-uppercase"><i class="bi bi-lightning-charge-fill text-warning me-1"></i> Today's Last 3 Entries (Quick Fix)</span>
+                <span class="badge bg-light text-muted border">Live Sync</span>
+            </div>
+            <div id="recentEntriesList" class="d-flex flex-column gap-2"></div>
         </div>
     </div>
 
@@ -251,12 +296,15 @@
                 </div>
                 <div class="modal-body p-4 p-md-5 pt-3">
                     <h6 class="fw-bolder mb-3 text-muted text-uppercase small">1. Select Staff Member</h6>
-                    <div class="row g-3 mb-5" id="modalStaffContainer"></div>
+                    <div class="row g-2 mb-4" id="modalStaffContainer"></div>
 
                     <h6 class="fw-bolder mb-3 text-muted text-uppercase small">2. PUC Duration</h6>
-                    <div class="row g-3 mb-5">
-                        <div class="col-6"><div class="select-btn duration-opt" onclick="selectDuration(this, 6)">6 Months</div></div>
-                        <div class="col-6"><div class="select-btn duration-opt" onclick="selectDuration(this, 12)">12 Months</div></div>
+                    <div class="row g-2 mb-4">
+                        <div class="col-4"><div class="select-btn duration-opt py-3 px-2 fs-6" onclick="selectDuration(this, 3)">3 Months</div></div>
+                        <div class="col-4"><div class="select-btn duration-opt py-3 px-2 fs-6" onclick="selectDuration(this, 6)">6 Months</div></div>
+                        <div class="col-4"><div class="select-btn duration-opt py-3 px-2 fs-6" onclick="selectDuration(this, 12)">12 Months</div></div>
+                        <div class="col-6"><div class="select-btn duration-opt py-3 px-2 fs-6" onclick="selectDuration(this, 24)">2 Years (24M)</div></div>
+                        <div class="col-6"><div class="select-btn duration-opt py-3 px-2 fs-6" onclick="selectDuration(this, 36)">3 Years (36M)</div></div>
                     </div>
 
                     <button class="btn btn-gradient w-100 py-3 mt-2" onclick="finalizeSubmitAndSave()">
@@ -277,34 +325,35 @@
             <h3 class="fw-bolder mb-2 text-dark">Admin Access</h3>
             <p id="passwordSetupMsg" class="text-muted fw-bold small mb-4">Verifying Security Protocol...</p>
             <div class="form-floating mb-4">
-                <input type="password" id="adminPasswordInput" class="form-control rounded-pill px-4 text-center fw-bolder" placeholder="Password" />
+                <input type="password" id="adminPasswordInput" class="form-control rounded-pill px-4 text-center fw-bolder" placeholder="Password" onkeydown="if(event.key==='Enter') handleAdminAuth()" />
                 <label class="ms-2 w-100 text-center">Enter Secure Password</label>
             </div>
             <button class="btn btn-gradient w-100 py-3 rounded-pill" onclick="handleAdminAuth()">Authenticate</button>
         </div>
 
         <div id="adminDashboard" class="card-main d-none mt-2">
-            <div class="admin-header d-flex justify-content-between align-items-center">
+            <div class="admin-header d-flex justify-content-between align-items-center flex-wrap gap-2">
                 <h3 class="fw-bolder m-0"><i class="bi bi-pie-chart-fill text-warning me-2"></i> Business Hub</h3>
                 <div>
-                    <button class="btn btn-light rounded-pill px-3 fw-bold me-2 shadow-sm" onclick="changeAdminPassword()"><i class="bi bi-key-fill text-primary"></i></button>
+                    <button class="btn btn-light rounded-pill px-3 fw-bold me-2 shadow-sm" onclick="changeAdminPassword()" title="Change Password"><i class="bi bi-key-fill text-primary"></i></button>
                     <button class="btn btn-danger rounded-pill px-4 fw-bold shadow-sm" onclick="logoutAdmin()"><i class="bi bi-box-arrow-right me-1"></i> Logout</button>
                 </div>
             </div>
 
             <ul class="nav nav-tabs" id="adminTabs" role="tablist">
-                <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabDashboard">Overview</button></li>
-                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabPeakHour">Peak Analytics</button></li>
-                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabStaff">Staff Mgmt</button></li>
-                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabManage" onclick="loadManageData()">Records</button></li>
-                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabSearch">Search</button></li>
-                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabReminder" onclick="loadReminders()">Reminders</button></li>
+                <li class="nav-item"><button class="nav-link active" id="tabBtnOverview" data-bs-toggle="tab" data-bs-target="#tabDashboard"><i class="bi bi-speedometer2 me-1"></i> Overview</button></li>
+                <li class="nav-item"><button class="nav-link" id="tabBtnStaffReport" data-bs-toggle="tab" data-bs-target="#tabStaffReport" onclick="loadStaffDetailedReport()"><i class="bi bi-person-lines-fill me-1"></i> Staff Report</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabPeakHour"><i class="bi bi-graph-up-arrow me-1"></i> Peak Analytics</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabStaff"><i class="bi bi-people-fill me-1"></i> Staff Mgmt</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabManage" onclick="loadManageData()"><i class="bi bi-table me-1"></i> Records</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabSearch"><i class="bi bi-search me-1"></i> Search</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabReminder" onclick="loadReminders()"><i class="bi bi-bell-fill me-1"></i> Reminders</button></li>
             </ul>
 
             <div class="tab-content tab-content-admin">
                 <!-- 1. OVERVIEW -->
                 <div class="tab-pane show active" id="tabDashboard">
-                    <div class="row g-3 mb-4">
+                    <div class="row g-3 mb-4 align-items-center">
                         <div class="col-md-5">
                             <select id="dashTimeFilter" class="form-select bg-white shadow-sm" onchange="fetchDashboardData()">
                                 <option value="today">Today's Performance</option>
@@ -312,19 +361,69 @@
                             </select>
                         </div>
                     </div>
-                    <div class="row g-4 mb-4" id="dashboardStats">
-                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-2 fw-bold small text-uppercase">Total Entries</p><h2 id="statTotal" class="text-primary fw-bolder m-0">0</h2></div></div>
-                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-2 fw-bold small text-uppercase">2 Wheeler</p><h2 id="stat2W" class="text-success fw-bolder m-0">0</h2></div></div>
-                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-2 fw-bold small text-uppercase">4 Wheeler</p><h2 id="stat4W" class="text-danger fw-bolder m-0">0</h2></div></div>
-                        <div class="col-md-3 col-6"><div class="stats-card"><p class="text-muted mb-2 fw-bold small text-uppercase">Fuel (P / D)</p><h4 id="statFuel" class="text-dark fw-bolder m-0 mt-2">0 / 0</h4></div></div>
+                    <div class="row g-3 mb-4" id="dashboardStats">
+                        <div class="col-md-3 col-6"><div class="kpi-tile"><p class="text-muted mb-1 fw-bold small text-uppercase">Total Entries</p><h2 id="statTotal" class="text-primary fw-bolder m-0">0</h2></div></div>
+                        <div class="col-md-3 col-6"><div class="kpi-tile"><p class="text-muted mb-1 fw-bold small text-uppercase">2 Wheeler</p><h2 id="stat2W" class="text-success fw-bolder m-0">0</h2></div></div>
+                        <div class="col-md-3 col-6"><div class="kpi-tile"><p class="text-muted mb-1 fw-bold small text-uppercase">4 Wheeler</p><h2 id="stat4W" class="text-danger fw-bolder m-0">0</h2></div></div>
+                        <div class="col-md-3 col-6"><div class="kpi-tile"><p class="text-muted mb-1 fw-bold small text-uppercase">Fuel (P / D)</p><h4 id="statFuel" class="text-dark fw-bolder m-0 mt-2">0 / 0</h4></div></div>
                     </div>
                     
                     <div class="stats-card text-start">
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h5 class="fw-bolder text-dark m-0"><i class="bi bi-award me-2 text-warning"></i> Today's Leaderboard</h5>
+                            <div>
+                                <h5 class="fw-bolder text-dark m-0"><i class="bi bi-award me-2 text-warning"></i> Today's Leaderboard</h5>
+                                <small class="text-muted fw-semibold">किसी भी स्टाफ़ पर क्लिक करें उनकी गाड़ियां देखने के लिए</small>
+                            </div>
                             <button class="btn btn-sm btn-light border shadow-sm rounded-circle" onclick="loadStaffAnalytics()"><i class="bi bi-arrow-clockwise"></i></button>
                         </div>
                         <div id="staffAnalyticsContainer"></div>
+                    </div>
+                </div>
+
+                <!-- 1.2 STAFF DETAILED REPORT (कब, किसने, कितनी और कौनसी गाड़ी बनाई) -->
+                <div class="tab-pane" id="tabStaffReport">
+                    <div class="stats-card text-start p-3 mb-4">
+                        <h5 class="fw-bolder text-primary mb-3"><i class="bi bi-person-check-fill me-2"></i> Staff Activity & Vehicle Log</h5>
+                        <div class="row g-2 align-items-end">
+                            <div class="col-md-3 col-6">
+                                <label class="small text-muted fw-bold ms-1">From Date</label>
+                                <input type="date" id="staffRepFrom" class="form-control" />
+                            </div>
+                            <div class="col-md-3 col-6">
+                                <label class="small text-muted fw-bold ms-1">To Date</label>
+                                <input type="date" id="staffRepTo" class="form-control" />
+                            </div>
+                            <div class="col-md-3">
+                                <label class="small text-muted fw-bold ms-1">Select Staff</label>
+                                <select id="staffRepFilter" class="form-select" onchange="renderStaffReportFromCache()">
+                                    <option value="ALL">All Staff</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 d-flex gap-2">
+                                <button class="btn btn-dark w-100 py-3 rounded-pill fw-bold shadow-sm" onclick="loadStaffDetailedReport()">Fetch</button>
+                                <button class="btn btn-outline-danger py-3 px-3 rounded-pill fw-bold shadow-sm" onclick="downloadStaffReportPDF()" title="Download Staff PDF"><i class="bi bi-file-pdf-fill"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="staffSummaryCards" class="row g-3 mb-4"></div>
+
+                    <div class="table-responsive table-modern shadow-sm">
+                        <table class="table mb-0 text-center">
+                            <thead>
+                                <tr>
+                                    <th>Date & Time (कब)</th>
+                                    <th>Staff (किसने)</th>
+                                    <th>Vehicle No (कौनसी गाड़ी)</th>
+                                    <th>Type / Fuel</th>
+                                    <th>Duration</th>
+                                    <th>Expiry</th>
+                                </tr>
+                            </thead>
+                            <tbody id="staffReportTableBody">
+                                <tr><td colspan="6" class="py-5 text-muted fw-bold">Click Fetch to view staff activity</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
@@ -367,7 +466,7 @@
 
                 <!-- 2. STAFF -->
                 <div class="tab-pane" id="tabStaff">
-                    <div class="stats-card text-start bg-white w-100" style="max-width: 500px; margin: auto;">
+                    <div class="stats-card text-start bg-white w-100" style="max-width: 520px; margin: auto;">
                         <h5 class="fw-bolder text-dark mb-4"><i class="bi bi-person-plus-fill me-2 text-primary"></i> Manage Staff</h5>
                         <div class="input-group mb-4 rounded-pill overflow-hidden border shadow-sm">
                             <input type="text" id="newStaffName" class="form-control border-0 bg-light py-3 px-4" placeholder="Enter Staff Name">
@@ -379,17 +478,18 @@
 
                 <!-- 3. RECORDS -->
                 <div class="tab-pane" id="tabManage">
-                    <div class="row g-3 align-items-end mb-4 stats-card text-start p-3">
-                        <div class="col-md-4"><label class="small text-muted fw-bold ms-1">From Date</label><input type="date" id="manageFrom" class="form-control" /></div>
-                        <div class="col-md-4"><label class="small text-muted fw-bold ms-1">To Date</label><input type="date" id="manageTo" class="form-control" /></div>
-                        <div class="col-md-2"><button class="btn btn-dark w-100 py-3 rounded-pill fw-bold shadow-sm" onclick="loadManageData()">Fetch</button></div>
-                        <div class="col-md-2"><button class="btn btn-outline-danger w-100 py-3 fw-bold rounded-pill shadow-sm" onclick="downloadPDF()"><i class="bi bi-file-pdf-fill"></i> PDF</button></div>
+                    <div class="row g-2 align-items-end mb-4 stats-card text-start p-3">
+                        <div class="col-md-3 col-6"><label class="small text-muted fw-bold ms-1">From Date</label><input type="date" id="manageFrom" class="form-control" /></div>
+                        <div class="col-md-3 col-6"><label class="small text-muted fw-bold ms-1">To Date</label><input type="date" id="manageTo" class="form-control" /></div>
+                        <div class="col-md-2"><label class="small text-muted fw-bold ms-1">Staff</label><select id="manageStaffFilter" class="form-select" onchange="renderManageTable()"><option value="ALL">All Staff</option></select></div>
+                        <div class="col-md-2 col-6"><button class="btn btn-dark w-100 py-3 rounded-pill fw-bold shadow-sm" onclick="loadManageData()">Fetch</button></div>
+                        <div class="col-md-2 col-6"><button class="btn btn-outline-danger w-100 py-3 fw-bold rounded-pill shadow-sm" onclick="downloadPDF()"><i class="bi bi-file-pdf-fill"></i> PDF</button></div>
                     </div>
                     
-                    <div id="rangeAnalyticsContainer" class="mb-4"></div>
+                    <div id="rangeAnalyticsContainer" class="mb-3"></div>
                     <div class="table-responsive table-modern shadow-sm">
                         <table class="table mb-0 text-center" id="recordsTable">
-                            <thead><tr><th>Vehicle</th><th>Mobile</th><th>Type</th><th>Staff</th><th>Dur.</th><th>Date</th><th>Del</th></tr></thead>
+                            <thead><tr><th>Vehicle</th><th>Mobile</th><th>Type</th><th>Staff</th><th>Dur.</th><th>Date & Time</th><th>Del</th></tr></thead>
                             <tbody id="manageTableBody"><tr><td colspan="7" class="py-5 text-muted fw-bold">Select dates and click Fetch</td></tr></tbody>
                         </table>
                     </div>
@@ -400,7 +500,7 @@
                     <div class="stats-card text-start bg-white">
                         <h4 class="fw-bolder text-dark mb-4"><i class="bi bi-search me-2 text-primary"></i> Customer Search Portal</h4>
                         <div class="input-group mb-4 shadow-sm rounded-pill overflow-hidden border p-1 bg-light">
-                            <input type="text" id="portalSearchInput" class="form-control border-0 text-uppercase bg-transparent shadow-none fs-5 px-4" placeholder="Enter Vehicle No. (e.g., HR12...)">
+                            <input type="text" id="portalSearchInput" class="form-control border-0 text-uppercase bg-transparent shadow-none fs-5 px-4" placeholder="Enter Vehicle No. or Mobile..." onkeydown="if(event.key==='Enter') searchPortalData()">
                             <button class="btn btn-primary rounded-pill px-5 fw-bold fs-6" onclick="searchPortalData()">SEARCH</button>
                         </div>
                         <div id="searchLoader" class="sleek-loader-container">
@@ -433,7 +533,7 @@
     </div>
 
     <!-- ==========================================
-         JAVASCRIPT LOGIC (Highly Optimized)
+         JAVASCRIPT LOGIC (Ultra-Fast & Cached)
     =========================================== -->
     <script>
         // ========== FIREBASE CONFIG ==========
@@ -448,11 +548,8 @@
         };
         if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
         
-        // --- OPTIMIZATION 1: ENABLE CACHE ---
         const db = firebase.firestore();
-        db.enablePersistence().catch(function(err) {
-            console.log("Firebase Cache Error:", err.code);
-        });
+        db.enablePersistence().catch(err => console.log("Firebase Cache:", err.code));
         
         const ADMIN_COLLECTION = 'adminSettings';
         const RECORDS_COLLECTION = 'pucRecords';
@@ -465,7 +562,14 @@
         let backgroundWorker = null;
         let globalStaffList = ["Laddu", "Haider", "Arwaz", "Ankit"]; 
         let currentFetchRecords = []; 
+        let staffReportRecords = [];
         let lastEntryDateObj = null;
+
+        // --- SPEED OPTIMIZATION CACHES ---
+        let todayRecordsCache = [];
+        let todayVehicleMap = new Map();
+        let vehicleHistoryCache = new Map();
+        let searchDebounceTimer = null;
 
         function getLocalDate(dateObj = new Date()) {
             const year = dateObj.getFullYear();
@@ -474,13 +578,20 @@
             return `${year}-${month}-${day}`;
         }
 
-        // 1. FAST DOM LOAD & SPLASH
+        function formatRecordTime(record) {
+            if (record && record.createdAt && typeof record.createdAt.toDate === 'function') {
+                return record.createdAt.toDate().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+            }
+            return record && record.entryTime ? record.entryTime : '--:--';
+        }
+
+        // 1. ULTRA-FAST DOM LOAD & SPLASH
         document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 const splash = document.getElementById('splashScreen');
-                if (splash) { splash.style.opacity = '0'; splash.style.visibility = 'hidden'; setTimeout(() => splash.remove(), 500); }
+                if (splash) { splash.style.opacity = '0'; splash.style.visibility = 'hidden'; setTimeout(() => splash.remove(), 250); }
                 document.getElementById('mainSection').classList.remove('d-none');
-            }, 800); 
+            }, 250); 
 
             bsEntryModal = new bootstrap.Modal(document.getElementById('entryModal'));
             document.getElementById('todayDate').innerText = new Date().toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -488,40 +599,126 @@
             const todayStr = getLocalDate();
             document.getElementById('manageFrom').value = todayStr;
             document.getElementById('manageTo').value = todayStr;
+            document.getElementById('staffRepFrom').value = todayStr;
+            document.getElementById('staffRepTo').value = todayStr;
 
-            // Setup default dates for Peak Hour Analytics (Past 30 days)
             const pastMonth = new Date();
             pastMonth.setDate(pastMonth.getDate() - 30);
             document.getElementById('peakFromDate').value = getLocalDate(pastMonth);
             document.getElementById('peakToDate').value = todayStr;
 
             toggleFuel();
+            updateMobileCounter();
             initLiveClock();
-            initLastEntryListener();
+            initTodayLiveSync();
             fetchStaffList();
         });
 
-        // ========== LIVE CLOCK & LAST ENTRY ==========
+        // ========== LIVE CLOCK & REALTIME TODAY SYNC ==========
         function initLiveClock() {
-            setInterval(() => {
+            const updateClock = () => {
                 const now = new Date();
                 document.getElementById('liveClock').innerText = now.toLocaleTimeString('en-US', { hour12: true });
-                
-                if(lastEntryDateObj) {
+                if (lastEntryDateObj) {
                     const diffMins = Math.floor((now - lastEntryDateObj) / 60000);
                     const timerElem = document.getElementById('lastEntryTimer');
-                    if(diffMins === 0) timerElem.innerHTML = '<i class="bi bi-stopwatch-fill text-success fs-5"></i> <span class="fw-bold text-success">Just now</span>';
-                    else if(diffMins < 60) timerElem.innerHTML = `<i class="bi bi-stopwatch-fill text-primary fs-5"></i> <span>${diffMins} min ago</span>`;
+                    if (diffMins <= 0) timerElem.innerHTML = '<i class="bi bi-stopwatch-fill text-success fs-5"></i> <span class="fw-bold text-success">Just now</span>';
+                    else if (diffMins < 60) timerElem.innerHTML = `<i class="bi bi-stopwatch-fill text-primary fs-5"></i> <span>${diffMins} min ago</span>`;
                     else timerElem.innerHTML = `<i class="bi bi-stopwatch-fill text-muted fs-5"></i> <span>${Math.floor(diffMins/60)} hr ago</span>`;
                 }
-            }, 5000);
+            };
+            updateClock();
+            setInterval(updateClock, 1000);
         }
 
-        function initLastEntryListener() {
-            db.collection(RECORDS_COLLECTION).orderBy('createdAt', 'desc').limit(1).onSnapshot(snap => {
-                if(!snap.empty) {
-                    const data = snap.docs[0].data();
-                    lastEntryDateObj = data.createdAt ? data.createdAt.toDate() : new Date();
+        function renderRecent3Entries() {
+            const strip = document.getElementById('recentEntriesStrip');
+            const listEl = document.getElementById('recentEntriesList');
+            if (todayRecordsCache.length === 0) {
+                strip.classList.add('d-none');
+                return;
+            }
+            const sorted = [...todayRecordsCache].sort((a, b) => {
+                const ta = a.createdAt && typeof a.createdAt.toMillis === 'function' ? a.createdAt.toMillis() : 0;
+                const tb = b.createdAt && typeof b.createdAt.toMillis === 'function' ? b.createdAt.toMillis() : 0;
+                return tb - ta;
+            }).slice(0, 3);
+
+            let html = '';
+            sorted.forEach(d => {
+                const typeIcon = d.vehicleType === '2 Wheeler' ? '<i class="bi bi-bicycle text-primary"></i>' : '<i class="bi bi-car-front-fill text-dark"></i>';
+                html += `<div class="recent-item">
+                    <div>
+                        <span class="fw-black text-primary fs-6">${typeIcon} ${d.vehicleNo}</span>
+                        <span class="text-muted small fw-bold ms-2">${d.staffName || '-'} • ${formatRecordTime(d)} • ${d.durationMonths}M</span>
+                        <div class="small text-muted fw-semibold"><i class="bi bi-telephone me-1"></i>${d.mobileNo}</div>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-sm btn-outline-primary rounded-pill fw-bold" onclick="quickEditRecentMobile('${d.id}', '${d.mobileNo}', '${d.vehicleNo}')" title="Fix Mobile"><i class="bi bi-pencil-square"></i></button>
+                        <button class="btn btn-sm btn-success rounded-pill fw-bold" onclick="sendQuickWhatsApp('${d.vehicleNo}', '${d.mobileNo}', '${d.purchaseDate}', '${d.expiryDate}')" title="Send WhatsApp Receipt"><i class="bi bi-whatsapp"></i></button>
+                    </div>
+                </div>`;
+            });
+            listEl.innerHTML = html;
+            strip.classList.remove('d-none');
+        }
+
+        window.quickEditRecentMobile = function(docId, oldMobile, vehicleNo) {
+            Swal.fire({
+                title: `Edit Mobile (${vehicleNo})`,
+                input: 'tel',
+                inputValue: oldMobile,
+                inputAttributes: { maxlength: 10 },
+                showCancelButton: true,
+                confirmButtonColor: '#2563eb',
+                inputValidator: (val) => {
+                    if (!val || val.trim().length !== 10) return 'कृपया सही 10 अंकों का नंबर दर्ज करें!';
+                }
+            }).then((r) => {
+                if (r.isConfirmed && r.value && r.value.trim() !== oldMobile) {
+                    db.collection(RECORDS_COLLECTION).doc(docId).update({ mobileNo: r.value.trim() }).then(() => {
+                        vehicleHistoryCache.delete(vehicleNo);
+                        Swal.fire({ toast: true, icon: 'success', title: 'Mobile Updated!', position: 'top', timer: 1400, showConfirmButton: false });
+                    });
+                }
+            });
+        };
+
+        window.sendQuickWhatsApp = function(vehicleNo, mobileNo, purchaseDate, expiryDate) {
+            const msg = `✅ *PUC Certificate Saved*\n\nनमस्ते, आपकी गाड़ी *${vehicleNo}* का PUC आज (${purchaseDate}) बन गया है।\n📅 *Valid Till:* ${expiryDate}\n\n📍 *Shree Ganesh PUC Center*`;
+            window.open(`https://wa.me/91${mobileNo}?text=${encodeURIComponent(msg)}`, '_blank');
+        };
+
+        function initTodayLiveSync() {
+            const todayStr = getLocalDate();
+            db.collection(RECORDS_COLLECTION).where('purchaseDate', '==', todayStr).onSnapshot(snap => {
+                todayRecordsCache = [];
+                todayVehicleMap.clear();
+                let latestTime = 0;
+                let count2W = 0;
+                let count4W = 0;
+
+                snap.forEach(doc => {
+                    const data = { id: doc.id, ...doc.data() };
+                    todayRecordsCache.push(data);
+                    todayVehicleMap.set(data.vehicleNo, data);
+
+                    if (data.vehicleType === '2 Wheeler') count2W++;
+                    else count4W++;
+
+                    const ts = data.createdAt && typeof data.createdAt.toMillis === 'function' ? data.createdAt.toMillis() : 0;
+                    if (ts > latestTime) {
+                        latestTime = ts;
+                        lastEntryDateObj = data.createdAt.toDate();
+                    }
+                });
+
+                document.getElementById('today2WBadge').innerHTML = `<i class="bi bi-bicycle fs-6"></i> 2W: ${count2W}`;
+                document.getElementById('today4WBadge').innerHTML = `<i class="bi bi-car-front-fill"></i> 4W: ${count4W}`;
+                renderRecent3Entries();
+
+                if (isAdminLoggedIn && document.getElementById('dashTimeFilter').value === 'today') {
+                    renderTodayDashboardFromCache();
                 }
             });
         }
@@ -543,80 +740,232 @@
             const expiryDate = new Date(today);
             expiryDate.setMonth(expiryDate.getMonth() + selectedDuration); 
             expiryDate.setDate(expiryDate.getDate() - 1); 
-            
-            db.collection(RECORDS_COLLECTION).add({
-                vehicleNo: pendingFormData.vehicle, mobileNo: pendingFormData.mobile, vehicleType: pendingFormData.type, fuel: pendingFormData.fuel,
-                durationMonths: selectedDuration, staffName: selectedStaff, purchaseDate: getLocalDate(today), expiryDate: getLocalDate(expiryDate), 
+
+            const newRecord = {
+                vehicleNo: pendingFormData.vehicle,
+                mobileNo: pendingFormData.mobile,
+                vehicleType: pendingFormData.type,
+                fuel: pendingFormData.fuel,
+                durationMonths: selectedDuration,
+                staffName: selectedStaff,
+                purchaseDate: getLocalDate(today),
+                expiryDate: getLocalDate(expiryDate),
+                entryTime: today.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true }),
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            }).then(() => {
+            };
+            
+            db.collection(RECORDS_COLLECTION).add(newRecord).then(() => {
+                vehicleHistoryCache.delete(pendingFormData.vehicle);
+
                 Swal.fire({
                     html: `
                         <svg class="gpay-svg" viewBox="0 0 100 100">
                             <circle class="gpay-circle" cx="50" cy="50" r="45"></circle>
                             <path class="gpay-tick" d="M30 50 L45 65 L70 30"></path>
                         </svg>
-                        <h2 style="color: #10b981; font-weight: 900; margin-top: 15px;">SUCCESS</h2>
-                        <p style="color: #475569; font-weight: 600;">Data Saved Fast</p>
+                        <h2 style="color: #10b981; font-weight: 900; margin-top: 10px;">SUCCESS</h2>
+                        <p style="color: #475569; font-weight: 600;">Saved by ${selectedStaff} (${selectedDuration}M)</p>
                     `,
-                    showConfirmButton: false, timer: 1500,
+                    showConfirmButton: false, timer: 1300,
                     customClass: { popup: 'custom-payment-popup' }, showClass: { popup: '' }, hideClass: { popup: 'custom-zoom-out' }
                 });
-                document.getElementById('vehicleNo').value = ''; document.getElementById('mobileNo').value = ''; 
-                document.getElementById('vipBadge').style.display = 'none'; document.getElementById('historyAlert').style.display = 'none';
-                resetModalSelections(); pendingFormData = {};
+                document.getElementById('vehicleNo').value = '';
+                document.getElementById('mobileNo').value = ''; 
+                updateMobileCounter();
+                document.getElementById('vipBadge').style.display = 'none';
+                document.getElementById('historyAlert').style.display = 'none';
+                document.getElementById('duplicateAlert').style.display = 'none';
+                resetModalSelections();
+                pendingFormData = {};
                 lastEntryDateObj = new Date();
             }).catch(err => { Swal.fire('Error', err.message, 'error'); });
         };
 
-        // ========== PREVIOUS HISTORY & AUTO-FILL ==========
-        window.toggleFuel = function() {
-            const fuelSelect = document.getElementById('fuelType');
+        // ========== 1-TAP FUEL, MOBILE COUNTER & AUTO-FILL ==========
+        window.toggleFuel = function(preferredFuel = 'Petrol') {
+            const container = document.getElementById('fuelButtonsGroup');
             const isFour = document.getElementById('fourW').checked;
-            if (isFour) { fuelSelect.innerHTML = `<option value="Petrol">Petrol</option><option value="Diesel">Diesel</option><option value="CNG">CNG</option>`; } 
-            else { fuelSelect.innerHTML = `<option value="Petrol">Petrol</option>`; }
+            const fuels = isFour ? ['Petrol', 'Diesel', 'CNG'] : ['Petrol'];
+            const targetFuel = fuels.includes(preferredFuel) ? preferredFuel : 'Petrol';
+
+            let html = '';
+            fuels.forEach((f, idx) => {
+                const id = `fuelOpt_${idx}`;
+                const checked = f === targetFuel ? 'checked' : '';
+                html += `
+                    <input type="radio" class="btn-check" name="fuelTypeRadio" id="${id}" value="${f}" ${checked} />
+                    <label class="btn fuel-pill-label" for="${id}">${f}</label>
+                `;
+            });
+            container.innerHTML = html;
         };
 
-        window.autoFillAndHistory = function() {
-            const vehicle = document.getElementById('vehicleNo').value.trim().toUpperCase();
+        function getSelectedFuel() {
+            const checked = document.querySelector('input[name="fuelTypeRadio"]:checked');
+            return checked ? checked.value : 'Petrol';
+        }
+
+        window.updateMobileCounter = function() {
+            const input = document.getElementById('mobileNo');
+            const digitsOnly = input.value.replace(/\D/g, '').slice(0, 10);
+            if (input.value !== digitsOnly) input.value = digitsOnly;
+
+            const badge = document.getElementById('mobileDigitBadge');
+            const len = digitsOnly.length;
+            if (len === 10) {
+                badge.className = 'digit-badge digit-ok';
+                badge.innerHTML = '✓ 10/10';
+            } else if (len > 0 && len < 10) {
+                badge.className = 'digit-badge digit-err';
+                badge.innerHTML = `${len}/10`;
+            } else {
+                badge.className = 'digit-badge digit-pending';
+                badge.innerHTML = '0/10';
+            }
+        };
+
+        window.handleVehicleInput = function() {
+            const inputEl = document.getElementById('vehicleNo');
+            const cleaned = inputEl.value.replace(/\s+/g, '').toUpperCase();
+            if (inputEl.value !== cleaned) inputEl.value = cleaned;
+
+            clearTimeout(searchDebounceTimer);
+            searchDebounceTimer = setTimeout(() => {
+                autoFillAndHistory();
+            }, 260);
+        };
+
+        function showDuplicateBanner(todayRec) {
+            const dupBox = document.getElementById('duplicateAlert');
+            if (!todayRec) {
+                dupBox.style.display = 'none';
+                return;
+            }
+            const tTime = formatRecordTime(todayRec);
+            dupBox.innerHTML = `
+                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <div>
+                        <i class="bi bi-exclamation-octagon-fill fs-5 me-2 text-danger"></i>
+                        <strong>Duplicate Alert:</strong> इस गाड़ी की आज पहले ही एंट्री हो चुकी है!
+                    </div>
+                    <span class="badge bg-danger rounded-pill px-3 py-2">Staff: ${todayRec.staffName || '-'} | ${tTime}</span>
+                </div>
+            `;
+            dupBox.style.display = 'block';
+        }
+
+        function applyVehicleHistoryUI(vehicle, records) {
             const badge = document.getElementById('vipBadge');
             const historyAlert = document.getElementById('historyAlert');
-            
-            if (vehicle.length < 4) { badge.style.display = 'none'; historyAlert.style.display = 'none'; return; }
-            
-            db.collection(RECORDS_COLLECTION).where('vehicleNo', '==', vehicle).get().then(snap => {
-                if(!snap.empty){
-                    let records = []; snap.forEach(doc => records.push(doc.data()));
-                    records.sort((a, b) => new Date(b.purchaseDate) - new Date(a.purchaseDate));
-                    const d = records[0]; 
 
-                    document.getElementById('mobileNo').value = d.mobileNo;
-                    if(d.vehicleType === '2 Wheeler') document.getElementById('twoW').click(); else document.getElementById('fourW').click();
-                    setTimeout(() => { document.getElementById('fuelType').value = d.fuel; }, 10); // optimized timeout
-                    
-                    badge.style.display = 'block';
-                    historyAlert.innerHTML = `
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <div><i class="bi bi-clock-history me-2 fs-5"></i><strong class="fs-6">Previous History</strong></div>
-                            <span class="badge bg-primary rounded-pill px-3 py-2 shadow-sm">${d.durationMonths} Months</span>
-                        </div>
-                        <div class="row small fw-bold mt-2 pt-2 border-top border-primary border-opacity-25">
-                            <div class="col-6">Made: <span class="text-dark">${d.purchaseDate}</span></div>
-                            <div class="col-6 text-end">Exp: <span class="text-danger">${d.expiryDate}</span></div>
-                        </div>
-                    `;
-                    historyAlert.style.display = 'block';
-                } else { badge.style.display = 'none'; historyAlert.style.display = 'none'; }
+            const todayRec = todayVehicleMap.get(vehicle);
+            showDuplicateBanner(todayRec);
+
+            if (!records || records.length === 0) {
+                badge.style.display = 'none';
+                historyAlert.style.display = 'none';
+                return;
+            }
+
+            const d = records[0];
+            document.getElementById('mobileNo').value = d.mobileNo || '';
+            updateMobileCounter();
+            if (d.vehicleType === '2 Wheeler') {
+                document.getElementById('twoW').checked = true;
+            } else {
+                document.getElementById('fourW').checked = true;
+            }
+            toggleFuel(d.fuel || 'Petrol');
+
+            badge.style.display = 'block';
+            historyAlert.innerHTML = `
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div><i class="bi bi-clock-history me-2 fs-5"></i><strong class="fs-6">Previous History</strong></div>
+                    <span class="badge bg-primary rounded-pill px-3 py-2 shadow-sm">${d.durationMonths} Months</span>
+                </div>
+                <div class="row small fw-bold mt-2 pt-2 border-top border-primary border-opacity-25">
+                    <div class="col-6">Made: <span class="text-dark">${d.purchaseDate}</span></div>
+                    <div class="col-6 text-end">Exp: <span class="text-danger">${d.expiryDate}</span></div>
+                </div>
+            `;
+            historyAlert.style.display = 'block';
+        }
+
+        window.autoFillAndHistory = function() {
+            const vehicle = document.getElementById('vehicleNo').value.replace(/\s+/g, '').toUpperCase();
+            const badge = document.getElementById('vipBadge');
+            const historyAlert = document.getElementById('historyAlert');
+            const dupBox = document.getElementById('duplicateAlert');
+            
+            if (vehicle.length < 4) {
+                badge.style.display = 'none';
+                historyAlert.style.display = 'none';
+                dupBox.style.display = 'none';
+                return;
+            }
+
+            if (vehicleHistoryCache.has(vehicle)) {
+                applyVehicleHistoryUI(vehicle, vehicleHistoryCache.get(vehicle));
+                return;
+            }
+
+            if (todayVehicleMap.has(vehicle)) {
+                showDuplicateBanner(todayVehicleMap.get(vehicle));
+            } else {
+                dupBox.style.display = 'none';
+            }
+
+            db.collection(RECORDS_COLLECTION).where('vehicleNo', '==', vehicle).get().then(snap => {
+                if (!snap.empty) {
+                    let records = [];
+                    snap.forEach(doc => records.push(doc.data()));
+                    records.sort((a, b) => new Date(b.purchaseDate) - new Date(a.purchaseDate));
+                    vehicleHistoryCache.set(vehicle, records);
+                    if (document.getElementById('vehicleNo').value.replace(/\s+/g, '').toUpperCase() === vehicle) {
+                        applyVehicleHistoryUI(vehicle, records);
+                    }
+                } else {
+                    vehicleHistoryCache.set(vehicle, []);
+                    badge.style.display = 'none';
+                    historyAlert.style.display = 'none';
+                }
             });
         };
 
-        window.initiateSubmit = function() {
-            const vehicle = document.getElementById('vehicleNo').value.trim().toUpperCase();
-            const mobile = document.getElementById('mobileNo').value.trim();
-            if (!vehicle || mobile.length < 10) return Swal.fire({ icon: 'error', text: 'Enter valid details!' });
+        window.initiateSubmit = async function() {
+            const vehicle = document.getElementById('vehicleNo').value.replace(/\s+/g, '').toUpperCase();
+            const mobile = document.getElementById('mobileNo').value.replace(/\D/g, '');
+            if (!vehicle || vehicle.length < 4) return Swal.fire({ icon: 'error', text: 'Valid Vehicle Number दर्ज करें!' });
+            if (mobile.length !== 10) return Swal.fire({ icon: 'error', text: 'कृपया सही 10 अंकों का Mobile Number दर्ज करें!' });
+
+            let dupRecord = todayVehicleMap.get(vehicle);
+            if (!dupRecord) {
+                const todayStr = getLocalDate();
+                const snap = await db.collection(RECORDS_COLLECTION)
+                    .where('vehicleNo', '==', vehicle)
+                    .where('purchaseDate', '==', todayStr)
+                    .limit(1).get();
+                if (!snap.empty) dupRecord = snap.docs[0].data();
+            }
+
+            if (dupRecord) {
+                const confirmDup = await Swal.fire({
+                    icon: 'warning',
+                    title: '⚠️ Duplicate Entry Alert!',
+                    html: `गाड़ी नंबर <b>${vehicle}</b> की आज पहले ही एंट्री हो चुकी है!<br><br>
+                           <span class="badge bg-light text-dark border p-2">Staff: ${dupRecord.staffName || '-'} | Time: ${formatRecordTime(dupRecord)}</span><br><br>
+                           क्या आप फिर भी दोबारा एंट्री करना चाहते हैं?`,
+                    showCancelButton: true,
+                    confirmButtonText: 'हाँ, फिर भी जोड़ें',
+                    cancelButtonText: 'नहीं, रद्द करें',
+                    confirmButtonColor: '#dc2626',
+                    cancelButtonColor: '#64748b'
+                });
+                if (!confirmDup.isConfirmed) return;
+            }
             
-            pendingFormData = { vehicle, mobile, type: document.querySelector('input[name="vehicleType"]:checked').value, fuel: document.getElementById('fuelType').value };
+            pendingFormData = { vehicle, mobile, type: document.querySelector('input[name="vehicleType"]:checked').value, fuel: getSelectedFuel() };
             
-            // OPTIMIZATION 2: Single DOM update
             let modalHTML = '';
             globalStaffList.forEach((name) => { 
                 modalHTML += `<div class="col-6"><div class="select-btn staff-opt shadow-sm" onclick="selectStaff(this, '${name}')">${name}</div></div>`; 
@@ -692,30 +1041,226 @@
         window.logoutAdmin = function() { isAdminLoggedIn = false; document.getElementById('adminPasswordInput').value = ''; toggleAdmin(); };
 
         // ========== STAFF MANAGEMENT ==========
-        function fetchStaffList() { db.collection(ADMIN_COLLECTION).doc('staffConfig').get().then(doc => { globalStaffList = (doc.exists && doc.data().list) ? doc.data().list : ["Laddu", "Haider", "Arwaz", "Ankit"]; }).catch(() => { globalStaffList = ["Laddu", "Haider", "Arwaz", "Ankit"]; }); }
+        function populateStaffDropdowns() {
+            const optionsHTML = '<option value="ALL">All Staff</option>' + globalStaffList.map(n => `<option value="${n}">${n}</option>`).join('');
+            const repSel = document.getElementById('staffRepFilter');
+            const manSel = document.getElementById('manageStaffFilter');
+            if (repSel) { const prev = repSel.value; repSel.innerHTML = optionsHTML; if (prev) repSel.value = prev; }
+            if (manSel) { const prev = manSel.value; manSel.innerHTML = optionsHTML; if (prev) manSel.value = prev; }
+        }
+
+        function fetchStaffList() {
+            db.collection(ADMIN_COLLECTION).doc('staffConfig').get().then(doc => {
+                globalStaffList = (doc.exists && doc.data().list) ? doc.data().list : ["Laddu", "Haider", "Arwaz", "Ankit"];
+                populateStaffDropdowns();
+            }).catch(() => {
+                globalStaffList = ["Laddu", "Haider", "Arwaz", "Ankit"];
+                populateStaffDropdowns();
+            });
+        }
+
         function fetchStaffListAdmin() { 
             let html = '';
             globalStaffList.forEach((name, index) => { 
                 html += `<li class="list-group-item d-flex justify-content-between align-items-center px-4 py-3 bg-transparent"><span class="fw-bolder text-dark fs-5"><i class="bi bi-person-badge text-primary me-3"></i> ${name}</span><button class="btn btn-sm btn-outline-danger rounded-circle shadow-sm" onclick="removeStaff(${index})"><i class="bi bi-trash"></i></button></li>`; 
             });
             document.getElementById('adminStaffList').innerHTML = html;
+            populateStaffDropdowns();
         }
+
         window.addStaff = function() { const input = document.getElementById('newStaffName'); const name = input.value.trim(); if(!name || globalStaffList.includes(name)) return; globalStaffList.push(name); db.collection(ADMIN_COLLECTION).doc('staffConfig').set({ list: globalStaffList }, {merge: true}).then(() => { input.value = ''; fetchStaffListAdmin(); Swal.fire({ toast:true, icon:'success', title:'Added!', position:'top', showConfirmButton:false, timer:1500}); }); };
         window.removeStaff = function(index) { Swal.fire({ title: 'Delete?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#dc3545' }).then((r) => { if (r.isConfirmed) { globalStaffList.splice(index, 1); db.collection(ADMIN_COLLECTION).doc('staffConfig').set({ list: globalStaffList }, {merge: true}).then(() => { fetchStaffListAdmin(); }); } }); };
 
-        // ========== ADMIN DASHBOARD ==========
-        window.fetchDashboardData = function() {
-            const tFilter = document.getElementById('dashTimeFilter').value; const todayStr = getLocalDate();
-            let query = db.collection(RECORDS_COLLECTION); if (tFilter === 'today') { query = query.where('purchaseDate', '==', todayStr); }
-            query.get().then(snap => {
-                let twoW = 0, fourW = 0, p = 0, d = 0;
-                // OPTIMIZATION 3: Using snap.size for total count instantly
-                document.getElementById('statTotal').innerText = snap.size;
-                snap.forEach(doc => { const data = doc.data(); if (data.vehicleType === '2 Wheeler') twoW++; else fourW++; if (data.fuel === 'Petrol') p++; else if (data.fuel === 'Diesel') d++; });
-                document.getElementById('stat2W').innerText = twoW; document.getElementById('stat4W').innerText = fourW; document.getElementById('statFuel').innerText = `${p} / ${d}`;
+        // ========== ADMIN DASHBOARD (Zero Duplicate Queries for Today) ==========
+        function renderTodayDashboardFromCache() {
+            let twoW = 0, fourW = 0, p = 0, d = 0;
+            let counts = {};
+            todayRecordsCache.forEach(data => {
+                if (data.vehicleType === '2 Wheeler') twoW++; else fourW++;
+                if (data.fuel === 'Petrol') p++; else if (data.fuel === 'Diesel') d++;
+                const sName = data.staffName || 'Unknown';
+                counts[sName] = (counts[sName] || 0) + 1;
             });
-            loadStaffAnalytics();
+            document.getElementById('statTotal').innerText = todayRecordsCache.length;
+            document.getElementById('stat2W').innerText = twoW;
+            document.getElementById('stat4W').innerText = fourW;
+            document.getElementById('statFuel').innerText = `${p} / ${d}`;
+
+            const container = document.getElementById('staffAnalyticsContainer');
+            if (todayRecordsCache.length === 0) {
+                container.innerHTML = '<p class="text-muted fw-bold small text-center mt-3 mb-0">No Entries Today</p>';
+                return;
+            }
+            let sortedStaff = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+            let htmlStr = '';
+            sortedStaff.forEach(([name, count], index) => {
+                let medal = index === 0 ? '🏆' : index === 1 ? '🥈' : '🔹';
+                htmlStr += `<div class="d-flex justify-content-between align-items-center mb-2 bg-light p-3 rounded-3 border staff-row-card" onclick="openStaffDetailFromLeaderboard('${name}')">
+                    <span class="fw-bolder text-dark fs-5">${medal} ${name}</span>
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-primary px-3 py-2 fs-6 rounded-pill shadow-sm">${count} गाड़ियां</span>
+                        <i class="bi bi-chevron-right text-muted"></i>
+                    </div>
+                </div>`;
+            });
+            container.innerHTML = htmlStr;
+        }
+
+        window.openStaffDetailFromLeaderboard = function(staffName) {
+            const todayStr = getLocalDate();
+            document.getElementById('staffRepFrom').value = todayStr;
+            document.getElementById('staffRepTo').value = todayStr;
+            populateStaffDropdowns();
+            document.getElementById('staffRepFilter').value = staffName;
+            const tabTrigger = new bootstrap.Tab(document.getElementById('tabBtnStaffReport'));
+            tabTrigger.show();
+            loadStaffDetailedReport();
+        };
+
+        window.fetchDashboardData = function() {
+            const tFilter = document.getElementById('dashTimeFilter').value;
+            if (tFilter === 'today') {
+                renderTodayDashboardFromCache();
+            } else {
+                db.collection(RECORDS_COLLECTION).get().then(snap => {
+                    let twoW = 0, fourW = 0, p = 0, d = 0;
+                    document.getElementById('statTotal').innerText = snap.size;
+                    snap.forEach(doc => { const data = doc.data(); if (data.vehicleType === '2 Wheeler') twoW++; else fourW++; if (data.fuel === 'Petrol') p++; else if (data.fuel === 'Diesel') d++; });
+                    document.getElementById('stat2W').innerText = twoW; document.getElementById('stat4W').innerText = fourW; document.getElementById('statFuel').innerText = `${p} / ${d}`;
+                });
+                loadStaffAnalytics();
+            }
             fetchStaffListAdmin();
+        };
+
+        window.loadStaffAnalytics = function() {
+            renderTodayDashboardFromCache();
+        };
+
+        // ========== STAFF DETAILED REPORT ==========
+        window.loadStaffDetailedReport = function() {
+            const fromDate = document.getElementById('staffRepFrom').value;
+            const toDate = document.getElementById('staffRepTo').value;
+            const tbody = document.getElementById('staffReportTableBody');
+            if (!fromDate || !toDate) return;
+
+            const todayStr = getLocalDate();
+            if (fromDate === todayStr && toDate === todayStr && todayRecordsCache.length > 0) {
+                staffReportRecords = [...todayRecordsCache];
+                staffReportRecords.sort((a, b) => {
+                    const ta = a.createdAt && typeof a.createdAt.toMillis === 'function' ? a.createdAt.toMillis() : 0;
+                    const tb = b.createdAt && typeof b.createdAt.toMillis === 'function' ? b.createdAt.toMillis() : 0;
+                    return tb - ta;
+                });
+                renderStaffReportFromCache();
+                return;
+            }
+
+            tbody.innerHTML = '<tr><td colspan="6" class="py-5"><div class="dot-pulse" style="margin:auto;"></div></td></tr>';
+            db.collection(RECORDS_COLLECTION)
+                .where('purchaseDate', '>=', fromDate)
+                .where('purchaseDate', '<=', toDate)
+                .get()
+                .then(snap => {
+                    staffReportRecords = [];
+                    snap.forEach(doc => staffReportRecords.push({ id: doc.id, ...doc.data() }));
+                    staffReportRecords.sort((a, b) => {
+                        const ta = a.createdAt && typeof a.createdAt.toMillis === 'function' ? a.createdAt.toMillis() : new Date(a.purchaseDate).getTime();
+                        const tb = b.createdAt && typeof b.createdAt.toMillis === 'function' ? b.createdAt.toMillis() : new Date(b.purchaseDate).getTime();
+                        return tb - ta;
+                    });
+                    renderStaffReportFromCache();
+                });
+        };
+
+        window.renderStaffReportFromCache = function() {
+            const selected = document.getElementById('staffRepFilter').value;
+            const cardsContainer = document.getElementById('staffSummaryCards');
+            const tbody = document.getElementById('staffReportTableBody');
+
+            let staffStats = {};
+            staffReportRecords.forEach(r => {
+                const s = r.staffName || 'Unknown';
+                if (!staffStats[s]) staffStats[s] = { total: 0, twoW: 0, fourW: 0 };
+                staffStats[s].total++;
+                if (r.vehicleType === '2 Wheeler') staffStats[s].twoW++;
+                else staffStats[s].fourW++;
+            });
+
+            const sortedStats = Object.entries(staffStats).sort((a, b) => b[1].total - a[1].total);
+            if (sortedStats.length === 0) {
+                cardsContainer.innerHTML = '';
+                tbody.innerHTML = '<tr><td colspan="6" class="text-muted fw-bold py-5">इस तारीख में कोई रिकॉर्ड नहीं मिला</td></tr>';
+                return;
+            }
+
+            let cardsHTML = '';
+            sortedStats.forEach(([name, st]) => {
+                const isActive = selected === name ? 'border-primary border-2 bg-light' : '';
+                cardsHTML += `
+                <div class="col-md-3 col-6">
+                    <div class="kpi-tile ${isActive}" style="cursor:pointer;" onclick="document.getElementById('staffRepFilter').value='${name}'; renderStaffReportFromCache();">
+                        <div class="fw-bolder text-dark mb-1"><i class="bi bi-person-badge text-primary me-1"></i> ${name}</div>
+                        <h3 class="fw-black text-primary m-0">${st.total}</h3>
+                        <small class="text-muted fw-bold">2W: ${st.twoW} | 4W: ${st.fourW}</small>
+                    </div>
+                </div>`;
+            });
+            cardsContainer.innerHTML = cardsHTML;
+
+            const filtered = selected === 'ALL'
+                ? staffReportRecords
+                : staffReportRecords.filter(r => (r.staffName || 'Unknown') === selected);
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-muted fw-bold py-5">इस स्टाफ़ के लिए कोई रिकॉर्ड नहीं मिला</td></tr>';
+                return;
+            }
+
+            let rowsHTML = '';
+            filtered.forEach(d => {
+                const timeStr = formatRecordTime(d);
+                const typeBadge = d.vehicleType === '2 Wheeler'
+                    ? '<span class="badge bg-primary bg-opacity-10 text-primary px-2 py-1">2W</span>'
+                    : '<span class="badge bg-dark text-white px-2 py-1">4W</span>';
+                rowsHTML += `<tr>
+                    <td><span class="fw-bold text-dark">${d.purchaseDate}</span><br><small class="text-primary fw-bold">${timeStr}</small></td>
+                    <td><span class="badge bg-light text-dark border px-3 py-2">${d.staffName || '-'}</span></td>
+                    <td class="fw-black text-primary fs-6">${d.vehicleNo}</td>
+                    <td>${typeBadge} <small class="text-muted ms-1">${d.fuel}</small></td>
+                    <td class="fw-bolder text-success">${d.durationMonths || '-'}M</td>
+                    <td class="text-danger small fw-bold">${d.expiryDate || '-'}</td>
+                </tr>`;
+            });
+            tbody.innerHTML = rowsHTML;
+        };
+
+        window.downloadStaffReportPDF = function() {
+            const selected = document.getElementById('staffRepFilter').value;
+            const filtered = selected === 'ALL'
+                ? staffReportRecords
+                : staffReportRecords.filter(r => (r.staffName || 'Unknown') === selected);
+
+            if (filtered.length === 0) return Swal.fire({ icon: 'error', text: 'Download करने के लिए कोई रिकॉर्ड नहीं है!' });
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.setFontSize(15);
+            doc.text(`Shree Ganesh PUC - Staff Activity Report (${selected})`, 14, 18);
+            doc.setFontSize(10);
+            doc.text(`Period: ${document.getElementById('staffRepFrom').value} to ${document.getElementById('staffRepTo').value} | Total: ${filtered.length}`, 14, 26);
+
+            const cols = ["Date", "Time", "Staff", "Vehicle No", "Type / Fuel", "Dur.", "Expiry"];
+            const rows = filtered.map(d => [
+                d.purchaseDate,
+                formatRecordTime(d),
+                d.staffName || '-',
+                d.vehicleNo,
+                `${d.vehicleType} (${d.fuel})`,
+                `${d.durationMonths}M`,
+                d.expiryDate || '-'
+            ]);
+            doc.autoTable({ head: [cols], body: rows, startY: 32, theme: 'grid', styles: { fontSize: 8 }, headStyles: { fillColor: [30, 58, 138] } });
+            doc.save(`Staff_Report_${selected}_${getLocalDate()}.pdf`);
         };
 
         // ========== ADVANCED PEAK HOUR (Day-wise & Average) ==========
@@ -767,7 +1312,6 @@
                     return `${hr} ${ampm}`;
                 };
 
-                // OPTIMIZATION 4: Building complete HTML string before DOM injection
                 let htmlStr = '<h5 class="fw-bolder mb-3 text-dark">Day-wise Breakdown</h5><ul class="list-group list-group-flush border rounded-4 overflow-hidden mb-4 shadow-sm">';
                 
                 const sortedDates = Object.keys(dailyData).sort();
@@ -780,7 +1324,7 @@
                             <span class="fw-bolder text-dark"><i class="bi bi-calendar-check text-primary me-2"></i> ${date}</span>
                             <div class="text-end">
                                 <span class="badge bg-light text-primary border border-primary fs-6 px-3 py-2 shadow-sm">${formatHour(peakHourStart)} - ${formatHour((peakHourStart+1)%24)}</span>
-                                <span class="badge bg-success rounded-pill px-3 py-2 ms-2 fs-6 shadow-sm">${maxCount} गाड़ियां</span>
+                                <span class="badge bg-success rounded-pill px-3 py-2 ms-2 fs-6 shadow-sm">${maxCount} गाड़ियां</span>
                             </div>
                         </li>`;
                     }
@@ -794,7 +1338,7 @@
                     <div class="position-absolute opacity-10" style="right:-20px; top:-20px; font-size:6rem;"><i class="bi bi-lightning-fill"></i></div>
                     <p class="mb-2 fw-bold text-uppercase tracking-wide small"><i class="bi bi-stars text-warning me-1"></i> Overall Average Peak Time</p>
                     <h2 class="fw-black text-dark m-0 display-5">${formatHour(overallPeakHour)} - ${formatHour((overallPeakHour+1)%24)}</h2>
-                    <p class="mt-2 mb-0 fw-bold text-muted small">Max Avg Volume: ${overallMax} गाड़ियां</p>
+                    <p class="mt-2 mb-0 fw-bold text-muted small">Max Avg Volume: ${overallMax} गाड़ियां</p>
                 </div>`;
 
                 resultDiv.innerHTML = htmlStr;
@@ -805,58 +1349,74 @@
             }
         };
 
-        window.loadStaffAnalytics = function() {
-            const todayStr = getLocalDate(); const container = document.getElementById('staffAnalyticsContainer');
-            db.collection(RECORDS_COLLECTION).where('purchaseDate', '==', todayStr).get().then(snap => {
-                if(snap.empty){ container.innerHTML = '<p class="text-muted fw-bold small text-center mt-4">No Entries Today</p>'; return; }
-                let counts = {}; snap.forEach(doc => { const sName = doc.data().staffName || 'Unknown'; counts[sName] = (counts[sName] || 0) + 1; });
-                let sortedStaff = Object.entries(counts).sort((a, b) => b[1] - a[1]); 
-                let htmlStr = '';
-                sortedStaff.forEach(([name, count], index) => { let medal = index === 0 ? '🏆' : index === 1 ? '🥈' : '🔹'; htmlStr += `<div class="d-flex justify-content-between align-items-center mb-2 bg-light p-3 rounded-3 border"><span class="fw-bolder text-dark fs-5">${medal} ${name}</span><span class="badge bg-primary px-4 py-2 fs-6 rounded-pill shadow-sm">${count}</span></div>`; });
-                container.innerHTML = htmlStr;
+        // ========== RECORDS FETCH (Massive Speedup + Staff Filter) ==========
+        window.renderManageTable = function() {
+            const tbody = document.getElementById('manageTableBody');
+            const staffFilter = document.getElementById('manageStaffFilter').value;
+            const summaryDiv = document.getElementById('rangeAnalyticsContainer');
+
+            const filtered = staffFilter === 'ALL'
+                ? currentFetchRecords
+                : currentFetchRecords.filter(d => (d.staffName || '-') === staffFilter);
+
+            if (filtered.length === 0) {
+                summaryDiv.innerHTML = '';
+                tbody.innerHTML = '<tr><td colspan="7" class="text-muted fw-bold py-5">No Records Found</td></tr>';
+                return;
+            }
+
+            let twoW = 0, fourW = 0;
+            filtered.forEach(d => { if (d.vehicleType === '2 Wheeler') twoW++; else fourW++; });
+            summaryDiv.innerHTML = `<div class="d-flex flex-wrap gap-2 justify-content-center">
+                <span class="badge bg-primary rounded-pill px-3 py-2 fs-6">Total: ${filtered.length}</span>
+                <span class="badge bg-success rounded-pill px-3 py-2 fs-6">2W: ${twoW}</span>
+                <span class="badge bg-dark rounded-pill px-3 py-2 fs-6">4W: ${fourW}</span>
+            </div>`;
+
+            let tableHTML = '';
+            filtered.forEach(d => { 
+                tableHTML += `<tr><td class="fw-bolder text-dark">${d.vehicleNo}</td><td><span class="fw-bold">${d.mobileNo}</span> <i class="bi bi-pencil-square text-primary ms-1" style="cursor:pointer;" onclick="editMobile('${d.id}', '${d.mobileNo}')"></i></td><td><span class="badge bg-secondary px-2 py-1">${d.vehicleType === '2 Wheeler' ? '2W' : '4W'}</span><br><small class="text-muted">${d.fuel}</small></td><td class="fw-bold text-muted">${d.staffName || '-'}</td><td class="fw-bolder text-primary">${d.durationMonths || '-'}M</td><td class="text-muted small fw-bold">${d.purchaseDate}<br><span class="text-primary">${formatRecordTime(d)}</span></td><td><button class="btn btn-sm btn-outline-danger rounded-circle shadow-sm" onclick="deleteRecord('${d.id}')"><i class="bi bi-trash"></i></button></td></tr>`; 
             });
+            tbody.innerHTML = tableHTML;
         };
 
-        // ========== RECORDS FETCH (Massive Speedup) ==========
         window.loadManageData = function() {
             const fromDate = document.getElementById('manageFrom').value, toDate = document.getElementById('manageTo').value; 
             const tbody = document.getElementById('manageTableBody');
-            
             if(!fromDate || !toDate) return;
-            tbody.innerHTML = '<tr><td colspan="7" class="py-5"><div class="dot-pulse" style="margin:auto;"></div></td></tr>';
 
+            const todayStr = getLocalDate();
+            if (fromDate === todayStr && toDate === todayStr && todayRecordsCache.length > 0) {
+                currentFetchRecords = [...todayRecordsCache];
+                currentFetchRecords.sort((a, b) => new Date(b.purchaseDate) - new Date(a.purchaseDate));
+                renderManageTable();
+                return;
+            }
+
+            tbody.innerHTML = '<tr><td colspan="7" class="py-5"><div class="dot-pulse" style="margin:auto;"></div></td></tr>';
             db.collection(RECORDS_COLLECTION).where('purchaseDate', '>=', fromDate).where('purchaseDate', '<=', toDate).get().then(snap => {
                 currentFetchRecords = []; 
-                if (snap.empty) { 
-                    tbody.innerHTML = '<tr><td colspan="7" class="text-muted fw-bold py-5">No Records Found</td></tr>'; 
-                    return; 
-                }
-                
                 snap.forEach(doc => { currentFetchRecords.push({ id: doc.id, ...doc.data() }); }); 
                 currentFetchRecords.sort((a, b) => new Date(b.purchaseDate) - new Date(a.purchaseDate)); 
-                
-                // OPTIMIZATION 5: Build string first, insert once (No more lagging loops)
-                let tableHTML = '';
-                currentFetchRecords.forEach(d => { 
-                    tableHTML += `<tr><td class="fw-bolder text-dark">${d.vehicleNo}</td><td><span class="fw-bold">${d.mobileNo}</span> <i class="bi bi-pencil-square text-primary ms-1" style="cursor:pointer;" onclick="editMobile('${d.id}', '${d.mobileNo}')"></i></td><td><span class="badge bg-secondary px-2 py-1">${d.vehicleType === '2 Wheeler' ? '2W' : '4W'}</span><br><small class="text-muted">${d.fuel}</small></td><td class="fw-bold text-muted">${d.staffName || '-'}</td><td class="fw-bolder text-primary">${d.durationMonths || '-'}M</td><td class="text-muted small fw-bold">${d.purchaseDate}</td><td><button class="btn btn-sm btn-outline-danger rounded-circle shadow-sm" onclick="deleteRecord('${d.id}')"><i class="bi bi-trash"></i></button></td></tr>`; 
-                });
-                tbody.innerHTML = tableHTML;
+                renderManageTable();
             });
         };
 
         window.downloadPDF = function() {
-            if(currentFetchRecords.length === 0) return Swal.fire({ icon: 'error', text: 'No records to download!' });
+            const staffFilter = document.getElementById('manageStaffFilter').value;
+            const filtered = staffFilter === 'ALL' ? currentFetchRecords : currentFetchRecords.filter(d => (d.staffName || '-') === staffFilter);
+            if(filtered.length === 0) return Swal.fire({ icon: 'error', text: 'No records to download!' });
             const { jsPDF } = window.jspdf; const doc = new jsPDF();
-            doc.setFontSize(16); doc.text("Shree Ganesh PUC Center - Business Report", 14, 20); doc.setFontSize(10); doc.text(`Report Generated On: ${getLocalDate()}`, 14, 28);
+            doc.setFontSize(16); doc.text("Shree Ganesh PUC Center - Business Report", 14, 20); doc.setFontSize(10); doc.text(`Report Generated On: ${getLocalDate()} | Filter: ${staffFilter}`, 14, 28);
             const tableColumn = ["Vehicle No", "Mobile", "Type", "Staff", "Dur.", "Created", "Expiry"]; const tableRows = [];
-            currentFetchRecords.forEach(d => { tableRows.push([d.vehicleNo, d.mobileNo, d.vehicleType, d.staffName, `${d.durationMonths}M`, d.purchaseDate, d.expiryDate]); });
+            filtered.forEach(d => { tableRows.push([d.vehicleNo, d.mobileNo, d.vehicleType, d.staffName, `${d.durationMonths}M`, d.purchaseDate, d.expiryDate]); });
             doc.autoTable({ head: [tableColumn], body: tableRows, startY: 35, theme: 'grid', styles: { fontSize: 8 }, headStyles: { fillColor: [37, 99, 235] } });
             doc.save(`ShreeGanesh_Report_${getLocalDate()}.pdf`);
         };
 
         // ========== FAST SEARCH PORTAL ==========
         window.searchPortalData = function() {
-            const searchVal = document.getElementById('portalSearchInput').value.trim().toUpperCase(); 
+            const searchVal = document.getElementById('portalSearchInput').value.replace(/\s+/g, '').toUpperCase(); 
             const container = document.getElementById('portalResultContainer');
             const loader = document.getElementById('searchLoader');
 
@@ -879,7 +1439,7 @@
                 let htmlStr = '';
                 arr.forEach(d => {
                     let statusBadge = new Date(d.expiryDate) < new Date(getLocalDate()) ? '<span class="badge bg-danger ms-2 px-3 shadow-sm">EXPIRED</span>' : '<span class="badge bg-success ms-2 px-3 shadow-sm">ACTIVE</span>';
-                    htmlStr += `<div class="card mb-4 shadow-sm border-0 rounded-4" style="border-left: 6px solid var(--accent-blue) !important;"><div class="card-body p-4"><h4 class="fw-black text-dark mb-2">${d.vehicleNo} ${statusBadge}</h4><h5 class="text-primary fw-bolder mb-4"><i class="bi bi-telephone-fill me-2"></i> ${d.mobileNo}</h5><div class="row small fw-bold text-muted g-3"><div class="col-6">Type: <span class="text-dark">${d.vehicleType}</span></div><div class="col-6">Duration: <span class="text-primary">${d.durationMonths} Months</span></div><div class="col-6">Created: <span class="text-dark">${d.purchaseDate}</span></div><div class="col-6 text-danger">Expires: ${d.expiryDate}</div></div></div></div>`;
+                    htmlStr += `<div class="card mb-4 shadow-sm border-0 rounded-4" style="border-left: 6px solid var(--accent-blue) !important;"><div class="card-body p-4"><h4 class="fw-black text-dark mb-2">${d.vehicleNo} ${statusBadge}</h4><h5 class="text-primary fw-bolder mb-4"><i class="bi bi-telephone-fill me-2"></i> ${d.mobileNo}</h5><div class="row small fw-bold text-muted g-3"><div class="col-6">Type: <span class="text-dark">${d.vehicleType} (${d.fuel})</span></div><div class="col-6">Duration: <span class="text-primary">${d.durationMonths} Months</span></div><div class="col-6">Staff: <span class="text-dark">${d.staffName || '-'}</span></div><div class="col-6">Time: <span class="text-dark">${formatRecordTime(d)}</span></div><div class="col-6">Created: <span class="text-dark">${d.purchaseDate}</span></div><div class="col-6 text-danger">Expires: ${d.expiryDate}</div></div></div></div>`;
                 });
                 container.innerHTML = htmlStr;
             });
